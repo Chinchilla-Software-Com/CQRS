@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Domain/UnitOfWork.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Domain</a> - UnitOfWork.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-23 19:54:52</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using Cqrs.Domain.Exceptions;
+<span class="lineNum">      12 </span>            : using Cqrs.Events;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : namespace Cqrs.Domain
+<span class="lineNum">      15 </span>            : {
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// Provides a basic container to control when &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; are store in an &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; and then published on an &lt;see cref=&quot;IEventPublisher{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         /// &lt;remarks&gt;
+<span class="lineNum">      20 </span>            :         /// This shouldn't normally be used as a singleton.
+<span class="lineNum">      21 </span>            :         /// &lt;/remarks&gt;
+<span class="lineNum">      22 </span>            :         public class UnitOfWork&lt;TAuthenticationToken&gt;
+<span class="lineNum">      23 </span>            :                 : IUnitOfWork&lt;TAuthenticationToken&gt;
+<span class="lineNum">      24 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      25 </span>            :                 private IAggregateRepository&lt;TAuthenticationToken&gt; Repository { get; set; }
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 private ISnapshotAggregateRepository&lt;TAuthenticationToken&gt; SnapshotRepository { get; set; }
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 private Dictionary&lt;Guid, IAggregateDescriptor&lt;TAuthenticationToken&gt;&gt; TrackedAggregates { get; set; }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;UnitOfWork{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span><span class="lineCov">          1 :                 public UnitOfWork(ISnapshotAggregateRepository&lt;TAuthenticationToken&gt; snapshotRepository, IAggregateRepository&lt;TAuthenticationToken&gt; repository)</span>
+<span class="lineNum">      35 </span>            :                         : this(repository)
+<span class="lineNum">      36 </span>            :                 {
+<span class="lineNum">      37 </span>            :                         if (snapshotRepository == null)
+<span class="lineNum">      38 </span>            :                                 throw new ArgumentNullException(&quot;snapshotRepository&quot;);
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                         SnapshotRepository = snapshotRepository;
+<span class="lineNum">      41 </span>            :                 }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;UnitOfWork{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span><span class="lineCov">          1 :                 public UnitOfWork(IAggregateRepository&lt;TAuthenticationToken&gt; repository)</span>
+<span class="lineNum">      47 </span>            :                 {
+<span class="lineNum">      48 </span>            :                         if(repository == null)
+<span class="lineNum">      49 </span>            :                                 throw new ArgumentNullException(&quot;repository&quot;);
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                         Repository = repository;
+<span class="lineNum">      52 </span>            :                         TrackedAggregates = new Dictionary&lt;Guid, IAggregateDescriptor&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      56 </span>            :                 /// Add an item into the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; ready to be committed.
+<span class="lineNum">      57 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      58 </span><span class="lineCov">          1 :                 public virtual void Add&lt;TAggregateRoot&gt;(TAggregateRoot aggregate, bool useSnapshots = false)</span>
+<span class="lineNum">      59 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">      60 </span>            :                 {
+<span class="lineNum">      61 </span>            :                         if (!IsTracked(aggregate.Id))
+<span class="lineNum">      62 </span>            :                         {
+<span class="lineNum">      63 </span>            :                                 var aggregateDescriptor = new AggregateDescriptor&lt;TAggregateRoot, TAuthenticationToken&gt;
+<span class="lineNum">      64 </span>            :                                 {
+<span class="lineNum">      65 </span>            :                                         Aggregate = aggregate,
+<span class="lineNum">      66 </span>            :                                         Version = aggregate.Version,
+<span class="lineNum">      67 </span>            :                                         UseSnapshots = useSnapshots
+<span class="lineNum">      68 </span>            :                                 };
+<span class="lineNum">      69 </span>            :                                 TrackedAggregates.Add(aggregate.Id, aggregateDescriptor);
+<span class="lineNum">      70 </span>            :                         }
+<span class="lineNum">      71 </span>            :                         else if (((TrackedAggregates[aggregate.Id]).Aggregate) != (IAggregateRoot&lt;TAuthenticationToken&gt;)aggregate)
+<span class="lineNum">      72 </span>            :                                 throw new ConcurrencyException(aggregate.Id);
+<span class="lineNum">      73 </span>            :                 }
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      76 </span>            :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; if it has already been loaded or get it from the &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      77 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      78 </span><span class="lineCov">          1 :                 public virtual TAggregateRoot Get&lt;TAggregateRoot&gt;(Guid id, int? expectedVersion = null, bool useSnapshots = false)</span>
+<span class="lineNum">      79 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">      80 </span>            :                 {
+<span class="lineNum">      81 </span>            :                         if(IsTracked(id))
+<span class="lineNum">      82 </span>            :                         {
+<span class="lineNum">      83 </span>            :                                 var trackedAggregate = (TAggregateRoot)TrackedAggregates[id].Aggregate;
+<span class="lineNum">      84 </span>            :                                 if (expectedVersion != null &amp;&amp; trackedAggregate.Version != expectedVersion)
+<span class="lineNum">      85 </span>            :                                         throw new ConcurrencyException(trackedAggregate.Id);
+<span class="lineNum">      86 </span>            :                                 return trackedAggregate;
+<span class="lineNum">      87 </span>            :                         }
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :                         var aggregate = (useSnapshots ? SnapshotRepository : Repository).Get&lt;TAggregateRoot&gt;(id);
+<span class="lineNum">      90 </span>            :                         if (expectedVersion != null &amp;&amp; aggregate.Version != expectedVersion)
+<span class="lineNum">      91 </span>            :                                 throw new ConcurrencyException(id);
+<span class="lineNum">      92 </span>            :                         Add(aggregate, useSnapshots);
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :                         return aggregate;
+<span class="lineNum">      95 </span>            :                 }
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      98 </span>            :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">      99 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     100 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">     101 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     102 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">     103 </span><span class="lineCov">          1 :                 public virtual TAggregateRoot GetToVersion&lt;TAggregateRoot&gt;(Guid id, int version)</span>
+<span class="lineNum">     104 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     105 </span>            :                 {
+<span class="lineNum">     106 </span>            :                         var aggregate = Repository.GetToVersion&lt;TAggregateRoot&gt;(id, version);
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :                         return aggregate;
+<span class="lineNum">     109 </span>            :                 }
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     112 </span>            :                 /// Get an item from the &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">     113 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     114 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/typeparam&gt;
+<span class="lineNum">     115 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     116 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     117 </span><span class="lineCov">          1 :                 public virtual TAggregateRoot GetToDate&lt;TAggregateRoot&gt;(Guid id, DateTime versionedDate)</span>
+<span class="lineNum">     118 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     119 </span>            :                 {
+<span class="lineNum">     120 </span>            :                         var aggregate = Repository.GetToDate&lt;TAggregateRoot&gt;(id, versionedDate);
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            :                         return aggregate;
+<span class="lineNum">     123 </span>            :                 }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :                 private bool IsTracked(Guid id)
+<span class="lineNum">     126 </span>            :                 {
+<span class="lineNum">     127 </span>            :                         return TrackedAggregates.ContainsKey(id);
+<span class="lineNum">     128 </span>            :                 }
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     131 </span>            :                 /// Commit any changed &lt;see cref=&quot;AggregateRoot{TAuthenticationToken}&quot;/&gt; added to this &lt;see cref=&quot;IUnitOfWork{TAuthenticationToken}&quot;/&gt; via &lt;see cref=&quot;Add{T}&quot;/&gt;
+<span class="lineNum">     132 </span>            :                 /// into the &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">     133 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     134 </span><span class="lineCov">          1 :                 public virtual void Commit()</span>
+<span class="lineNum">     135 </span>            :                 {
+<span class="lineNum">     136 </span>            :                         foreach (IAggregateDescriptor&lt;TAuthenticationToken&gt; descriptor in TrackedAggregates.Values)
+<span class="lineNum">     137 </span>            :                         {
+<span class="lineNum">     138 </span>            :                                 (descriptor.UseSnapshots ? SnapshotRepository : Repository).Save(descriptor.Aggregate, descriptor.Version);
+<span class="lineNum">     139 </span>            :                         }
+<span class="lineNum">     140 </span>            :                         TrackedAggregates.Clear();
+<span class="lineNum">     141 </span>            :                 }
+<span class="lineNum">     142 </span>            :         }
+<span class="lineNum">     143 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

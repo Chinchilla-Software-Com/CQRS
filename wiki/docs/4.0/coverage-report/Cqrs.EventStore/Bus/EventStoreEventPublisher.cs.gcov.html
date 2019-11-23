@@ -1,0 +1,263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.EventStore/Bus/EventStoreEventPublisher.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs.EventStore/Bus</a> - EventStoreEventPublisher.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-23 19:54:52</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using Cqrs.Bus;
+<span class="lineNum">      12 </span>            : using Cqrs.Events;
+<span class="lineNum">      13 </span>            : using Cqrs.Messages;
+<span class="lineNum">      14 </span>            : using EventStore.ClientAPI;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : namespace Cqrs.EventStore.Bus
+<span class="lineNum">      17 </span>            : {
+<span class="lineNum">      18 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :         /// A &lt;see cref=&quot;IEventPublisher{TAuthenticationToken}&quot;/&gt; that uses Greg Young's Event Store.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      22 </span>            :         public class EventStoreEventPublisher&lt;TAuthenticationToken&gt; : IEventPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">      23 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      25 </span>            :                 /// The actions to execute per &lt;see cref=&quot;Type&quot;/&gt;
+<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      27 </span>            :                 protected Dictionary&lt;Type, List&lt;Action&lt;IMessage&gt;&gt;&gt; Routes { get; private set; }
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      30 </span>            :                 /// The &lt;see cref=&quot;IEventStoreConnection&quot;/&gt; used to read and write streams in the Greg Young Event Store.
+<span class="lineNum">      31 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      32 </span>            :                 protected IEventStoreConnection EventStoreConnection { get; private set; }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// The store that hold stream position information.
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span>            :                 protected IStoreLastEventProcessed LastEventProcessedStore { get; private set; }
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      40 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;EventStoreEventPublisher{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      42 </span>            :                 /// &lt;param name=&quot;eventStoreConnectionHelper&quot;&gt;The &lt;see cref=&quot;IEventStoreConnection&quot;/&gt; used to read and write streams in the Greg Young Event Store.&lt;/param&gt;
+<span class="lineNum">      43 </span>            :                 /// &lt;param name=&quot;lastEventProcessedStore&quot;&gt;The store that hold stream position information.&lt;/param&gt;
+<span class="lineNum">      44 </span><span class="lineCov">          1 :                 public EventStoreEventPublisher(IEventStoreConnectionHelper eventStoreConnectionHelper, IStoreLastEventProcessed lastEventProcessedStore)</span>
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                         EventStoreConnection = eventStoreConnectionHelper.GetEventStoreConnection();
+<span class="lineNum">      47 </span>            :                         LastEventProcessedStore = lastEventProcessedStore;
+<span class="lineNum">      48 </span>            :                         Routes = new Dictionary&lt;Type, List&lt;Action&lt;IMessage&gt;&gt;&gt;();
+<span class="lineNum">      49 </span>            :                 }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 #region Implementation of IEventPublisher&lt;TAuthenticationToken&gt;
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      54 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;event&quot;/&gt; on the event bus.
+<span class="lineNum">      55 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      56 </span><span class="lineCov">          1 :                 public void Publish&lt;TEvent&gt;(TEvent @event)</span>
+<span class="lineNum">      57 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">      58 </span>            :                 {
+<span class="lineNum">      59 </span>            :                         List&lt;Action&lt;IMessage&gt;&gt; handlers;
+<span class="lineNum">      60 </span>            :                         if (!Routes.TryGetValue(@event.GetType(), out handlers))
+<span class="lineNum">      61 </span>            :                                 return;
+<span class="lineNum">      62 </span>            :                         foreach (Action&lt;IMessage&gt; handler in handlers)
+<span class="lineNum">      63 </span>            :                                 handler(@event);
+<span class="lineNum">      64 </span>            :                 }
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      67 </span>            :                 /// Publishes the provided &lt;paramref name=&quot;events&quot;/&gt; on the event bus.
+<span class="lineNum">      68 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      69 </span><span class="lineCov">          1 :                 public void Publish&lt;TEvent&gt;(IEnumerable&lt;TEvent&gt; events)</span>
+<span class="lineNum">      70 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;
+<span class="lineNum">      71 </span>            :                 {
+<span class="lineNum">      72 </span>            :                         foreach (TEvent @event in events)
+<span class="lineNum">      73 </span>            :                                 Publish(@event);
+<span class="lineNum">      74 </span>            :                 }
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            :                 #endregion
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      79 </span>            :                 /// Reads the position the store was last within the stream and subscribes requesting all events prior to that position aren't replayed.
+<span class="lineNum">      80 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      81 </span><span class="lineCov">          1 :                 protected void InitialiseCatchUpSubscription()</span>
+<span class="lineNum">      82 </span>            :                 {
+<span class="lineNum">      83 </span>            :                         Position position = GetLastEventProcessedLocation();
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                         EventStoreConnection.SubscribeToAllFrom(position, false, OnEventAppeared, OnLiveProcessingStarted, OnSubscriptionDropped);
+<span class="lineNum">      86 </span>            :                 }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :                 private Position GetLastEventProcessedLocation()
+<span class="lineNum">      89 </span>            :                 {
+<span class="lineNum">      90 </span>            :                         return EventStoreUtilities.FormattedStringToPosition(LastEventProcessedStore.EventLocation);
+<span class="lineNum">      91 </span>            :                 }
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                 private void OnEventAppeared(EventStoreCatchUpSubscription catchUpSubscription, ResolvedEvent resolvedEvent)
+<span class="lineNum">      94 </span>            :                 {
+<span class="lineNum">      95 </span>            :                         if (resolvedEvent.OriginalEvent.EventStreamId != EventStoreBasedLastEventProcessedStore.EventsProcessedStreamName)
+<span class="lineNum">      96 </span>            :                         {
+<span class="lineNum">      97 </span>            :                                 RecordedEvent receivedEvent = resolvedEvent.OriginalEvent;
+<span class="lineNum">      98 </span>            :                                 // this.logProvider.Log(string.Format(&quot;Event appeared: number {0}, position {1}, type {2}&quot;, receivedEvent.EventNumber, resolvedEvent.OriginalPosition, receivedEvent.EventType), LogMessageLevel.Info);
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                                 var eventToSend = EventConverter.GetEventFromData&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(resolvedEvent.Event.Data, resolvedEvent.Event.EventType);
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :                                 Publish(eventToSend);
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :                                 SaveLastEventProcessedLocation(resolvedEvent.OriginalPosition.Value);
+<span class="lineNum">     105 </span>            :                         }
+<span class="lineNum">     106 </span>            :                 }
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :                 private void SaveLastEventProcessedLocation(Position position)
+<span class="lineNum">     109 </span>            :                 {
+<span class="lineNum">     110 </span>            :                         LastEventProcessedStore.EventLocation = EventStoreUtilities.PositionToFormattedString(position);
+<span class="lineNum">     111 </span>            :                 }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :                 private void OnLiveProcessingStarted(EventStoreCatchUpSubscription catchUpSubscription)
+<span class="lineNum">     114 </span>            :                 {
+<span class="lineNum">     115 </span>            :                         // this.logProvider.Log(&quot;Subscription live processing started&quot;, LogMessageLevel.Info);
+<span class="lineNum">     116 </span>            :                 }
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span>            :                 private void OnSubscriptionDropped(EventStoreCatchUpSubscription catchUpSubscription, SubscriptionDropReason dropReason, Exception exception)
+<span class="lineNum">     119 </span>            :                 {
+<span class="lineNum">     120 </span>            :                         string innerExceptionMessage = string.Empty;
+<span class="lineNum">     121 </span>            :                         if (exception != null &amp;&amp; exception.InnerException != null)
+<span class="lineNum">     122 </span>            :                         {
+<span class="lineNum">     123 </span>            :                                 innerExceptionMessage = string.Format(&quot; ({0})&quot;, exception.InnerException.Message);
+<span class="lineNum">     124 </span>            :                         }
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            :                         // logProvider.Log(&quot;Subscription dropped (reason: &quot; + SubscriptionDropReasonText(dropReason) + innerExceptionMessage + &quot;)&quot;, LogMessageLevel.Info);
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :                         if (dropReason == SubscriptionDropReason.ProcessingQueueOverflow)
+<span class="lineNum">     129 </span>            :                         {
+<span class="lineNum">     130 </span>            :                                 // This happens when the server detects that _liveQueue.Count &gt;= MaxPushQueueSize which defaults to 10,000
+<span class="lineNum">     131 </span>            :                                 // In the forum James Nugent suggests &quot;Wait and reconnect probably with back off&quot; https://gist.github.com/jen20/6092666
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :                                 // For now we will just re-subscribe
+<span class="lineNum">     134 </span>            :                                 InitialiseCatchUpSubscription();
+<span class="lineNum">     135 </span>            :                         }
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :                         if (SubscriptionDropMayBeRecoverable(dropReason))
+<span class="lineNum">     138 </span>            :                         {
+<span class="lineNum">     139 </span>            :                                 InitialiseCatchUpSubscription();
+<span class="lineNum">     140 </span>            :                         }
+<span class="lineNum">     141 </span>            :                 }
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            :                 private static bool SubscriptionDropMayBeRecoverable(SubscriptionDropReason dropReason)
+<span class="lineNum">     144 </span>            :                 {
+<span class="lineNum">     145 </span>            :                         return !(dropReason == SubscriptionDropReason.AccessDenied ||
+<span class="lineNum">     146 </span>            :                                          dropReason == SubscriptionDropReason.NotAuthenticated ||
+<span class="lineNum">     147 </span>            :                                          dropReason == SubscriptionDropReason.UserInitiated);
+<span class="lineNum">     148 </span>            :                 }
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span>            :                 private static string SubscriptionDropReasonText(SubscriptionDropReason reason)
+<span class="lineNum">     151 </span>            :                 {
+<span class="lineNum">     152 </span>            :                         string reasonText;
+<span class="lineNum">     153 </span>            :                         switch (reason)
+<span class="lineNum">     154 </span>            :                         {
+<span class="lineNum">     155 </span>            :                                 case SubscriptionDropReason.UserInitiated:
+<span class="lineNum">     156 </span>            :                                         reasonText = &quot;User Initiated&quot;;
+<span class="lineNum">     157 </span>            :                                         break;
+<span class="lineNum">     158 </span>            :                                 case SubscriptionDropReason.NotAuthenticated:
+<span class="lineNum">     159 </span>            :                                         reasonText = &quot;Not Authenticated&quot;;
+<span class="lineNum">     160 </span>            :                                         break;
+<span class="lineNum">     161 </span>            :                                 case SubscriptionDropReason.AccessDenied:
+<span class="lineNum">     162 </span>            :                                         reasonText = &quot;Access Denied&quot;;
+<span class="lineNum">     163 </span>            :                                         break;
+<span class="lineNum">     164 </span>            :                                 case SubscriptionDropReason.SubscribingError:
+<span class="lineNum">     165 </span>            :                                         reasonText = &quot;Subscribing Error&quot;;
+<span class="lineNum">     166 </span>            :                                         break;
+<span class="lineNum">     167 </span>            :                                 case SubscriptionDropReason.ServerError:
+<span class="lineNum">     168 </span>            :                                         reasonText = &quot;Server Error&quot;;
+<span class="lineNum">     169 </span>            :                                         break;
+<span class="lineNum">     170 </span>            :                                 case SubscriptionDropReason.ConnectionClosed:
+<span class="lineNum">     171 </span>            :                                         reasonText = &quot;Connection Closed&quot;;
+<span class="lineNum">     172 </span>            :                                         break;
+<span class="lineNum">     173 </span>            :                                 case SubscriptionDropReason.CatchUpError:
+<span class="lineNum">     174 </span>            :                                         reasonText = &quot;CatchUp Error&quot;;
+<span class="lineNum">     175 </span>            :                                         break;
+<span class="lineNum">     176 </span>            :                                 case SubscriptionDropReason.ProcessingQueueOverflow:
+<span class="lineNum">     177 </span>            :                                         reasonText = &quot;Processing Queue Overflow&quot;;
+<span class="lineNum">     178 </span>            :                                         break;
+<span class="lineNum">     179 </span>            :                                 case SubscriptionDropReason.EventHandlerException:
+<span class="lineNum">     180 </span>            :                                         reasonText = &quot;Event Handler Exception&quot;;
+<span class="lineNum">     181 </span>            :                                         break;
+<span class="lineNum">     182 </span>            :                                 case SubscriptionDropReason.Unknown:
+<span class="lineNum">     183 </span>            :                                 default:
+<span class="lineNum">     184 </span>            :                                         reasonText = &quot;Unknown&quot;;
+<span class="lineNum">     185 </span>            :                                         break;
+<span class="lineNum">     186 </span>            :                         }
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span>            :                         return reasonText;
+<span class="lineNum">     189 </span>            :                 }
+<span class="lineNum">     190 </span>            :         }
+<span class="lineNum">     191 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

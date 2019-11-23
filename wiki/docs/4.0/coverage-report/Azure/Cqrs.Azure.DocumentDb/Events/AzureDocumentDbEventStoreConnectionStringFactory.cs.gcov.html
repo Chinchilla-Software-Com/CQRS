@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.DocumentDb/Events/AzureDocumentDbEventStoreConnectionStringFactory.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.DocumentDb/Events</a> - AzureDocumentDbEventStoreConnectionStringFactory.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-23 19:54:52</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      11 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      12 </span>            : using Cqrs.Events;
+<span class="lineNum">      13 </span>            : using Microsoft.Azure.Documents.Client;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : namespace Cqrs.Azure.DocumentDb.Events
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// A factory for getting connections and database names for &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; access.
+<span class="lineNum">      19 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      20 </span>            :         public class AzureDocumentDbEventStoreConnectionStringFactory
+<span class="lineNum">      21 </span>            :                 : IAzureDocumentDbEventStoreConnectionStringFactory
+<span class="lineNum">      22 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      23 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      24 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ILogger&quot;/&gt;.
+<span class="lineNum">      25 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      26 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      31 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      34 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureDocumentDbEventStoreConnectionStringFactory&quot;/&gt;.
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span><span class="lineCov">          1 :                 public AzureDocumentDbEventStoreConnectionStringFactory(ILogger logger, IConfigurationManager configurationManager)</span>
+<span class="lineNum">      37 </span>            :                 {
+<span class="lineNum">      38 </span>            :                         Logger = logger;
+<span class="lineNum">      39 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      40 </span>            :                 }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      43 </span>            :                 /// Gets the current &lt;see cref=&quot;DocumentClient&quot;/&gt;.
+<span class="lineNum">      44 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      45 </span><span class="lineCov">          1 :                 public virtual DocumentClient GetEventStoreConnectionClient()</span>
+<span class="lineNum">      46 </span>            :                 {
+<span class="lineNum">      47 </span>            :                         Logger.LogDebug(&quot;Getting Azure document client&quot;, &quot;AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient&quot;);
+<span class="lineNum">      48 </span>            :                         try
+<span class="lineNum">      49 </span>            :                         {
+<span class="lineNum">      50 </span>            :                                 return new DocumentClient(GetEventStoreConnectionUrl(), GetEventStoreConnectionAuthorisationKey());
+<span class="lineNum">      51 </span>            :                         }
+<span class="lineNum">      52 </span>            :                         finally
+<span class="lineNum">      53 </span>            :                         {
+<span class="lineNum">      54 </span>            :                                 Logger.LogDebug(&quot;Getting Azure document client... Done&quot;, &quot;AzureDocumentDbEventStoreConnectionStringFactory\\GetEventStoreConnectionClient&quot;);
+<span class="lineNum">      55 </span>            :                         }
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      59 </span>            :                 /// Gets the current database name.
+<span class="lineNum">      60 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      61 </span><span class="lineCov">          1 :                 public virtual string GetEventStoreConnectionDatabaseName()</span>
+<span class="lineNum">      62 </span>            :                 {
+<span class="lineNum">      63 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.DatabaseName&quot;) ?? ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.LogStreamName&quot;) ?? &quot;CqrsEventStore&quot;;
+<span class="lineNum">      64 </span>            :                 }
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      67 </span>            :                 /// Gets the current collection name.
+<span class="lineNum">      68 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      69 </span><span class="lineCov">          1 :                 public string GetEventStoreConnectionCollectionName()</span>
+<span class="lineNum">      70 </span>            :                 {
+<span class="lineNum">      71 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.CollectionName&quot;) ?? &quot;CqrsEventStore&quot;;
+<span class="lineNum">      72 </span>            :                 }
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      75 </span>            :                 /// Gets the current connection &lt;see cref=&quot;Uri&quot;/&gt; from the &lt;see cref=&quot;ConfigurationManager&quot;/&gt;.
+<span class="lineNum">      76 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      77 </span><span class="lineCov">          1 :                 protected virtual Uri GetEventStoreConnectionUrl()</span>
+<span class="lineNum">      78 </span>            :                 {
+<span class="lineNum">      79 </span>            :                         return new Uri(ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.Url&quot;));
+<span class="lineNum">      80 </span>            :                 }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      83 </span>            :                 /// Gets the current connection authorisation key from the &lt;see cref=&quot;ConfigurationManager&quot;/&gt;.
+<span class="lineNum">      84 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      85 </span><span class="lineCov">          1 :                 protected virtual string GetEventStoreConnectionAuthorisationKey()</span>
+<span class="lineNum">      86 </span>            :                 {
+<span class="lineNum">      87 </span>            :                         return ConfigurationManager.GetSetting(&quot;Cqrs.EventStore.Azure.DocumentDb.AuthorisationKey&quot;);
+<span class="lineNum">      88 </span>            :                 }
+<span class="lineNum">      89 </span>            :         }
+<span class="lineNum">      90 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
