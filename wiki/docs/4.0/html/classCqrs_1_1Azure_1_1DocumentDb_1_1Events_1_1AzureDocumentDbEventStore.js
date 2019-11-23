@@ -1,10 +1,10 @@
 var classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore =
 [
     [ "AzureDocumentDbEventStore", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a0bbf294600f2dcebfcca28143aacd430.html#a0bbf294600f2dcebfcca28143aacd430", null ],
-    [ "Get", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a54f298fdde141166e23f01e4911bf188.html#a54f298fdde141166e23f01e4911bf188", null ],
     [ "Get", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_ac59ce599b768ce047869b8ac135f4e22.html#ac59ce599b768ce047869b8ac135f4e22", null ],
-    [ "GetAsync", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a8b481bf0b0f6b50184441965630f5443.html#a8b481bf0b0f6b50184441965630f5443", null ],
+    [ "Get", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a54f298fdde141166e23f01e4911bf188.html#a54f298fdde141166e23f01e4911bf188", null ],
     [ "GetAsync", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_ae44ea4b68f4794022b685bc380abbd04.html#ae44ea4b68f4794022b685bc380abbd04", null ],
+    [ "GetAsync", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a8b481bf0b0f6b50184441965630f5443.html#a8b481bf0b0f6b50184441965630f5443", null ],
     [ "GetAsync< T >", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a2845015d6fda0d9e79b77b82d9452a4d.html#a2845015d6fda0d9e79b77b82d9452a4d", null ],
     [ "GetBetweenDates", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_aae5f14188f0486b70dc9cdb577b15e1c.html#aae5f14188f0486b70dc9cdb577b15e1c", null ],
     [ "GetBetweenDatesAsync", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a79c4e82a86c78b074263ec65e4213a21.html#a79c4e82a86c78b074263ec65e4213a21", null ],

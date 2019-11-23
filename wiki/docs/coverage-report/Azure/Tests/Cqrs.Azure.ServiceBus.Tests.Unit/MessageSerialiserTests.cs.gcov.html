@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit/MessageSerialiserTests.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Azure/Tests/Cqrs.Azure.ServiceBus.Tests.Unit</a> - MessageSerialiserTests.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-24 00:33:17</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using Cqrs.Commands;
+<span class="lineNum">      11 </span>            : using Cqrs.Events;
+<span class="lineNum">      12 </span>            : using NUnit.Framework;
+<span class="lineNum">      13 </span>            : using TestClass = NUnit.Framework.TestFixtureAttribute;
+<span class="lineNum">      14 </span>            : using TestMethod = NUnit.Framework.TestAttribute;
+<span class="lineNum">      15 </span>            : using TestInitialize = NUnit.Framework.SetUpAttribute;
+<span class="lineNum">      16 </span>            : using TestCleanup = NUnit.Framework.TearDownAttribute;
+<span class="lineNum">      17 </span>            : using TestContext = System.Object;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : namespace Cqrs.Azure.ServiceBus.Tests.Unit
+<span class="lineNum">      20 </span>            : {
+<span class="lineNum">      21 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :         /// A series of tests on the &lt;see cref=&quot;MessageSerialiser{TAuthenticationToken}&quot;/&gt; class
+<span class="lineNum">      23 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :         [TestClass]
+<span class="lineNum">      25 </span>            :         public class MessageSerialiserTests
+<span class="lineNum">      26 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      27 </span>            :                 private const string GoodEventData = &quot;{\&quot;$id\&quot;:\&quot;1\&quot;,\&quot;$type\&quot;:\&quot;Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent, Cqrs.Azure.ServiceBus.Tests.Unit\&quot;,\&quot;Id\&quot;:\&quot;a3008122-b365-45ef-86ec-865df098b886\&quot;}&quot;;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 private const string GoodCommandData = &quot;{\&quot;$id\&quot;:\&quot;1\&quot;,\&quot;$type\&quot;:\&quot;Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand, Cqrs.Azure.ServiceBus.Tests.Unit\&quot;,\&quot;Id\&quot;:\&quot;17c0585b-3b24-4865-9afc-5fa97e36606a\&quot;}&quot;;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Tests the &lt;see cref=&quot;MessageSerialiser{TAuthenticationToken}.SerialiseEvent{TEvent}&quot;/&gt; method
+<span class="lineNum">      33 </span>            :                 /// Passing a valid test &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      34 </span>            :                 /// Expecting the serialised data is as expected.
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span>            :                 [TestMethod]
+<span class="lineNum">      37 </span><span class="lineCov">          1 :                 public void SerialiseEvent_TestEvent_ExpectedSerialisedData()</span>
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            :                         // Arrange
+<span class="lineNum">      40 </span>            :                         var eventSerialiser = new MessageSerialiser&lt;Guid&gt;();
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                         // Act
+<span class="lineNum">      43 </span>            :                         string data = eventSerialiser.SerialiseEvent(new TestEvent { Id = new Guid(&quot;a3008122-b365-45ef-86ec-865df098b886&quot;) });
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                         // Assert
+<span class="lineNum">      46 </span>            :                         Assert.AreEqual(GoodEventData, data);
+<span class="lineNum">      47 </span>            :                 }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Tests the &lt;see cref=&quot;MessageSerialiser{TAuthenticationToken}.DeserialiseEvent&quot;/&gt; method
+<span class="lineNum">      51 </span>            :                 /// Passing a valid test string of JSON
+<span class="lineNum">      52 </span>            :                 /// Expecting the data deserialised to the expected &lt;see cref=&quot;Type&quot;/&gt;.
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span>            :                 [TestMethod]
+<span class="lineNum">      55 </span><span class="lineCov">          1 :                 public void DeserialiseEvent_TestEventData_ExpectedEvent()</span>
+<span class="lineNum">      56 </span>            :                 {
+<span class="lineNum">      57 </span>            :                         // Arrange
+<span class="lineNum">      58 </span>            :                         var eventSerialiser = new MessageSerialiser&lt;Guid&gt;();
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                         // Act
+<span class="lineNum">      61 </span>            :                         IEvent&lt;Guid&gt; @event = eventSerialiser.DeserialiseEvent(GoodEventData);
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                         // Assert
+<span class="lineNum">      64 </span>            :                         Assert.AreEqual(&quot;Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent&quot;, @event.GetType().FullName);
+<span class="lineNum">      65 </span>            :                 }
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      68 </span>            :                 /// Tests the &lt;see cref=&quot;MessageSerialiser{TAuthenticationToken}.SerialiseCommand{TEvent}&quot;/&gt; method
+<span class="lineNum">      69 </span>            :                 /// Passing a valid test &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      70 </span>            :                 /// Expecting the serialised data is as expected.
+<span class="lineNum">      71 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      72 </span>            :                 [TestMethod]
+<span class="lineNum">      73 </span><span class="lineCov">          1 :                 public void SerialiseCommand_TestCommand_ExpectedSerialisedData()</span>
+<span class="lineNum">      74 </span>            :                 {
+<span class="lineNum">      75 </span>            :                         // Arrange
+<span class="lineNum">      76 </span>            :                         var command = new MessageSerialiser&lt;Guid&gt;();
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                         // Act
+<span class="lineNum">      79 </span>            :                         string data = command.SerialiseCommand(new TestCommand { Id = new Guid(&quot;17c0585b-3b24-4865-9afc-5fa97e36606a&quot;) });
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :                         // Assert
+<span class="lineNum">      82 </span>            :                         Assert.AreEqual(GoodCommandData, data);
+<span class="lineNum">      83 </span>            :                 }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      86 </span>            :                 /// Tests the &lt;see cref=&quot;MessageSerialiser{TAuthenticationToken}.DeserialiseCommand&quot;/&gt; method
+<span class="lineNum">      87 </span>            :                 /// Passing a valid test string of JSON
+<span class="lineNum">      88 </span>            :                 /// Expecting the data deserialised to the expected &lt;see cref=&quot;Type&quot;/&gt;.
+<span class="lineNum">      89 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      90 </span>            :                 [TestMethod]
+<span class="lineNum">      91 </span><span class="lineCov">          1 :                 public void DeserialiseCommand_TestCommandData_ExpectedCommand()</span>
+<span class="lineNum">      92 </span>            :                 {
+<span class="lineNum">      93 </span>            :                         // Arrange
+<span class="lineNum">      94 </span>            :                         var commandSerialiser = new MessageSerialiser&lt;Guid&gt;();
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :                         // Act
+<span class="lineNum">      97 </span>            :                         ICommand&lt;Guid&gt; command = commandSerialiser.DeserialiseCommand(GoodCommandData);
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            :                         // Assert
+<span class="lineNum">     100 </span>            :                         Assert.AreEqual(&quot;Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand&quot;, command.GetType().FullName);
+<span class="lineNum">     101 </span>            :                 }
+<span class="lineNum">     102 </span>            :         }
+<span class="lineNum">     103 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

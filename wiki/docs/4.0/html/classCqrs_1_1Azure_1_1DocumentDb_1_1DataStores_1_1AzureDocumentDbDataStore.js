@@ -1,8 +1,8 @@
 var classCqrs_1_1Azure_1_1DocumentDb_1_1DataStores_1_1AzureDocumentDbDataStore =
 [
     [ "AzureDocumentDbDataStore", "classCqrs_1_1Azure_1_1DocumentDb_1_1DataStores_1_1AzureDocumentDbDataStore_add3f66df634a9e9ca0cbd4498e4478f6.html#add3f66df634a9e9ca0cbd4498e4478f6", null ],
-    [ "Add", "classCqrs_1_1Azure_1_1DocumentDb_1_1DataStores_1_1AzureDocumentDbDataStore_ad17e6e846430e617af24be48b77d1528.html#ad17e6e846430e617af24be48b77d1528", null ],
     [ "Add", "classCqrs_1_1Azure_1_1DocumentDb_1_1DataStores_1_1AzureDocumentDbDataStore_a2d91050f17273687e44a121623803e7a.html#a2d91050f17273687e44a121623803e7a", null ],
+    [ "Add", "classCqrs_1_1Azure_1_1DocumentDb_1_1DataStores_1_1AzureDocumentDbDataStore_ad17e6e846430e617af24be48b77d1528.html#ad17e6e846430e617af24be48b77d1528", null ],
     [ "AsEnumerable", "classCqrs_1_1Azure_1_1DocumentDb_1_1DataStores_1_1AzureDocumentDbDataStore_acbe24a7d0def44ca4826bbf5658a6054.html#acbe24a7d0def44ca4826bbf5658a6054", null ],
     [ "Destroy", "classCqrs_1_1Azure_1_1DocumentDb_1_1DataStores_1_1AzureDocumentDbDataStore_affe39fe57e590555256258fa6c568c29.html#affe39fe57e590555256258fa6c568c29", null ],
     [ "Dispose", "classCqrs_1_1Azure_1_1DocumentDb_1_1DataStores_1_1AzureDocumentDbDataStore_ade945ac02451a490711367dbe54d4132.html#ade945ac02451a490711367dbe54d4132", null ],

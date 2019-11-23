@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
   <compounddef id="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository" kind="interface" language="C#" prot="public">
     <compoundname>Cqrs::Akka::Domain::IAkkaAggregateRepository</compoundname>
     <basecompoundref refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository" prot="public" virt="non-virtual">Cqrs::Domain::IAggregateRepository&lt; TAuthenticationToken &gt;</basecompoundref>
@@ -32,14 +32,16 @@
           <defval>true</defval>
         </param>
         <briefdescription>
-<para>If <emphasis>events</emphasis>  is null, loads the events from IEventStore&lt;TAuthenticationToken&gt;, checks for duplicates and then rehydrates the <emphasis>aggregate</emphasis>  with the events. </para>        </briefdescription>
+<para>If <emphasis>events</emphasis>  is null, loads the events from IEventStore&lt;TAuthenticationToken&gt;, checks for duplicates and then rehydrates the <emphasis>aggregate</emphasis>  with the events. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>TAggregateRoot</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The Type of IAggregateRoot&lt;TAuthenticationToken&gt;.</para></parameterdescription>
+<para>The Type of IAggregateRoot&lt;TAuthenticationToken&gt;.</para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
 <parameterlist kind="param"><parameteritem>
@@ -47,80 +49,87 @@
 <parametername>aggregate</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The <emphasis>TAggregateRoot</emphasis>  to rehydrate.</para></parameterdescription>
+<para>The <emphasis>TAggregateRoot</emphasis>  to rehydrate.</para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>events</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>A collection of IEvent&lt;TAuthenticationToken&gt; to replay on the retrieved IAggregateRoot&lt;TAuthenticationToken&gt;. If null, the IEventStore&lt;TAuthenticationToken&gt; will be used to retrieve a list of IEvent&lt;TAuthenticationToken&gt; for you. </para></parameterdescription>
+<para>A collection of IEvent&lt;TAuthenticationToken&gt; to replay on the retrieved IAggregateRoot&lt;TAuthenticationToken&gt;. If null, the IEventStore&lt;TAuthenticationToken&gt; will be used to retrieve a list of IEvent&lt;TAuthenticationToken&gt; for you. </para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>throwExceptionOnNoEvents</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>If true will throw an instance of AggregateNotFoundException&lt;TAggregateRoot,TAuthenticationToken&gt; if no aggregate events or provided or found in the IEventStore&lt;TAuthenticationToken&gt;.</para></parameterdescription>
+<para>If true will throw an instance of AggregateNotFoundException&lt;TAggregateRoot,TAuthenticationToken&gt; if no aggregate events or provided or found in the IEventStore&lt;TAuthenticationToken&gt;.</para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
         <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaAggregateRepository.cs" line="34" column="1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
-<para>A AggregateRepository&lt;TAuthenticationToken&gt; that is safe to use within Akka.NET </para>    </briefdescription>
+<para>A AggregateRepository&lt;TAuthenticationToken&gt; that is safe to use within Akka.NET </para>
+    </briefdescription>
     <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>TAuthenticationToken</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The Type of authentication token.</para></parameterdescription>
+<para>The Type of authentication token.</para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>    </detaileddescription>
+</para>
+    </detaileddescription>
     <inheritancegraph>
-      <node id="116">
+      <node id="3">
         <label>Cqrs::Akka::Domain::AkkaAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository"/>
-        <childnode refid="114" relation="public-inheritance">
+        <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="117">
+      <node id="4">
         <label>Cqrs::Akka::Domain::IAkkaSnapshotAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSnapshotAggregateRepository"/>
-        <childnode refid="114" relation="public-inheritance">
+        <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="115">
+      <node id="2">
         <label>IAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository"/>
       </node>
-      <node id="118">
+      <node id="5">
         <label>Cqrs::Akka::Snapshots::AkkaSnapshotRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository"/>
-        <childnode refid="117" relation="public-inheritance">
+        <childnode refid="4" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="114">
+      <node id="1">
         <label>Cqrs.Akka.Domain.IAkkaAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository"/>
-        <childnode refid="115" relation="public-inheritance">
+        <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="120">
+      <node id="2">
         <label>IAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository"/>
       </node>
-      <node id="119">
+      <node id="1">
         <label>Cqrs.Akka.Domain.IAkkaAggregateRepository&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository"/>
-        <childnode refid="120" relation="public-inheritance">
+        <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>

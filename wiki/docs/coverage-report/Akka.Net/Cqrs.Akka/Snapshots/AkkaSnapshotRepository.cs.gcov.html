@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Akka.Net/Cqrs.Akka/Snapshots/AkkaSnapshotRepository.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Akka.Net/Cqrs.Akka/Snapshots</a> - AkkaSnapshotRepository.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-24 00:33:17</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using Cqrs.Akka.Domain;
+<span class="lineNum">      13 </span>            : using Cqrs.Domain;
+<span class="lineNum">      14 </span>            : using Cqrs.Domain.Exceptions;
+<span class="lineNum">      15 </span>            : using Cqrs.Domain.Factories;
+<span class="lineNum">      16 </span>            : using Cqrs.Events;
+<span class="lineNum">      17 </span>            : using Cqrs.Infrastructure;
+<span class="lineNum">      18 </span>            : using Cqrs.Snapshots;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : namespace Cqrs.Akka.Snapshots
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :         /// Provides basic repository methods for operations with instances of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      24 </span>            :         /// utilising &lt;see cref=&quot;Snapshot&quot;&gt;snapshots&lt;/see&gt; for optimised rehydration.
+<span class="lineNum">      25 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      26 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      27 </span>            :         public class AkkaSnapshotRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      28 </span>            :                 : IAkkaSnapshotAggregateRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      29 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ISnapshotStore&quot;/&gt;.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span>            :                 protected ISnapshotStore SnapshotStore { get; private set; }
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      36 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ISnapshotStrategy{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      37 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      38 </span>            :                 protected ISnapshotStrategy&lt;TAuthenticationToken&gt; SnapshotStrategy { get; private set; }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      41 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span>            :                 protected IAggregateRepository&lt;TAuthenticationToken&gt; Repository { get; private set; }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span>            :                 protected IEventStore&lt;TAuthenticationToken&gt; EventStore { get; private set; }
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      51 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAggregateFactory&quot;/&gt;.
+<span class="lineNum">      52 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      53 </span>            :                 protected IAggregateFactory AggregateFactory { get; private set; }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      56 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;SnapshotRepository{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      57 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      58 </span><span class="lineCov">          1 :                 public AkkaSnapshotRepository(ISnapshotStore snapshotStore, ISnapshotStrategy&lt;TAuthenticationToken&gt; snapshotStrategy, IAggregateRepository&lt;TAuthenticationToken&gt; repository, IEventStore&lt;TAuthenticationToken&gt; eventStore, IAggregateFactory aggregateFactory)</span>
+<span class="lineNum">      59 </span>            :                 {
+<span class="lineNum">      60 </span>            :                         SnapshotStore = snapshotStore;
+<span class="lineNum">      61 </span>            :                         SnapshotStrategy = snapshotStrategy;
+<span class="lineNum">      62 </span>            :                         Repository = repository;
+<span class="lineNum">      63 </span>            :                         EventStore = eventStore;
+<span class="lineNum">      64 </span>            :                         AggregateFactory = aggregateFactory;
+<span class="lineNum">      65 </span>            :                 }
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      68 </span>            :                 /// Calls &lt;see cref=&quot;TryMakeSnapshot&quot;/&gt; then &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}.Save{TAggregateRoot}&quot;/&gt; on &lt;see cref=&quot;Repository&quot;/&gt;.
+<span class="lineNum">      69 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      70 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      71 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to save and persist.&lt;/param&gt;
+<span class="lineNum">      72 </span>            :                 /// &lt;param name=&quot;expectedVersion&quot;&gt;The version number the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; is expected to be at.&lt;/param&gt;
+<span class="lineNum">      73 </span><span class="lineCov">          1 :                 public void Save&lt;TAggregateRoot&gt;(TAggregateRoot aggregate, int? expectedVersion = null)</span>
+<span class="lineNum">      74 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">      75 </span>            :                 {
+<span class="lineNum">      76 </span>            :                         // We need to grab these first as the changes will have been commitedd already by the time we go to make the snapshot.
+<span class="lineNum">      77 </span>            :                         IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; uncommittedChanges = aggregate.GetUncommittedChanges();
+<span class="lineNum">      78 </span>            :                         // Save the evets first then snapshot the system.
+<span class="lineNum">      79 </span>            :                         Repository.Save(aggregate, expectedVersion);
+<span class="lineNum">      80 </span>            :                         TryMakeSnapshot(aggregate, uncommittedChanges);
+<span class="lineNum">      81 </span>            :                 }
+<span class="lineNum">      82 </span>            : 
+<span class="lineNum">      83 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      84 </span>            :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt;,
+<span class="lineNum">      85 </span>            :                 /// First using &lt;see cref=&quot;TryRestoreAggregateFromSnapshot{TAggregateRoot}&quot;/&gt;, otherwise via &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}.Get{TAggregateRoot}&quot;/&gt; on &lt;see cref=&quot;Repository&quot;/&gt;
+<span class="lineNum">      86 </span>            :                 /// Then does rehydration.
+<span class="lineNum">      87 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      88 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      89 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">      90 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">      91 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      92 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">      93 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">      94 </span><span class="lineCov">          1 :                 public TAggregateRoot Get&lt;TAggregateRoot&gt;(Guid aggregateId, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
+<span class="lineNum">      95 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">      96 </span>            :                 {
+<span class="lineNum">      97 </span>            :                         var aggregate = AggregateFactory.Create&lt;TAggregateRoot&gt;();
+<span class="lineNum">      98 </span>            :                         int snapshotVersion = TryRestoreAggregateFromSnapshot(aggregateId, aggregate);
+<span class="lineNum">      99 </span>            :                         if (snapshotVersion == -1)
+<span class="lineNum">     100 </span>            :                         {
+<span class="lineNum">     101 </span>            :                                 return Repository.Get&lt;TAggregateRoot&gt;(aggregateId);
+<span class="lineNum">     102 </span>            :                         }
+<span class="lineNum">     103 </span>            :                         IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; theseEvents = events ?? EventStore.Get&lt;TAggregateRoot&gt;(aggregateId, false, snapshotVersion).Where(desc =&gt; desc.Version &gt; snapshotVersion);
+<span class="lineNum">     104 </span>            :                         aggregate.LoadFromHistory(theseEvents);
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :                         return aggregate;
+<span class="lineNum">     107 </span>            :                 }
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     110 </span>            :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">     111 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     112 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     113 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">     114 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">     115 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     116 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     117 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     118 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     119 </span><span class="lineCov">          1 :                 public TAggregateRoot GetToVersion&lt;TAggregateRoot&gt;(Guid aggregateId, int version, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
+<span class="lineNum">     120 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     121 </span>            :                 {
+<span class="lineNum">     122 </span>            :                         throw new InvalidOperationException(&quot;Verion replay is not appriopriate with snapshots.&quot;);
+<span class="lineNum">     123 </span>            :                 }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     126 </span>            :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">     127 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     128 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     129 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">     130 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     131 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     132 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     133 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     134 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     135 </span><span class="lineCov">          1 :                 public TAggregateRoot GetToDate&lt;TAggregateRoot&gt;(Guid aggregateId, DateTime versionedDate, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
+<span class="lineNum">     136 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     137 </span>            :                 {
+<span class="lineNum">     138 </span>            :                         throw new InvalidOperationException(&quot;Verion replay is not appriopriate with snapshots.&quot;);
+<span class="lineNum">     139 </span>            :                 }
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     142 </span>            :                 /// Calls &lt;see cref=&quot;ISnapshotStrategy{TAuthenticationToken}.IsSnapshotable&quot;/&gt; on &lt;see cref=&quot;SnapshotStrategy&quot;/&gt;
+<span class="lineNum">     143 </span>            :                 /// If the &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; is snapshot-able &lt;see cref=&quot;ISnapshotStore.Get{TAggregateRoot}&quot;/&gt; is called on &lt;see cref=&quot;SnapshotStore&quot;/&gt;.
+<span class="lineNum">     144 </span>            :                 /// The Restore method is then called on
+<span class="lineNum">     145 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     146 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     147 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to restore, since the &lt;paramref name=&quot;aggregate&quot;/&gt; may be completely uninitialised.&lt;/param&gt;
+<span class="lineNum">     148 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     149 </span>            :                 /// &lt;returns&gt;-1 if no restoration was made, otherwise version number the &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; was rehydrated to.&lt;/returns&gt;
+<span class="lineNum">     150 </span>            :                 /// &lt;remarks&gt;There may be more events after the snapshot that still need to rehydrated into the &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; after restoration.&lt;/remarks&gt;
+<span class="lineNum">     151 </span><span class="lineCov">          1 :                 protected virtual int TryRestoreAggregateFromSnapshot&lt;TAggregateRoot&gt;(Guid id, TAggregateRoot aggregate)</span>
+<span class="lineNum">     152 </span>            :                 {
+<span class="lineNum">     153 </span>            :                         int version = -1;
+<span class="lineNum">     154 </span>            :                         if (SnapshotStrategy.IsSnapshotable(aggregate.GetType()))
+<span class="lineNum">     155 </span>            :                         {
+<span class="lineNum">     156 </span>            :                                 Snapshot snapshot = SnapshotStore.Get(aggregate.GetType(), id);
+<span class="lineNum">     157 </span>            :                                 if (snapshot != null)
+<span class="lineNum">     158 </span>            :                                 {
+<span class="lineNum">     159 </span>            :                                         aggregate.AsDynamic().Restore(snapshot);
+<span class="lineNum">     160 </span>            :                                         version = snapshot.Version;
+<span class="lineNum">     161 </span>            :                                 }
+<span class="lineNum">     162 </span>            :                         }
+<span class="lineNum">     163 </span>            :                         return version;
+<span class="lineNum">     164 </span>            :                 }
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     167 </span>            :                 /// Calls &lt;see cref=&quot;ISnapshotStrategy{TAuthenticationToken}.ShouldMakeSnapShot&quot;/&gt; on &lt;see cref=&quot;SnapshotStrategy&quot;/&gt;
+<span class="lineNum">     168 </span>            :                 /// If the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; is snapshot-able &lt;see cref=&quot;SnapshotAggregateRoot{TAuthenticationToken,TSnapshot}.GetSnapshot&quot;/&gt; is called
+<span class="lineNum">     169 </span>            :                 /// The &lt;see cref=&quot;Snapshot.Version&quot;/&gt; is calculated, finally &lt;see cref=&quot;ISnapshotStore.Save&quot;/&gt; is called on &lt;see cref=&quot;SnapshotStore&quot;/&gt;.
+<span class="lineNum">     170 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     171 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to try and snapshot.&lt;/param&gt;
+<span class="lineNum">     172 </span>            :                 /// &lt;param name=&quot;uncommittedChanges&quot;&gt;A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.&lt;/param&gt;
+<span class="lineNum">     173 </span><span class="lineCov">          1 :                 protected virtual void TryMakeSnapshot(IAggregateRoot&lt;TAuthenticationToken&gt; aggregate, IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; uncommittedChanges)</span>
+<span class="lineNum">     174 </span>            :                 {
+<span class="lineNum">     175 </span>            :                         if (!SnapshotStrategy.ShouldMakeSnapShot(aggregate, uncommittedChanges))
+<span class="lineNum">     176 </span>            :                                 return;
+<span class="lineNum">     177 </span>            :                         dynamic snapshot = aggregate.AsDynamic().GetSnapshot().RealObject;
+<span class="lineNum">     178 </span>            :                         var rsnapshot = snapshot as Snapshot;
+<span class="lineNum">     179 </span>            :                         if (rsnapshot != null)
+<span class="lineNum">     180 </span>            :                         {
+<span class="lineNum">     181 </span>            :                                 rsnapshot.Version = aggregate.Version;
+<span class="lineNum">     182 </span>            :                                 SnapshotStore.Save(rsnapshot);
+<span class="lineNum">     183 </span>            :                         }
+<span class="lineNum">     184 </span>            :                         else
+<span class="lineNum">     185 </span>            :                         {
+<span class="lineNum">     186 </span>            :                                 snapshot.Version = aggregate.Version;
+<span class="lineNum">     187 </span>            :                                 SnapshotStore.Save(snapshot);
+<span class="lineNum">     188 </span>            :                         }
+<span class="lineNum">     189 </span>            :                 }
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            :                 #region Implementation of IAkkaAggregateRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     194 </span>            :                 /// If &lt;paramref name=&quot;events&quot;/&gt; is null, loads the events from &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt;, checks for duplicates and then
+<span class="lineNum">     195 </span>            :                 /// rehydrates the &lt;paramref name=&quot;aggregate&quot;/&gt; with the events.
+<span class="lineNum">     196 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     197 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     198 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; to rehydrate.&lt;/param&gt;
+<span class="lineNum">     199 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     200 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     201 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     202 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     203 </span>            :                 /// &lt;param name=&quot;throwExceptionOnNoEvents&quot;&gt;If true will throw an instance of &lt;see cref=&quot;AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}&quot;/&gt; if no aggregate events or provided or found in the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     204 </span><span class="lineCov">          1 :                 public void LoadAggregateHistory&lt;TAggregateRoot&gt;(TAggregateRoot aggregate, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null, bool throwExceptionOnNoEvents = true)</span>
+<span class="lineNum">     205 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     206 </span>            :                 {
+<span class="lineNum">     207 </span>            :                         int snapshotVersion = TryRestoreAggregateFromSnapshot(aggregate.Id, aggregate);
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span>            :                         IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; theseEvents = events ?? EventStore.Get(aggregate.GetType(), aggregate.Id, false, snapshotVersion).Where(desc =&gt; desc.Version &gt; snapshotVersion);
+<span class="lineNum">     210 </span>            :                         aggregate.LoadFromHistory(theseEvents);
+<span class="lineNum">     211 </span>            :                 }
+<span class="lineNum">     212 </span>            : 
+<span class="lineNum">     213 </span>            :                 #endregion
+<span class="lineNum">     214 </span>            :         }
+<span class="lineNum">     215 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,10 +1,10 @@
 var classCqrs_1_1Events_1_1EventStore =
 [
     [ "EventStore", "classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8.html#a6346cb2aea4c5b4e740dc6cfb15abab8", null ],
-    [ "GenerateStreamName", "classCqrs_1_1Events_1_1EventStore_a03df06d4ce9c6d16201c079f2de0a7f3.html#a03df06d4ce9c6d16201c079f2de0a7f3", null ],
     [ "GenerateStreamName", "classCqrs_1_1Events_1_1EventStore_aba61739e47fdd0f7fce656f896cbe908.html#aba61739e47fdd0f7fce656f896cbe908", null ],
-    [ "Get", "classCqrs_1_1Events_1_1EventStore_aa1d0d399a35c1e3b0759e27202695d8b.html#aa1d0d399a35c1e3b0759e27202695d8b", null ],
+    [ "GenerateStreamName", "classCqrs_1_1Events_1_1EventStore_a03df06d4ce9c6d16201c079f2de0a7f3.html#a03df06d4ce9c6d16201c079f2de0a7f3", null ],
     [ "Get", "classCqrs_1_1Events_1_1EventStore_a0096646f5dff730b0041b9469719c420.html#a0096646f5dff730b0041b9469719c420", null ],
+    [ "Get", "classCqrs_1_1Events_1_1EventStore_aa1d0d399a35c1e3b0759e27202695d8b.html#aa1d0d399a35c1e3b0759e27202695d8b", null ],
     [ "Get< T >", "classCqrs_1_1Events_1_1EventStore_aa6ffed5d7dd365600669149da29f9e89.html#aa6ffed5d7dd365600669149da29f9e89", null ],
     [ "GetBetweenDates", "classCqrs_1_1Events_1_1EventStore_add415731fcea6a9367e1031c4608c922.html#add415731fcea6a9367e1031c4608c922", null ],
     [ "GetBetweenDates< T >", "classCqrs_1_1Events_1_1EventStore_a273b6bf609a82564fda68380d381209e.html#a273b6bf609a82564fda68380d381209e", null ],

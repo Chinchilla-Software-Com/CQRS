@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Ninject/Azure/Cqrs.Ninject.Azure.WebJobs/CqrsWebJobProgram.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Ninject/Azure/Cqrs.Ninject.Azure.WebJobs</a> - CqrsWebJobProgram.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-24 00:33:17</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      11 </span>            : using Cqrs.Hosts;
+<span class="lineNum">      12 </span>            : using Cqrs.Ninject.Azure.WebJobs;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            : /// Starts the WebJob.
+<span class="lineNum">      16 </span>            : /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            : /// &lt;example&gt;
+<span class="lineNum">      18 </span>            : /// public class MyProgram : CqrsWebJobProgram
+<span class="lineNum">      19 </span>            : /// {
+<span class="lineNum">      20 </span>            : ///             public static void Main()
+<span class="lineNum">      21 </span>            : ///             {
+<span class="lineNum">      22 </span>            : ///                     new MyProgram().Go();
+<span class="lineNum">      23 </span>            : ///             }
+<span class="lineNum">      24 </span>            : /// }
+<span class="lineNum">      25 </span>            : /// &lt;/example&gt;
+<span class="lineNum">      26 </span>            : public class CqrsWebJobProgram : CqrsNinjectJobHost&lt;Guid, DefaultAuthenticationTokenHelper&gt;
+<span class="lineNum">      27 </span><span class="lineCov">          1 : {</span>
+<span class="lineNum">      28 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :         /// Instantiate a new instance of &lt;see cref=&quot;CqrsWebJobProgram&quot;/&gt;
+<span class="lineNum">      30 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      31 </span><span class="lineCov">          1 :         public CqrsWebJobProgram()</span>
+<span class="lineNum">      32 </span>            :         {
+<span class="lineNum">      33 </span>            :                 HandlerTypes = GetCommandOrEventTypes();
+<span class="lineNum">      34 </span>            :         }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :         /// &lt;remarks&gt;
+<span class="lineNum">      37 </span>            :         /// Please set the following connection strings in app.config for this WebJob to run:
+<span class="lineNum">      38 </span>            :         /// AzureWebJobsDashboard and AzureWebJobsStorage
+<span class="lineNum">      39 </span>            :         /// Better yet, add them to your Azure portal so they can be changed at runtime without re-deploying or re-compiling.
+<span class="lineNum">      40 </span>            :         /// &lt;/remarks&gt;
+<span class="lineNum">      41 </span><span class="lineCov">          1 :         public virtual void Go()</span>
+<span class="lineNum">      42 </span>            :         {
+<span class="lineNum">      43 </span>            :                 CoreHost = this;
+<span class="lineNum">      44 </span>            :                 StartHost();
+<span class="lineNum">      45 </span>            :         }
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      48 </span>            :         /// Add JUST ONE command and/or event handler here from each assembly you want automatically scanned.
+<span class="lineNum">      49 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      50 </span><span class="lineCov">          1 :         protected virtual Type[] GetCommandOrEventTypes()</span>
+<span class="lineNum">      51 </span>            :         {
+<span class="lineNum">      52 </span>            :                 return new Type[] { };
+<span class="lineNum">      53 </span>            :         }
+<span class="lineNum">      54 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

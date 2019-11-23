@@ -967,6 +967,7 @@ var hierarchy =
       [ "Cqrs.MongoDB.Serialisers.BasicStructSerialiser< TStruct >", "classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser.html", null ]
     ] ],
     [ "System.Linq.AzureDocumentDbDataStoreExtensions", "classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions.html", null ],
+    [ "System::Web::Helpers::Resources::HelpersResources", "classSystem_1_1Web_1_1Helpers_1_1Resources_1_1HelpersResources.html", null ],
     [ "TableEntity", null, [
       [ "Cqrs.Azure.BlobStorage.TableEntity< TData >", "classCqrs_1_1Azure_1_1BlobStorage_1_1TableEntity.html", null ]
     ] ],

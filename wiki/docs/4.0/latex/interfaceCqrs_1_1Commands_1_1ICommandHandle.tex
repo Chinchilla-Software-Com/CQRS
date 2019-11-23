@@ -1,5 +1,5 @@
-\hypertarget{interfaceCqrs_1_1Commands_1_1ICommandHandle}{}\section{Cqrs.\+Commands.\+I\+Command\+Handle Interface Reference}
-\label{interfaceCqrs_1_1Commands_1_1ICommandHandle}\index{Cqrs.\+Commands.\+I\+Command\+Handle@{Cqrs.\+Commands.\+I\+Command\+Handle}}
+\hypertarget{interfaceCqrs_1_1Commands_1_1ICommandHandle}{}\doxysection{Cqrs.\+Commands.\+I\+Command\+Handle Interface Reference}
+\label{interfaceCqrs_1_1Commands_1_1ICommandHandle}\index{Cqrs.Commands.ICommandHandle@{Cqrs.Commands.ICommandHandle}}
 
 
 An I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ receives an I\+Command$<$\+T\+Authentication\+Token$>$ and brokers a result from the appropriate I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. \char`\"{}\+A result\char`\"{} is either a successful application of the command, or an exception. This is the common sequence of steps an I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ might follow\+:  
@@ -13,10 +13,10 @@ Inheritance diagram for Cqrs.\+Commands.\+I\+Command\+Handle\+:\begin{figure}[H]
 \end{figure}
 
 
-\subsection{Detailed Description}
+\doxysubsection{Detailed Description}
 An I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ receives an I\+Command$<$\+T\+Authentication\+Token$>$ and brokers a result from the appropriate I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. \char`\"{}\+A result\char`\"{} is either a successful application of the command, or an exception. This is the common sequence of steps an I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ might follow\+: 
 
-Validate the I\+Command$<$\+T\+Authentication\+Token$>$ on its own merits. Ask an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to handle the I\+Command$<$\+T\+Authentication\+Token$>$. If validation is successful, 0..n I\+Event$<$\+T\+Authentication\+Token$>$ artefacts (1 is common) are queued for publishing. Attempt to persist the new I\+Event$<$\+T\+Authentication\+Token$>$ artefacts. If there\textquotesingle{}s a concurrency conflict during this step, either give up, or retry things. Dispatch the queued I\+Event$<$\+T\+Authentication\+Token$>$ artefacts. 
+Validate the I\+Command$<$\+T\+Authentication\+Token$>$ on its own merits. Ask an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to handle the I\+Command$<$\+T\+Authentication\+Token$>$. If validation is successful, 0..n I\+Event$<$\+T\+Authentication\+Token$>$ artefacts (1 is common) are queued for publishing. Attempt to persist the new I\+Event$<$\+T\+Authentication\+Token$>$ artefacts. If there\textquotesingle{}s a concurrency conflict during this step, either give up, or retry things. Dispatch the queued I\+Event$<$\+T\+Authentication\+Token$>$ artefacts.
 
 Should a I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ affect one or several I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$s?
 
@@ -42,6 +42,7 @@ The place where the new I\+Event$<$\+T\+Authentication\+Token$>$ artefacts for t
 
 Should I do things that have side-\/effects in the outside world (such as sending email) directly in a I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$?
 
-No, since a concurrency conflict will mean the I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ logic will be run again. Do such things in an Apply I\+Event$<$\+T\+Authentication\+Token$>$ method in an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+No, since a concurrency conflict will mean the I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ logic will be run again. Do such things in an Apply I\+Event$<$\+T\+Authentication\+Token$>$ method in an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.
 
- Also see \href{http://cqrs.nu/Faq/command-handlers}{\tt http\+://cqrs.\+nu/\+Faq/command-\/handlers}. 
+\DoxyHorRuler
+ Also see \href{http://cqrs.nu/Faq/command-handlers}{\texttt{ http\+://cqrs.\+nu/\+Faq/command-\/handlers}}. 

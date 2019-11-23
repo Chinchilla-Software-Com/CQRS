@@ -1,8 +1,8 @@
 var classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore =
 [
     [ "StorageStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_ae7a725cdcb7de73e097b02c19463bae7.html#ae7a725cdcb7de73e097b02c19463bae7", null ],
-    [ "Add", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_af56bdbd7fa6650aaef5c0bab9ed55f1a.html#af56bdbd7fa6650aaef5c0bab9ed55f1a", null ],
     [ "Add", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_a989d749e5f9efc10b1a416feec02657d.html#a989d749e5f9efc10b1a416feec02657d", null ],
+    [ "Add", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_af56bdbd7fa6650aaef5c0bab9ed55f1a.html#af56bdbd7fa6650aaef5c0bab9ed55f1a", null ],
     [ "CreateSource", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_a07903b6c3eca8d49878deb6e2e5719e0.html#a07903b6c3eca8d49878deb6e2e5719e0", null ],
     [ "Deserialise", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_a211bc47bff1108d10e319fee8b9769a0.html#a211bc47bff1108d10e319fee8b9769a0", null ],
     [ "Deserialise", "classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_adea25452991418693ed966797581f67f.html#adea25452991418693ed966797581f67f", null ],

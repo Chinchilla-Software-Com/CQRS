@@ -1,0 +1,302 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.BlobStorage/DataStores/TableStorageDataStoreConnectionStringFactory.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.BlobStorage/DataStores</a> - TableStorageDataStoreConnectionStringFactory.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-24 00:33:17</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using System.Text;
+<span class="lineNum">      13 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      14 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      15 </span>            : using Cqrs.DataStores;
+<span class="lineNum">      16 </span>            : using Cqrs.Exceptions;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.Azure.BlobStorage.DataStores
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :         /// A factory for getting connection strings and container names for &lt;see cref=&quot;IDataStore{TData}&quot;/&gt; access.
+<span class="lineNum">      22 </span>            :         /// This factory supports reading and writing from separate storage accounts. Specifically you can have as many different storage accounts as you want to configure when writing.
+<span class="lineNum">      23 </span>            :         /// This allows for manual mirroring of data while reading from the fastest/closest location possible.
+<span class="lineNum">      24 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :         public class TableStorageDataStoreConnectionStringFactory : ITableStorageDataStoreConnectionStringFactory
+<span class="lineNum">      26 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      28 </span>            :                 /// The name of the app setting in &lt;see cref=&quot;IConfigurationManager&quot;/&gt; that will have the connection string of the readable storage account if using a separate storage account for reads and writes.
+<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      30 </span>            :                 public static string TableStorageReadableDataStoreConnectionStringKey = &quot;Cqrs.Azure.TableStorage.DataStore.Read.ConnectionStringName&quot;;
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      33 </span>            :                 /// The name of the app setting in &lt;see cref=&quot;IConfigurationManager&quot;/&gt; that will have the connection string of the writeable storage account if using a separate storage account for reads and writes.
+<span class="lineNum">      34 </span>            :                 /// This value gets appended with a &quot;.1&quot;, &quot;.2&quot; etc allowing you to write to as many different locations as possible.
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span>            :                 public static string TableStorageWritableDataStoreConnectionStringKey = &quot;Cqrs.Azure.TableStorage.DataStore.Write.ConnectionStringName&quot;;
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// The name of the app setting in &lt;see cref=&quot;IConfigurationManager&quot;/&gt; that will have the connection string if using a single storage account for both reads and writes.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 public static string TableStorageDataStoreConnectionStringKey = &quot;Cqrs.Azure.TableStorage.DataStore.ConnectionStringName&quot;;
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// The name of the app setting in &lt;see cref=&quot;IConfigurationManager&quot;/&gt; that will have the base name of the container used.
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span>            :                 public static string TableStorageBaseContainerNameKey = &quot;Cqrs.Azure.TableStorage.DataStore.BaseContainerName&quot;;
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      49 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      50 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      51 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      54 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ILogger&quot;/&gt;.
+<span class="lineNum">      55 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      56 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      59 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;TableStorageDataStoreConnectionStringFactory&quot;/&gt;.
+<span class="lineNum">      60 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      61 </span><span class="lineCov">          1 :                 public TableStorageDataStoreConnectionStringFactory(IConfigurationManager configurationManager, ILogger logger)</span>
+<span class="lineNum">      62 </span>            :                 {
+<span class="lineNum">      63 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      64 </span>            :                         Logger = logger;
+<span class="lineNum">      65 </span>            :                 }
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      68 </span>            :                 /// Gets all writeable connection strings. If using a single storage account, then &lt;see cref=&quot;TableStorageDataStoreConnectionStringKey&quot;/&gt; will most likely be returned.
+<span class="lineNum">      69 </span>            :                 /// If a value for &lt;see cref=&quot;TableStorageWritableDataStoreConnectionStringKey&quot;/&gt; is found, it will append &quot;.1&quot;, &quot;.2&quot; etc returning any additionally found connection string values in &lt;see cref=&quot;ConfigurationManager&quot;/&gt;.
+<span class="lineNum">      70 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      71 </span><span class="lineCov">          1 :                 public virtual IEnumerable&lt;string&gt; GetWritableConnectionStrings()</span>
+<span class="lineNum">      72 </span>            :                 {
+<span class="lineNum">      73 </span>            :                         Logger.LogDebug(&quot;Getting table storage writeable connection strings&quot;, &quot;TableStorageDataStoreConnectionStringFactory\\GetWritableConnectionStrings&quot;);
+<span class="lineNum">      74 </span>            :                         try
+<span class="lineNum">      75 </span>            :                         {
+<span class="lineNum">      76 </span>            :                                 var collection = new List&lt;string&gt; ();
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                                 string blobStorageWritableDataStoreConnectionString = ConfigurationManager.GetSetting(TableStorageWritableDataStoreConnectionStringKey);
+<span class="lineNum">      79 </span>            :                                 if (blobStorageWritableDataStoreConnectionString == null)
+<span class="lineNum">      80 </span>            :                                 {
+<span class="lineNum">      81 </span>            :                                         Logger.LogDebug(string.Format(&quot;No application setting named '{0}' was found in the configuration file with the cloud storage connection string.&quot;, TableStorageWritableDataStoreConnectionStringKey), &quot;TableStorageDataStoreConnectionStringFactory\\GetWritableConnectionStrings&quot;);
+<span class="lineNum">      82 </span>            :                                         blobStorageWritableDataStoreConnectionString = ConfigurationManager.GetSetting(TableStorageDataStoreConnectionStringKey);
+<span class="lineNum">      83 </span>            :                                 }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                                 int writeIndex = 1;
+<span class="lineNum">      86 </span>            :                                 while (!string.IsNullOrWhiteSpace(blobStorageWritableDataStoreConnectionString))
+<span class="lineNum">      87 </span>            :                                 {
+<span class="lineNum">      88 </span>            :                                         collection.Add(blobStorageWritableDataStoreConnectionString);
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :                                         blobStorageWritableDataStoreConnectionString = ConfigurationManager.GetSetting(string.Format(&quot;{0}.{1}&quot;, TableStorageWritableDataStoreConnectionStringKey, writeIndex));
+<span class="lineNum">      91 </span>            :                                         writeIndex++;
+<span class="lineNum">      92 </span>            :                                 }
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :                                 if (!collection.Any())
+<span class="lineNum">      95 </span>            :                                         throw new NullReferenceException();
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :                                 return collection;
+<span class="lineNum">      98 </span>            :                         }
+<span class="lineNum">      99 </span>            :                         catch (NullReferenceException exception)
+<span class="lineNum">     100 </span>            :                         {
+<span class="lineNum">     101 </span>            :                                 throw new MissingApplicationSettingException(TableStorageDataStoreConnectionStringKey, string.Format(&quot;No application setting named '{0}' was found in the configuration file with the cloud storage connection string.&quot;, TableStorageDataStoreConnectionStringKey), exception);
+<span class="lineNum">     102 </span>            :                         }
+<span class="lineNum">     103 </span>            :                         finally
+<span class="lineNum">     104 </span>            :                         {
+<span class="lineNum">     105 </span>            :                                 Logger.LogDebug(&quot;Getting table storage writeable connection string... Done&quot;, &quot;TableStorageDataStoreConnectionStringFactory\\GetWritableConnectionStrings&quot;);
+<span class="lineNum">     106 </span>            :                         }
+<span class="lineNum">     107 </span>            :                 }
+<span class="lineNum">     108 </span>            : 
+<span class="lineNum">     109 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     110 </span>            :                 /// Gets the readable connection string. If using a single storage account, then &lt;see cref=&quot;TableStorageDataStoreConnectionStringKey&quot;/&gt; will most likely be returned.
+<span class="lineNum">     111 </span>            :                 /// If a value for &lt;see cref=&quot;TableStorageReadableDataStoreConnectionStringKey&quot;/&gt; is found, that will be returned instead.
+<span class="lineNum">     112 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     113 </span><span class="lineCov">          1 :                 public virtual string GetReadableConnectionString()</span>
+<span class="lineNum">     114 </span>            :                 {
+<span class="lineNum">     115 </span>            :                         Logger.LogDebug(&quot;Getting table storage readable connection strings&quot;, &quot;TableStorageDataStoreConnectionStringFactory\\GetReadableConnectionStrings&quot;);
+<span class="lineNum">     116 </span>            :                         try
+<span class="lineNum">     117 </span>            :                         {
+<span class="lineNum">     118 </span>            :                                 string blobStorageWritableDataStoreConnectionString = ConfigurationManager.GetSetting(TableStorageReadableDataStoreConnectionStringKey);
+<span class="lineNum">     119 </span>            :                                 if (blobStorageWritableDataStoreConnectionString == null)
+<span class="lineNum">     120 </span>            :                                 {
+<span class="lineNum">     121 </span>            :                                         Logger.LogDebug(string.Format(&quot;No application setting named '{0}' was found in the configuration file with the cloud storage connection string.&quot;, TableStorageReadableDataStoreConnectionStringKey), &quot;TableStorageDataStoreConnectionStringFactory\\GetReadableConnectionStrings&quot;);
+<span class="lineNum">     122 </span>            :                                         blobStorageWritableDataStoreConnectionString = ConfigurationManager.GetSetting(TableStorageDataStoreConnectionStringKey);
+<span class="lineNum">     123 </span>            :                                 }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :                                 if (string.IsNullOrWhiteSpace(blobStorageWritableDataStoreConnectionString))
+<span class="lineNum">     126 </span>            :                                         throw new NullReferenceException();
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :                                 return blobStorageWritableDataStoreConnectionString;
+<span class="lineNum">     129 </span>            :                         }
+<span class="lineNum">     130 </span>            :                         catch (NullReferenceException exception)
+<span class="lineNum">     131 </span>            :                         {
+<span class="lineNum">     132 </span>            :                                 throw new MissingApplicationSettingException(TableStorageDataStoreConnectionStringKey, string.Format(&quot;No application setting named '{0}' was found in the configuration file with the cloud storage connection string.&quot;, TableStorageDataStoreConnectionStringKey), exception);
+<span class="lineNum">     133 </span>            :                         }
+<span class="lineNum">     134 </span>            :                         finally
+<span class="lineNum">     135 </span>            :                         {
+<span class="lineNum">     136 </span>            :                                 Logger.LogDebug(&quot;Getting table storage readable connection string... Done&quot;, &quot;TableStorageDataStoreConnectionStringFactory\\GetReadableConnectionStrings&quot;);
+<span class="lineNum">     137 </span>            :                         }
+<span class="lineNum">     138 </span>            :                 }
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     141 </span>            :                 /// Returns the name of the base contain to be used.
+<span class="lineNum">     142 </span>            :                 /// This will be the value from &lt;see cref=&quot;ConfigurationManager&quot;/&gt; keyed &lt;see cref=&quot;TableStorageBaseContainerNameKey&quot;/&gt;.
+<span class="lineNum">     143 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     144 </span><span class="lineCov">          1 :                 public string GetBaseContainerName()</span>
+<span class="lineNum">     145 </span>            :                 {
+<span class="lineNum">     146 </span>            :                         Logger.LogDebug(&quot;Getting table storage base container name&quot;, &quot;TableStorageDataStoreConnectionStringFactory\\GetContainerName&quot;);
+<span class="lineNum">     147 </span>            :                         try
+<span class="lineNum">     148 </span>            :                         {
+<span class="lineNum">     149 </span>            :                                 string result = ConfigurationManager.GetSetting(TableStorageBaseContainerNameKey);
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :                                 if (string.IsNullOrWhiteSpace(result))
+<span class="lineNum">     152 </span>            :                                         throw new NullReferenceException();
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span>            :                                 return result;
+<span class="lineNum">     155 </span>            :                         }
+<span class="lineNum">     156 </span>            :                         catch (NullReferenceException exception)
+<span class="lineNum">     157 </span>            :                         {
+<span class="lineNum">     158 </span>            :                                 throw new MissingApplicationSettingException(TableStorageBaseContainerNameKey, exception);
+<span class="lineNum">     159 </span>            :                         }
+<span class="lineNum">     160 </span>            :                         finally
+<span class="lineNum">     161 </span>            :                         {
+<span class="lineNum">     162 </span>            :                                 Logger.LogDebug(&quot;Getting table storage base container name... Done&quot;, &quot;TableStorageDataStoreConnectionStringFactory\\GetContainerName&quot;);
+<span class="lineNum">     163 </span>            :                         }
+<span class="lineNum">     164 </span>            :                 }
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     167 </span>            :                 /// Returns &lt;see cref=&quot;GetBaseContainerName&quot;/&gt;.
+<span class="lineNum">     168 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     169 </span>            :                 /// &lt;returns&gt;&lt;see cref=&quot;GetBaseContainerName&quot;/&gt;&lt;/returns&gt;
+<span class="lineNum">     170 </span><span class="lineCov">          1 :                 public virtual string GetContainerName()</span>
+<span class="lineNum">     171 </span>            :                 {
+<span class="lineNum">     172 </span>            :                         return GetBaseContainerName();
+<span class="lineNum">     173 </span>            :                 }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :                 readonly char[] _alphanumericCharacters =
+<span class="lineNum">     176 </span>            :                 {
+<span class="lineNum">     177 </span>            :                         '0','1','2','3','4','5','6','7','8','9',
+<span class="lineNum">     178 </span>            :                         'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+<span class="lineNum">     179 </span>            :                         'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+<span class="lineNum">     180 </span>            :                 };
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     183 </span>            :                 /// Generates the name of the table for &lt;typeparamref name=&quot;TData&quot;/&gt; that matches naming rules for Azure Storage.
+<span class="lineNum">     184 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     185 </span>            :                 /// &lt;typeparam name=&quot;TData&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of data to read or write.&lt;/typeparam&gt;
+<span class="lineNum">     186 </span>            :                 /// &lt;remarks&gt;https://blogs.msdn.microsoft.com/jmstall/2014/06/12/azure-storage-naming-rules/&lt;/remarks&gt;
+<span class="lineNum">     187 </span><span class="lineCov">          1 :                 public virtual string GetTableName&lt;TData&gt;()</span>
+<span class="lineNum">     188 </span>            :                 {
+<span class="lineNum">     189 </span>            :                         Type type = typeof (TData);
+<span class="lineNum">     190 </span>            :                         string fullTableName = type.AssemblyQualifiedName ?? &quot;Entities&quot;;
+<span class="lineNum">     191 </span>            :                         StringBuilder sb;
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span>            :                         string name = fullTableName;
+<span class="lineNum">     194 </span>            :                         int index1 = name.IndexOf(&quot;,&quot;, StringComparison.InvariantCultureIgnoreCase);
+<span class="lineNum">     195 </span>            :                         int index2 = -1;
+<span class="lineNum">     196 </span>            :                         if (index1 &gt; -1)
+<span class="lineNum">     197 </span>            :                                 index2 = name.IndexOf(&quot;,&quot;, index1 + 1, StringComparison.InvariantCultureIgnoreCase);
+<span class="lineNum">     198 </span>            :                         if (index2 &gt; -1)
+<span class="lineNum">     199 </span>            :                         {
+<span class="lineNum">     200 </span>            :                                 name = name.Substring(0, index2);
+<span class="lineNum">     201 </span>            :                                 string[] nameParts = name.Split(',');
+<span class="lineNum">     202 </span>            :                                 if (nameParts.Length == 2)
+<span class="lineNum">     203 </span>            :                                 {
+<span class="lineNum">     204 </span>            :                                         if (nameParts[0].StartsWith(nameParts[1].Trim()))
+<span class="lineNum">     205 </span>            :                                         {
+<span class="lineNum">     206 </span>            :                                                 name = name.Substring(0, index1);
+<span class="lineNum">     207 </span>            :                                                 sb = new StringBuilder();
+<span class="lineNum">     208 </span>            :                                                 foreach (var c in name.Where(c =&gt; _alphanumericCharacters.Contains(c)))
+<span class="lineNum">     209 </span>            :                                                         sb.Append(c);
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :                                                 name = sb.ToString();
+<span class="lineNum">     212 </span>            :                                                 if (name.Length &gt; 36)
+<span class="lineNum">     213 </span>            :                                                         name = name.Substring(name.Length - 36);
+<span class="lineNum">     214 </span>            : 
+<span class="lineNum">     215 </span>            :                                                 return name;
+<span class="lineNum">     216 </span>            :                                         }
+<span class="lineNum">     217 </span>            :                                 }
+<span class="lineNum">     218 </span>            :                         }
+<span class="lineNum">     219 </span>            :                         else if (index1 &gt; -1)
+<span class="lineNum">     220 </span>            :                                 name = name.Substring(0, index1);
+<span class="lineNum">     221 </span>            : 
+<span class="lineNum">     222 </span>            :                         sb = new StringBuilder();
+<span class="lineNum">     223 </span>            :                         foreach (var c in name.Where(c =&gt; _alphanumericCharacters.Contains(c)))
+<span class="lineNum">     224 </span>            :                                 sb.Append(c);
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            :                         name = sb.ToString();
+<span class="lineNum">     227 </span>            :                         return name.Substring(0, 36);
+<span class="lineNum">     228 </span>            :                 }
+<span class="lineNum">     229 </span>            :         }
+<span class="lineNum">     230 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

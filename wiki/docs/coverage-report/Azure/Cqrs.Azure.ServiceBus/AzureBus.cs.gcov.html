@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.ServiceBus/AzureBus.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.ServiceBus</a> - AzureBus.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntryHi">93.3 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-24 00:33:17</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Concurrent;
+<span class="lineNum">      11 </span>            : using System.Collections.Generic;
+<span class="lineNum">      12 </span>            : using System.Threading.Tasks;
+<span class="lineNum">      13 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      14 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      15 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      16 </span>            : using Cqrs.Commands;
+<span class="lineNum">      17 </span>            : using Cqrs.Events;
+<span class="lineNum">      18 </span>            : using Cqrs.Infrastructure;
+<span class="lineNum">      19 </span>            : #if NET452
+<span class="lineNum">      20 </span>            : using Microsoft.ServiceBus;
+<span class="lineNum">      21 </span>            : using Microsoft.ServiceBus.Messaging;
+<span class="lineNum">      22 </span>            : using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+<span class="lineNum">      23 </span>            : using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
+<span class="lineNum">      24 </span>            : using RetryPolicy = Microsoft.Practices.TransientFaultHandling.RetryPolicy;
+<span class="lineNum">      25 </span>            : using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
+<span class="lineNum">      26 </span>            : #endif
+<span class="lineNum">      27 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">      28 </span>            : using Microsoft.Azure.ServiceBus;
+<span class="lineNum">      29 </span>            : using Microsoft.Azure.ServiceBus.Core;
+<span class="lineNum">      30 </span>            : using Microsoft.Azure.ServiceBus.Management;
+<span class="lineNum">      31 </span>            : using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
+<span class="lineNum">      32 </span>            : using RetryPolicy = Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.RetryPolicy;
+<span class="lineNum">      33 </span>            : #endif
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            : namespace Cqrs.Azure.ServiceBus
+<span class="lineNum">      36 </span>            : {
+<span class="lineNum">      37 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :         /// An Azure Bus such as a Service Bus or Event Hub.
+<span class="lineNum">      39 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      41 </span>            :         /// &lt;remarks&gt;
+<span class="lineNum">      42 </span>            :         /// https://markheath.net/post/migrating-to-new-servicebus-sdk
+<span class="lineNum">      43 </span>            :         /// https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dotnet-how-to-use-topics-subscriptions#receive-messages-from-the-subscription
+<span class="lineNum">      44 </span>            :         /// https://stackoverflow.com/questions/47427361/azure-service-bus-read-messages-sent-by-net-core-2-with-brokeredmessage-getbo
+<span class="lineNum">      45 </span>            :         /// https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dotnet-get-started-with-queues
+<span class="lineNum">      46 </span>            :         /// &lt;/remarks&gt;
+<span class="lineNum">      47 </span>            :         public abstract class AzureBus&lt;TAuthenticationToken&gt;
+<span class="lineNum">      48 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Gets or sets the connection string to the bus.
+<span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      52 </span>            :                 protected string ConnectionString { get; set; }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      55 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IMessageSerialiser{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      56 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      57 </span>            :                 protected IMessageSerialiser&lt;TAuthenticationToken&gt; MessageSerialiser { get; private set; }
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      60 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAuthenticationTokenHelper{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      61 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      62 </span>            :                 protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      65 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ICorrelationIdHelper&quot;/&gt;.
+<span class="lineNum">      66 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      67 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      70 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ILogger&quot;/&gt;.
+<span class="lineNum">      71 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      72 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      75 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      76 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      77 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      80 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; to wait for before responding to the caller
+<span class="lineNum">      81 </span>            :                 /// keyed by the &lt;see cref=&quot;ICommand{TAuthenticationToken}.Id&quot;/&gt;
+<span class="lineNum">      82 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      83 </span>            :                 protected IDictionary&lt;Guid, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt; EventWaits { get; private set; }
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      86 </span>            :                 /// The default number of receivers to start and run.
+<span class="lineNum">      87 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      88 </span>            :                 protected const int DefaultNumberOfReceiversCount = 1;
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      91 </span>            :                 /// The number of receivers to start and run.
+<span class="lineNum">      92 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      93 </span>            :                 protected int NumberOfReceiversCount { get; set; }
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      96 </span>            :                 /// The default number for &lt;see cref=&quot;MaximumConcurrentReceiverProcessesCount&quot;/&gt;.
+<span class="lineNum">      97 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      98 </span>            :                 protected const int DefaultMaximumConcurrentReceiverProcessesCount = 1;
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            : #if NET452
+<span class="lineNum">     101 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     102 </span>            :                 /// The &lt;see cref=&quot;OnMessageOptions.MaxConcurrentCalls&quot;/&gt; value.
+<span class="lineNum">     103 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     104 </span>            : #endif
+<span class="lineNum">     105 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">     106 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     107 </span>            :                 /// Used by .NET Framework, but not .Net Core
+<span class="lineNum">     108 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     109 </span>            : #endif
+<span class="lineNum">     110 </span>            :                 protected int MaximumConcurrentReceiverProcessesCount { get; set; }
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     113 </span>            :                 /// Indicates if the &lt;typeparamref name=&quot;TAuthenticationToken&quot;/&gt; is a &lt;see cref=&quot;Guid&quot;/&gt;.
+<span class="lineNum">     114 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     115 </span>            :                 protected bool AuthenticationTokenIsGuid { get; private set; }
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     118 </span>            :                 /// Indicates if the &lt;typeparamref name=&quot;TAuthenticationToken&quot;/&gt; is an &lt;see cref=&quot;int&quot;/&gt;.
+<span class="lineNum">     119 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     120 </span>            :                 protected bool AuthenticationTokenIsInt { get; private set; }
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     123 </span>            :                 /// Indicates if the &lt;typeparamref name=&quot;TAuthenticationToken&quot;/&gt; is a &lt;see cref=&quot;string&quot;/&gt;.
+<span class="lineNum">     124 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     125 </span>            :                 protected bool AuthenticationTokenIsString { get; private set; }
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     128 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;AzureBus{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">     129 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     130 </span><span class="lineCov">          1 :                 protected AzureBus(IConfigurationManager configurationManager, IMessageSerialiser&lt;TAuthenticationToken&gt; messageSerialiser, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, bool isAPublisher)</span>
+<span class="lineNum">     131 </span>            :                 {
+<span class="lineNum">     132 </span>            :                         AuthenticationTokenIsGuid = typeof(TAuthenticationToken) == typeof(Guid);
+<span class="lineNum">     133 </span>            :                         AuthenticationTokenIsInt = typeof(TAuthenticationToken) == typeof(int);
+<span class="lineNum">     134 </span>            :                         AuthenticationTokenIsString = typeof(TAuthenticationToken) == typeof(string);
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :                         EventWaits = new ConcurrentDictionary&lt;Guid, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt;&gt;();
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            :                         MessageSerialiser = messageSerialiser;
+<span class="lineNum">     139 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">     140 </span>            :                         CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">     141 </span>            :                         Logger = logger;
+<span class="lineNum">     142 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :                         // ReSharper disable DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">     145 </span>            :                         UpdateSettings();
+<span class="lineNum">     146 </span>            :                         if (isAPublisher)
+<span class="lineNum">     147 </span>            :                                 InstantiatePublishing();
+<span class="lineNum">     148 </span>            :                         // ReSharper restore DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">     149 </span>            :                 }
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     152 </span>            :                 /// Sets &lt;see cref=&quot;ConnectionString&quot;/&gt; from &lt;see cref=&quot;GetConnectionString&quot;/&gt;.
+<span class="lineNum">     153 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     154 </span><span class="lineCov">          1 :                 protected virtual void SetConnectionStrings()</span>
+<span class="lineNum">     155 </span>            :                 {
+<span class="lineNum">     156 </span>            :                         ConnectionString = GetConnectionString();
+<span class="lineNum">     157 </span>            :                         Logger.LogSensitive(string.Format(&quot;Connection string settings set to {0}.&quot;, ConnectionString));
+<span class="lineNum">     158 </span>            :                 }
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     161 </span>            :                 /// Sets &lt;see cref=&quot;NumberOfReceiversCount&quot;/&gt; from &lt;see cref=&quot;GetCurrentNumberOfReceiversCount&quot;/&gt;.
+<span class="lineNum">     162 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     163 </span><span class="lineCov">          1 :                 protected virtual void SetNumberOfReceiversCount()</span>
+<span class="lineNum">     164 </span>            :                 {
+<span class="lineNum">     165 </span>            :                         NumberOfReceiversCount = GetCurrentNumberOfReceiversCount();
+<span class="lineNum">     166 </span>            :                         Logger.LogDebug(string.Format(&quot;Number of receivers settings set to {0}.&quot;, NumberOfReceiversCount));
+<span class="lineNum">     167 </span>            :                 }
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     170 </span>            :                 /// Sets &lt;see cref=&quot;MaximumConcurrentReceiverProcessesCount&quot;/&gt; from &lt;see cref=&quot;GetCurrentMaximumConcurrentReceiverProcessesCount&quot;/&gt;.
+<span class="lineNum">     171 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     172 </span><span class="lineCov">          1 :                 protected virtual void SetMaximumConcurrentReceiverProcessesCount()</span>
+<span class="lineNum">     173 </span>            :                 {
+<span class="lineNum">     174 </span>            :                         MaximumConcurrentReceiverProcessesCount = GetCurrentMaximumConcurrentReceiverProcessesCount();
+<span class="lineNum">     175 </span>            :                         Logger.LogDebug(string.Format(&quot;Number of receivers settings set to {0}.&quot;, MaximumConcurrentReceiverProcessesCount));
+<span class="lineNum">     176 </span>            :                 }
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     179 </span>            :                 /// Gets the connection string for the bus.
+<span class="lineNum">     180 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     181 </span><span class="lineCov">          1 :                 protected abstract string GetConnectionString();</span>
+<span class="lineNum">     182 </span>            : 
+<span class="lineNum">     183 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     184 </span>            :                 /// Returns &lt;see cref=&quot;DefaultNumberOfReceiversCount&quot;/&gt;.
+<span class="lineNum">     185 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     186 </span>            :                 /// &lt;returns&gt;&lt;see cref=&quot;DefaultNumberOfReceiversCount&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">     187 </span><span class="lineCov">          1 :                 protected virtual int GetCurrentNumberOfReceiversCount()</span>
+<span class="lineNum">     188 </span>            :                 {
+<span class="lineNum">     189 </span>            :                         return DefaultNumberOfReceiversCount;
+<span class="lineNum">     190 </span>            :                 }
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     193 </span>            :                 /// Returns &lt;see cref=&quot;DefaultMaximumConcurrentReceiverProcessesCount&quot;/&gt;.
+<span class="lineNum">     194 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     195 </span>            :                 /// &lt;returns&gt;&lt;see cref=&quot;DefaultMaximumConcurrentReceiverProcessesCount&quot;/&gt;.&lt;/returns&gt;
+<span class="lineNum">     196 </span><span class="lineCov">          1 :                 protected virtual int GetCurrentMaximumConcurrentReceiverProcessesCount()</span>
+<span class="lineNum">     197 </span>            :                 {
+<span class="lineNum">     198 </span>            :                         return DefaultMaximumConcurrentReceiverProcessesCount;
+<span class="lineNum">     199 </span>            :                 }
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     202 </span>            :                 /// Instantiate publishing on this bus.
+<span class="lineNum">     203 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     204 </span><span class="lineCov">          1 :                 protected abstract void InstantiatePublishing();</span>
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     207 </span>            :                 /// Instantiate receiving on this bus.
+<span class="lineNum">     208 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     209 </span><span class="lineCov">          1 :                 protected abstract void InstantiateReceiving();</span>
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            : #if NET452
+<span class="lineNum">     212 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     213 </span>            :                 /// Creates a new instance of &lt;see cref=&quot;NamespaceManager&quot;/&gt; with the &lt;see cref=&quot;ConnectionString&quot;/&gt;.
+<span class="lineNum">     214 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     215 </span>            :                 protected virtual NamespaceManager GetManager()
+<span class="lineNum">     216 </span>            :                 {
+<span class="lineNum">     217 </span>            :                         NamespaceManager manager = NamespaceManager.CreateFromConnectionString(ConnectionString);
+<span class="lineNum">     218 </span>            : #endif
+<span class="lineNum">     219 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">     220 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     221 </span>            :                 /// Creates a new instance of &lt;see cref=&quot;ManagementClient&quot;/&gt; with the &lt;see cref=&quot;ConnectionString&quot;/&gt;.
+<span class="lineNum">     222 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     223 </span>            :                 protected virtual ManagementClient GetManager()
+<span class="lineNum">     224 </span>            :                 {
+<span class="lineNum">     225 </span>            :                         var manager = new ManagementClient(ConnectionString);
+<span class="lineNum">     226 </span>            : #endif
+<span class="lineNum">     227 </span>            :                         return manager;
+<span class="lineNum">     228 </span>            :                 }
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     231 </span>            :                 /// Gets the default retry policy dedicated to handling transient conditions with Windows Azure Service Bus.
+<span class="lineNum">     232 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     233 </span>            :                 protected virtual RetryPolicy AzureServiceBusRetryPolicy
+<span class="lineNum">     234 </span>            :                 {
+<span class="lineNum">     235 </span>            :                         get
+<span class="lineNum">     236 </span>            :                         {
+<span class="lineNum">     237 </span>            : #if NET452
+<span class="lineNum">     238 </span>            :                                 RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance&lt;RetryManager&gt;();
+<span class="lineNum">     239 </span>            : #endif
+<span class="lineNum">     240 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">     241 </span>            :                                 RetryManager retryManager = RetryManager.Instance;
+<span class="lineNum">     242 </span>            : #endif
+<span class="lineNum">     243 </span>            :                                 RetryPolicy retryPolicy = retryManager.GetDefaultAzureServiceBusRetryPolicy();
+<span class="lineNum">     244 </span>            :                                 retryPolicy.Retrying += (sender, args) =&gt;
+<span class="lineNum">     245 </span>            :                                 {
+<span class="lineNum">     246 </span>            :                                         var message = string.Format(&quot;Retrying action - Count:{0}, Delay:{1}&quot;, args.CurrentRetryCount, args.Delay);
+<span class="lineNum">     247 </span>            :                                         Logger.LogWarning(message, &quot;AzureServiceBusRetryPolicy&quot;, args.LastException);
+<span class="lineNum">     248 </span>            :                                 };
+<span class="lineNum">     249 </span>            :                                 return retryPolicy;
+<span class="lineNum">     250 </span>            :                         }
+<span class="lineNum">     251 </span>            :                 }
+<span class="lineNum">     252 </span>            : 
+<span class="lineNum">     253 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     254 </span>            :                 /// Starts a new &lt;see cref=&quot;Task&quot;/&gt; that periodically calls &lt;see cref=&quot;ValidateSettingsHaveChanged&quot;/&gt;
+<span class="lineNum">     255 </span>            :                 /// and if there is a change, calls &lt;see cref=&quot;TriggerSettingsChecking&quot;/&gt;.
+<span class="lineNum">     256 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     257 </span><span class="lineCov">          1 :                 protected virtual void StartSettingsChecking()</span>
+<span class="lineNum">     258 </span>            :                 {
+<span class="lineNum">     259 </span>            :                         Task.Factory.StartNewSafely(() =&gt;
+<span class="lineNum">     260 </span>            :                         {
+<span class="lineNum">     261 </span>            :                                 SpinWait.SpinUntil(ValidateSettingsHaveChanged, sleepInMilliseconds: 1000);
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span>            :                                 Logger.LogInfo(&quot;Connecting string settings for the Azure Service Bus changed and will now refresh.&quot;);
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span>            :                                 // Update the connection string and trigger a restart;
+<span class="lineNum">     266 </span>            :                                 if (ValidateSettingsHaveChanged())
+<span class="lineNum">     267 </span>            :                                         TriggerSettingsChecking();
+<span class="lineNum">     268 </span>            :                         });
+<span class="lineNum">     269 </span>            :                 }
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     272 </span>            :                 /// Checks if the settings for
+<span class="lineNum">     273 </span>            :                 /// &lt;see cref=&quot;ConnectionString&quot;/&gt;, &lt;see cref=&quot;NumberOfReceiversCount&quot;/&gt;
+<span class="lineNum">     274 </span>            :                 /// or &lt;see cref=&quot;MaximumConcurrentReceiverProcessesCount&quot;/&gt; have changed.
+<span class="lineNum">     275 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     276 </span>            :                 /// &lt;returns&gt;&lt;/returns&gt;
+<span class="lineNum">     277 </span><span class="lineCov">          1 :                 protected virtual bool ValidateSettingsHaveChanged()</span>
+<span class="lineNum">     278 </span>            :                 {
+<span class="lineNum">     279 </span>            :                         return ConnectionString != GetConnectionString()
+<span class="lineNum">     280 </span>            :                                 ||
+<span class="lineNum">     281 </span>            :                         NumberOfReceiversCount != GetCurrentNumberOfReceiversCount()
+<span class="lineNum">     282 </span>            :                                 ||
+<span class="lineNum">     283 </span>            :                         MaximumConcurrentReceiverProcessesCount != GetCurrentMaximumConcurrentReceiverProcessesCount();
+<span class="lineNum">     284 </span>            :                 }
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     287 </span>            :                 /// Calls 
+<span class="lineNum">     288 </span>            :                 /// &lt;see cref=&quot;SetConnectionStrings&quot;/&gt;
+<span class="lineNum">     289 </span>            :                 /// &lt;see cref=&quot;SetNumberOfReceiversCount&quot;/&gt; and 
+<span class="lineNum">     290 </span>            :                 /// &lt;see cref=&quot;SetMaximumConcurrentReceiverProcessesCount&quot;/&gt;
+<span class="lineNum">     291 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     292 </span><span class="lineCov">          1 :                 protected virtual void UpdateSettings()</span>
+<span class="lineNum">     293 </span>            :                 {
+<span class="lineNum">     294 </span>            :                         SetConnectionStrings();
+<span class="lineNum">     295 </span>            :                         SetNumberOfReceiversCount();
+<span class="lineNum">     296 </span>            :                         SetMaximumConcurrentReceiverProcessesCount();
+<span class="lineNum">     297 </span>            :                 }
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     300 </span>            :                 /// Change the settings used by this bus.
+<span class="lineNum">     301 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     302 </span><span class="lineCov">          1 :                 protected abstract void TriggerSettingsChecking();</span>
+<span class="lineNum">     303 </span>            : 
+<span class="lineNum">     304 </span>            : #if NET452
+<span class="lineNum">     305 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     306 </span>            :                 /// Sets the handler on &lt;see cref=&quot;IMessageReceiver.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage})&quot;/&gt;.
+<span class="lineNum">     307 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     308 </span>            : #endif
+<span class="lineNum">     309 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">     310 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     311 </span>            :                 /// Sets the handler on &lt;see cref=&quot;IReceiverClient.RegisterMessageHandler(Func{Message, System.Threading.CancellationToken, Task}, MessageHandlerOptions)&quot;/&gt;.
+<span class="lineNum">     312 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     313 </span>            : #endif
+<span class="lineNum">     314 </span><span class="lineNoCov">          0 :                 protected abstract void ApplyReceiverMessageHandler();</span>
+<span class="lineNum">     315 </span>            :         }
+<span class="lineNum">     316 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

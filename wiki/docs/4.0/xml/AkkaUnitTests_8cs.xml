@@ -1,8 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
   <compounddef id="AkkaUnitTests_8cs" kind="file" language="C#">
     <compoundname>AkkaUnitTests.cs</compoundname>
     <innerclass refid="classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1AkkaUnitTests" prot="public">Cqrs::Akka::Tests::Unit::AkkaUnitTests</innerclass>
+    <innernamespace refid="namespaceCqrs">Cqrs</innernamespace>
+    <innernamespace refid="namespaceCqrs_1_1Akka">Cqrs::Akka</innernamespace>
+    <innernamespace refid="namespaceCqrs_1_1Akka_1_1Tests">Cqrs::Akka::Tests</innernamespace>
     <innernamespace refid="namespaceCqrs_1_1Akka_1_1Tests_1_1Unit">Cqrs::Akka::Tests::Unit</innernamespace>
     <innernamespace refid="namespaceSystem_1_1Threading">System::Threading</innernamespace>
     <innernamespace refid="namespaceChinchilla_1_1Logging_1_1Configuration">Chinchilla::Logging::Configuration</innernamespace>
@@ -49,11 +52,11 @@
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceCqrs" kindref="compound">Cqrs</ref>.<ref refid="namespaceCqrs_1_1Events" kindref="compound">Events</ref>;</highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceCqrs" kindref="compound">Cqrs</ref>.<ref refid="namespaceCqrs_1_1Ninject" kindref="compound">Ninject</ref>.<ref refid="namespaceCqrs_1_1Ninject_1_1Akka" kindref="compound">Akka</ref>;</highlight></codeline>
 <codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceMicrosoft" kindref="compound">Microsoft</ref>.VisualStudio.TestTools.UnitTesting;</highlight></codeline>
-<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceNinject" kindref="compound">Ninject</ref>;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Ninject;</highlight></codeline>
 <codeline lineno="35"><highlight class="normal"></highlight></codeline>
-<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceCqrs" kindref="compound">Cqrs</ref>.<ref refid="namespaceCqrs_1_1Messages_af06a7e6cd2609043d0f2f5f3419f81e3_1af06a7e6cd2609043d0f2f5f3419f81e3a1565c979ff6d5255fd3c81f57219fffc" kindref="member">Akka</ref>.Tests.Unit</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceCqrs_1_1Akka_1_1Tests_1_1Unit" kindref="compound">Cqrs.Akka.Tests.Unit</ref></highlight></codeline>
 <codeline lineno="37"><highlight class="normal">{</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>[<ref refid="namespaceTestClass" kindref="compound">TestClass</ref>]</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>[TestClass]</highlight></codeline>
 <codeline lineno="42" refid="classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1AkkaUnitTests" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1AkkaUnitTests" kindref="compound">AkkaUnitTests</ref></highlight></codeline>
 <codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">internal</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>IDictionary&lt;Guid,<sp/>bool&gt;<sp/>Step1Reached<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>Dictionary&lt;Guid,<sp/>bool&gt;();</highlight></codeline>
@@ -62,8 +65,8 @@
 <codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">internal</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>IDictionary&lt;Guid,<sp/>bool&gt;<sp/>Step4Reached<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>Dictionary&lt;Guid,<sp/>bool&gt;();</highlight></codeline>
 <codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">internal</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>IDictionary&lt;Guid,<sp/>bool&gt;<sp/>FinalCommandReached<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>Dictionary&lt;Guid,<sp/>bool&gt;();</highlight></codeline>
 <codeline lineno="49"><highlight class="normal"></highlight></codeline>
-<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[<ref refid="namespaceTestMethod" kindref="compound">TestMethod</ref>]</highlight></codeline>
-<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>SendingCommandsAndEvents_AcrossBusesInMultipleWays_AllWork()</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[TestMethod]</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1AkkaUnitTests_a52e29eb0469798255ae67613e2f4645b_1a52e29eb0469798255ae67613e2f4645b" kindref="member">SendingCommandsAndEvents_AcrossBusesInMultipleWays_AllWork</ref>()</highlight></codeline>
 <codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
 <codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Arrange</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>var<sp/>command<sp/>=<sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1SayHelloWorldCommand" kindref="compound">SayHelloWorldCommand</ref>();</highlight></codeline>
@@ -140,7 +143,7 @@
 <codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>commandBusProxy.Publish(command);</highlight></codeline>
 <codeline lineno="129"><highlight class="normal"></highlight></codeline>
 <codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Assert</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="namespaceSpinWait" kindref="compound">SpinWait</ref>.SpinUntil</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>SpinWait.SpinUntil</highlight></codeline>
 <codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>(</highlight></codeline>
 <codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>()<sp/>=&gt;<sp/></highlight></codeline>
 <codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>Step1Reached[correlationId]<sp/>&amp;&amp;<sp/></highlight></codeline>

@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.MongoDB/Events/MongoDbSnapshotStore.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs.MongoDB/Events</a> - MongoDbSnapshotStore.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-24 00:33:17</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using System.Linq.Expressions;
+<span class="lineNum">      13 </span>            : using System.Reflection;
+<span class="lineNum">      14 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      15 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      16 </span>            : using Cqrs.Domain;
+<span class="lineNum">      17 </span>            : using Cqrs.Events;
+<span class="lineNum">      18 </span>            : using Cqrs.MongoDB.DataStores.Indexes;
+<span class="lineNum">      19 </span>            : using Cqrs.MongoDB.Events.Indexes;
+<span class="lineNum">      20 </span>            : using Cqrs.MongoDB.Factories;
+<span class="lineNum">      21 </span>            : using Cqrs.Snapshots;
+<span class="lineNum">      22 </span>            : using MongoDB.Bson.Serialization;
+<span class="lineNum">      23 </span>            : using MongoDB.Driver;
+<span class="lineNum">      24 </span>            : using MongoDB.Driver.Linq;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : namespace Cqrs.MongoDB.Events
+<span class="lineNum">      27 </span>            : {
+<span class="lineNum">      28 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :         /// Stores the most recent &lt;see cref=&quot;Snapshot&quot;&gt;snapshots&lt;/see&gt; for replay and &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; rehydration on a &lt;see cref=&quot;SnapshotAggregateRoot{TAuthenticationToken,TSnapshot}&quot;/&gt; in MongoDB.
+<span class="lineNum">      30 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      31 </span>            :         public class MongoDbSnapshotStore
+<span class="lineNum">      32 </span>            :                 : SnapshotStore
+<span class="lineNum">      33 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IMongoCollection{TData}&quot;/&gt;
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span>            :                 protected IMongoCollection&lt;MongoDbEventData&gt; MongoCollection { get; private set; }
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      40 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IMongoDbEventStoreConnectionStringFactory&quot;/&gt;
+<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      42 </span>            :                 protected IMongoDbSnapshotStoreConnectionStringFactory MongoDbSnapshotStoreConnectionStringFactory { get; private set; }
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                 static MongoDbSnapshotStore()
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                         IDictionary&lt;Type, IList&lt;object&gt;&gt; randomCallToStartStaticProperty = MongoDbDataStoreFactory.IndexTypesByEntityType;
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                         foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+<span class="lineNum">      49 </span>            :                         {
+<span class="lineNum">      50 </span>            :                                 var eventTypes = assembly
+<span class="lineNum">      51 </span>            :                                         .GetTypes()
+<span class="lineNum">      52 </span>            :                                         .Where
+<span class="lineNum">      53 </span>            :                                         (
+<span class="lineNum">      54 </span>            :                                                 type =&gt;
+<span class="lineNum">      55 </span>            :                                                         typeof(EventData).IsAssignableFrom(type)
+<span class="lineNum">      56 </span>            :                                                         &amp;&amp; !type.IsAbstract
+<span class="lineNum">      57 </span>            :                                         );
+<span class="lineNum">      58 </span>            :                                 foreach (Type eventType in eventTypes)
+<span class="lineNum">      59 </span>            :                                         BsonClassMap.LookupClassMap(eventType);
+<span class="lineNum">      60 </span>            :                         }
+<span class="lineNum">      61 </span>            :                 }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;MongoDbEventStore{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      65 </span>            :                 /// triggering any require index checks.
+<span class="lineNum">      66 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      67 </span><span class="lineCov">          1 :                 public MongoDbSnapshotStore(IConfigurationManager configurationManager, ISnapshotDeserialiser eventDeserialiser, ILogger logger, ICorrelationIdHelper correlationIdHelper, ISnapshotBuilder snapshotBuilder, IMongoDbSnapshotStoreConnectionStringFactory mongoDbSnapshotStoreConnectionStringFactory)</span>
+<span class="lineNum">      68 </span>            :                         : base(configurationManager, eventDeserialiser, snapshotBuilder, logger, correlationIdHelper)
+<span class="lineNum">      69 </span>            :                 {
+<span class="lineNum">      70 </span>            :                         MongoDbSnapshotStoreConnectionStringFactory = mongoDbSnapshotStoreConnectionStringFactory;
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :                         // ReSharper disable DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">      73 </span>            :                         MongoCollection = GetCollection();
+<span class="lineNum">      74 </span>            :                         VerifyIndexes();
+<span class="lineNum">      75 </span>            :                         // ReSharper restore DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">      76 </span>            :                 }
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      79 </span>            :                 /// Get a &lt;see cref=&quot;IMongoCollection{TDocument}&quot;/&gt;
+<span class="lineNum">      80 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      81 </span><span class="lineCov">          1 :                 protected virtual IMongoCollection&lt;MongoDbEventData&gt; GetCollection()</span>
+<span class="lineNum">      82 </span>            :                 {
+<span class="lineNum">      83 </span>            :                         var mongoClient = new MongoClient(MongoDbSnapshotStoreConnectionStringFactory.GetSnapshotStoreConnectionString());
+<span class="lineNum">      84 </span>            :                         IMongoDatabase mongoDatabase = mongoClient.GetDatabase(MongoDbSnapshotStoreConnectionStringFactory.GetSnapshotStoreDatabaseName());
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :                         return mongoDatabase.GetCollection&lt;MongoDbEventData&gt;(MongoDbSnapshotStoreConnectionStringFactory.GetSnapshotStoreDatabaseName());
+<span class="lineNum">      87 </span>            :                 }
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      90 </span>            :                 /// Verify all required &lt;see cref=&quot;MongoDbIndex{TEntity}&quot;/&gt; are defined and ready to go.
+<span class="lineNum">      91 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      92 </span><span class="lineCov">          1 :                 protected virtual void VerifyIndexes()</span>
+<span class="lineNum">      93 </span>            :                 {
+<span class="lineNum">      94 </span>            :                         VerifyIndex(new ByCorrelationIdMongoDbIndex());
+<span class="lineNum">      95 </span>            :                         VerifyIndex(new ByAggregateIdAndVersionMongoDbIndex());
+<span class="lineNum">      96 </span>            :                         VerifyIndex(new ByTimestampMongoDbIndex());
+<span class="lineNum">      97 </span>            :                         VerifyIndex(new ByTimestampAndEventTypeMongoDbIndex());
+<span class="lineNum">      98 </span>            :                 }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     101 </span>            :                 /// Verify the provided &lt;paramref name=&quot;mongoIndex&quot;/&gt; is defined and ready to go.
+<span class="lineNum">     102 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     103 </span><span class="lineCov">          1 :                 protected virtual void VerifyIndex(MongoDbIndex&lt;MongoDbEventData&gt; mongoIndex)</span>
+<span class="lineNum">     104 </span>            :                 {
+<span class="lineNum">     105 </span>            :                         IndexKeysDefinitionBuilder&lt;MongoDbEventData&gt; indexKeysBuilder = Builders&lt;MongoDbEventData&gt;.IndexKeys;
+<span class="lineNum">     106 </span>            :                         IndexKeysDefinition&lt;MongoDbEventData&gt; indexKey = null;
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :                         IList&lt;Expression&lt;Func&lt;MongoDbEventData, object&gt;&gt;&gt; selectors = mongoIndex.Selectors.ToList();
+<span class="lineNum">     109 </span>            :                         for (int i = 0; i &lt; selectors.Count; i++)
+<span class="lineNum">     110 </span>            :                         {
+<span class="lineNum">     111 </span>            :                                 Expression&lt;Func&lt;MongoDbEventData, object&gt;&gt; expression = selectors[i];
+<span class="lineNum">     112 </span>            :                                 if (mongoIndex.IsAcending)
+<span class="lineNum">     113 </span>            :                                 {
+<span class="lineNum">     114 </span>            :                                         if (i == 0)
+<span class="lineNum">     115 </span>            :                                                 indexKey = indexKeysBuilder.Ascending(expression);
+<span class="lineNum">     116 </span>            :                                         else
+<span class="lineNum">     117 </span>            :                                                 indexKey = indexKey.Ascending(expression);
+<span class="lineNum">     118 </span>            :                                 }
+<span class="lineNum">     119 </span>            :                                 else
+<span class="lineNum">     120 </span>            :                                 {
+<span class="lineNum">     121 </span>            :                                         if (i == 0)
+<span class="lineNum">     122 </span>            :                                                 indexKey = indexKeysBuilder.Descending(expression);
+<span class="lineNum">     123 </span>            :                                         else
+<span class="lineNum">     124 </span>            :                                                 indexKey = indexKey.Descending(expression);
+<span class="lineNum">     125 </span>            :                                 }
+<span class="lineNum">     126 </span>            :                         }
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :                         bool throwExceptions;
+<span class="lineNum">     129 </span>            :                         if (!bool.TryParse(ConfigurationManager.GetSetting(&quot;Cqrs.MongoDb.SnapshotStore.ThrowExceptionsOnIndexPreparation&quot;), out throwExceptions))
+<span class="lineNum">     130 </span>            :                                 throwExceptions = true;
+<span class="lineNum">     131 </span>            :                         try
+<span class="lineNum">     132 </span>            :                         {
+<span class="lineNum">     133 </span>            :                                 MongoCollection.Indexes.CreateOne
+<span class="lineNum">     134 </span>            :                                 (
+<span class="lineNum">     135 </span>            :                                         indexKey,
+<span class="lineNum">     136 </span>            :                                         new CreateIndexOptions
+<span class="lineNum">     137 </span>            :                                         {
+<span class="lineNum">     138 </span>            :                                                 Unique = mongoIndex.IsUnique,
+<span class="lineNum">     139 </span>            :                                                 Name = mongoIndex.Name
+<span class="lineNum">     140 </span>            :                                         }
+<span class="lineNum">     141 </span>            :                                 );
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            :                         }
+<span class="lineNum">     144 </span>            :                         catch
+<span class="lineNum">     145 </span>            :                         {
+<span class="lineNum">     146 </span>            :                                 if (throwExceptions)
+<span class="lineNum">     147 </span>            :                                         throw;
+<span class="lineNum">     148 </span>            :                         }
+<span class="lineNum">     149 </span>            :                 }
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :                 #region Implementation of ISnapshotStore
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     154 </span>            :                 /// Get the latest &lt;see cref=&quot;Snapshot&quot;/&gt; from storage.
+<span class="lineNum">     155 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     156 </span>            :                 /// &lt;returns&gt;The most recent &lt;see cref=&quot;Snapshot&quot;/&gt; of&lt;/returns&gt;
+<span class="lineNum">     157 </span><span class="lineCov">          1 :                 protected override Snapshot Get(Type aggregateRootType, string streamName)</span>
+<span class="lineNum">     158 </span>            :                 {
+<span class="lineNum">     159 </span>            :                         MongoDbEventData query = MongoCollection
+<span class="lineNum">     160 </span>            :                                 .AsQueryable()
+<span class="lineNum">     161 </span>            :                                 .Where(snapshot =&gt; snapshot.AggregateId == streamName)
+<span class="lineNum">     162 </span>            :                                 .OrderByDescending(eventData =&gt; eventData.Version)
+<span class="lineNum">     163 </span>            :                                 .Take(1)
+<span class="lineNum">     164 </span>            :                                 .SingleOrDefault();
+<span class="lineNum">     165 </span>            : 
+<span class="lineNum">     166 </span>            :                         return EventDeserialiser.Deserialise(query);
+<span class="lineNum">     167 </span>            :                 }
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     170 </span>            :                 /// Saves the provided &lt;paramref name=&quot;snapshot&quot;/&gt; into storage.
+<span class="lineNum">     171 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     172 </span>            :                 /// &lt;param name=&quot;snapshot&quot;&gt;the &lt;see cref=&quot;Snapshot&quot;/&gt; to save and store.&lt;/param&gt;
+<span class="lineNum">     173 </span><span class="lineCov">          1 :                 public override void Save(Snapshot snapshot)</span>
+<span class="lineNum">     174 </span>            :                 {
+<span class="lineNum">     175 </span>            :                         EventData eventData = BuildEventData(snapshot);
+<span class="lineNum">     176 </span>            :                         var safeEventData = new MongoDbEventData(eventData);
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            :                         Logger.LogDebug(&quot;Adding an event to the MongoDB database&quot;, &quot;MongoDbSnapshotStore\\Save&quot;);
+<span class="lineNum">     179 </span>            :                         try
+<span class="lineNum">     180 </span>            :                         {
+<span class="lineNum">     181 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     182 </span>            :                                 MongoCollection.InsertOne(safeEventData);
+<span class="lineNum">     183 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     184 </span>            :                                 Logger.LogDebug(string.Format(&quot;Adding data in the MongoDB database took {0}.&quot;, end - start), &quot;MongoDbSnapshotStore\\Save&quot;);
+<span class="lineNum">     185 </span>            :                         }
+<span class="lineNum">     186 </span>            :                         finally
+<span class="lineNum">     187 </span>            :                         {
+<span class="lineNum">     188 </span>            :                                 Logger.LogDebug(&quot;Adding an event to the MongoDB database... Done&quot;, &quot;MongoDbSnapshotStore\\Save&quot;);
+<span class="lineNum">     189 </span>            :                         }
+<span class="lineNum">     190 </span>            :                 }
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :                 #endregion
+<span class="lineNum">     193 </span>            :         }
+<span class="lineNum">     194 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

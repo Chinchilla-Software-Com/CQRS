@@ -1,8 +1,8 @@
 var classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore =
 [
     [ "MongoDataStore", "classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a39f738d53074a548e6932bacdc4a4e3a.html#a39f738d53074a548e6932bacdc4a4e3a", null ],
-    [ "Add", "classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a27bcfb40fe8203e09d320b2aa19fff3a.html#a27bcfb40fe8203e09d320b2aa19fff3a", null ],
     [ "Add", "classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a38c242b255dc17cf8d19470fdf5a99bf.html#a38c242b255dc17cf8d19470fdf5a99bf", null ],
+    [ "Add", "classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a27bcfb40fe8203e09d320b2aa19fff3a.html#a27bcfb40fe8203e09d320b2aa19fff3a", null ],
     [ "Destroy", "classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_af97319aef1f0484666d9ea12578b8df9.html#af97319aef1f0484666d9ea12578b8df9", null ],
     [ "Dispose", "classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a4af729196a5fa4962961c9ce38b74891.html#a4af729196a5fa4962961c9ce38b74891", null ],
     [ "GetEnumerator", "classCqrs_1_1Mongo_1_1DataStores_1_1MongoDataStore_a3eeaf3e59a540025ff2aa0f62b5dd465.html#a3eeaf3e59a540025ff2aa0f62b5dd465", null ],

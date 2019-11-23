@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
   <compounddef id="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy" kind="class" language="C#" prot="public">
     <compoundname>Cqrs::Snapshots::DefaultSnapshotStrategy</compoundname>
     <basecompoundref refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy" prot="public" virt="non-virtual">Cqrs::Snapshots::ISnapshotStrategy&lt; TAuthenticationToken &gt;</basecompoundref>
@@ -9,8 +9,8 @@
         <type>TAuthenticationToken</type>
       </param>
     </templateparamlist>
-      <sectiondef kind="private-attrib">
-      <memberdef kind="variable" id="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_1ab8e4aa859705a1d3c094ea2276bf6367" prot="private" static="no" mutable="no">
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_1ab8e4aa859705a1d3c094ea2276bf6367" prot="private" static="yes" mutable="no">
         <type>const int</type>
         <definition>const int Cqrs.Snapshots.DefaultSnapshotStrategy&lt; TAuthenticationToken &gt;.SnapshotInterval</definition>
         <argsstring></argsstring>
@@ -22,7 +22,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="24" column="1" bodyfile="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="24" bodyend="-1"/>
+        <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="24" column="19" bodyfile="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="24" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-func">
@@ -38,20 +38,23 @@
           <declname>aggregateType</declname>
         </param>
         <briefdescription>
-<para>Indicates if the <emphasis>aggregateType</emphasis>  is able to be snapshotted by checking if the <emphasis>aggregateType</emphasis>  directly inherits SnapshotAggregateRoot&lt;TAuthenticationToken,TSnapshot&gt; </para>        </briefdescription>
+<para>Indicates if the <emphasis>aggregateType</emphasis>  is able to be snapshotted by checking if the <emphasis>aggregateType</emphasis>  directly inherits SnapshotAggregateRoot&lt;TAuthenticationToken,TSnapshot&gt; </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>aggregateType</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The Type of IAggregateRoot&lt;TAuthenticationToken&gt; to check.</para></parameterdescription>
+<para>The Type of IAggregateRoot&lt;TAuthenticationToken&gt; to check.</para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="31" column="1" bodyfile="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="31" bodyend="38"/>
+        <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="31" column="21" bodyfile="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="31" bodyend="38"/>
       </memberdef>
       <memberdef kind="function" id="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9_1a9cdb3d79c55e2eb2796639b273d49ed9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
         <type>bool</type>
@@ -69,27 +72,31 @@
           <defval>null</defval>
         </param>
         <briefdescription>
-<para>Checks <ref refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01b526aedb5fa9a3879887a_1acdbb918ac01b526aedb5fa9a3879887a" kindref="member">IsSnapshotable</ref> and if it is, also checks if the calculated version number would be exactly dividable by <ref refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a3540a6d621d8c23816da761f929d83a7_1a3540a6d621d8c23816da761f929d83a7" kindref="member">GetSnapshotInterval</ref>. </para>        </briefdescription>
+<para>Checks <ref refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01b526aedb5fa9a3879887a_1acdbb918ac01b526aedb5fa9a3879887a" kindref="member">IsSnapshotable</ref> and if it is, also checks if the calculated version number would be exactly dividable by <ref refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a3540a6d621d8c23816da761f929d83a7_1a3540a6d621d8c23816da761f929d83a7" kindref="member">GetSnapshotInterval</ref>. </para>
+        </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>aggregate</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The IAggregateRoot&lt;TAuthenticationToken&gt; to check.</para></parameterdescription>
+<para>The IAggregateRoot&lt;TAuthenticationToken&gt; to check.</para>
+</parameterdescription>
 </parameteritem>
 <parameteritem>
 <parameternamelist>
 <parametername>uncommittedChanges</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.</para></parameterdescription>
+<para>A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.</para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>        </detaileddescription>
+</para>
+        </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="45" column="1" bodyfile="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="45" bodyend="61"/>
+        <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="45" column="21" bodyfile="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="45" bodyend="61"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="protected-func">
@@ -99,53 +106,57 @@
         <argsstring>()</argsstring>
         <name>GetSnapshotInterval</name>
         <briefdescription>
-<para>Returns the value of SnapshotInterval. </para>        </briefdescription>
+<para>Returns the value of SnapshotInterval. </para>
+        </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="66" column="1" bodyfile="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="66" bodyend="69"/>
+        <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" line="66" column="23" bodyfile="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Snapshots/DefaultSnapshotStrategy.cs" bodystart="66" bodyend="69"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
-<para>An ISnapshotStrategy&lt;TAuthenticationToken&gt; that takes a snapshot every 15 versions. </para>    </briefdescription>
+<para>An ISnapshotStrategy&lt;TAuthenticationToken&gt; that takes a snapshot every 15 versions. </para>
+    </briefdescription>
     <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>TAuthenticationToken</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>The Type of the authentication token.</para></parameterdescription>
+<para>The Type of the authentication token.</para>
+</parameterdescription>
 </parameteritem>
 </parameterlist>
-</para>    </detaileddescription>
+</para>
+    </detaileddescription>
     <inheritancegraph>
-      <node id="2640">
+      <node id="2">
         <label>ISnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy"/>
       </node>
-      <node id="2639">
+      <node id="1">
         <label>Cqrs.Snapshots.DefaultSnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy"/>
-        <childnode refid="2640" relation="public-inheritance">
+        <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
-      <node id="2641">
+      <node id="3">
         <label>Cqrs::Akka::Snapshots::DefaultAkkaSnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Akka_1_1Snapshots_1_1DefaultAkkaSnapshotStrategy"/>
-        <childnode refid="2639" relation="public-inheritance">
+        <childnode refid="1" relation="public-inheritance">
         </childnode>
       </node>
     </inheritancegraph>
     <collaborationgraph>
-      <node id="2643">
+      <node id="2">
         <label>ISnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="interfaceCqrs_1_1Snapshots_1_1ISnapshotStrategy"/>
       </node>
-      <node id="2642">
+      <node id="1">
         <label>Cqrs.Snapshots.DefaultSnapshotStrategy&lt; TAuthenticationToken &gt;</label>
         <link refid="classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy"/>
-        <childnode refid="2643" relation="public-inheritance">
+        <childnode refid="2" relation="public-inheritance">
         </childnode>
       </node>
     </collaborationgraph>

@@ -1,8 +1,8 @@
 var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper =
 [
     [ "AzureBusHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_aed54a79efffdf9799a3baae46c2b7fb4.html#aed54a79efffdf9799a3baae46c2b7fb4", null ],
-    [ "DefaultReceiveCommand", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ae35c260f46f8aa7ba928815187b9088e.html#ae35c260f46f8aa7ba928815187b9088e", null ],
-    [ "DefaultReceiveEvent", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a0139f99e393214427b9a711bf27cae40.html#a0139f99e393214427b9a711bf27cae40", null ],
+    [ "DefaultReceiveCommand", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a040f3cac58885ade5d74ceda498694b2.html#a040f3cac58885ade5d74ceda498694b2", null ],
+    [ "DefaultReceiveEvent", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a1c2517684c8b68de03b82d452bbbd0c8.html#a1c2517684c8b68de03b82d452bbbd0c8", null ],
     [ "PrepareAndValidateCommand< TCommand >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a4d03f55a58a018fbbf6fd518ad9b24f8.html#a4d03f55a58a018fbbf6fd518ad9b24f8", null ],
     [ "PrepareAndValidateEvent< TEvent >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ab0f6ff2ee04ad3b58e6713caebd3b560.html#ab0f6ff2ee04ad3b58e6713caebd3b560", null ],
     [ "PrepareCommand< TCommand >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_abdcc74e09f97a259f16d04e2af454002.html#abdcc74e09f97a259f16d04e2af454002", null ],

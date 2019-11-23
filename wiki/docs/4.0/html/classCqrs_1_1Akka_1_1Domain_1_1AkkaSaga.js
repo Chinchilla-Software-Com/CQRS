@@ -2,8 +2,8 @@ var classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga =
 [
     [ "AkkaSaga", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a2f0ebb5d1d22e3112d5b9a09fde7fb47.html#a2f0ebb5d1d22e3112d5b9a09fde7fb47", null ],
     [ "Apply", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a4a12310825f2d2cc5963eee4cc4ed802.html#a4a12310825f2d2cc5963eee4cc4ed802", null ],
-    [ "ApplyChange", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a42126a6a1a7896d16412b6023f208f7c.html#a42126a6a1a7896d16412b6023f208f7c", null ],
     [ "ApplyChange", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a18d554cd5ad329ab152efb7d852f2438.html#a18d554cd5ad329ab152efb7d852f2438", null ],
+    [ "ApplyChange", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a42126a6a1a7896d16412b6023f208f7c.html#a42126a6a1a7896d16412b6023f208f7c", null ],
     [ "Execute< TEvent >", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_ac0782ac0b7e28418a52cead1b7b8b0c3.html#ac0782ac0b7e28418a52cead1b7b8b0c3", null ],
     [ "GetUncommittedChanges", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a1fceccba498fa9f2d3db328a921da23d.html#a1fceccba498fa9f2d3db328a921da23d", null ],
     [ "GetUnpublishedCommands", "classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a0776a9a8f387c01313aa12d06643249a.html#a0776a9a8f387c01313aa12d06643249a", null ],

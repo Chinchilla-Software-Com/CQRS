@@ -1,8 +1,8 @@
 var classCqrs_1_1DataStores_1_1InProcessDataStore =
 [
     [ "InProcessDataStore", "classCqrs_1_1DataStores_1_1InProcessDataStore_a86a0ef4945e0f2fa45027ceb3261d284.html#a86a0ef4945e0f2fa45027ceb3261d284", null ],
-    [ "Add", "classCqrs_1_1DataStores_1_1InProcessDataStore_ade5c4033c628598665c0cba986a54c15.html#ade5c4033c628598665c0cba986a54c15", null ],
     [ "Add", "classCqrs_1_1DataStores_1_1InProcessDataStore_ad62504e478f0a907c18ec4aa9b42703a.html#ad62504e478f0a907c18ec4aa9b42703a", null ],
+    [ "Add", "classCqrs_1_1DataStores_1_1InProcessDataStore_ade5c4033c628598665c0cba986a54c15.html#ade5c4033c628598665c0cba986a54c15", null ],
     [ "Destroy", "classCqrs_1_1DataStores_1_1InProcessDataStore_a1fc7a3935f52087f3703b652e77f0b75.html#a1fc7a3935f52087f3703b652e77f0b75", null ],
     [ "Dispose", "classCqrs_1_1DataStores_1_1InProcessDataStore_a220126a1dd0e318197b9c994c313d5fd.html#a220126a1dd0e318197b9c994c313d5fd", null ],
     [ "GetEnumerator", "classCqrs_1_1DataStores_1_1InProcessDataStore_a867c2badec9f0669cf70257f5572b701.html#a867c2badec9f0669cf70257f5572b701", null ],
