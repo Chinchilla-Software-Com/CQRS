@@ -12,6 +12,6 @@ var classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessMana
     [ "DependencyResolver", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManager_a6ddc3cab5bedf62389eaa4c769441aa8.html#a6ddc3cab5bedf62389eaa4c769441aa8", null ],
     [ "HelloWorldWasRepliedTo", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManager.html#a1168d77012a0234693f76683591493ef", null ],
     [ "HelloWorldWasSaid", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManager.html#a216ac5d38cf5e651206825f2201d299d", null ],
-    [ "IsLogicallyDeleted", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManager_a567d02405fc3a52b33d2fe2c3a98b8a3.html#a567d02405fc3a52b33d2fe2c3a98b8a3", null ],
+    [ "IsDeleted", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManager_af7ab2e24d481f9f262b11eefd9b397bb.html#af7ab2e24d481f9f262b11eefd9b397bb", null ],
     [ "Rsn", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManager_a86603fe9e9fa5e9b009064ea5ea6873a.html#a86603fe9e9fa5e9b009064ea5ea6873a", null ]
 ];

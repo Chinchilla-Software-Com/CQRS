@@ -28,10 +28,8 @@ bool \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_ac5cbeb6
 \begin{DoxyCompactList}\small\item\em Prepares and validates an I\+Event$<$\+T\+Authentication\+Token$>$ to be sent specifying the framework it is sent via. \end{DoxyCompactList}\item 
 \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_abca50d70da26664a7f2ff26b4059c903_abca50d70da26664a7f2ff26b4059c903}{Receive\+Event} (string message\+Body, Func$<$ \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$, bool?$>$ receive\+Event\+Handler, string message\+Id, string signature, string signing\+Token\+Configuration\+Key, Action skipped\+Action=null, Action lock\+Refresh\+Action=null)
 \begin{DoxyCompactList}\small\item\em Deserialises and processes the {\itshape message\+Body}  received from the network through the provided {\itshape receive\+Event\+Handler} . \end{DoxyCompactList}\item 
-void \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_a51988703dad9dc41c834e620e4e6e31a_a51988703dad9dc41c834e620e4e6e31a}{Refresh\+Lock} (Cancellation\+Token\+Source brokered\+Message\+Renew\+Cancellation\+Token\+Source, Brokered\+Message message, string type=\char`\"{}message\char`\"{})
-\begin{DoxyCompactList}\small\item\em Refreshes the network lock. \end{DoxyCompactList}\item 
 bool \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_a29758e82b2fd6c7e3ed6b19547887db9_a29758e82b2fd6c7e3ed6b19547887db9}{Default\+Receive\+Event} (\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @event, \hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager} route\+Manager, string framework)
-\begin{DoxyCompactList}\small\item\em The default event handler that check if the I\+Event$<$\+T\+Authentication\+Token$>$ has already been processed by this framework, checks if the I\+Event$<$\+T\+Authentication\+Token$>$ is required, finds the handler from the provided {\itshape route\+Manager} . \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Refreshes the network lock. \end{DoxyCompactList}\item 
 void \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_a1fe0ff74b4e5cce3d0b5a81dbaa273e0_a1fe0ff74b4e5cce3d0b5a81dbaa273e0}{Register\+Handler$<$ T\+Message $>$} (I\+Telemetry\+Helper telemetry\+Helper, \hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager} route\+Manger, Action$<$ T\+Message $>$ handler, Type targeted\+Type, bool hold\+Message\+Lock=true)
 \begin{DoxyCompactList}\small\item\em Manually registers the provided {\itshape handler}  on the provided {\itshape route\+Manger}  \end{DoxyCompactList}\item 
 void \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_aef39e7d297ccaa36b02ccc3012dc5906_aef39e7d297ccaa36b02ccc3012dc5906}{Register\+Global\+Event\+Handler$<$ T\+Message $>$} (I\+Telemetry\+Helper telemetry\+Helper, \hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager} route\+Manger, Action$<$ T\+Message $>$ handler, bool hold\+Message\+Lock=true)
@@ -82,6 +80,8 @@ Implemented in \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ae3
 {\footnotesize\ttfamily bool \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Default\+Receive\+Event (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}$<$ T\+Authentication\+Token $>$ @}]{event,  }\item[{\hyperlink{classCqrs_1_1Bus_1_1RouteManager}{Route\+Manager}}]{route\+Manager,  }\item[{string}]{framework }\end{DoxyParamCaption})}
 
 
+
+Refreshes the network lock. 
 
 The default event handler that check if the I\+Event$<$\+T\+Authentication\+Token$>$ has already been processed by this framework, checks if the I\+Event$<$\+T\+Authentication\+Token$>$ is required, finds the handler from the provided {\itshape route\+Manager} . 
 
@@ -288,20 +288,6 @@ The I\+Event$<$\+T\+Authentication\+Token$>$ that was processed.
 
 
 Implemented in \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ab1feda11b64b606f36d517ce5ce8ca59_ab1feda11b64b606f36d517ce5ce8ca59}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
-
-\mbox{\Hypertarget{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_a51988703dad9dc41c834e620e4e6e31a_a51988703dad9dc41c834e620e4e6e31a}\label{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_a51988703dad9dc41c834e620e4e6e31a_a51988703dad9dc41c834e620e4e6e31a}} 
-\index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+I\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+I\+Azure\+Bus\+Helper}!Refresh\+Lock@{Refresh\+Lock}}
-\index{Refresh\+Lock@{Refresh\+Lock}!Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+I\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+I\+Azure\+Bus\+Helper}}
-\subsubsection{\texorpdfstring{Refresh\+Lock()}{RefreshLock()}}
-{\footnotesize\ttfamily void \hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper}{Cqrs.\+Azure.\+Service\+Bus.\+I\+Azure\+Bus\+Helper}$<$ T\+Authentication\+Token $>$.Refresh\+Lock (\begin{DoxyParamCaption}\item[{Cancellation\+Token\+Source}]{brokered\+Message\+Renew\+Cancellation\+Token\+Source,  }\item[{Brokered\+Message}]{message,  }\item[{string}]{type = {\ttfamily \char`\"{}message\char`\"{}} }\end{DoxyParamCaption})}
-
-
-
-Refreshes the network lock. 
-
-
-
-Implemented in \hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_aa4ef095148aae1af508fcd7b51f538d3_aa4ef095148aae1af508fcd7b51f538d3}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus\+Helper$<$ T\+Authentication\+Token $>$}.
 
 \mbox{\Hypertarget{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_aef39e7d297ccaa36b02ccc3012dc5906_aef39e7d297ccaa36b02ccc3012dc5906}\label{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_aef39e7d297ccaa36b02ccc3012dc5906_aef39e7d297ccaa36b02ccc3012dc5906}} 
 \index{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+I\+Azure\+Bus\+Helper@{Cqrs\+::\+Azure\+::\+Service\+Bus\+::\+I\+Azure\+Bus\+Helper}!Register\+Global\+Event\+Handler$<$ T\+Message $>$@{Register\+Global\+Event\+Handler$<$ T\+Message $>$}}

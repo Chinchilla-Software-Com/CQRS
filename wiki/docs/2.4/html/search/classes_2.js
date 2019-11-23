@@ -17,8 +17,6 @@ var searchData=
   ['corehost',['CoreHost',['../classCqrs_1_1Hosts_1_1CoreHost.html',1,'Cqrs::Hosts']]],
   ['cqrsapicontroller',['CqrsApiController',['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs.WebApi.CqrsApiController&lt; TAuthenticationToken &gt;'],['../classCqrs_1_1WebApi_1_1CqrsApiController.html',1,'Cqrs.WebApi.CqrsApiController']]],
   ['cqrseventapicontroller',['CqrsEventApiController',['../classCqrs_1_1WebApi_1_1CqrsEventApiController.html',1,'Cqrs::WebApi']]],
-  ['cqrshttpapplication',['CqrsHttpApplication',['../classCqrs_1_1Hosts_1_1CqrsHttpApplication.html',1,'Cqrs.Hosts.CqrsHttpApplication'],['../classCqrs_1_1Hosts_1_1CqrsHttpApplication.html',1,'Cqrs.Hosts.CqrsHttpApplication&lt; TAuthenticationToken &gt;']]],
-  ['cqrshttpapplication_3c_20tauthenticationtoken_20_3e',['CqrsHttpApplication&lt; TAuthenticationToken &gt;',['../classCqrs_1_1Hosts_1_1CqrsHttpApplication.html',1,'Cqrs::Hosts']]],
   ['cqrshttpapplicationwithsignalr',['CqrsHttpApplicationWithSignalR',['../classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR.html',1,'Cqrs.WebApi.CqrsHttpApplicationWithSignalR&lt; TAuthenticationToken, TEventToHubProxy &gt;'],['../classCqrs_1_1WebApi_1_1CqrsHttpApplicationWithSignalR.html',1,'Cqrs.WebApi.CqrsHttpApplicationWithSignalR&lt; TAuthenticationToken &gt;']]],
   ['cqrsjobhost',['CqrsJobHost',['../classCqrs_1_1Azure_1_1WebJobs_1_1CqrsJobHost.html',1,'Cqrs::Azure::WebJobs']]],
   ['cqrsmodule',['CqrsModule',['../classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule.html',1,'Cqrs::Ninject::Configuration']]],

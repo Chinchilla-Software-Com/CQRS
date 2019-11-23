@@ -4,6 +4,7 @@ var menudata={children:[
 {text:"Packages",url:"namespaces.html"},
 {text:"Package Functions",url:"namespacemembers.html",children:[
 {text:"All",url:"namespacemembers.html"},
+{text:"Functions",url:"namespacemembers_func.html"},
 {text:"Enumerations",url:"namespacemembers_enum.html"}]}]},
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
@@ -59,7 +60,6 @@ var menudata={children:[
 {text:"v",url:"functions_func_v.html#index_v"},
 {text:"w",url:"functions_func_w.html#index_w"}]},
 {text:"Variables",url:"functions_vars.html",children:[
-{text:"_",url:"functions_vars.html#index__"},
 {text:"a",url:"functions_vars.html#index_a"},
 {text:"b",url:"functions_vars.html#index_b"},
 {text:"c",url:"functions_vars.html#index_c"},

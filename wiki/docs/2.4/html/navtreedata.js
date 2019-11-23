@@ -5,6 +5,7 @@ var NAVTREE =
       [ "Packages", "namespaces.html", "namespaces" ],
       [ "Package Functions", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
         [ "Enumerations", "namespacemembers_enum.html", null ]
       ] ]
     ] ],
@@ -28,17 +29,17 @@ var NAVTREEINDEX =
 "annotated.html",
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a26f068ae3ca8f1e84277f133f8fc4620.html#a26f068ae3ca8f1e84277f133f8fc4620",
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_aeb34e21116be39f3f34e5970001f3762.html#aeb34e21116be39f3f34e5970001f3762",
-"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_ab3c996b8e717aec1e4fc2a70fea52d53.html#ab3c996b8e717aec1e4fc2a70fea52d53",
-"classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_a9afab2cca66ca4453b2ab56916578c7d.html#a9afab2cca66ca4453b2ab56916578c7d",
-"classCqrs_1_1Domain_1_1AggregateRepository_a6388abb96d4480c6141f5d5e469a2ca0.html#a6388abb96d4480c6141f5d5e469a2ca0",
-"classCqrs_1_1Events_1_1DtoAggregateEvent_ad5f763ecd79dc9b4882ed15239242d17.html#ad5f763ecd79dc9b4882ed15239242d17",
-"classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore.html",
-"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory_ad55763a7e19193cfecf2abca3759f2c6.html#ad55763a7e19193cfecf2abca3759f2c6",
-"classCqrs_1_1Repositories_1_1Repository_a444e9dfe4710be90940dbb6dec9d856f.html#a444e9dfe4710be90940dbb6dec9d856f",
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_1_1LogErrorInfo_aea6dad38c7378ec2aa015c244924ec3b.html#aea6dad38c7378ec2aa015c244924ec3b",
-"interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_af6e1bca15164a08308969794b089c31b.html#af6e1bca15164a08308969794b089c31b",
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a85bd03a0bf9c2083822c4b67691f4297.html#a85bd03a0bf9c2083822c4b67691f4297",
-"namespaceCqrs_1_1Repositories_1_1Queries.html"
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_ade4db14c86a07454b713e1fb711692e2.html#ade4db14c86a07454b713e1fb711692e2",
+"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStorer_a60d3f056786a231d63b756823d220cc9.html#a60d3f056786a231d63b756823d220cc9",
+"classCqrs_1_1Domain_1_1Exceptions_1_1ConcurrencyException_a7b8143f3a8047307373503c31e8b3366.html#a7b8143f3a8047307373503c31e8b3366",
+"classCqrs_1_1Events_1_1EventStore.html",
+"classCqrs_1_1MongoDB_1_1Serialisers_1_1MongoDbEventBuilder_a06afbb994fd3f679f275dea3d1d60c6e.html#a06afbb994fd3f679f275dea3d1d60c6e",
+"classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule.html",
+"classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot_a0b39f2941c828d987c84dc6cbb0a02be.html#a0b39f2941c828d987c84dc6cbb0a02be",
+"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_aa9bf7da64ecd097ff4270abc3592b56e.html#aa9bf7da64ecd097ff4270abc3592b56e",
+"interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory_ade388f0dfa9c42964392159a4f97fb1e.html#ade388f0dfa9c42964392159a4f97fb1e",
+"namespaceCqrs_1_1Azure_1_1DocumentDb_1_1Entities.html",
+"namespaceSystem_1_1Web_1_1Helpers.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

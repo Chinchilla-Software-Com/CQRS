@@ -1,6 +1,7 @@
 var searchData=
 [
   ['wcfdatacontractresolverconfiguration',['WcfDataContractResolverConfiguration',['../classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration.html',1,'Cqrs.Services.WcfDataContractResolverConfiguration'],['../classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_ac6853a244c867a60a64a223f6bcb6a55.html#ac6853a244c867a60a64a223f6bcb6a55',1,'Cqrs.Services.WcfDataContractResolverConfiguration.WcfDataContractResolverConfiguration()']]],
+  ['wcfstartup',['WcfStartUp',['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WcfStartUp.html',1,'Cqrs.Ninject.Azure.Wcf.Configuration.WcfStartUp'],['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WcfStartUp_a43968a1c4f997d56c2b6eb0a3b6e46a3.html#a43968a1c4f997d56c2b6eb0a3b6e46a3',1,'Cqrs.Ninject.Azure.Wcf.Configuration.WcfStartUp.WcfStartUp()']]],
   ['webapiconfig',['WebApiConfig',['../classCqrs_1_1WebApi_1_1Configuration_1_1WebApiConfig.html',1,'Cqrs::WebApi::Configuration']]],
   ['webapimodule',['WebApiModule',['../classCqrs_1_1Ninject_1_1WebApi_1_1Configuration_1_1WebApiModule.html',1,'Cqrs::Ninject::WebApi::Configuration']]],
   ['webhostmodule',['WebHostModule',['../classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1Configuration_1_1WebHostModule.html',1,'Cqrs::Ninject::Azure::Wcf::Configuration']]],
@@ -11,8 +12,5 @@ var searchData=
   ['withpermissionscopecompanyanduser_3c_20tauthenticationtoken_20_3e',['WithPermissionScopeCompanyAndUser&lt; TAuthenticationToken &gt;',['../classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy_ac21d8e8a04e218e1a7c283ad181e0e9f.html#ac21d8e8a04e218e1a7c283ad181e0e9f',1,'Cqrs::Repositories::Queries::QueryStrategy']]],
   ['withpermissionscopeuser_3c_20tauthenticationtoken_20_3e',['WithPermissionScopeUser&lt; TAuthenticationToken &gt;',['../classCqrs_1_1Repositories_1_1Queries_1_1QueryStrategy_ad8b52782f5410a399949417b10820780.html#ad8b52782f5410a399949417b10820780',1,'Cqrs::Repositories::Queries::QueryStrategy']]],
   ['writablecollection',['WritableCollection',['../classCqrs_1_1Azure_1_1BlobStorage_1_1StorageStore_aece11e874587ca60913d275079dfc13c.html#aece11e874587ca60913d275079dfc13c',1,'Cqrs::Azure::BlobStorage::StorageStore']]],
-  ['writableconnectionstrings',['WritableConnectionStrings',['../classCqrs_1_1Events_1_1ReplicatedSqlEventStore_ab2811e34d4f19fb0115a96f622050f68.html#ab2811e34d4f19fb0115a96f622050f68',1,'Cqrs::Events::ReplicatedSqlEventStore']]],
-  ['writeableconnections',['WriteableConnections',['../classCqrs_1_1DataStores_1_1SqlDataStore_af37a59f184ce77c2204834e60c8f76aa.html#af37a59f184ce77c2204834e60c8f76aa',1,'Cqrs::DataStores::SqlDataStore']]],
-  ['writeableconnectionstrings',['WriteableConnectionStrings',['../classCqrs_1_1DataStores_1_1SqlDataStore_adfdf7101f6c644f4b4ad074a2edf0a42.html#adfdf7101f6c644f4b4ad074a2edf0a42',1,'Cqrs::DataStores::SqlDataStore']]],
   ['writetostreamasync',['WriteToStreamAsync',['../classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1FormMultipartEncodedMediaTypeFormatter_aced660e9ab818558fc5728ec82e2434e.html#aced660e9ab818558fc5728ec82e2434e',1,'Cqrs::WebApi::Formatters::FormMultipart::FormMultipartEncodedMediaTypeFormatter']]]
 ];

@@ -9,7 +9,6 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper =
     [ "PrepareEvent< TEvent >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_afb3ade39a8f8fd39c871c687701d80f4.html#afb3ade39a8f8fd39c871c687701d80f4", null ],
     [ "ReceiveCommand", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a89f4ae84aad951fa8f4809f3b23a1893.html#a89f4ae84aad951fa8f4809f3b23a1893", null ],
     [ "ReceiveEvent", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ab1feda11b64b606f36d517ce5ce8ca59.html#ab1feda11b64b606f36d517ce5ce8ca59", null ],
-    [ "RefreshLock", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_aa4ef095148aae1af508fcd7b51f538d3.html#aa4ef095148aae1af508fcd7b51f538d3", null ],
     [ "RegisterGlobalEventHandler< TMessage >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_ac1955fe076ac3ef09a2cad1121c36ba2.html#ac1955fe076ac3ef09a2cad1121c36ba2", null ],
     [ "RegisterHandler< TMessage >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a3b8dd8410756ffdc67782dde8f2519ff.html#a3b8dd8410756ffdc67782dde8f2519ff", null ],
     [ "VerifySignature", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBusHelper_a6f35e150ca60f71a73c2f9a6e03f9f56.html#a6f35e150ca60f71a73c2f9a6e03f9f56", null ],

@@ -6,7 +6,7 @@ var classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder =
     [ "CreateQueryable", "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_af8860edf3677cb80ae481f17ff2db9b5.html#af8860edf3677cb80ae481f17ff2db9b5", null ],
     [ "GeneratePredicate", "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_a553ad69e77d37f28b40e6c9d8e98b716.html#a553ad69e77d37f28b40e6c9d8e98b716", null ],
     [ "GeneratePredicate", "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_aa38989a8b4808c7c73e7cf038b535ea7.html#aa38989a8b4808c7c73e7cf038b535ea7", null ],
-    [ "GeneratePredicateIsNotLogicallyDeleted", "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_a6095cfcbd824578e7c70e2028e1ac6ad.html#a6095cfcbd824578e7c70e2028e1ac6ad", null ],
+    [ "GeneratePredicateIsNotDeleted", "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_a9a6596d3dd0e4489bfa2d5d93ac93ec8.html#a9a6596d3dd0e4489bfa2d5d93ac93ec8", null ],
     [ "GeneratePredicateWithPermissionScopeAny< TAuthenticationToken >", "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_a7768a63fd46f991f87a00b51484c2f34.html#a7768a63fd46f991f87a00b51484c2f34", null ],
     [ "GeneratePredicateWithPermissionScopeCompany< TAuthenticationToken >", "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_aa1341909b87629158efa619af12cec5f.html#aa1341909b87629158efa619af12cec5f", null ],
     [ "GeneratePredicateWithPermissionScopeCompanyAndUser< TAuthenticationToken >", "classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder_a49c0626c4137be11afbb1e398294e474.html#a49c0626c4137be11afbb1e398294e474", null ],

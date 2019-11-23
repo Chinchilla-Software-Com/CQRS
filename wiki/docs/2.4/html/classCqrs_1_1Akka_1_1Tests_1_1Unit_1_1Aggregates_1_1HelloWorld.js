@@ -8,6 +8,6 @@ var classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates_1_1HelloWorld =
     [ "SayHello", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates_1_1HelloWorld_a20af0c54b6a45906cde151ebd20c93a5.html#a20af0c54b6a45906cde151ebd20c93a5", null ],
     [ "SayHello", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates_1_1HelloWorld_a2c5e579e741dc3471e3532f5be3b98ab.html#a2c5e579e741dc3471e3532f5be3b98ab", null ],
     [ "DependencyResolver", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates_1_1HelloWorld_abf66c1d14c78b9ed3ca54225d04a8beb.html#abf66c1d14c78b9ed3ca54225d04a8beb", null ],
-    [ "IsLogicallyDeleted", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates_1_1HelloWorld_acd17d8097c0cb44400e876a53b4fbd57.html#acd17d8097c0cb44400e876a53b4fbd57", null ],
+    [ "IsDeleted", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates_1_1HelloWorld_acb0b1bde01be12368433ebbb8f20eba9.html#acb0b1bde01be12368433ebbb8f20eba9", null ],
     [ "Rsn", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Aggregates_1_1HelloWorld_a2e74fa47e00d67d6de3df5b1b8e140f6.html#a2e74fa47e00d67d6de3df5b1b8e140f6", null ]
 ];

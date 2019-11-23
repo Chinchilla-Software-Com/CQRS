@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['enterpriselibrary',['EnterpriseLibrary',['../namespaceMicrosoft_1_1Practices_1_1EnterpriseLibrary.html',1,'Microsoft::Practices']]],
   ['main',['Main',['../classCqrsWebJobProgram_ab11d66be0194de537cb7ae73e74c2181.html#ab11d66be0194de537cb7ae73e74c2181',1,'CqrsWebJobProgram']]],
   ['manuallyregistercommandhandler_3c_20tmessage_20_3e',['ManuallyRegisterCommandHandler&lt; TMessage &gt;',['../classCqrs_1_1Hosts_1_1CoreHost_a834781c47df7220f4b62a90d0333ab18.html#a834781c47df7220f4b62a90d0333ab18',1,'Cqrs::Hosts::CoreHost']]],
   ['manuallyregistereventhandler_3c_20tmessage_20_3e',['ManuallyRegisterEventHandler&lt; TMessage &gt;',['../classCqrs_1_1Hosts_1_1CoreHost_afd0a6b149a8b5ce0e9be016f422f06f9.html#afd0a6b149a8b5ce0e9be016f422f06f9',1,'Cqrs::Hosts::CoreHost']]],
@@ -55,7 +56,9 @@ var searchData=
   ['multipartformattersettings',['MultipartFormatterSettings',['../classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings.html',1,'Cqrs::WebApi::Formatters::FormMultipart::Infrastructure']]],
   ['multiplecommandhandlersregisteredexception',['MultipleCommandHandlersRegisteredException',['../classCqrs_1_1Exceptions_1_1MultipleCommandHandlersRegisteredException.html',1,'Cqrs.Exceptions.MultipleCommandHandlersRegisteredException'],['../classCqrs_1_1Exceptions_1_1MultipleCommandHandlersRegisteredException_aa8e0bffc3404b091301abaec4c770aa6.html#aa8e0bffc3404b091301abaec4c770aa6',1,'Cqrs.Exceptions.MultipleCommandHandlersRegisteredException.MultipleCommandHandlersRegisteredException(Type type)'],['../classCqrs_1_1Exceptions_1_1MultipleCommandHandlersRegisteredException_aa3457b26ff5ab06b6b6762578fce5f67.html#aa3457b26ff5ab06b6b6762578fce5f67',1,'Cqrs.Exceptions.MultipleCommandHandlersRegisteredException.MultipleCommandHandlersRegisteredException(string message)']]],
   ['multiplehandlersregisteredexception',['MultipleHandlersRegisteredException',['../classCqrs_1_1Exceptions_1_1MultipleHandlersRegisteredException.html',1,'Cqrs.Exceptions.MultipleHandlersRegisteredException'],['../classCqrs_1_1Exceptions_1_1MultipleHandlersRegisteredException_a5cfe27c70026da5cc37f5ad2de2bce9c.html#a5cfe27c70026da5cc37f5ad2de2bce9c',1,'Cqrs.Exceptions.MultipleHandlersRegisteredException.MultipleHandlersRegisteredException(Type type)'],['../classCqrs_1_1Exceptions_1_1MultipleHandlersRegisteredException_ade772c573d129335b96ef168aec74183.html#ade772c573d129335b96ef168aec74183',1,'Cqrs.Exceptions.MultipleHandlersRegisteredException.MultipleHandlersRegisteredException(string message)']]],
+  ['practices',['Practices',['../namespaceMicrosoft_1_1Practices.html',1,'Microsoft']]],
   ['storage',['Storage',['../namespaceMicrosoft_1_1WindowsAzure_1_1Storage.html',1,'Microsoft::WindowsAzure']]],
   ['table',['Table',['../namespaceMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table.html',1,'Microsoft::WindowsAzure::Storage']]],
+  ['transientfaulthandling',['TransientFaultHandling',['../namespaceMicrosoft_1_1Practices_1_1EnterpriseLibrary_1_1TransientFaultHandling.html',1,'Microsoft::Practices::EnterpriseLibrary']]],
   ['windowsazure',['WindowsAzure',['../namespaceMicrosoft_1_1WindowsAzure.html',1,'Microsoft']]]
 ];
