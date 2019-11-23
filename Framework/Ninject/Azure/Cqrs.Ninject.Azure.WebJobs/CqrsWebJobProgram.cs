@@ -6,22 +6,29 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using Cqrs.Authentication;
+using Cqrs.Hosts;
 using Cqrs.Ninject.Azure.WebJobs;
 
 /// <summary>
 /// Starts the WebJob.
 /// </summary>
-public partial class CqrsWebJobProgram : CqrsNinjectJobHost<System.Guid, DefaultAuthenticationTokenHelper>
+/// <typeparam name="TCoreHost">This should be the <see cref="Type"/> on the class you are writting. See example</typeparam>
+/// <example>
+/// public class MyProgram : CqrsWebJobProgram&lt;MyProgram&gt;
+/// {
+/// }
+/// </example>
+public class CqrsWebJobProgram<TCoreHost> : CqrsNinjectJobHost<Guid, DefaultAuthenticationTokenHelper>
+		where TCoreHost : CoreHost<Guid>, new()
 {
 	/// <summary>
-	/// Instantiate a new instance of <see cref="CqrsWebJobProgram"/>
+	/// Instantiate a new instance of <see cref="CqrsWebJobProgram{TCoreHost}"/>
 	/// </summary>
 	public CqrsWebJobProgram()
 	{
-		System.Type commandOrEventType = null;
-		GetCommandOrEventType(ref commandOrEventType);
-		HandlerTypes = new[] { commandOrEventType };
+		HandlerTypes = GetCommandOrEventTypes();
 	}
 
 	/// <remarks>
@@ -31,12 +38,15 @@ public partial class CqrsWebJobProgram : CqrsNinjectJobHost<System.Guid, Default
 	/// </remarks>
 	public static void Main()
 	{
-		CoreHost = new CqrsWebJobProgram();
+		CoreHost = new TCoreHost();
 		StartHost();
 	}
 
 	/// <summary>
-	/// Use a partial class to set add a command or event handler here on <paramref name="commandOrEventType"/>
+	/// Add JUST ONE command and/or event handler here from each assembly you want automatically scanned.
 	/// </summary>
-	partial void GetCommandOrEventType(ref System.Type commandOrEventType);
+	protected virtual Type[] GetCommandOrEventTypes()
+	{
+		return new Type[] { };
+	}
 }
