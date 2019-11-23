@@ -1,6 +1,6 @@
 var classCqrsWebJobProgram =
 [
-    [ "CqrsWebJobProgram", "classCqrsWebJobProgram_a7a7e74a9c2358374e3627abb36bd4462.html#a7a7e74a9c2358374e3627abb36bd4462", null ],
-    [ "GetCommandOrEventTypes", "classCqrsWebJobProgram_a07e42c1b43cb95a6d997a80a6a6c0a47.html#a07e42c1b43cb95a6d997a80a6a6c0a47", null ],
-    [ "Main", "classCqrsWebJobProgram_ae6a4d96517a362a031ec60c171501543.html#ae6a4d96517a362a031ec60c171501543", null ]
+    [ "CqrsWebJobProgram", "classCqrsWebJobProgram_aef553539b5ec25d0cdb061fd9895c851.html#aef553539b5ec25d0cdb061fd9895c851", null ],
+    [ "GetCommandOrEventTypes", "classCqrsWebJobProgram_a2602ec293cadb25dbca9d63be1956818.html#a2602ec293cadb25dbca9d63be1956818", null ],
+    [ "Go", "classCqrsWebJobProgram_a6a4f817351105cb5482ebb7a30c34ebf.html#a6a4f817351105cb5482ebb7a30c34ebf", null ]
 ];
