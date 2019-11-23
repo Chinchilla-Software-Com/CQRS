@@ -47,7 +47,7 @@ namespace Cqrs.Azure.ServiceBus
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.Azure.EventHub.EventBus.Publisher.UseApplicationInsightTelemetryHelper", correlationIdHelper);
 		}
 
-		#region Implementation of ICommandSender<TAuthenticationToken>
+		#region Implementation of ICommandPublisher<TAuthenticationToken>
 
 		/// <summary>
 		/// Publishes the provided <paramref name="command"/> on the command bus.

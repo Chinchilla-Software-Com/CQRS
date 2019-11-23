@@ -182,7 +182,7 @@ namespace Cqrs.Bus
 			return true;
 		}
 
-		#region Implementation of ICommandSender<TAuthenticationToken>
+		#region Implementation of ICommandPublisher<TAuthenticationToken>
 
 		/// <summary>
 		/// Publishes the provided <paramref name="command"/> on the command bus.

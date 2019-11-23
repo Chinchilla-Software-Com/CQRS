@@ -49,7 +49,7 @@ namespace Cqrs.Akka.Commands
 		/// </summary>
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
-		#region Implementation of ICommandSender<TAuthenticationToken>
+		#region Implementation of ICommandPublisher<TAuthenticationToken>
 
 		/// <summary>
 		/// Publishes the provided <paramref name="command"/> on the command bus.

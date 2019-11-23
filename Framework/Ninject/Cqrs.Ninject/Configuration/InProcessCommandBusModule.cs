@@ -52,7 +52,7 @@ namespace Cqrs.Ninject.Configuration
 #pragma warning disable 618
 		/// <summary>
 		/// Register the <see cref="ICommandPublisher{TAuthenticationToken}"/>, <see cref="IPublishAndWaitCommandPublisher{TAuthenticationToken}"/>, <see cref="ICommandReceiver{TAuthenticationToken}"/> and <see cref="ICommandHandlerRegistrar"/>
-		/// Register (for backwards compatibility) <see cref="ICommandSender{TAuthenticationToken}"/>
+		/// Register (for backwards compatibility) <see cref="ICommandPublisher{TAuthenticationToken}"/>
 		/// </summary>
 #pragma warning restore 618
 		public virtual void RegisterCqrsRequirements()

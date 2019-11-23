@@ -17,7 +17,7 @@ namespace Cqrs.Commands
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	[Obsolete("Use IPublishAndWaitCommandPublisher instead.")]
-	public interface ISendAndWaitCommandSender<TAuthenticationToken> : ICommandSender<TAuthenticationToken>
+	public interface ISendAndWaitCommandSender<TAuthenticationToken> : ICommandPublisher<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/>

@@ -10,10 +10,10 @@ namespace CQRSWeb.Controllers
 {
 	public class HomeController : Controller
 	{
-		private readonly ICommandSender<ISingleSignOnToken> _commandSender;
+		private readonly ICommandPublisher<ISingleSignOnToken> _commandSender;
 		private readonly IReadModelFacade _readmodel;
 
-		public HomeController(ICommandSender<ISingleSignOnToken> commandSender, IReadModelFacade readmodel)
+		public HomeController(ICommandPublisher<ISingleSignOnToken> commandSender, IReadModelFacade readmodel)
 		{
 			_readmodel = readmodel;
 			_commandSender = commandSender;
@@ -40,7 +40,7 @@ namespace CQRSWeb.Controllers
 		public ActionResult DtoAdd(string name)
 		{
 			var id = Guid.NewGuid();
-			_commandSender.Send(new DtoCommand<ISingleSignOnToken, UserDto>(id, null, new UserDto {Id = id, Name = name}));
+			_commandSender.Publish(new DtoCommand<ISingleSignOnToken, UserDto>(id, null, new UserDto {Id = id, Name = name}));
 			return RedirectToAction("DtoIndex");
 		}
 
@@ -67,7 +67,7 @@ namespace CQRSWeb.Controllers
 		[HttpPost]
 		public ActionResult Add(string name)
 		{
-			_commandSender.Send(new CreateInventoryItem(Guid.NewGuid(), name));
+			_commandSender.Publish(new CreateInventoryItem(Guid.NewGuid(), name));
 			return RedirectToAction("Index");
 		}
 
@@ -80,13 +80,13 @@ namespace CQRSWeb.Controllers
 		[HttpPost]
 		public ActionResult ChangeName(Guid id, string name, int version)
 		{
-			_commandSender.Send(new RenameInventoryItem(id, name, version));
+			_commandSender.Publish(new RenameInventoryItem(id, name, version));
 			return RedirectToAction("Index");
 		}
 
 		public ActionResult Deactivate(Guid id, int version)
 		{
-			_commandSender.Send(new DeactivateInventoryItem(id, version));
+			_commandSender.Publish(new DeactivateInventoryItem(id, version));
 			return RedirectToAction("Index");
 		}
 
@@ -99,7 +99,7 @@ namespace CQRSWeb.Controllers
 		[HttpPost]
 		public ActionResult CheckIn(Guid id, int number, int version)
 		{
-			_commandSender.Send(new CheckInItemsToInventory(id, number, version));
+			_commandSender.Publish(new CheckInItemsToInventory(id, number, version));
 			return RedirectToAction("Index");
 		}
 
@@ -112,7 +112,7 @@ namespace CQRSWeb.Controllers
 		[HttpPost]
 		public ActionResult Remove(Guid id, int number, int version)
 		{
-			_commandSender.Send(new RemoveItemsFromInventory(id, number, version));
+			_commandSender.Publish(new RemoveItemsFromInventory(id, number, version));
 			return RedirectToAction("Index");
 		}
 	}
