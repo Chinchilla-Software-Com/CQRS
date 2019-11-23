@@ -51,7 +51,6 @@ var searchData=
   ['icommandpublisher',['ICommandPublisher',['../interfaceCqrs_1_1Commands_1_1ICommandPublisher.html',1,'Cqrs::Commands']]],
   ['icommandreceiver',['ICommandReceiver',['../interfaceCqrs_1_1Commands_1_1ICommandReceiver.html',1,'Cqrs.Commands.ICommandReceiver'],['../interfaceCqrs_1_1Commands_1_1ICommandReceiver.html',1,'Cqrs.Commands.ICommandReceiver&lt; TAuthenticationToken &gt;']]],
   ['icommandreceiver_3c_20tauthenticationtoken_20_3e',['ICommandReceiver&lt; TAuthenticationToken &gt;',['../interfaceCqrs_1_1Commands_1_1ICommandReceiver.html',1,'Cqrs::Commands']]],
-  ['icommandsender',['ICommandSender',['../interfaceCqrs_1_1Commands_1_1ICommandSender.html',1,'Cqrs::Commands']]],
   ['icommandvalidator',['ICommandValidator',['../interfaceCqrs_1_1Commands_1_1ICommandValidator.html',1,'Cqrs::Commands']]],
   ['icommandwithidentity',['ICommandWithIdentity',['../interfaceCqrs_1_1Commands_1_1ICommandWithIdentity.html',1,'Cqrs::Commands']]],
   ['iconcurrentakkacommandpublisher',['IConcurrentAkkaCommandPublisher',['../interfaceCqrs_1_1Akka_1_1Commands_1_1IConcurrentAkkaCommandPublisher.html',1,'Cqrs.Akka.Commands.IConcurrentAkkaCommandPublisher&lt; TAuthenticationToken &gt;'],['../interfaceCqrs_1_1Akka_1_1Commands_1_1IConcurrentAkkaCommandPublisher.html',1,'Cqrs.Akka.Commands.IConcurrentAkkaCommandPublisher&lt; TAuthenticationToken, TTarget &gt;']]],

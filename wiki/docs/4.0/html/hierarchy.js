@@ -220,9 +220,6 @@ var hierarchy =
       [ "Cqrs.Akka.Commands.IAkkaCommandPublisherProxy< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IAkkaCommandPublisherProxy.html", [
         [ "Cqrs.Akka.Commands.AkkaCommandBusProxy< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy.html", null ]
       ] ],
-      [ "Cqrs.Commands.ICommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ICommandSender.html", [
-        [ "Cqrs.Commands.ISendAndWaitCommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender.html", null ]
-      ] ],
       [ "Cqrs.Commands.IPublishAndWaitCommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1IPublishAndWaitCommandPublisher.html", [
         [ "Cqrs.Akka.Commands.IAkkaCommandPublisher< TAuthenticationToken >", "interfaceCqrs_1_1Akka_1_1Commands_1_1IAkkaCommandPublisher.html", [
           [ "Cqrs.Akka.Commands.AkkaCommandBus< TAuthenticationToken >", "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus.html", null ],
@@ -231,7 +228,8 @@ var hierarchy =
         [ "Cqrs.Azure.ServiceBus.AzureCommandBusPublisher< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusPublisher.html", null ],
         [ "Cqrs.Azure.ServiceBus.AzureCommandBusPublisher< TAuthenticationToken >", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureCommandBusPublisher.html", null ],
         [ "Cqrs.Bus.InProcessBus< TAuthenticationToken >", "classCqrs_1_1Bus_1_1InProcessBus.html", null ]
-      ] ]
+      ] ],
+      [ "Cqrs.Commands.ISendAndWaitCommandSender< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ISendAndWaitCommandSender.html", null ]
     ] ],
     [ "Cqrs.Commands.ICommandReceiver", "interfaceCqrs_1_1Commands_1_1ICommandReceiver.html", [
       [ "Cqrs.Commands.ICommandReceiver< TAuthenticationToken >", "interfaceCqrs_1_1Commands_1_1ICommandReceiver.html", null ]
