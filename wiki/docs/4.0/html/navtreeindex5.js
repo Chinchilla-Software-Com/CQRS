@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classCqrs_1_1Domain_1_1Exceptions_1_1ConcurrencyException.html":[1,0,0,8,0,2],
 "classCqrs_1_1Domain_1_1Exceptions_1_1ConcurrencyException_a7b8143f3a8047307373503c31e8b3366.html#a7b8143f3a8047307373503c31e8b3366":[1,0,0,8,0,2,1],
 "classCqrs_1_1Domain_1_1Exceptions_1_1ConcurrencyException_aed52d2484adb911db51fd50f18f3e477.html#aed52d2484adb911db51fd50f18f3e477":[1,0,0,8,0,2,0],
 "classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateCreateCommandException.html":[1,0,0,8,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1Events_1_1EventDeserialiser_a08bd067ca7ce8c28c7a83d444b7e468b.html#a08bd067ca7ce8c28c7a83d444b7e468b":[1,0,0,10,8,2],
 "classCqrs_1_1Events_1_1EventDeserialiser_a193feac1d58446f0a7447d8ba04179fc.html#a193feac1d58446f0a7447d8ba04179fc":[1,0,0,10,8,0],
 "classCqrs_1_1Events_1_1EventDeserialiser_a3f767a1b793ea47bcafd9c64be47619e.html#a3f767a1b793ea47bcafd9c64be47619e":[1,0,0,10,8,1],
-"classCqrs_1_1Events_1_1EventExtensions.html":[1,0,0,10,9],
-"classCqrs_1_1Events_1_1EventExtensions_a4d8611d80615275d1a7d0571bbee34cc.html#a4d8611d80615275d1a7d0571bbee34cc":[1,0,0,10,9,0]
+"classCqrs_1_1Events_1_1EventExtensions.html":[1,0,0,10,9]
 };

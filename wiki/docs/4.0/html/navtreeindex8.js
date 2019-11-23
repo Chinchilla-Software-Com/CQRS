@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule_a90454d879b35a9d8954944e26c5afca9.html#a90454d879b35a9d8954944e26c5afca9":[1,0,0,18,2,1,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule.html":[1,0,0,18,2,2],
 "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_a292ec8a93f2d35a1b2053bc0b97aa7b2.html#a292ec8a93f2d35a1b2053bc0b97aa7b2":[1,0,0,18,2,2,3],
 "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_a4591fb32f9ec60e3246a9864ab3288cd.html#a4591fb32f9ec60e3246a9864ab3288cd":[1,0,0,18,2,2,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a3540a6d621d8c23816da761f929d83a7.html#a3540a6d621d8c23816da761f929d83a7":[1,0,0,21,0,0],
 "classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9.html#a9cdb3d79c55e2eb2796639b273d49ed9":[1,0,0,21,0,2],
 "classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01b526aedb5fa9a3879887a.html#acdbb918ac01b526aedb5fa9a3879887a":[1,0,0,21,0,1],
-"classCqrs_1_1Snapshots_1_1Snapshot.html":[1,0,0,21,3],
-"classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot.html":[1,0,0,21,4]
+"classCqrs_1_1Snapshots_1_1Snapshot.html":[1,0,0,21,3]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a1a8b4fd91323c4c9140051dff5f2bff6.html#a1a8b4fd91323c4c9140051dff5f2bff6":[1,0,0,0,5,0,2,1,2],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a26f068ae3ca8f1e84277f133f8fc4620.html#a26f068ae3ca8f1e84277f133f8fc4620":[1,0,0,0,5,0,2,1,5],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a84f8392985be189ed8394d308c76692f.html#a84f8392985be189ed8394d308c76692f":[1,0,0,0,5,0,2,1,4],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a99ad268bb52a4214a4b717bb8ecea6b6.html#a99ad268bb52a4214a4b717bb8ecea6b6":[1,0,0,0,5,0,2,1,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_a78f9987855e2c4c370c624b0edb97f4d.html#a78f9987855e2c4c370c624b0edb97f4d":[1,0,0,2,0,1,7,3],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_a7bb0a4b42242b523df90611e8c28a4e6.html#a7bb0a4b42242b523df90611e8c28a4e6":[1,0,0,2,0,1,7,7],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_a7bfe58a97886ad7832d5640b626c1ee5.html#a7bfe58a97886ad7832d5640b626c1ee5":[1,0,0,2,0,1,7,5],
-"classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_add2ff350d26fed88d8c18737d3895663.html#add2ff350d26fed88d8c18737d3895663":[1,0,0,2,0,1,7,4],
-"classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_adf49df18fd687cf39ee1c389c338e364.html#adf49df18fd687cf39ee1c389c338e364":[1,0,0,2,0,1,7,0]
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_add2ff350d26fed88d8c18737d3895663.html#add2ff350d26fed88d8c18737d3895663":[1,0,0,2,0,1,7,4]
 };
