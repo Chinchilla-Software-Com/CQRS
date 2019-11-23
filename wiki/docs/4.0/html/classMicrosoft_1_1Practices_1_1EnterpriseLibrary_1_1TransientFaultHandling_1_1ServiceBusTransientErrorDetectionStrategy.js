@@ -1,0 +1,4 @@
+var classMicrosoft_1_1Practices_1_1EnterpriseLibrary_1_1TransientFaultHandling_1_1ServiceBusTransientErrorDetectionStrategy =
+[
+    [ "IsTransient", "classMicrosoft_1_1Practices_1_1EnterpriseLibrary_1_1TransientFaultHandling_1_1ServiceBusTransientErrorDetectionStrategy_a1d5de793d531ec7ca5a5eccad3e00b60.html#a1d5de793d531ec7ca5a5eccad3e00b60", null ]
+];

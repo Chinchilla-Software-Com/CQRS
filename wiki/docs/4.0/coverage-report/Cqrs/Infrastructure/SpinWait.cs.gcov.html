@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Infrastructure/SpinWait.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Infrastructure</a> - SpinWait.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-23 19:54:52</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : using System;
+<span class="lineNum">       2 </span>            : using System.Security.Permissions;
+<span class="lineNum">       3 </span>            : using System.Threading;
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            : namespace Cqrs.Infrastructure
+<span class="lineNum">       6 </span>            : {
+<span class="lineNum">       7 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">       8 </span>            :         /// Provides support for spin-based waiting.
+<span class="lineNum">       9 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      10 </span>            :         [HostProtection(SecurityAction.LinkDemand, ExternalThreading = true, Synchronization = true)]
+<span class="lineNum">      11 </span>            :         public struct SpinWait
+<span class="lineNum">      12 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      13 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      14 </span>            :                 /// A recommended sleep value of 50.
+<span class="lineNum">      15 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      16 </span>            :                 public const short DefaultSleepInMilliseconds = 50;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            :                 internal const int YieldThreshold = 10;
+<span class="lineNum">      19 </span>            :                 internal const int Sleep0EveryHowManyTimes = 5;
+<span class="lineNum">      20 </span>            :                 internal const int Sleep1EveryHowManyTimes = 20;
+<span class="lineNum">      21 </span>            :                 private int _count;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      24 </span>            :                 /// Gets whether the next call to &lt;see cref=&quot;M:System.Threading.SpinWait.SpinOnce&quot;/&gt; will yield the processor, triggering a forced context switch.
+<span class="lineNum">      25 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      26 </span>            :                 /// 
+<span class="lineNum">      27 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      28 </span>            :                 /// Whether the next call to &lt;see cref=&quot;M:System.Threading.SpinWait.SpinOnce&quot;/&gt; will yield the processor, triggering a forced context switch.
+<span class="lineNum">      29 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      30 </span>            :                 public bool NextSpinWillYield
+<span class="lineNum">      31 </span>            :                 {
+<span class="lineNum">      32 </span>            :                         get
+<span class="lineNum">      33 </span>            :                         {
+<span class="lineNum">      34 </span>            :                                 if (_count &lt;= 10)
+<span class="lineNum">      35 </span>            :                                         return Environment.ProcessorCount == 1;
+<span class="lineNum">      36 </span>            :                                 return true;
+<span class="lineNum">      37 </span>            :                         }
+<span class="lineNum">      38 </span>            :                 }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      41 </span>            :                 /// Performs a single spin.
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span>            :                 /// &lt;param name=&quot;sleepInMilliseconds&quot;&gt;The amount of milliseconds the thread will sleep for.&lt;/param&gt;
+<span class="lineNum">      44 </span><span class="lineCov">          1 :                 public void SpinOnce(short sleepInMilliseconds = 0)</span>
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                         if (NextSpinWillYield)
+<span class="lineNum">      47 </span>            :                         {
+<span class="lineNum">      48 </span>            :                                 int num = _count &gt;= 10 ? _count - 10 : _count;
+<span class="lineNum">      49 </span>            :                                 if (num % Sleep1EveryHowManyTimes == Sleep1EveryHowManyTimes - 1)
+<span class="lineNum">      50 </span>            :                                         Thread.Sleep(sleepInMilliseconds == 0 ? 1 : sleepInMilliseconds * 2);
+<span class="lineNum">      51 </span>            :                                 else if (num % Sleep0EveryHowManyTimes == Sleep0EveryHowManyTimes - 1)
+<span class="lineNum">      52 </span>            :                                         Thread.Sleep(sleepInMilliseconds);
+<span class="lineNum">      53 </span>            :                                 else
+<span class="lineNum">      54 </span>            :                                 {
+<span class="lineNum">      55 </span>            :                                         Thread.Yield();
+<span class="lineNum">      56 </span>            :                                         if (sleepInMilliseconds &gt;= DefaultSleepInMilliseconds)
+<span class="lineNum">      57 </span>            :                                                 Thread.Sleep(sleepInMilliseconds / 10);
+<span class="lineNum">      58 </span>            :                                 }
+<span class="lineNum">      59 </span>            :                         }
+<span class="lineNum">      60 </span>            :                         else
+<span class="lineNum">      61 </span>            :                                 Thread.SpinWait(4 &lt;&lt; _count);
+<span class="lineNum">      62 </span>            :                         _count = _count == int.MaxValue ? 10 : _count + 1;
+<span class="lineNum">      63 </span>            :                 }
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      66 </span>            :                 /// Resets the spin counter.
+<span class="lineNum">      67 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      68 </span><span class="lineCov">          1 :                 public void Reset()</span>
+<span class="lineNum">      69 </span>            :                 {
+<span class="lineNum">      70 </span>            :                         _count = 0;
+<span class="lineNum">      71 </span>            :                 }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      74 </span>            :                 /// Spins until the specified condition is satisfied.
+<span class="lineNum">      75 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      76 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns true.&lt;/param&gt;
+<span class="lineNum">      77 </span>            :                 /// &lt;param name=&quot;sleepInMilliseconds&quot;&gt;The amount of milliseconds the thread will sleep for.&lt;/param&gt;
+<span class="lineNum">      78 </span>            :                 /// &lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;The &lt;paramref name=&quot;condition&quot;/&gt; argument is null.&lt;/exception&gt;
+<span class="lineNum">      79 </span><span class="lineCov">          1 :                 public static void SpinUntil(Func&lt;bool&gt; condition, short sleepInMilliseconds = 0)</span>
+<span class="lineNum">      80 </span>            :                 {
+<span class="lineNum">      81 </span>            :                         SpinUntil(condition, -1, sleepInMilliseconds);
+<span class="lineNum">      82 </span>            :                 }
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      85 </span>            :                 /// Spins until the specified condition is satisfied or until the specified timeout is expired.
+<span class="lineNum">      86 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      87 </span>            :                 /// 
+<span class="lineNum">      88 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      89 </span>            :                 /// True if the condition is satisfied within the timeout; otherwise, false
+<span class="lineNum">      90 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      91 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns true.&lt;/param&gt;
+<span class="lineNum">      92 </span>            :                 /// &lt;param name=&quot;timeout&quot;&gt;A &lt;see cref=&quot;T:System.TimeSpan&quot;/&gt; that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">      93 </span>            :                 /// &lt;param name=&quot;sleepInMilliseconds&quot;&gt;The amount of milliseconds the thread will sleep for.&lt;/param&gt;
+<span class="lineNum">      94 </span>            :                 /// &lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;The &lt;paramref name=&quot;condition&quot;/&gt; argument is null.&lt;/exception&gt;
+<span class="lineNum">      95 </span>            :                 /// &lt;exception cref=&quot;T:System.ArgumentOutOfRangeException&quot;&gt;&lt;paramref name=&quot;timeout&quot;/&gt; is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than &lt;see cref=&quot;F:System.Int32.MaxValue&quot;/&gt;.&lt;/exception&gt;
+<span class="lineNum">      96 </span><span class="lineCov">          1 :                 public static bool SpinUntil(Func&lt;bool&gt; condition, TimeSpan timeout, short sleepInMilliseconds = 0)</span>
+<span class="lineNum">      97 </span>            :                 {
+<span class="lineNum">      98 </span>            :                         long num = (long) timeout.TotalMilliseconds;
+<span class="lineNum">      99 </span>            :                         if (num &lt; -1L || num &gt; int.MaxValue)
+<span class="lineNum">     100 </span>            :                                 throw new ArgumentOutOfRangeException(&quot;timeout&quot;, timeout, &quot;SpinWait_SpinUntil_TimeoutWrong&quot;);
+<span class="lineNum">     101 </span>            :                         return SpinUntil(condition, (int) timeout.TotalMilliseconds, sleepInMilliseconds);
+<span class="lineNum">     102 </span>            :                 }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     105 </span>            :                 /// Spins until the specified condition is satisfied or until the specified timeout is expired.
+<span class="lineNum">     106 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     107 </span>            :                 /// 
+<span class="lineNum">     108 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     109 </span>            :                 /// True if the condition is satisfied within the timeout; otherwise, false
+<span class="lineNum">     110 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     111 </span>            :                 /// &lt;param name=&quot;condition&quot;&gt;A delegate to be executed over and over until it returns true.&lt;/param&gt;
+<span class="lineNum">     112 </span>            :                 /// &lt;param name=&quot;millisecondsTimeout&quot;&gt;The number of milliseconds to wait, or &lt;see cref=&quot;F:System.Threading.Timeout.Infinite&quot;/&gt; (-1) to wait indefinitely.&lt;/param&gt;
+<span class="lineNum">     113 </span>            :                 /// &lt;param name=&quot;sleepInMilliseconds&quot;&gt;The amount of milliseconds the thread will sleep for.&lt;/param&gt;
+<span class="lineNum">     114 </span>            :                 /// &lt;exception cref=&quot;T:System.ArgumentNullException&quot;&gt;The &lt;paramref name=&quot;condition&quot;/&gt; argument is null.&lt;/exception&gt;
+<span class="lineNum">     115 </span>            :                 /// &lt;exception cref=&quot;T:System.ArgumentOutOfRangeException&quot;&gt;&lt;paramref name=&quot;millisecondsTimeout&quot;/&gt; is a negative number other than -1, which represents an infinite time-out.&lt;/exception&gt;
+<span class="lineNum">     116 </span><span class="lineCov">          1 :                 public static bool SpinUntil(Func&lt;bool&gt; condition, int millisecondsTimeout, short sleepInMilliseconds = 0)</span>
+<span class="lineNum">     117 </span>            :                 {
+<span class="lineNum">     118 </span>            :                         if (millisecondsTimeout &lt; -1)
+<span class="lineNum">     119 </span>            :                                 throw new ArgumentOutOfRangeException(&quot;millisecondsTimeout&quot;, millisecondsTimeout, &quot;SpinWait_SpinUntil_TimeoutWrong&quot;);
+<span class="lineNum">     120 </span>            :                         if (condition == null)
+<span class="lineNum">     121 </span>            :                                 throw new ArgumentNullException(&quot;condition&quot;, &quot;SpinWait_SpinUntil_ArgumentNull&quot;);
+<span class="lineNum">     122 </span>            :                         uint num = 0U;
+<span class="lineNum">     123 </span>            :                         if (millisecondsTimeout != 0 &amp;&amp; millisecondsTimeout != -1)
+<span class="lineNum">     124 </span>            :                                 num = TimeoutHelper.GetTime();
+<span class="lineNum">     125 </span>            :                         SpinWait spinWait = new SpinWait();
+<span class="lineNum">     126 </span>            :                         while (!condition())
+<span class="lineNum">     127 </span>            :                         {
+<span class="lineNum">     128 </span>            :                                 if (millisecondsTimeout == 0)
+<span class="lineNum">     129 </span>            :                                         return false;
+<span class="lineNum">     130 </span>            :                                 spinWait.SpinOnce(sleepInMilliseconds);
+<span class="lineNum">     131 </span>            :                                 if (millisecondsTimeout != -1 &amp;&amp; spinWait.NextSpinWillYield &amp;&amp; millisecondsTimeout &lt;= (TimeoutHelper.GetTime() - num))
+<span class="lineNum">     132 </span>            :                                         return false;
+<span class="lineNum">     133 </span>            :                         }
+<span class="lineNum">     134 </span>            :                         return true;
+<span class="lineNum">     135 </span>            :                 }
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :                 internal static class TimeoutHelper
+<span class="lineNum">     138 </span>            :                 {
+<span class="lineNum">     139 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     140 </span>            :                         /// Gets the number of milliseconds elapsed since the system started.
+<span class="lineNum">     141 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     142 </span><span class="lineCov">          1 :                         public static uint GetTime()</span>
+<span class="lineNum">     143 </span>            :                         {
+<span class="lineNum">     144 </span>            :                                 return (uint)Environment.TickCount;
+<span class="lineNum">     145 </span>            :                         }
+<span class="lineNum">     146 </span>            : 
+<span class="lineNum">     147 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     148 </span>            :                         /// Does some interesting maths.
+<span class="lineNum">     149 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     150 </span><span class="lineCov">          1 :                         public static int UpdateTimeOut(uint startTime, int originalWaitMillisecondsTimeout)</span>
+<span class="lineNum">     151 </span>            :                         {
+<span class="lineNum">     152 </span>            :                                 uint num1 = GetTime() - startTime;
+<span class="lineNum">     153 </span>            :                                 if (num1 &gt; int.MaxValue)
+<span class="lineNum">     154 </span>            :                                         return 0;
+<span class="lineNum">     155 </span>            :                                 int num2 = originalWaitMillisecondsTimeout - (int)num1;
+<span class="lineNum">     156 </span>            :                                 if (num2 &lt;= 0)
+<span class="lineNum">     157 </span>            :                                         return 0;
+<span class="lineNum">     158 </span>            :                                 return num2;
+<span class="lineNum">     159 </span>            :                         }
+<span class="lineNum">     160 </span>            :                 }
+<span class="lineNum">     161 </span>            :         }
+<span class="lineNum">     162 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

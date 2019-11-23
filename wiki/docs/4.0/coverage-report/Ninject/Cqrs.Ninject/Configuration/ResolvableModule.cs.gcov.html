@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Ninject/Cqrs.Ninject/Configuration/ResolvableModule.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Ninject/Cqrs.Ninject/Configuration</a> - ResolvableModule.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-23 19:54:52</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Linq;
+<span class="lineNum">      11 </span>            : using Ninject.Modules;
+<span class="lineNum">      12 </span>            : using Ninject.Parameters;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : namespace Cqrs.Ninject.Configuration
+<span class="lineNum">      15 </span>            : {
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// A &lt;see cref=&quot;INinjectModule&quot;/&gt; that can resolve anything bound before being called.
+<span class="lineNum">      18 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      19 </span>            :         public abstract class ResolvableModule : NinjectModule
+<span class="lineNum">      20 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Resolves instances for the specified &lt;typeparamref name=&quot;T&quot;/&gt;.
+<span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; to resolve.&lt;/typeparam&gt;
+<span class="lineNum">      25 </span>            :                 /// &lt;returns&gt;Null if no resolution is made.&lt;/returns&gt;
+<span class="lineNum">      26 </span><span class="lineCov">          1 :                 protected virtual T Resolve&lt;T&gt;()</span>
+<span class="lineNum">      27 </span>            :                 {
+<span class="lineNum">      28 </span>            :                         return (T)Resolve(typeof(T));
+<span class="lineNum">      29 </span>            :                 }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Resolves instances for the specified &lt;paramref name=&quot;type&quot;/&gt;.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 /// &lt;param name=&quot;type&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; to resolve.&lt;/param&gt;
+<span class="lineNum">      35 </span>            :                 /// &lt;returns&gt;Null if no resolution is made.&lt;/returns&gt;
+<span class="lineNum">      36 </span><span class="lineCov">          1 :                 protected virtual object Resolve(Type type)</span>
+<span class="lineNum">      37 </span>            :                 {
+<span class="lineNum">      38 </span>            :                         return Kernel.Resolve(Kernel.CreateRequest(type, null, new Parameter[0], true, true)).SingleOrDefault();
+<span class="lineNum">      39 </span>            :                 }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// Indicates if the provided &lt;typeparamref name=&quot;T&quot;/&gt; is already registered or not.
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span>            :                 /// &lt;typeparam name=&quot;T&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; to check.&lt;/typeparam&gt;
+<span class="lineNum">      45 </span><span class="lineCov">          1 :                 public bool IsRegistered&lt;T&gt;()</span>
+<span class="lineNum">      46 </span>            :                 {
+<span class="lineNum">      47 </span>            :                         return IsRegistered(typeof(T));
+<span class="lineNum">      48 </span>            :                 }
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      51 </span>            :                 /// Indicates if the provided &lt;paramref name=&quot;type&quot;/&gt; is already registered or not.
+<span class="lineNum">      52 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      53 </span>            :                 /// &lt;param name=&quot;type&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; to check.&lt;/param&gt;
+<span class="lineNum">      54 </span><span class="lineCov">          1 :                 public bool IsRegistered(Type type)</span>
+<span class="lineNum">      55 </span>            :                 {
+<span class="lineNum">      56 </span>            :                         return Kernel.GetBindings(type).Any();
+<span class="lineNum">      57 </span>            :                 }
+<span class="lineNum">      58 </span>            :         }
+<span class="lineNum">      59 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

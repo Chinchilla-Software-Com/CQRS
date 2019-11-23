@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.WebApi/Controllers/ClientController.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs.WebApi/Controllers</a> - ClientController.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-23 19:54:52</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System.Collections.Generic;
+<span class="lineNum">      10 </span>            : using System.Linq;
+<span class="lineNum">      11 </span>            : using System.Net;
+<span class="lineNum">      12 </span>            : using System.Net.Http;
+<span class="lineNum">      13 </span>            : using System.Text;
+<span class="lineNum">      14 </span>            : using System.Web.Http;
+<span class="lineNum">      15 </span>            : using System.Web.Http.Description;
+<span class="lineNum">      16 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.WebApi.Controllers
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :         /// A WebAPI RESTful service that provide a 'no configuration required' java-script client ready for developers to use.
+<span class="lineNum">      22 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :         [RoutePrefix(&quot;Client&quot;)]
+<span class="lineNum">      24 </span>            :         public class ClientController : ApiController
+<span class="lineNum">      25 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// A java-script file with a 'no configuration required' java-script client
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span>            :                 [Route(&quot;&quot;)]
+<span class="lineNum">      30 </span>            :                 [HttpGet]
+<span class="lineNum">      31 </span><span class="lineCov">          1 :                 public virtual HttpResponseMessage Index()</span>
+<span class="lineNum">      32 </span>            :                 {
+<span class="lineNum">      33 </span>            :                         var apiExplorer = GlobalConfiguration.Configuration.Services.GetApiExplorer();
+<span class="lineNum">      34 </span>            :                         var apiMethods = apiExplorer.ApiDescriptions.Select(ad =&gt; new ApiMethodModel(ad)).ToList();
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                         string host = Url.Content(Request.RequestUri.AbsoluteUri.Substring(0, Request.RequestUri.AbsoluteUri.Length - Request.RequestUri.PathAndQuery.Length));
+<span class="lineNum">      37 </span>            :                         string path = Url.Content(&quot;~/&quot;);
+<span class="lineNum">      38 </span>            :                         if (path.StartsWith(host))
+<span class="lineNum">      39 </span>            :                                 host = null;
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                         var responseBody = string.Format(@&quot;window.api = window.api || {{
+<span class="lineNum">      42 </span>            :         metadata: {0},
+<span class="lineNum">      43 </span>            :         useJson: true,
+<span class="lineNum">      44 </span>            :         useXToken: true,
+<span class="lineNum">      45 </span>            :         cookieTokenName: '{3}',
+<span class="lineNum">      46 </span>            :         // This is because JQuery notes Global events are never fired for cross-domain script or JSONP requests, regardless of the value of global at https://api.jquery.com/category/ajax/global-ajax-event-handlers/
+<span class="lineNum">      47 </span>            :         globalHandlers: {{
+<span class="lineNum">      48 </span>            :                 'before' : function(jqXHR, settings) {{}},
+<span class="lineNum">      49 </span>            :                 'complete' : function(jqXHR, textStatus) {{}},
+<span class="lineNum">      50 </span>            :                 'error' : function(jqXHR, textStatus, errorThrown) {{}},
+<span class="lineNum">      51 </span>            :                 'success' : function(data, textStatus, jqXHR) {{}},
+<span class="lineNum">      52 </span>            :                 'setHeaders' : function()
+<span class="lineNum">      53 </span>            :                 {{
+<span class="lineNum">      54 </span>            :                         if (window.api.useXToken)
+<span class="lineNum">      55 </span>            :                         {{
+<span class="lineNum">      56 </span>            :                                 var headers = {{}};
+<span class="lineNum">      57 </span>            :                                 if (typeof(Cookies) === 'function')
+<span class="lineNum">      58 </span>            :                                 {{
+<span class="lineNum">      59 </span>            :                                         headers[window.api.cookieTokenName] = Cookies.get(window.api.cookieTokenName);
+<span class="lineNum">      60 </span>            :                                 }}
+<span class="lineNum">      61 </span>            :                                 else (typeof(Storage) !== &quot;&quot;undefined&quot;&quot;)
+<span class="lineNum">      62 </span>            :                                 {{
+<span class="lineNum">      63 </span>            :                                         headers[window.api.cookieTokenName] = sessionStorage[window.api.cookieTokenName] || localStorage[window.api.cookieTokenName];
+<span class="lineNum">      64 </span>            :                                 }}
+<span class="lineNum">      65 </span>            :                                 return headers;
+<span class="lineNum">      66 </span>            :                         }}
+<span class="lineNum">      67 </span>            :                         return {{}}
+<span class="lineNum">      68 </span>            :                 }},
+<span class="lineNum">      69 </span>            :                 '202' : function(data, textStatus, jqXHR) {{}},
+<span class="lineNum">      70 </span>            :                 '300' : function(jqXHR, textStatus, errorThrown) {{}},
+<span class="lineNum">      71 </span>            :                 '400' : function(jqXHR, textStatus, errorThrown) {{}},
+<span class="lineNum">      72 </span>            :                 '401' : function(jqXHR, textStatus, errorThrown) {{}},
+<span class="lineNum">      73 </span>            :                 '403' : function(jqXHR, textStatus, errorThrown) {{}},
+<span class="lineNum">      74 </span>            :                 '404' : function(jqXHR, textStatus, errorThrown) {{}},
+<span class="lineNum">      75 </span>            :                 '412' : function(jqXHR, textStatus, errorThrown) {{}},
+<span class="lineNum">      76 </span>            :                 '500' : function(jqXHR, textStatus, errorThrown) {{}},
+<span class="lineNum">      77 </span>            :         }}
+<span class="lineNum">      78 </span>            : }};
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            : $.each(window.api.metadata, function (i, action)
+<span class="lineNum">      81 </span>            : {{
+<span class="lineNum">      82 </span>            :         if (!window.api[action.ControllerName])
+<span class="lineNum">      83 </span>            :         {{
+<span class="lineNum">      84 </span>            :                 window.api[action.ControllerName] = {{}};
+<span class="lineNum">      85 </span>            :         }}
+<span class="lineNum">      86 </span>            :         window.api[action.ControllerName][action.ActionName] = function (parameters, successFunction, errorFunction, statusCodeFunctions)
+<span class="lineNum">      87 </span>            :         {{
+<span class="lineNum">      88 </span>            :                 var url = '{1}{2}' + action.Url;
+<span class="lineNum">      89 </span>            :                 var data = {{}};
+<span class="lineNum">      90 </span>            :                 var bodyParameters = 0;
+<span class="lineNum">      91 </span>            :                 var complexParameters = 0;
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                 if (action.Parameters.length == 1 &amp;&amp; action.Parameters[0].Name == 'parameters')
+<span class="lineNum">      94 </span>            :                 {{
+<span class="lineNum">      95 </span>            :                         bodyParameters = 1;
+<span class="lineNum">      96 </span>            :                         data = parameters;
+<span class="lineNum">      97 </span>            :                 }}
+<span class="lineNum">      98 </span>            :                 else if (action.Parameters.length == 2 &amp;&amp; ((action.Parameters[0].Name == 'entity' &amp;&amp; action.Parameters[1].Name == 'rsn') || (action.Parameters[1].Name == 'parameters' &amp;&amp; action.Parameters[0].Name == 'rsn')))
+<span class="lineNum">      99 </span>            :                 {{
+<span class="lineNum">     100 </span>            :                         bodyParameters = 1;
+<span class="lineNum">     101 </span>            :                         url = url
+<span class="lineNum">     102 </span>            :                         url = url.replace(/\/\{{rsn\}}/g, '\/' + parameters['Rsn']);
+<span class="lineNum">     103 </span>            :                         data = (action.Parameters[1].Name == 'parameters' &amp;&amp; Object.keys(parameters).length &lt;= 1) ? null : parameters;
+<span class="lineNum">     104 </span>            :                 }}
+<span class="lineNum">     105 </span>            :                 else
+<span class="lineNum">     106 </span>            :                 {{
+<span class="lineNum">     107 </span>            :                         var lastBodyParameter = null;
+<span class="lineNum">     108 </span>            :                         $.each(action.Parameters, function (j, parameter)
+<span class="lineNum">     109 </span>            :                         {{
+<span class="lineNum">     110 </span>            :                                 if (parameters[parameter.Name] === undefined)
+<span class="lineNum">     111 </span>            :                                 {{
+<span class="lineNum">     112 </span>            :                                         console.error('Missing parameter: ' + parameter.Name + ' for API: ' + action.ControllerName + '/' + action.ActionName);
+<span class="lineNum">     113 </span>            :                                 }}
+<span class="lineNum">     114 </span>            :                                 else if (parameter.IsUriParameter)
+<span class="lineNum">     115 </span>            :                                 {{
+<span class="lineNum">     116 </span>            :                                         url = url.replace('{{' + parameter.Name + '}}', parameters[parameter.Name]);
+<span class="lineNum">     117 </span>            :                                 }}
+<span class="lineNum">     118 </span>            :                                 else if (data[parameter.Name] === undefined)
+<span class="lineNum">     119 </span>            :                                 {{
+<span class="lineNum">     120 </span>            :                                         if (parameter.IsBodyParameter)
+<span class="lineNum">     121 </span>            :                                         {{
+<span class="lineNum">     122 </span>            :                                                 bodyParameters++;
+<span class="lineNum">     123 </span>            :                                                 lastBodyParameter = parameter.Name;
+<span class="lineNum">     124 </span>            :                                         }}
+<span class="lineNum">     125 </span>            :                                         else
+<span class="lineNum">     126 </span>            :                                                 complexParameters++;
+<span class="lineNum">     127 </span>            :                                         data[parameter.Name] = parameters[parameter.Name];
+<span class="lineNum">     128 </span>            :                                 }}
+<span class="lineNum">     129 </span>            :                                 else
+<span class="lineNum">     130 </span>            :                                 {{
+<span class="lineNum">     131 </span>            :                                         console.error('Detected multiple body-parameters for API: ' + action.ControllerName + '/' + action.ActionName);
+<span class="lineNum">     132 </span>            :                                 }}
+<span class="lineNum">     133 </span>            :                         }});
+<span class="lineNum">     134 </span>            :                 }}
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :                 if (bodyParameters == 1 &amp;&amp; complexParameters == 0 &amp;&amp; lastBodyParameter != null &amp;&amp; lastBodyParameter != '')
+<span class="lineNum">     137 </span>            :                         data = data[lastBodyParameter];
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :                 if (bodyParameters == 0 &amp;&amp; complexParameters == 0)
+<span class="lineNum">     140 </span>            :                         data = null;
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span>            :                 if (window.api.useJson)
+<span class="lineNum">     143 </span>            :                         return $.ajax({{
+<span class="lineNum">     144 </span>            :                                 type: action.Method,
+<span class="lineNum">     145 </span>            :                                 url: url,
+<span class="lineNum">     146 </span>            :                                 data: data == null ? data : JSON.stringify(data),
+<span class="lineNum">     147 </span>            :                                 contentType: 'application/json',
+<span class="lineNum">     148 </span>            :                                 headers: window.api.globalHandlers['setHeaders'](),
+<span class="lineNum">     149 </span>            :                                 beforeSend: window.api.globalHandlers['before'],
+<span class="lineNum">     150 </span>            :                                 complete: window.api.globalHandlers['complete'],
+<span class="lineNum">     151 </span>            :                                 error: (errorFunction || window.api.globalHandlers['error']),
+<span class="lineNum">     152 </span>            :                                 success: (successFunction || window.api.globalHandlers['success']),
+<span class="lineNum">     153 </span>            :                                 statusCode: ( statusCodeFunctions || {{
+<span class="lineNum">     154 </span>            :                                         202: window.api.globalHandlers['202'],
+<span class="lineNum">     155 </span>            :                                         300: window.api.globalHandlers['300'],
+<span class="lineNum">     156 </span>            :                                         400: window.api.globalHandlers['400'],
+<span class="lineNum">     157 </span>            :                                         401: window.api.globalHandlers['401'],
+<span class="lineNum">     158 </span>            :                                         403: window.api.globalHandlers['403'],
+<span class="lineNum">     159 </span>            :                                         404: window.api.globalHandlers['404'],
+<span class="lineNum">     160 </span>            :                                         412: window.api.globalHandlers['412'],
+<span class="lineNum">     161 </span>            :                                         500: window.api.globalHandlers['500']
+<span class="lineNum">     162 </span>            :                                 }})
+<span class="lineNum">     163 </span>            :                         }});
+<span class="lineNum">     164 </span>            :                 return $.ajax({{
+<span class="lineNum">     165 </span>            :                         type: action.Method,
+<span class="lineNum">     166 </span>            :                         url: url,
+<span class="lineNum">     167 </span>            :                         data: data,
+<span class="lineNum">     168 </span>            :                         headers: window.api.globalHandlers['setHeaders'](),
+<span class="lineNum">     169 </span>            :                         beforeSend: window.api.globalHandlers['before'],
+<span class="lineNum">     170 </span>            :                         complete: window.api.globalHandlers['complete'],
+<span class="lineNum">     171 </span>            :                         error: (errorFunction || window.api.globalHandlers['error']),
+<span class="lineNum">     172 </span>            :                         success: (successFunction || window.api.globalHandlers['success']),
+<span class="lineNum">     173 </span>            :                         statusCode: ( statusCodeFunctions || {{
+<span class="lineNum">     174 </span>            :                                 202: window.api.globalHandlers['202'],
+<span class="lineNum">     175 </span>            :                                 300: window.api.globalHandlers['300'],
+<span class="lineNum">     176 </span>            :                                 400: window.api.globalHandlers['400'],
+<span class="lineNum">     177 </span>            :                                 401: window.api.globalHandlers['401'],
+<span class="lineNum">     178 </span>            :                                 403: window.api.globalHandlers['403'],
+<span class="lineNum">     179 </span>            :                                 404: window.api.globalHandlers['404'],
+<span class="lineNum">     180 </span>            :                                 412: window.api.globalHandlers['412'],
+<span class="lineNum">     181 </span>            :                                 500: window.api.globalHandlers['500']
+<span class="lineNum">     182 </span>            :                         }})
+<span class="lineNum">     183 </span>            :                 }});
+<span class="lineNum">     184 </span>            :         }};
+<span class="lineNum">     185 </span>            : }});&quot;,
+<span class="lineNum">     186 </span>            :                                 System.Web.Helpers.Json.Encode(apiMethods),
+<span class="lineNum">     187 </span>            :                                 host,
+<span class="lineNum">     188 </span>            :                                 path,
+<span class="lineNum">     189 </span>            :                                 DependencyResolver.Current.Resolve&lt;IConfigurationManager&gt;().GetSetting(&quot;Cqrs.Web.AuthenticationTokenName&quot;) ?? &quot;X-Token&quot;);
+<span class="lineNum">     190 </span>            : 
+<span class="lineNum">     191 </span>            :                         HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, responseBody);
+<span class="lineNum">     192 </span>            :                         response.Content = new StringContent(responseBody, Encoding.UTF8, &quot;application/javascript&quot;);
+<span class="lineNum">     193 </span>            :                         return response;
+<span class="lineNum">     194 </span>            :                 }
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     197 </span>            :                 /// A WebAPI action method.
+<span class="lineNum">     198 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     199 </span>            :                 public class ApiMethodModel
+<span class="lineNum">     200 </span><span class="lineCov">          1 :                 {</span>
+<span class="lineNum">     201 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     202 </span>            :                         /// The type of the &lt;see cref=&quot;HttpMethod&quot;/&gt;.
+<span class="lineNum">     203 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     204 </span>            :                         public string Method { get; set; }
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     207 </span>            :                         /// The URL of the action method.
+<span class="lineNum">     208 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     209 </span>            :                         public string Url { get; set; }
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     212 </span>            :                         /// The name of the &lt;see cref=&quot;ApiController&quot;/&gt; this action method is in.
+<span class="lineNum">     213 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     214 </span>            :                         public string ControllerName { get; set; }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     217 </span>            :                         /// The name of the action method.
+<span class="lineNum">     218 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     219 </span>            :                         public string ActionName { get; set; }
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     222 </span>            :                         /// The &lt;see cref=&quot;ApiParameterModel&quot;&gt;parameters&lt;/see&gt; of this action method.
+<span class="lineNum">     223 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     224 </span>            :                         public IEnumerable&lt;ApiParameterModel&gt; Parameters { get; set; }
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     227 </span>            :                         /// Instantiates a new instance of &lt;see cref=&quot;ApiMethodModel&quot;/&gt; with the provided &lt;paramref name=&quot;apiDescription&quot;/&gt;.
+<span class="lineNum">     228 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     229 </span><span class="lineCov">          1 :                         public ApiMethodModel(ApiDescription apiDescription)</span>
+<span class="lineNum">     230 </span>            :                         {
+<span class="lineNum">     231 </span>            :                                 Method = apiDescription.HttpMethod.Method;
+<span class="lineNum">     232 </span>            :                                 Url = apiDescription.RelativePath;
+<span class="lineNum">     233 </span>            :                                 ControllerName = apiDescription.ActionDescriptor.ControllerDescriptor.ControllerName;
+<span class="lineNum">     234 </span>            :                                 ActionName = apiDescription.ActionDescriptor.ActionName;
+<span class="lineNum">     235 </span>            :                                 Parameters = apiDescription.ParameterDescriptions.Select(pd =&gt; new ApiParameterModel(pd));
+<span class="lineNum">     236 </span>            :                         }
+<span class="lineNum">     237 </span>            :                 }
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     240 </span>            :                 /// A parameter for a WebAPI action method.
+<span class="lineNum">     241 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     242 </span>            :                 public class ApiParameterModel
+<span class="lineNum">     243 </span><span class="lineCov">          1 :                 {</span>
+<span class="lineNum">     244 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     245 </span>            :                         /// The name of the parameter.
+<span class="lineNum">     246 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     247 </span>            :                         public string Name { get; set; }
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     250 </span>            :                         /// Indicates if the parameter is provided in the URL of the request or not.
+<span class="lineNum">     251 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     252 </span>            :                         public bool IsUriParameter { get; set; }
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     255 </span>            :                         /// Indicates if the parameter is provided in the body of the request or not.
+<span class="lineNum">     256 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     257 </span>            :                         public bool IsBodyParameter { get; set; }
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     260 </span>            :                         /// Instantiates a new instance of &lt;see cref=&quot;ApiParameterModel&quot;/&gt; with the provided &lt;paramref name=&quot;apiParameterDescription&quot;/&gt;.
+<span class="lineNum">     261 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     262 </span><span class="lineCov">          1 :                         public ApiParameterModel(ApiParameterDescription apiParameterDescription)</span>
+<span class="lineNum">     263 </span>            :                         {
+<span class="lineNum">     264 </span>            :                                 Name = apiParameterDescription.Name;
+<span class="lineNum">     265 </span>            :                                 IsUriParameter = apiParameterDescription.Source == ApiParameterSource.FromUri;
+<span class="lineNum">     266 </span>            :                                 IsBodyParameter = apiParameterDescription.Source == ApiParameterSource.FromBody;
+<span class="lineNum">     267 </span>            :                         }
+<span class="lineNum">     268 </span>            :                 }
+<span class="lineNum">     269 </span>            :         }
+<span class="lineNum">     270 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Domain/Exceptions/AggregateOrEventMissingIdException.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Cqrs/Domain/Exceptions</a> - AggregateOrEventMissingIdException.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-23 19:54:52</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : #region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">      11 </span>            : using Cqrs.Events;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace Cqrs.Domain.Exceptions
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; had not &lt;see cref=&quot;IEvent{TAuthenticationToken}.Id&quot;/&gt; set.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         [Serializable]
+<span class="lineNum">      19 </span>            :         public class AggregateOrEventMissingIdException : Exception
+<span class="lineNum">      20 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;AggregateOrEventMissingIdException&quot;/&gt; with the &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; and &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      23 </span>            :                 /// The &lt;paramref name=&quot;eventType&quot;/&gt; that was trying to be saved on an &lt;paramref name=&quot;aggregateType&quot;/&gt;.
+<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :                 /// &lt;param name=&quot;aggregateType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; that the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was trying to be saved on.&lt;/param&gt;
+<span class="lineNum">      26 </span>            :                 /// &lt;param name=&quot;eventType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; that was trying to be saved.&lt;/param&gt;
+<span class="lineNum">      27 </span><span class="lineCov">          1 :                 public AggregateOrEventMissingIdException(Type aggregateType, Type eventType)</span>
+<span class="lineNum">      28 </span>            :                         : base(string.Format(&quot;An event of type {0} tried to be saved from {1} but no id was set on either&quot;, eventType.FullName, aggregateType.FullName))
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         AggregateType = aggregateType;
+<span class="lineNum">      31 </span>            :                         EventType = eventType;
+<span class="lineNum">      32 </span>            :                 }
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; that the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was trying to be saved on.
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span>            :                 [DataMember]
+<span class="lineNum">      38 </span>            :                 public Type AggregateType { get; set; }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      41 </span>            :                 /// The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; that was trying to be saved.
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span>            :                 [DataMember]
+<span class="lineNum">      44 </span>            :                 public Type EventType { get; set; }
+<span class="lineNum">      45 </span>            :         }
+<span class="lineNum">      46 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

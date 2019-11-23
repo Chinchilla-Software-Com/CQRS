@@ -1,0 +1,103 @@
+\hypertarget{interfaceCqrs_1_1Events_1_1IEvent}{}\section{Cqrs.\+Events.\+I\+Event$<$ T\+Authentication\+Token $>$ Interface Template Reference}
+\label{interfaceCqrs_1_1Events_1_1IEvent}\index{Cqrs.\+Events.\+I\+Event$<$ T\+Authentication\+Token $>$@{Cqrs.\+Events.\+I\+Event$<$ T\+Authentication\+Token $>$}}
+
+
+An I\+Event$<$\+T\+Authentication\+Token$>$ represents something that took place in the domain. They are always named with a past-\/participle verb, such as Order\+Confirmed. It\textquotesingle{}s not unusual, but not required, for an I\+Event$<$\+T\+Authentication\+Token$>$ to name an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ or I\+Entity that it relates to; let the domain language be your guide.  
+
+
+Inheritance diagram for Cqrs.\+Events.\+I\+Event$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.032448cm]{interfaceCqrs_1_1Events_1_1IEvent}
+\end{center}
+\end{figure}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Guid \hyperlink{interfaceCqrs_1_1Events_1_1IEvent_a2974e13d307c62c5cc438d668ff1783b_a2974e13d307c62c5cc438d668ff1783b}{Id}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The ID of the I\+Event$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\item 
+int \hyperlink{interfaceCqrs_1_1Events_1_1IEvent_a2754e056f483b9a8e59622a363276b15_a2754e056f483b9a8e59622a363276b15}{Version}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The version of the I\+Event$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\item 
+Date\+Time\+Offset \hyperlink{interfaceCqrs_1_1Events_1_1IEvent_a149d6ea1652cbcc63dbc45eaa71fade0_a149d6ea1652cbcc63dbc45eaa71fade0}{Time\+Stamp}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The date and time the event was raised or published. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+An I\+Event$<$\+T\+Authentication\+Token$>$ represents something that took place in the domain. They are always named with a past-\/participle verb, such as Order\+Confirmed. It\textquotesingle{}s not unusual, but not required, for an I\+Event$<$\+T\+Authentication\+Token$>$ to name an I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ or I\+Entity that it relates to; let the domain language be your guide. 
+
+Since an I\+Event$<$\+T\+Authentication\+Token$>$ represents something in the past, it can be considered a statement of fact and used to take decisions in other parts of the system. 
+
+public class Order\+Confirmed \{ public Guid Order\+Rsn; public Date\+Time Confirmation\+Date; \} 
+
+What does a I\+Command$<$\+T\+Authentication\+Token$>$ or an I\+Event$<$\+T\+Authentication\+Token$>$ look like?
+
+An I\+Command$<$\+T\+Authentication\+Token$>$ or I\+Event$<$\+T\+Authentication\+Token$>$ is simply a data structure that contain data for reading, and no behavior. We call such structures \char`\"{}\+Data Transfer Objects\char`\"{} (D\+T\+Os). The name indicates the purpose. In many languages they are represented as classes, but they are not true classes in the real OO sense.
+
+What is the difference between a I\+Command$<$\+T\+Authentication\+Token$>$ and an I\+Event$<$\+T\+Authentication\+Token$>$?
+
+Their intent.
+
+What is immutability? Why is a I\+Command$<$\+T\+Authentication\+Token$>$ or I\+Event$<$\+T\+Authentication\+Token$>$ immutable?
+
+For the purpose of this question, immutability is not having any setters, or other methods which change internal state. The string type in is a familiar example; you never actually change an existing string value, you just create new string values based on old ones.
+
+An I\+Command$<$\+T\+Authentication\+Token$>$ is immutable because their expected usage is to be sent directly to the domain model side for processing. They do not need to change during their projected lifetime in traveling from client to server. Sometimes however business logic dictates that a decision may be made to construct a I\+Command$<$\+T\+Authentication\+Token$>$ and local variables should be used.
+
+An I\+Event$<$\+T\+Authentication\+Token$>$ is immutable because they represent domain actions that took place in the past. Unless you\textquotesingle{}re Marty Mc\+Fly, you can\textquotesingle{}t change the past, and sometimes not even then.
+
+What is command upgrading?
+
+Upgrading an I\+Command$<$\+T\+Authentication\+Token$>$ becomes necessary when new requirements cause an existing I\+Command$<$\+T\+Authentication\+Token$>$ not to be sufficient. Maybe a new field needs to be added, for example, or maybe an existing field should really have been split into several different ones.
+
+How do I upgrade my I\+Command$<$\+T\+Authentication\+Token$>$s?
+
+How you do the upgrade depends how much control you have over your clients. If you can deploy your client updates and server updates together, just change things in both and deploy the updates. Job done. If not, it\textquotesingle{}s usually best to have the updated I\+Command$<$\+T\+Authentication\+Token$>$ be a new type and have the I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ accept both for a while.
+
+Could you give an example of names of some versioned I\+Command$<$\+T\+Authentication\+Token$>$?
+
+Sure.
+
+Upload\+File Upload\+File\+\_\+v2 Upload\+File\+\_\+v3
+
+It\textquotesingle{}s just a convention, but a sane one. 
+
+ Also see \href{http://cqrs.nu/Faq/commands-and-events}{\tt http\+://cqrs.\+nu/\+Faq/commands-\/and-\/events}. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of the authentication token.\\
+\hline
+\end{DoxyTemplParams}
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{interfaceCqrs_1_1Events_1_1IEvent_a2974e13d307c62c5cc438d668ff1783b_a2974e13d307c62c5cc438d668ff1783b}\label{interfaceCqrs_1_1Events_1_1IEvent_a2974e13d307c62c5cc438d668ff1783b_a2974e13d307c62c5cc438d668ff1783b}} 
+\index{Cqrs\+::\+Events\+::\+I\+Event@{Cqrs\+::\+Events\+::\+I\+Event}!Id@{Id}}
+\index{Id@{Id}!Cqrs\+::\+Events\+::\+I\+Event@{Cqrs\+::\+Events\+::\+I\+Event}}
+\subsubsection{\texorpdfstring{Id}{Id}}
+{\footnotesize\ttfamily Guid \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{Cqrs.\+Events.\+I\+Event}$<$ T\+Authentication\+Token $>$.Id\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+The ID of the I\+Event$<$\+T\+Authentication\+Token$>$ 
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Events_1_1IEvent_a149d6ea1652cbcc63dbc45eaa71fade0_a149d6ea1652cbcc63dbc45eaa71fade0}\label{interfaceCqrs_1_1Events_1_1IEvent_a149d6ea1652cbcc63dbc45eaa71fade0_a149d6ea1652cbcc63dbc45eaa71fade0}} 
+\index{Cqrs\+::\+Events\+::\+I\+Event@{Cqrs\+::\+Events\+::\+I\+Event}!Time\+Stamp@{Time\+Stamp}}
+\index{Time\+Stamp@{Time\+Stamp}!Cqrs\+::\+Events\+::\+I\+Event@{Cqrs\+::\+Events\+::\+I\+Event}}
+\subsubsection{\texorpdfstring{Time\+Stamp}{TimeStamp}}
+{\footnotesize\ttfamily Date\+Time\+Offset \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{Cqrs.\+Events.\+I\+Event}$<$ T\+Authentication\+Token $>$.Time\+Stamp\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+The date and time the event was raised or published. 
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Events_1_1IEvent_a2754e056f483b9a8e59622a363276b15_a2754e056f483b9a8e59622a363276b15}\label{interfaceCqrs_1_1Events_1_1IEvent_a2754e056f483b9a8e59622a363276b15_a2754e056f483b9a8e59622a363276b15}} 
+\index{Cqrs\+::\+Events\+::\+I\+Event@{Cqrs\+::\+Events\+::\+I\+Event}!Version@{Version}}
+\index{Version@{Version}!Cqrs\+::\+Events\+::\+I\+Event@{Cqrs\+::\+Events\+::\+I\+Event}}
+\subsubsection{\texorpdfstring{Version}{Version}}
+{\footnotesize\ttfamily int \hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{Cqrs.\+Events.\+I\+Event}$<$ T\+Authentication\+Token $>$.Version\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+The version of the I\+Event$<$\+T\+Authentication\+Token$>$ 
+

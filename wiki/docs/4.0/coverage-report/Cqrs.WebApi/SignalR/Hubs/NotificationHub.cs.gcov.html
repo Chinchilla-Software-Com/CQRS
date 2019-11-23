@@ -1,0 +1,449 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.WebApi/SignalR/Hubs/NotificationHub.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Cqrs.WebApi/SignalR/Hubs</a> - NotificationHub.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-23 19:54:52</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using System.Threading;
+<span class="lineNum">      13 </span>            : using System.Threading.Tasks;
+<span class="lineNum">      14 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      15 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      16 </span>            : using Cqrs.Events;
+<span class="lineNum">      17 </span>            : using Microsoft.AspNet.SignalR;
+<span class="lineNum">      18 </span>            : using Microsoft.AspNet.SignalR.Hubs;
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : namespace Cqrs.WebApi.SignalR.Hubs
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :         /// Sends &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; to different groups of users via a SignalR &lt;see cref=&quot;Hub&quot;/&gt;.
+<span class="lineNum">      24 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :         public class NotificationHub
+<span class="lineNum">      26 </span>            :                 : Hub
+<span class="lineNum">      27 </span>            :                 , INotificationHub
+<span class="lineNum">      28 </span>            :                 , ISingleSignOnTokenNotificationHub
+<span class="lineNum">      29 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;NotificationHub&quot;/&gt;.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span><span class="lineCov">          1 :                 public NotificationHub(ILogger logger, ICorrelationIdHelper correlationIdHelper)</span>
+<span class="lineNum">      34 </span>            :                 {
+<span class="lineNum">      35 </span>            :                         Logger = logger;
+<span class="lineNum">      36 </span>            :                         CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">      37 </span>            :                 }
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      40 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;NotificationHub&quot;/&gt;.
+<span class="lineNum">      41 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      42 </span><span class="lineCov">          1 :                 public NotificationHub()</span>
+<span class="lineNum">      43 </span>            :                 {
+<span class="lineNum">      44 </span>            :                 }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      47 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ILogger&quot;/&gt;.
+<span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      49 </span>            :                 public ILogger Logger { get; set; }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      52 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ICorrelationIdHelper&quot;/&gt;.
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span>            :                 public ICorrelationIdHelper CorrelationIdHelper { get; set; }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      57 </span>            :                 /// The &lt;see cref=&quot;Func{String, Guid}&quot;/&gt; that can convert a &lt;see cref=&quot;string&quot;/&gt; based authentication token into the &lt;see cref=&quot;Guid&quot;/&gt; based user identifier.
+<span class="lineNum">      58 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      59 </span>            :                 public Func&lt;string, Guid&gt; ConvertUserTokenToUserRsn { get; set; }
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :                 #region Overrides of HubBase
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// When the connection connects to this hub instance we register the connection so we can respond back to it.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span><span class="lineCov">          1 :                 public override Task OnConnected()</span>
+<span class="lineNum">      67 </span>            :                 {
+<span class="lineNum">      68 </span>            :                         return Join();
+<span class="lineNum">      69 </span>            :                 }
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      72 </span>            :                 /// When the connection reconnects to this hub instance we register the connection so we can respond back to it.
+<span class="lineNum">      73 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      74 </span><span class="lineCov">          1 :                 public override Task OnReconnected()</span>
+<span class="lineNum">      75 </span>            :                 {
+<span class="lineNum">      76 </span>            :                         return Join();
+<span class="lineNum">      77 </span>            :                 }
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                 #endregion
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      82 </span>            :                 /// Gets the authentication token for the user from the incoming hub request looking at first the 
+<span class="lineNum">      83 </span>            :                 /// &lt;see cref=&quot;HubCallerContext.RequestCookies&quot;/&gt; and then the &lt;see cref=&quot;HubCallerContext.QueryString&quot;/&gt;.
+<span class="lineNum">      84 </span>            :                 /// The authentication token should have a name matching the value of &quot;Cqrs.Web.AuthenticationTokenName&quot; from &lt;see cref=&quot;IConfigurationManager.GetSetting&quot;/&gt;.
+<span class="lineNum">      85 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      86 </span><span class="lineCov">          1 :                 protected virtual string UserToken()</span>
+<span class="lineNum">      87 </span>            :                 {
+<span class="lineNum">      88 </span>            :                         string userRsn;
+<span class="lineNum">      89 </span>            :                         Cookie cookie;
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :                         string authenticationTokenName = DependencyResolver.Current.Resolve&lt;IConfigurationManager&gt;().GetSetting(&quot;Cqrs.Web.AuthenticationTokenName&quot;) ?? &quot;X-Token&quot;;
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                         if (Context.RequestCookies.TryGetValue(authenticationTokenName, out cookie))
+<span class="lineNum">      94 </span>            :                                 userRsn = cookie.Value;
+<span class="lineNum">      95 </span>            :                         else
+<span class="lineNum">      96 </span>            :                                 userRsn = Context.QueryString[authenticationTokenName];
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                         return userRsn
+<span class="lineNum">      99 </span>            :                                 .Replace(&quot;.&quot;, string.Empty)
+<span class="lineNum">     100 </span>            :                                 .Replace(&quot;-&quot;, string.Empty);
+<span class="lineNum">     101 </span>            :                 }
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     104 </span>            :                 /// Join the authenticated user to their relevant &lt;see cref=&quot;IHubContext.Groups&quot;/&gt;.
+<span class="lineNum">     105 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     106 </span><span class="lineCov">          1 :                 protected virtual Task Join()</span>
+<span class="lineNum">     107 </span>            :                 {
+<span class="lineNum">     108 </span>            :                         string userToken = UserToken();
+<span class="lineNum">     109 </span>            :                         string connectionId = Context.ConnectionId;
+<span class="lineNum">     110 </span>            :                         return Task.Factory.StartNewSafely(() =&gt;
+<span class="lineNum">     111 </span>            :                         {
+<span class="lineNum">     112 </span>            :                                 Task work = Groups.Add(connectionId, string.Format(&quot;User-{0}&quot;, userToken));
+<span class="lineNum">     113 </span>            :                                 work.ConfigureAwait(false);
+<span class="lineNum">     114 </span>            :                                 work.Wait();
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :                                 CurrentHub
+<span class="lineNum">     117 </span>            :                                         .Clients
+<span class="lineNum">     118 </span>            :                                         .Group(string.Format(&quot;User-{0}&quot;, userToken))
+<span class="lineNum">     119 </span>            :                                         .registered(&quot;User: &quot; + userToken);
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :                                 if (ConvertUserTokenToUserRsn != null)
+<span class="lineNum">     122 </span>            :                                 {
+<span class="lineNum">     123 </span>            :                                         try
+<span class="lineNum">     124 </span>            :                                         {
+<span class="lineNum">     125 </span>            :                                                 Guid userRsn = ConvertUserTokenToUserRsn(userToken);
+<span class="lineNum">     126 </span>            :                                                 work = Groups.Add(connectionId, string.Format(&quot;UserRsn-{0}&quot;, userRsn));
+<span class="lineNum">     127 </span>            :                                                 work.ConfigureAwait(false);
+<span class="lineNum">     128 </span>            :                                                 work.Wait();
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :                                                 CurrentHub
+<span class="lineNum">     131 </span>            :                                                         .Clients
+<span class="lineNum">     132 </span>            :                                                         .Group(string.Format(&quot;UserRsn-{0}&quot;, userRsn))
+<span class="lineNum">     133 </span>            :                                                         .registered(&quot;UserRsn: &quot; + userRsn);
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            :                                         }
+<span class="lineNum">     136 </span>            :                                         catch (Exception exception)
+<span class="lineNum">     137 </span>            :                                         {
+<span class="lineNum">     138 </span>            :                                                 Logger.LogWarning(string.Format(&quot;Registering user token '{0}' to a user RSN and into the SignalR group failed.&quot;, userToken), exception: exception, metaData: GetAdditionalDataForLogging(userToken));
+<span class="lineNum">     139 </span>            :                                         }
+<span class="lineNum">     140 </span>            :                                 }
+<span class="lineNum">     141 </span>            :                         });
+<span class="lineNum">     142 </span>            :                 }
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     145 </span>            :                 /// Gets the current &lt;see cref=&quot;IHubContext&quot;/&gt;.
+<span class="lineNum">     146 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     147 </span>            :                 protected virtual IHubContext CurrentHub
+<span class="lineNum">     148 </span>            :                 {
+<span class="lineNum">     149 </span>            :                         get
+<span class="lineNum">     150 </span>            :                         {
+<span class="lineNum">     151 </span>            :                                 return GlobalHost.ConnectionManager.GetHubContext&lt;NotificationHub&gt;();
+<span class="lineNum">     152 </span>            :                         }
+<span class="lineNum">     153 </span>            :                 }
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     156 </span>            :                 /// Send out an event to specific user RSNs
+<span class="lineNum">     157 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     158 </span>            :                 void INotificationHub.SendUsersEvent&lt;TSingleSignOnToken&gt;(IEvent&lt;TSingleSignOnToken&gt; eventData, params Guid[] userRsnCollection)
+<span class="lineNum">     159 </span>            :                 {
+<span class="lineNum">     160 </span>            :                         IList&lt;Guid&gt; optimisedUserRsnCollection = (userRsnCollection ?? Enumerable.Empty&lt;Guid&gt;()).ToList();
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            :                         Logger.LogDebug(string.Format(&quot;Sending a message on the hub for user RSNs [{0}].&quot;, string.Join(&quot;, &quot;, optimisedUserRsnCollection)));
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            :                         try
+<span class="lineNum">     165 </span>            :                         {
+<span class="lineNum">     166 </span>            :                                 var tokenSource = new CancellationTokenSource();
+<span class="lineNum">     167 </span>            :                                 Task.Factory.StartNewSafely
+<span class="lineNum">     168 </span>            :                                 (
+<span class="lineNum">     169 </span>            :                                         () =&gt;
+<span class="lineNum">     170 </span>            :                                         {
+<span class="lineNum">     171 </span>            :                                                 foreach (Guid userRsn in optimisedUserRsnCollection)
+<span class="lineNum">     172 </span>            :                                                 {
+<span class="lineNum">     173 </span>            :                                                         var metaData = GetAdditionalDataForLogging(userRsn);
+<span class="lineNum">     174 </span>            :                                                         try
+<span class="lineNum">     175 </span>            :                                                         {
+<span class="lineNum">     176 </span>            :                                                                 Clients
+<span class="lineNum">     177 </span>            :                                                                         .Group(string.Format(&quot;UserRsn-{0}&quot;, userRsn))
+<span class="lineNum">     178 </span>            :                                                                         .notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData, CorrelationId = CorrelationIdHelper.GetCorrelationId() });
+<span class="lineNum">     179 </span>            :                                                         }
+<span class="lineNum">     180 </span>            :                                                         catch (TimeoutException exception)
+<span class="lineNum">     181 </span>            :                                                         {
+<span class="lineNum">     182 </span>            :                                                                 Logger.LogWarning(&quot;Sending a message on the hub timed-out.&quot;, exception: exception, metaData: metaData);
+<span class="lineNum">     183 </span>            :                                                         }
+<span class="lineNum">     184 </span>            :                                                         catch (Exception exception)
+<span class="lineNum">     185 </span>            :                                                         {
+<span class="lineNum">     186 </span>            :                                                                 Logger.LogError(&quot;Sending a message on the hub resulted in an error.&quot;, exception: exception, metaData: metaData);
+<span class="lineNum">     187 </span>            :                                                         }
+<span class="lineNum">     188 </span>            :                                                 }
+<span class="lineNum">     189 </span>            :                                         }, tokenSource.Token
+<span class="lineNum">     190 </span>            :                                 );
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :                                 tokenSource.CancelAfter(15 * 1000);
+<span class="lineNum">     193 </span>            :                         }
+<span class="lineNum">     194 </span>            :                         catch (Exception exception)
+<span class="lineNum">     195 </span>            :                         {
+<span class="lineNum">     196 </span>            :                                 foreach (Guid userRsn in optimisedUserRsnCollection)
+<span class="lineNum">     197 </span>            :                                         Logger.LogError(&quot;Queueing a message on the hub resulted in an error.&quot;, exception: exception, metaData: GetAdditionalDataForLogging(userRsn));
+<span class="lineNum">     198 </span>            :                         }
+<span class="lineNum">     199 </span>            :                 }
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     202 </span>            :                 /// Send out an event to specific user token
+<span class="lineNum">     203 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     204 </span>            :                 void INotificationHub.SendUserEvent&lt;TSingleSignOnToken&gt;(IEvent&lt;TSingleSignOnToken&gt; eventData, string userToken)
+<span class="lineNum">     205 </span>            :                 {
+<span class="lineNum">     206 </span>            :                         Logger.LogDebug(string.Format(&quot;Sending a message on the hub for user [{0}].&quot;, userToken));
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span>            :                         try
+<span class="lineNum">     209 </span>            :                         {
+<span class="lineNum">     210 </span>            :                                 var tokenSource = new CancellationTokenSource();
+<span class="lineNum">     211 </span>            :                                 Task.Factory.StartNewSafely
+<span class="lineNum">     212 </span>            :                                 (
+<span class="lineNum">     213 </span>            :                                         () =&gt;
+<span class="lineNum">     214 </span>            :                                         {
+<span class="lineNum">     215 </span>            :                                                 IDictionary&lt;string, object&gt; metaData = GetAdditionalDataForLogging(userToken);
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span>            :                                                 try
+<span class="lineNum">     218 </span>            :                                                 {
+<span class="lineNum">     219 </span>            :                                                         CurrentHub
+<span class="lineNum">     220 </span>            :                                                                 .Clients
+<span class="lineNum">     221 </span>            :                                                                 .Group(string.Format(&quot;User-{0}&quot;, userToken))
+<span class="lineNum">     222 </span>            :                                                                 .notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData, CorrelationId = CorrelationIdHelper.GetCorrelationId() });
+<span class="lineNum">     223 </span>            :                                                 }
+<span class="lineNum">     224 </span>            :                                                 catch (TimeoutException exception)
+<span class="lineNum">     225 </span>            :                                                 {
+<span class="lineNum">     226 </span>            :                                                         Logger.LogWarning(&quot;Sending a message on the hub timed-out.&quot;, exception: exception, metaData: metaData);
+<span class="lineNum">     227 </span>            :                                                 }
+<span class="lineNum">     228 </span>            :                                                 catch (Exception exception)
+<span class="lineNum">     229 </span>            :                                                 {
+<span class="lineNum">     230 </span>            :                                                         Logger.LogError(&quot;Sending a message on the hub resulted in an error.&quot;, exception: exception, metaData: metaData);
+<span class="lineNum">     231 </span>            :                                                 }
+<span class="lineNum">     232 </span>            :                                         }, tokenSource.Token
+<span class="lineNum">     233 </span>            :                                 );
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            :                                 tokenSource.CancelAfter(15 * 1000);
+<span class="lineNum">     236 </span>            :                         }
+<span class="lineNum">     237 </span>            :                         catch (Exception exception)
+<span class="lineNum">     238 </span>            :                         {
+<span class="lineNum">     239 </span>            :                                 Logger.LogError(&quot;Queueing a message on the hub resulted in an error.&quot;, exception: exception, metaData: GetAdditionalDataForLogging(userToken));
+<span class="lineNum">     240 </span>            :                         }
+<span class="lineNum">     241 </span>            :                 }
+<span class="lineNum">     242 </span>            : 
+<span class="lineNum">     243 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     244 </span>            :                 /// Send out an event to all users
+<span class="lineNum">     245 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     246 </span>            :                 void INotificationHub.SendAllUsersEvent&lt;TSingleSignOnToken&gt;(IEvent&lt;TSingleSignOnToken&gt; eventData)
+<span class="lineNum">     247 </span>            :                 {
+<span class="lineNum">     248 </span>            :                         Logger.LogDebug(&quot;Sending a message on the hub to all users.&quot;);
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            :                         try
+<span class="lineNum">     251 </span>            :                         {
+<span class="lineNum">     252 </span>            :                                 var tokenSource = new CancellationTokenSource();
+<span class="lineNum">     253 </span>            :                                 Task.Factory.StartNewSafely
+<span class="lineNum">     254 </span>            :                                 (
+<span class="lineNum">     255 </span>            :                                         () =&gt;
+<span class="lineNum">     256 </span>            :                                         {
+<span class="lineNum">     257 </span>            :                                                 try
+<span class="lineNum">     258 </span>            :                                                 {
+<span class="lineNum">     259 </span>            :                                                         CurrentHub
+<span class="lineNum">     260 </span>            :                                                                 .Clients
+<span class="lineNum">     261 </span>            :                                                                 .All
+<span class="lineNum">     262 </span>            :                                                                 .notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData, CorrelationId = CorrelationIdHelper.GetCorrelationId() });
+<span class="lineNum">     263 </span>            :                                                 }
+<span class="lineNum">     264 </span>            :                                                 catch (TimeoutException exception)
+<span class="lineNum">     265 </span>            :                                                 {
+<span class="lineNum">     266 </span>            :                                                         Logger.LogWarning(&quot;Sending a message on the hub to all users timed-out.&quot;, exception: exception);
+<span class="lineNum">     267 </span>            :                                                 }
+<span class="lineNum">     268 </span>            :                                                 catch (Exception exception)
+<span class="lineNum">     269 </span>            :                                                 {
+<span class="lineNum">     270 </span>            :                                                         Logger.LogError(&quot;Sending a message on the hub to all users resulted in an error.&quot;, exception: exception);
+<span class="lineNum">     271 </span>            :                                                 }
+<span class="lineNum">     272 </span>            :                                         }, tokenSource.Token
+<span class="lineNum">     273 </span>            :                                 );
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span>            :                                 tokenSource.CancelAfter(15 * 1000);
+<span class="lineNum">     276 </span>            :                         }
+<span class="lineNum">     277 </span>            :                         catch (Exception exception)
+<span class="lineNum">     278 </span>            :                         {
+<span class="lineNum">     279 </span>            :                                 Logger.LogError(&quot;Queueing a message on the hub to all users resulted in an error.&quot;, exception: exception);
+<span class="lineNum">     280 </span>            :                         }
+<span class="lineNum">     281 </span>            :                 }
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     284 </span>            :                 /// Send out an event to all users except the specific user token
+<span class="lineNum">     285 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     286 </span>            :                 void INotificationHub.SendExceptThisUserEvent&lt;TSingleSignOnToken&gt;(IEvent&lt;TSingleSignOnToken&gt; eventData, string userToken)
+<span class="lineNum">     287 </span>            :                 {
+<span class="lineNum">     288 </span>            :                         Logger.LogDebug(string.Format(&quot;Sending a message on the hub for all users except user [{0}].&quot;, userToken));
+<span class="lineNum">     289 </span>            : 
+<span class="lineNum">     290 </span>            :                         return;
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            :                         /*
+<span class="lineNum">     293 </span>            :                         try
+<span class="lineNum">     294 </span>            :                         {
+<span class="lineNum">     295 </span>            :                                 var tokenSource = new CancellationTokenSource();
+<span class="lineNum">     296 </span>            :                                 Task.Factory.StartNewSafely
+<span class="lineNum">     297 </span>            :                                 (
+<span class="lineNum">     298 </span>            :                                         () =&gt;
+<span class="lineNum">     299 </span>            :                                         {
+<span class="lineNum">     300 </span>            :                                                 var metaData = GetAdditionalDataForLogging(userToken);
+<span class="lineNum">     301 </span>            : 
+<span class="lineNum">     302 </span>            :                                                 try
+<span class="lineNum">     303 </span>            :                                                 {
+<span class="lineNum">     304 </span>            :                                                         CurrentHub
+<span class="lineNum">     305 </span>            :                                                                 .Clients
+<span class="lineNum">     306 </span>            :                                                                 .Group(string.Format(&quot;User-{0}&quot;, userToken))
+<span class="lineNum">     307 </span>            :                                                                 .notifyEvent(new { Type = eventData.GetType().FullName, Data = eventData, CorrelationId = CorrelationIdHelper.GetCorrelationId() });
+<span class="lineNum">     308 </span>            :                                                 }
+<span class="lineNum">     309 </span>            :                                                 catch (TimeoutException exception)
+<span class="lineNum">     310 </span>            :                                                 {
+<span class="lineNum">     311 </span>            :                                                         Logger.LogWarning(string.Format(&quot;Sending a message on the hub for all users except user [{0}] timed-out.&quot;, userToken), exception: exception, metaData: metaData);
+<span class="lineNum">     312 </span>            :                                                 }
+<span class="lineNum">     313 </span>            :                                                 catch (Exception exception)
+<span class="lineNum">     314 </span>            :                                                 {
+<span class="lineNum">     315 </span>            :                                                         Logger.LogError(string.Format(&quot;Sending a message on the hub for all users except user [{0}] resulted in an error.&quot;, userToken), exception: exception, metaData: metaData);
+<span class="lineNum">     316 </span>            :                                                 }
+<span class="lineNum">     317 </span>            :                                         }, tokenSource.Token
+<span class="lineNum">     318 </span>            :                                 );
+<span class="lineNum">     319 </span>            : 
+<span class="lineNum">     320 </span>            :                                 tokenSource.CancelAfter(15 * 1000);
+<span class="lineNum">     321 </span>            :                         }
+<span class="lineNum">     322 </span>            :                         catch (Exception exception)
+<span class="lineNum">     323 </span>            :                         {
+<span class="lineNum">     324 </span>            :                                 Logger.LogError(&quot;Queueing a message on the hub resulted in an error.&quot;, exception: exception, metaData: GetAdditionalDataForLogging(userToken));
+<span class="lineNum">     325 </span>            :                         }
+<span class="lineNum">     326 </span>            :                         */
+<span class="lineNum">     327 </span>            :                 }
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     330 </span>            :                 /// Send out an event to specific user token
+<span class="lineNum">     331 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     332 </span>            :                 void ISingleSignOnTokenNotificationHub.SendUserEvent&lt;TSingleSignOnToken&gt;(IEvent&lt;TSingleSignOnToken&gt; eventData, string userToken)
+<span class="lineNum">     333 </span>            :                 {
+<span class="lineNum">     334 </span>            :                         ((INotificationHub) this).SendUserEvent(eventData, userToken);
+<span class="lineNum">     335 </span>            :                 }
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     338 </span>            :                 /// Send out an event to all users
+<span class="lineNum">     339 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     340 </span>            :                 void ISingleSignOnTokenNotificationHub.SendAllUsersEvent&lt;TSingleSignOnToken&gt;(IEvent&lt;TSingleSignOnToken&gt; eventData)
+<span class="lineNum">     341 </span>            :                 {
+<span class="lineNum">     342 </span>            :                         ((INotificationHub)this).SendAllUsersEvent(eventData);
+<span class="lineNum">     343 </span>            :                 }
+<span class="lineNum">     344 </span>            : 
+<span class="lineNum">     345 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     346 </span>            :                 /// Send out an event to all users except the specific user token
+<span class="lineNum">     347 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     348 </span>            :                 void ISingleSignOnTokenNotificationHub.SendExceptThisUserEvent&lt;TSingleSignOnToken&gt;(IEvent&lt;TSingleSignOnToken&gt; eventData, string userToken)
+<span class="lineNum">     349 </span>            :                 {
+<span class="lineNum">     350 </span>            :                         ((INotificationHub)this).SendExceptThisUserEvent(eventData, userToken);
+<span class="lineNum">     351 </span>            :                 }
+<span class="lineNum">     352 </span>            : 
+<span class="lineNum">     353 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     354 </span>            :                 /// Send out an event to specific user RSNs
+<span class="lineNum">     355 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     356 </span>            :                 void ISingleSignOnTokenNotificationHub.SendUsersEvent&lt;TSingleSignOnToken&gt;(IEvent&lt;TSingleSignOnToken&gt; eventData, params Guid[] userRsnCollection)
+<span class="lineNum">     357 </span>            :                 {
+<span class="lineNum">     358 </span>            :                         ((INotificationHub)this).SendUsersEvent(eventData, userRsnCollection);
+<span class="lineNum">     359 </span>            :                 }
+<span class="lineNum">     360 </span>            : 
+<span class="lineNum">     361 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     362 </span>            :                 /// Create additional data containing the provided &lt;paramref name=&quot;userRsn&quot;/&gt;.
+<span class="lineNum">     363 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     364 </span><span class="lineCov">          1 :                 protected virtual IDictionary&lt;string, object&gt; GetAdditionalDataForLogging(Guid userRsn)</span>
+<span class="lineNum">     365 </span>            :                 {
+<span class="lineNum">     366 </span>            :                         return new Dictionary&lt;string, object&gt; { { &quot;UserRsn&quot;, userRsn } };
+<span class="lineNum">     367 </span>            :                 }
+<span class="lineNum">     368 </span>            : 
+<span class="lineNum">     369 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     370 </span>            :                 /// Create additional data containing the provided &lt;paramref name=&quot;userToken&quot;/&gt;.
+<span class="lineNum">     371 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     372 </span><span class="lineCov">          1 :                 protected virtual IDictionary&lt;string, object&gt; GetAdditionalDataForLogging(string userToken)</span>
+<span class="lineNum">     373 </span>            :                 {
+<span class="lineNum">     374 </span>            :                         return new Dictionary&lt;string, object&gt; { { &quot;UserToken&quot;, userToken } };
+<span class="lineNum">     375 </span>            :                 }
+<span class="lineNum">     376 </span>            :         }
+<span class="lineNum">     377 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

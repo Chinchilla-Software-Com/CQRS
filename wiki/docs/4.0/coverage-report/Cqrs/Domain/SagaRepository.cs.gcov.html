@@ -1,0 +1,281 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Domain/SagaRepository.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Domain</a> - SagaRepository.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-23 19:54:52</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : #region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      13 </span>            : using Cqrs.Commands;
+<span class="lineNum">      14 </span>            : using Cqrs.Domain.Exceptions;
+<span class="lineNum">      15 </span>            : using Cqrs.Domain.Factories;
+<span class="lineNum">      16 </span>            : using Cqrs.Events;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.Domain
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :         /// Provides basic repository methods for operations with instances of &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      22 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      24 </span>            :         public class SagaRepository&lt;TAuthenticationToken&gt; : ISagaRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; used to store and retrieve events from.
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span>            :                 protected IEventStore&lt;TAuthenticationToken&gt; EventStore { get; private set; }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Gets or sets the Publisher used to publish events on once saved into the &lt;see cref=&quot;EventStore&quot;/&gt;.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 protected IEventPublisher&lt;TAuthenticationToken&gt; Publisher { get; private set; }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      37 </span>            :                 /// Gets or sets the Publisher used to publish an &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      39 </span>            :                 protected ICommandPublisher&lt;TAuthenticationToken&gt; CommandPublisher { get; private set; }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// Gets or set the &lt;see cref=&quot;IAggregateFactory&quot;/&gt;.
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span>            :                 protected IAggregateFactory SagaFactory { get; private set; }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      47 </span>            :                 /// Gets or set the &lt;see cref=&quot;ICorrelationIdHelper&quot;/&gt;.
+<span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      49 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      52 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;SagaRepository{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span><span class="lineCov">          1 :                 public SagaRepository(IAggregateFactory sagaFactory, IEventStore&lt;TAuthenticationToken&gt; eventStore, IEventPublisher&lt;TAuthenticationToken&gt; publisher, ICommandPublisher&lt;TAuthenticationToken&gt; commandPublisher, ICorrelationIdHelper correlationIdHelper)</span>
+<span class="lineNum">      55 </span>            :                 {
+<span class="lineNum">      56 </span>            :                         EventStore = eventStore;
+<span class="lineNum">      57 </span>            :                         Publisher = publisher;
+<span class="lineNum">      58 </span>            :                         CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">      59 </span>            :                         CommandPublisher = commandPublisher;
+<span class="lineNum">      60 </span>            :                         SagaFactory = sagaFactory;
+<span class="lineNum">      61 </span>            :                 }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// Save and persist the provided &lt;paramref name=&quot;saga&quot;/&gt;, optionally providing the version number the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; is expected to be at.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span>            :                 /// &lt;typeparam name=&quot;TSaga&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      67 </span>            :                 /// &lt;param name=&quot;saga&quot;&gt;The &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; to save and persist.&lt;/param&gt;
+<span class="lineNum">      68 </span>            :                 /// &lt;param name=&quot;expectedVersion&quot;&gt;The version number the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; is expected to be at.&lt;/param&gt;
+<span class="lineNum">      69 </span><span class="lineCov">          1 :                 public virtual void Save&lt;TSaga&gt;(TSaga saga, int? expectedVersion = null)</span>
+<span class="lineNum">      70 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;
+<span class="lineNum">      71 </span>            :                 {
+<span class="lineNum">      72 </span>            :                         IList&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; uncommittedChanges = saga.GetUncommittedChanges().ToList();
+<span class="lineNum">      73 </span>            :                         IEnumerable&lt;ICommand&lt;TAuthenticationToken&gt;&gt; commandsToPublish = saga.GetUnpublishedCommands();
+<span class="lineNum">      74 </span>            :                         if (!uncommittedChanges.Any())
+<span class="lineNum">      75 </span>            :                         {
+<span class="lineNum">      76 </span>            :                                 PublishCommand(commandsToPublish);
+<span class="lineNum">      77 </span>            :                                 return;
+<span class="lineNum">      78 </span>            :                         }
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                         if (expectedVersion != null)
+<span class="lineNum">      81 </span>            :                         {
+<span class="lineNum">      82 </span>            :                                 IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; eventStoreResults = EventStore.Get(saga.GetType(), saga.Id, false, expectedVersion.Value);
+<span class="lineNum">      83 </span>            :                                 if (eventStoreResults.Any())
+<span class="lineNum">      84 </span>            :                                         throw new ConcurrencyException(saga.Id);
+<span class="lineNum">      85 </span>            :                         }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :                         var eventsToPublish = new List&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :                         int i = 0;
+<span class="lineNum">      90 </span>            :                         int version = saga.Version;
+<span class="lineNum">      91 </span>            :                         foreach (ISagaEvent&lt;TAuthenticationToken&gt; @event in uncommittedChanges)
+<span class="lineNum">      92 </span>            :                         {
+<span class="lineNum">      93 </span>            :                                 if (@event.Rsn == Guid.Empty)
+<span class="lineNum">      94 </span>            :                                         @event.Rsn = saga.Id;
+<span class="lineNum">      95 </span>            :                                 if (@event.Rsn == Guid.Empty)
+<span class="lineNum">      96 </span>            :                                         throw new AggregateOrEventMissingIdException(saga.GetType(), @event.GetType());
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                                 i++;
+<span class="lineNum">      99 </span>            :                                 version++;
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :                                 @event.Version = version;
+<span class="lineNum">     102 </span>            :                                 @event.TimeStamp = DateTimeOffset.UtcNow;
+<span class="lineNum">     103 </span>            :                                 @event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+<span class="lineNum">     104 </span>            :                                 EventStore.Save(saga.GetType(), @event);
+<span class="lineNum">     105 </span>            :                                 eventsToPublish.Add(@event);
+<span class="lineNum">     106 </span>            :                         }
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :                         saga.MarkChangesAsCommitted();
+<span class="lineNum">     109 </span>            :                         foreach (ISagaEvent&lt;TAuthenticationToken&gt; @event in eventsToPublish)
+<span class="lineNum">     110 </span>            :                                 PublishEvent(@event);
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            :                         PublishCommand(commandsToPublish);
+<span class="lineNum">     113 </span>            :                 }
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     116 </span>            :                 /// Publish the saved &lt;paramref name=&quot;event&quot;/&gt;.
+<span class="lineNum">     117 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     118 </span><span class="lineCov">          1 :                 protected virtual void PublishEvent(ISagaEvent&lt;TAuthenticationToken&gt; @event)</span>
+<span class="lineNum">     119 </span>            :                 {
+<span class="lineNum">     120 </span>            :                         Publisher.Publish(@event);
+<span class="lineNum">     121 </span>            :                 }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     124 </span>            :                 /// Publish the &lt;paramref name=&quot;commands&quot;/&gt;.
+<span class="lineNum">     125 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     126 </span><span class="lineCov">          1 :                 protected virtual void PublishCommand(IEnumerable&lt;ICommand&lt;TAuthenticationToken&gt;&gt; commands)</span>
+<span class="lineNum">     127 </span>            :                 {
+<span class="lineNum">     128 </span>            :                         CommandPublisher.Publish(commands);
+<span class="lineNum">     129 </span>            :                 }
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     132 </span>            :                 /// Retrieves an &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TSaga&quot;/&gt;.
+<span class="lineNum">     133 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     134 </span>            :                 /// &lt;typeparam name=&quot;TSaga&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     135 </span>            :                 /// &lt;param name=&quot;sagaId&quot;&gt;The identifier of the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">     136 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     137 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     138 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     139 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     140 </span><span class="lineCov">          1 :                 public virtual TSaga Get&lt;TSaga&gt;(Guid sagaId, IList&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
+<span class="lineNum">     141 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;
+<span class="lineNum">     142 </span>            :                 {
+<span class="lineNum">     143 </span>            :                         return LoadSaga&lt;TSaga&gt;(sagaId, events);
+<span class="lineNum">     144 </span>            :                 }
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     147 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TSaga&quot;/&gt;.
+<span class="lineNum">     148 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     149 </span>            :                 /// &lt;typeparam name=&quot;TSaga&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     150 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TSaga&quot;/&gt; to create.&lt;/param&gt;
+<span class="lineNum">     151 </span><span class="lineCov">          1 :                 protected virtual TSaga CreateSaga&lt;TSaga&gt;(Guid id)</span>
+<span class="lineNum">     152 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;
+<span class="lineNum">     153 </span>            :                 {
+<span class="lineNum">     154 </span>            :                         var saga = SagaFactory.Create&lt;TSaga&gt;(id);
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            :                         return saga;
+<span class="lineNum">     157 </span>            :                 }
+<span class="lineNum">     158 </span>            : 
+<span class="lineNum">     159 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     160 </span>            :                 /// Calls &lt;see cref=&quot;IAggregateFactory.Create&quot;/&gt; to get a, &lt;typeparamref name=&quot;TSaga&quot;/&gt; and then calls &lt;see cref=&quot;LoadSagaHistory{TSaga}&quot;/&gt;.
+<span class="lineNum">     161 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     162 </span>            :                 /// &lt;typeparam name=&quot;TSaga&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     163 </span>            :                 /// &lt;param name=&quot;id&quot;&gt;The id of the &lt;typeparamref name=&quot;TSaga&quot;/&gt; to create.&lt;/param&gt;
+<span class="lineNum">     164 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     165 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     166 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     167 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     168 </span><span class="lineCov">          1 :                 protected virtual TSaga LoadSaga&lt;TSaga&gt;(Guid id, IList&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
+<span class="lineNum">     169 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;
+<span class="lineNum">     170 </span>            :                 {
+<span class="lineNum">     171 </span>            :                         var saga = SagaFactory.Create&lt;TSaga&gt;(id, false);
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span>            :                         LoadSagaHistory(saga, events);
+<span class="lineNum">     174 </span>            :                         return saga;
+<span class="lineNum">     175 </span>            :                 }
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     178 </span>            :                 /// If &lt;paramref name=&quot;events&quot;/&gt; is null, loads the events from &lt;see cref=&quot;EventStore&quot;/&gt;, checks for duplicates and then
+<span class="lineNum">     179 </span>            :                 /// rehydrates the &lt;paramref name=&quot;saga&quot;/&gt; with the events.
+<span class="lineNum">     180 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     181 </span>            :                 /// &lt;typeparam name=&quot;TSaga&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     182 </span>            :                 /// &lt;param name=&quot;saga&quot;&gt;The &lt;typeparamref name=&quot;TSaga&quot;/&gt; to rehydrate.&lt;/param&gt;
+<span class="lineNum">     183 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     184 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     185 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     186 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     187 </span>            :                 /// &lt;param name=&quot;throwExceptionOnNoEvents&quot;&gt;If true will throw an instance of &lt;see cref=&quot;SagaNotFoundException{TSaga,TAuthenticationToken}&quot;/&gt; if no aggregate events or provided or found in the &lt;see cref=&quot;EventStore&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     188 </span><span class="lineCov">          1 :                 public virtual void LoadSagaHistory&lt;TSaga&gt;(TSaga saga, IList&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; events = null, bool throwExceptionOnNoEvents = true)</span>
+<span class="lineNum">     189 </span>            :                         where TSaga : ISaga&lt;TAuthenticationToken&gt;
+<span class="lineNum">     190 </span>            :                 {
+<span class="lineNum">     191 </span>            :                         IList&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; theseEvents = events ?? EventStore.Get&lt;TSaga&gt;(saga.Id).Cast&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt;().ToList();
+<span class="lineNum">     192 </span>            :                         if (!theseEvents.Any())
+<span class="lineNum">     193 </span>            :                         {
+<span class="lineNum">     194 </span>            :                                 if (throwExceptionOnNoEvents)
+<span class="lineNum">     195 </span>            :                                         throw new SagaNotFoundException&lt;TSaga, TAuthenticationToken&gt;(saga.Id);
+<span class="lineNum">     196 </span>            :                                 return;
+<span class="lineNum">     197 </span>            :                         }
+<span class="lineNum">     198 </span>            : 
+<span class="lineNum">     199 </span>            :                         var duplicatedEvents =
+<span class="lineNum">     200 </span>            :                                 theseEvents.GroupBy(x =&gt; x.Version)
+<span class="lineNum">     201 </span>            :                                         .Select(x =&gt; new { Version = x.Key, Total = x.Count() })
+<span class="lineNum">     202 </span>            :                                         .FirstOrDefault(x =&gt; x.Total &gt; 1);
+<span class="lineNum">     203 </span>            :                         if (duplicatedEvents != null)
+<span class="lineNum">     204 </span>            :                                 throw new DuplicateSagaEventException&lt;TSaga, TAuthenticationToken&gt;(saga.Id, duplicatedEvents.Version);
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :                         saga.LoadFromHistory(theseEvents);
+<span class="lineNum">     207 </span>            :                 }
+<span class="lineNum">     208 </span>            :         }
+<span class="lineNum">     209 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
