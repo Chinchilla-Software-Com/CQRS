@@ -15,9 +15,11 @@ using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Configuration;
 using Ninject;
 using Ninject.Modules;
+#if NET472
 using Ninject.Web.Common;
-using System;
 using System.Web;
+#endif
+using System;
 using Chinchilla.StateManagement.Web;
 using Cqrs.Authentication;
 using Cqrs.Ninject.Configuration;
@@ -30,7 +32,7 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 	/// </summary>
 	public class WebHostModule : ResolvableModule
 	{
-		#region Overrides of NinjectModule
+#region Overrides of NinjectModule
 
 		/// <summary>
 		/// Loads the module into the kernel.
@@ -43,7 +45,7 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 			RegisterWebBit();
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Register the all Azure configurations
@@ -143,8 +145,10 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 		/// </summary>
 		protected virtual void RegisterWebBit()
 		{
+#if NET472
 			Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
 			Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+#endif
 		}
 	}
 }

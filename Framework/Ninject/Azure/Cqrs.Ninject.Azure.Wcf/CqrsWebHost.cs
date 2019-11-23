@@ -7,6 +7,9 @@
 #endregion
 
 using System.Collections.Generic;
+#if NETCOREAPP3_0
+using System.Linq;
+#endif
 using Cqrs.Authentication;
 using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Commands;
@@ -35,7 +38,7 @@ namespace Cqrs.Ninject.Azure.Wcf
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 		where TWebHostModule : WebHostModule, new ()
 	{
-		#region Overrides of CoreHost
+#region Overrides of CoreHost
 
 		/// <summary>
 		/// Configure the <see cref="DependencyResolver"/>.
@@ -48,7 +51,7 @@ namespace Cqrs.Ninject.Azure.Wcf
 			NinjectDependencyResolver.Start(prepareProvidedKernel: true);
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// A collection of <see cref="INinjectModule"/> that are required to be loaded
@@ -100,10 +103,15 @@ namespace Cqrs.Ninject.Azure.Wcf
 		/// </summary>
 		protected virtual IEnumerable<INinjectModule> GetEventStoreModules()
 		{
+#if NET472
 			return new List<INinjectModule>
 			{
 				new SimplifiedSqlModule<TAuthenticationToken>()
 			};
+#endif
+#if NETCOREAPP3_0
+			return Enumerable.Empty<INinjectModule>();
+#endif
 		}
 	}
 }

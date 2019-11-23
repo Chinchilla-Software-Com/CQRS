@@ -255,23 +255,40 @@ namespace Cqrs.DataStores
 			get { return Table.AsQueryable().Provider; }
 		}
 
-#endregion
+		#endregion
 
-#region Implementation of IDisposable
+		#region Implementation of IDisposable
+		#pragma warning disable CA1063 // Implement IDisposable Correctly
 
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
-		public void Dispose()
+		public virtual void Dispose()
 		{
-			Table = null;
-			DbDataContext.Dispose();
-			DbDataContext = null;
+			// Dispose of unmanaged resources.
+			Dispose(true);
+			// Suppress finalization.
+			GC.SuppressFinalize(this);
 		}
 
-#endregion
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		public virtual void Dispose(bool disposing)
 
-#region Implementation of IDataStore<TData>
+		{
+			if (disposing)
+			{
+				Table = null;
+				DbDataContext.Dispose();
+				DbDataContext = null;
+			}
+		}
+
+		#pragma warning restore CA1063 // Implement IDisposable Correctly
+		#endregion
+
+		#region Implementation of IDataStore<TData>
 
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.

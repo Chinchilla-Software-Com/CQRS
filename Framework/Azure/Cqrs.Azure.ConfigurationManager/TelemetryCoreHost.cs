@@ -20,10 +20,18 @@ namespace Cqrs.Azure.ConfigurationManager
 	/// </summary>
 	public abstract class TelemetryCoreHost<TAuthenticationToken> : CoreHost<TAuthenticationToken>
 	{
+#if NETCOREAPP3_0
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>. This must be set manually as dependency injection may not be ready in-time.
+		/// </summary>
+		protected static readonly IConfigurationManager _configurationManager = null;
+#endif
+#if NET472
 		/// <summary>
 		/// Gets or sets the <see cref="IConfigurationManager"/>.
 		/// </summary>
 		protected static readonly IConfigurationManager _configurationManager = new CloudConfigurationManager();
+#endif
 
 		/// <summary>
 		/// The <see cref="IConfigurationManager"/> that can be use before the <see cref="DependencyResolver.Current"/> is set.
@@ -38,6 +46,14 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// </summary>
 		public TelemetryClient TelemetryClient { get; private set; }
 
+#if NETCOREAPP3_0
+		/// <summary>
+		/// The delegate used internally to get the current <see cref="TelemetryConfiguration"/>.
+		/// <see cref="TelemetryConfiguration.CreateDefault"/> will be used if this is not set.
+		/// </summary>
+		public static Func<TelemetryConfiguration> GetTelemetryConfigurationDelegate { get; set; }
+#endif
+
 		#region Overrides of CoreHost<TAuthenticationToken>
 
 		/// <summary>
@@ -45,13 +61,25 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// </summary>
 		protected override void ConfigureTelemetry()
 		{
+#if NETCOREAPP3_0
+			TelemetryConfiguration config = GetTelemetryConfigurationDelegate() ?? TelemetryConfiguration.CreateDefault();
+			config.InstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsightsInstrumentationKey");
+#endif
+#if NET472
 			TelemetryConfiguration.Active.InstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsightsInstrumentationKey");
+#endif
 			bool enabledApplicationInsightsDeveloperMode;
 			if (!bool.TryParse(ConfigurationManager.GetSetting("Cqrs.Hosts.EnabledApplicationInsightsDeveloperMode"), out enabledApplicationInsightsDeveloperMode))
 				enabledApplicationInsightsDeveloperMode = false;
+#if NETCOREAPP3_0
+			config.TelemetryChannel.DeveloperMode = enabledApplicationInsightsDeveloperMode;
+			TelemetryClient = new TelemetryClient (config);
+#endif
+#if NET472
 			TelemetryConfiguration.Active.TelemetryChannel.DeveloperMode = enabledApplicationInsightsDeveloperMode;
+			TelemetryClient = new TelemetryClient {InstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsightsInstrumentationKey") };
+#endif
 
-			TelemetryClient = new TelemetryClient {InstrumentationKey = TelemetryConfiguration.Active.InstrumentationKey};
 			TelemetryClient.TrackEvent(string.Format("{0}/Instantiating", TelemetryName));
 			TelemetryClient.Flush();
 		}

@@ -6,19 +6,27 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using Cqrs.Authentication;
 using Cqrs.Azure.ConfigurationManager;
-using Cqrs.Configuration;
+using Ninject;
+#if NETCOREAPP3_0
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+#endif
+#if NET472
 using Cqrs.Ninject.Configuration;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-using Ninject;
 using Ninject.Web.Common;
+using Ninject.Web.Common.WebHost;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf), "Start", Order = 50)]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf), "Stop", Order = 50)]
+#endif
 
 namespace Cqrs.Ninject.Azure.Wcf.Configuration
 {
+#if NET472
 	/// <summary>
 	/// A <see cref="WebActivatorEx.PreApplicationStartMethodAttribute"/> that calls <see cref="Start"/>
 	/// and <see cref="WebActivatorEx.ApplicationShutdownMethodAttribute"/> that calls <see cref="Stop"/>
@@ -54,28 +62,36 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 		{
 			return new WcfStartUp(new CloudConfigurationManager()).CreateKernel();
 		}
+	}
+#endif
+#if NETCOREAPP3_0
+	/// <summary>
+	/// The Startup class that configures Simplified SQL by wiring up an eventual replacement for SimplifiedSqlModule
+	/// </summary>
+	public class SimplifiedNinjectWcf
+	{
+		private IKernel Kernel { get; set; }
 
-		private class WcfStartUp : SimplifiedNinjectStartUp<WebHostModule>
+		/// <summary>
+		/// The <see cref="IConfiguration"/> that can be use to get configuration settings
+		/// </summary>
+		protected IConfiguration Configuration { get; private set; }
+
+		/// <summary>
+		/// Instantiate a new instance of a <see cref="SimplifiedNinjectWcf"/>
+		/// </summary>
+		public SimplifiedNinjectWcf(IConfiguration configuration)
 		{
-			/// <summary>
-			/// Instantiate a new instance of <see cref="WcfStartUp"/>
-			/// </summary>
-			public WcfStartUp(IConfigurationManager configurationManager)
-				: base(configurationManager)
-			{
-			}
+			Configuration = configuration;
+		}
 
-			#region Overrides of SimplifiedNinjectStartUp<WebHostModule>
-
-			/// <summary>
-			/// Adds the <see cref="SimplifiedSqlModule{TAuthenticationToken}"/> into <see cref="NinjectDependencyResolver.ModulesToLoad"/>.
-			/// </summary>
-			protected override void AddSupplementryModules()
-			{
-				NinjectDependencyResolver.ModulesToLoad.Insert(2, new SimplifiedSqlModule<SingleSignOnToken>());
-			}
-
-			#endregion
+		/// <summary>
+		/// Creates the kernel that will manage your application.
+		/// </summary>
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		{
+			Kernel = new WcfStartUp(new CloudConfigurationManager(Configuration)).CreateKernel();
 		}
 	}
+#endif
 }

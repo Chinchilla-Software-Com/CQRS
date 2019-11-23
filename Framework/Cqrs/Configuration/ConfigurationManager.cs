@@ -66,6 +66,24 @@ namespace Cqrs.Configuration
 			return false;
 		}
 
+		/// <summary>
+		/// Read the configuration string named <paramref name="connectionStringName"/>.
+		/// </summary>
+		/// <param name="connectionStringName">The name (or key) of the connection string to read.</param>
+		public virtual string GetConnectionString(string connectionStringName)
+		{
+			return System.Configuration.ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+		}
+
+		/// <summary>
+		/// Read the configuration string where the name (or key) of the connection string is stored in a setting, first obtained with a call to <see cref="GetSetting(string)"/>
+		/// </summary>
+		/// <param name="key">The key (or name) of the setting that has the name (or key) of the connection string to read.</param>
+		public virtual string GetConnectionStringBySettingKey(string key)
+		{
+			return GetConnectionString(GetSetting(key));
+		}
+
 		#endregion
 	}
 }
