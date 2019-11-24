@@ -1,0 +1,4 @@
+var classCqrs_1_1Azure_1_1BlobStorage_1_1Test_1_1Integration_1_1TestQueryStrategy =
+[
+    [ "QueryPredicate", "classCqrs_1_1Azure_1_1BlobStorage_1_1Test_1_1Integration_1_1TestQueryStrategy_ab2a9657b5f1ce73aa3f807dd069c3d30.html#ab2a9657b5f1ce73aa3f807dd069c3d30", null ]
+];

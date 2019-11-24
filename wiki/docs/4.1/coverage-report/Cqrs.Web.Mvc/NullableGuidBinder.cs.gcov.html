@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.Web.Mvc/NullableGuidBinder.cs</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">Cqrs.Web.Mvc</a> - NullableGuidBinder.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-25 01:36:42</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.ComponentModel;
+<span class="lineNum">      11 </span>            : using System.Web.Mvc;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace Cqrs.Web.Mvc
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// A &lt;see cref=&quot;IModelBinder&quot;/&gt; designed to return &lt;see cref=&quot;Guid.Empty&quot;/&gt; is not &lt;see cref=&quot;Guid&quot;/&gt; is provided.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         public class NullableGuidBinder : DefaultModelBinder
+<span class="lineNum">      19 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      20 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :                 /// Returns the value of a property using the specified &lt;paramref name=&quot;controllerContext&quot;/&gt;, &lt;paramref name=&quot;bindingContext&quot;/&gt;, &lt;paramref name=&quot;propertyDescriptor&quot;/&gt;, and &lt;paramref name=&quot;propertyBinder&quot;/&gt;.
+<span class="lineNum">      22 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :                 /// &lt;param name=&quot;controllerContext&quot;&gt;The context within which the controller operates. The context information includes the controller, HTTP content, request context, and route data.&lt;/param&gt;
+<span class="lineNum">      24 </span>            :                 /// &lt;param name=&quot;bindingContext&quot;&gt;The context within which the model is bound. The context includes information such as the model object, model name, model type, property filter, and value provider.&lt;/param&gt;
+<span class="lineNum">      25 </span>            :                 /// &lt;param name=&quot;propertyDescriptor&quot;&gt;The descriptor for the property to access. The descriptor provides information such as the component type, property type, and property value. It also provides methods to get or set the property value.&lt;/param&gt;
+<span class="lineNum">      26 </span>            :                 /// &lt;param name=&quot;propertyBinder&quot;&gt;An object that provides a way to bind the property.&lt;/param&gt;
+<span class="lineNum">      27 </span>            :                 /// &lt;returns&gt;An object that represents the property value.&lt;/returns&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 protected override object GetPropertyValue(ControllerContext controllerContext, ModelBindingContext bindingContext, PropertyDescriptor propertyDescriptor, IModelBinder propertyBinder)</span>
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         if (propertyDescriptor.PropertyType == typeof(Guid))
+<span class="lineNum">      31 </span>            :                         {
+<span class="lineNum">      32 </span>            :                                 object rawValue = base.GetPropertyValue(controllerContext, bindingContext, propertyDescriptor, propertyBinder);
+<span class="lineNum">      33 </span>            :                                 if (rawValue == null)
+<span class="lineNum">      34 </span>            :                                         return Guid.Empty;
+<span class="lineNum">      35 </span>            :                                 return rawValue;
+<span class="lineNum">      36 </span>            :                         }
+<span class="lineNum">      37 </span>            :                         return base.GetPropertyValue(controllerContext, bindingContext, propertyDescriptor, propertyBinder);
+<span class="lineNum">      38 </span>            :                 }
+<span class="lineNum">      39 </span>            :         }
+<span class="lineNum">      40 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,285 @@
+\hypertarget{classCqrs_1_1Repositories_1_1Repository}{}\doxysection{Cqrs.\+Repositories.\+Repository$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$ Class Template Reference}
+\label{classCqrs_1_1Repositories_1_1Repository}\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+
+
+Provides basic repository methods for operations with an I\+Data\+Store$<$\+T\+Data$>$.  
+
+
+Inheritance diagram for Cqrs.\+Repositories.\+Repository$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.907618cm]{classCqrs_1_1Repositories_1_1Repository}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a5d5d78262533aa2ab32eddbab83869bd_a5d5d78262533aa2ab32eddbab83869bd}{Create}} (T\+Data data)
+\begin{DoxyCompactList}\small\item\em Create the newly provided {\itshape data}  to storage. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a2af8103cc2946317f8ee9ede643bbc68_a2af8103cc2946317f8ee9ede643bbc68}{Create}} (I\+Enumerable$<$ T\+Data $>$ data)
+\begin{DoxyCompactList}\small\item\em Create the newly provided {\itshape data}  to storage. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery}{I\+Single\+Result\+Query}}$<$ T\+Query\+Strategy, T\+Data $>$ \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a4f83093a92d8141cdc2b908bbbd97f32_a4f83093a92d8141cdc2b908bbbd97f32}{Retrieve}} (\mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery}{I\+Single\+Result\+Query}}$<$ T\+Query\+Strategy, T\+Data $>$ single\+Result\+Query, bool throw\+Exception\+When\+No\+Query\+Results=true)
+\begin{DoxyCompactList}\small\item\em Builds and executes the provided {\itshape single\+Result\+Query} . \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1Queries_1_1ICollectionResultQuery}{I\+Collection\+Result\+Query}}$<$ T\+Query\+Strategy, T\+Data $>$ \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_ab1136a454f981848d49e0d0a2f4b6a2f_ab1136a454f981848d49e0d0a2f4b6a2f}{Retrieve}} (\mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1Queries_1_1ICollectionResultQuery}{I\+Collection\+Result\+Query}}$<$ T\+Query\+Strategy, T\+Data $>$ result\+Query)
+\begin{DoxyCompactList}\small\item\em Builds and executes the provided {\itshape result\+Query} . \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a893276506e64034992d2c29d5ef11100_a893276506e64034992d2c29d5ef11100}{Update}} (T\+Data data)
+\begin{DoxyCompactList}\small\item\em Update the provided {\itshape data}  in storage. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_ac9d88baa6afcea85553fd233ba406e48_ac9d88baa6afcea85553fd233ba406e48}{Delete}} (T\+Data data)
+\begin{DoxyCompactList}\small\item\em Will mark the {\itshape data}  as logically (or soft). \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a6b6b50d476a351fc7fbd194cb8fa44d0_a6b6b50d476a351fc7fbd194cb8fa44d0}{Delete\+All}} ()
+\begin{DoxyCompactList}\small\item\em Delete all contents (normally by use of a truncate operation) in storage. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a6ed69cb5542164d9de81b0fa8a549d3e_a6ed69cb5542164d9de81b0fa8a549d3e}{Destroy}} (T\+Data data)
+\begin{DoxyCompactList}\small\item\em Remove the provided {\itshape data}  from storage. \end{DoxyCompactList}\item 
+virtual T\+Data \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a444e9dfe4710be90940dbb6dec9d856f_a444e9dfe4710be90940dbb6dec9d856f}{Load}} (Guid rsn, bool throw\+Exception\+On\+Missing\+Entity=true)
+\begin{DoxyCompactList}\small\item\em Load the {\itshape T\+Data}  from storage identified by the provided {\itshape rsn} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a2f4009847fa03a897c6698fd5a92d89f_a2f4009847fa03a897c6698fd5a92d89f}{Repository}} (Func$<$ \mbox{\hyperlink{interfaceCqrs_1_1DataStores_1_1IDataStore}{I\+Data\+Store}}$<$ T\+Data $>$$>$ create\+Data\+Store\+Function, T\+Query\+Builder query\+Builder)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a2f4009847fa03a897c6698fd5a92d89f_a2f4009847fa03a897c6698fd5a92d89f}{Repository$<$\+T\+Query\+Strategy,\+T\+Query\+Builder,\+T\+Data$>$}} \end{DoxyCompactList}\item 
+virtual I\+Queryable$<$ T\+Data $>$ \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_ab95fc66b24e8359a1e2f48a3ca2f14c1_ab95fc66b24e8359a1e2f48a3ca2f14c1}{Create\+Queryable}} (Expression$<$ Func$<$ T\+Data, bool $>$$>$ predicate)
+\begin{DoxyCompactList}\small\item\em Calls \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_ae15cee6394a223564ad2ead65cd30189_ae15cee6394a223564ad2ead65cd30189}{Create\+Data\+Store\+Function}} passing the {\itshape predicate} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Func$<$ \mbox{\hyperlink{interfaceCqrs_1_1DataStores_1_1IDataStore}{I\+Data\+Store}}$<$ T\+Data $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_ae15cee6394a223564ad2ead65cd30189_ae15cee6394a223564ad2ead65cd30189}{Create\+Data\+Store\+Function}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the Func$<$\+T\+Result$>$ that is used to create new instances of I\+Data\+Store$<$\+T\+Data$>$. \end{DoxyCompactList}\item 
+T\+Query\+Builder \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a4447451b7dbcfcd68dfa3fa65a41f357_a4447451b7dbcfcd68dfa3fa65a41f357}{Query\+Builder}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the {\itshape T\+Query\+Builder}  that will be used to build queries. \end{DoxyCompactList}\item 
+I\+Telemetry\+Helper \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_aae263dc1dda61f89c011be6d578620bd_aae263dc1dda61f89c011be6d578620bd}{Telemetry\+Helper}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Telemetry\+Helper. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provides basic repository methods for operations with an I\+Data\+Store$<$\+T\+Data$>$. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Query\+Strategy} & The Type of I\+Query\+Strategy.\\
+\hline
+{\em T\+Query\+Builder} & The Type of the Cqrs.\+Repositories.\+Queries.\+Query\+Builder$<$\+T\+Query\+Strategy,\+T\+Data$>$ that will be used to build queries.\\
+\hline
+{\em T\+Data} & The Type of data held in storage.\\
+\hline
+\end{DoxyTemplParams}
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Query\+Strategy} : {\em I\+Query\+Strategy}]\item[{\em T\+Query\+Builder} : {\em \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a4447451b7dbcfcd68dfa3fa65a41f357_a4447451b7dbcfcd68dfa3fa65a41f357}{Query\+Builder}}}]\item[{\em T\+Query\+Builder} : {\em T\+Query\+Strategy}]\item[{\em T\+Query\+Builder} : {\em T\+Data}]\item[{\em T\+Data} : {\em Entity}]\end{description}
+\end{Desc}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_a2f4009847fa03a897c6698fd5a92d89f_a2f4009847fa03a897c6698fd5a92d89f}\label{classCqrs_1_1Repositories_1_1Repository_a2f4009847fa03a897c6698fd5a92d89f_a2f4009847fa03a897c6698fd5a92d89f}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!Repository@{Repository}}
+\index{Repository@{Repository}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{Repository()}{Repository()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.\mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Repository}} (\begin{DoxyParamCaption}\item[{Func$<$ \mbox{\hyperlink{interfaceCqrs_1_1DataStores_1_1IDataStore}{I\+Data\+Store}}$<$ T\+Data $>$$>$}]{create\+Data\+Store\+Function,  }\item[{T\+Query\+Builder}]{query\+Builder }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_a2f4009847fa03a897c6698fd5a92d89f_a2f4009847fa03a897c6698fd5a92d89f}{Repository$<$\+T\+Query\+Strategy,\+T\+Query\+Builder,\+T\+Data$>$}} 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_a2af8103cc2946317f8ee9ede643bbc68_a2af8103cc2946317f8ee9ede643bbc68}\label{classCqrs_1_1Repositories_1_1Repository_a2af8103cc2946317f8ee9ede643bbc68_a2af8103cc2946317f8ee9ede643bbc68}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!Create@{Create}}
+\index{Create@{Create}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{Create()}{Create()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Create (\begin{DoxyParamCaption}\item[{I\+Enumerable$<$ T\+Data $>$}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Create the newly provided {\itshape data}  to storage. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1IRepository_ae3481fb2ecb0146308e07a9dd6af8c14_ae3481fb2ecb0146308e07a9dd6af8c14}{Cqrs.\+Repositories.\+I\+Repository$<$ T\+Query\+Strategy, T\+Data $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_a5d5d78262533aa2ab32eddbab83869bd_a5d5d78262533aa2ab32eddbab83869bd}\label{classCqrs_1_1Repositories_1_1Repository_a5d5d78262533aa2ab32eddbab83869bd_a5d5d78262533aa2ab32eddbab83869bd}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!Create@{Create}}
+\index{Create@{Create}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{Create()}{Create()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Create (\begin{DoxyParamCaption}\item[{T\+Data}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Create the newly provided {\itshape data}  to storage. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1IRepository_a240c8d094207a22b0c805a5c830d8615_a240c8d094207a22b0c805a5c830d8615}{Cqrs.\+Repositories.\+I\+Repository$<$ T\+Query\+Strategy, T\+Data $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_ab95fc66b24e8359a1e2f48a3ca2f14c1_ab95fc66b24e8359a1e2f48a3ca2f14c1}\label{classCqrs_1_1Repositories_1_1Repository_ab95fc66b24e8359a1e2f48a3ca2f14c1_ab95fc66b24e8359a1e2f48a3ca2f14c1}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!CreateQueryable@{CreateQueryable}}
+\index{CreateQueryable@{CreateQueryable}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{CreateQueryable()}{CreateQueryable()}}
+{\footnotesize\ttfamily virtual I\+Queryable$<$T\+Data$>$ \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Create\+Queryable (\begin{DoxyParamCaption}\item[{Expression$<$ Func$<$ T\+Data, bool $>$$>$}]{predicate }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Calls \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository_ae15cee6394a223564ad2ead65cd30189_ae15cee6394a223564ad2ead65cd30189}{Create\+Data\+Store\+Function}} passing the {\itshape predicate} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em predicate} & A function defining a filter if required.\\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_ac9ceeed80a02ced9a45b3443cd1f453f_ac9ceeed80a02ced9a45b3443cd1f453f}{Cqrs.\+Azure.\+Document\+Db.\+Repositories.\+Azure\+Repository$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_ac9d88baa6afcea85553fd233ba406e48_ac9d88baa6afcea85553fd233ba406e48}\label{classCqrs_1_1Repositories_1_1Repository_ac9d88baa6afcea85553fd233ba406e48_ac9d88baa6afcea85553fd233ba406e48}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!Delete@{Delete}}
+\index{Delete@{Delete}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{Delete()}{Delete()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Delete (\begin{DoxyParamCaption}\item[{T\+Data}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Will mark the {\itshape data}  as logically (or soft). 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1IRepository_a71c60de3588a757da2d25350c98374fd_a71c60de3588a757da2d25350c98374fd}{Cqrs.\+Repositories.\+I\+Repository$<$ T\+Query\+Strategy, T\+Data $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_a6b6b50d476a351fc7fbd194cb8fa44d0_a6b6b50d476a351fc7fbd194cb8fa44d0}\label{classCqrs_1_1Repositories_1_1Repository_a6b6b50d476a351fc7fbd194cb8fa44d0_a6b6b50d476a351fc7fbd194cb8fa44d0}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!DeleteAll@{DeleteAll}}
+\index{DeleteAll@{DeleteAll}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteAll()}{DeleteAll()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Delete\+All (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Delete all contents (normally by use of a truncate operation) in storage. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1IRepository_a0da5f756a0fd184dc51a81741f82734a_a0da5f756a0fd184dc51a81741f82734a}{Cqrs.\+Repositories.\+I\+Repository$<$ T\+Query\+Strategy, T\+Data $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_a6ed69cb5542164d9de81b0fa8a549d3e_a6ed69cb5542164d9de81b0fa8a549d3e}\label{classCqrs_1_1Repositories_1_1Repository_a6ed69cb5542164d9de81b0fa8a549d3e_a6ed69cb5542164d9de81b0fa8a549d3e}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!Destroy@{Destroy}}
+\index{Destroy@{Destroy}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{Destroy()}{Destroy()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Destroy (\begin{DoxyParamCaption}\item[{T\+Data}]{data }\end{DoxyParamCaption})}
+
+
+
+Remove the provided {\itshape data}  from storage. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1IRepository_a3a7a60be19498813b3822558b88fad66_a3a7a60be19498813b3822558b88fad66}{Cqrs.\+Repositories.\+I\+Repository$<$ T\+Query\+Strategy, T\+Data $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_a444e9dfe4710be90940dbb6dec9d856f_a444e9dfe4710be90940dbb6dec9d856f}\label{classCqrs_1_1Repositories_1_1Repository_a444e9dfe4710be90940dbb6dec9d856f_a444e9dfe4710be90940dbb6dec9d856f}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!Load@{Load}}
+\index{Load@{Load}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{Load()}{Load()}}
+{\footnotesize\ttfamily virtual T\+Data \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Load (\begin{DoxyParamCaption}\item[{Guid}]{rsn,  }\item[{bool}]{throw\+Exception\+On\+Missing\+Entity = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Load the {\itshape T\+Data}  from storage identified by the provided {\itshape rsn} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rsn} & The identifier if the {\itshape T\+Data}  to load.\\
+\hline
+{\em throw\+Exception\+On\+Missing\+Entity} & If true will throw an Exception if no data is found in storage.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1IRepository_ae545451c48d1e2b5693db73e169e100d_ae545451c48d1e2b5693db73e169e100d}{Cqrs.\+Repositories.\+I\+Repository$<$ T\+Query\+Strategy, T\+Data $>$}}.
+
+
+
+Reimplemented in \mbox{\hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_a22c58163e101a6cb80f891bed6114380_a22c58163e101a6cb80f891bed6114380}{Cqrs.\+Azure.\+Document\+Db.\+Repositories.\+Azure\+Repository$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1BlobStorageRepository_a7c5a3ca4d92cf4954508fb3e583eb49e_a7c5a3ca4d92cf4954508fb3e583eb49e}{Cqrs.\+Azure.\+Blob\+Storage.\+Repositories.\+Blob\+Storage\+Repository$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$}}, and \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Repositories_1_1TableStorageRepository_a7238452f19c9d51b5733df7701920605_a7238452f19c9d51b5733df7701920605}{Cqrs.\+Azure.\+Blob\+Storage.\+Repositories.\+Table\+Storage\+Repository$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_ab1136a454f981848d49e0d0a2f4b6a2f_ab1136a454f981848d49e0d0a2f4b6a2f}\label{classCqrs_1_1Repositories_1_1Repository_ab1136a454f981848d49e0d0a2f4b6a2f_ab1136a454f981848d49e0d0a2f4b6a2f}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!Retrieve@{Retrieve}}
+\index{Retrieve@{Retrieve}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{Retrieve()}{Retrieve()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1Queries_1_1ICollectionResultQuery}{I\+Collection\+Result\+Query}}$<$T\+Query\+Strategy, T\+Data$>$ \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Retrieve (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1Queries_1_1ICollectionResultQuery}{I\+Collection\+Result\+Query}}$<$ T\+Query\+Strategy, T\+Data $>$}]{result\+Query }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Builds and executes the provided {\itshape result\+Query} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em result\+Query} & The \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1Queries_1_1ICollectionResultQuery}{I\+Collection\+Result\+Query$<$\+T\+Query\+Strategy,\+T\+Data$>$}} to build and execute.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1IRepository_a0faeb50aa395d63ccd81e66906360e81_a0faeb50aa395d63ccd81e66906360e81}{Cqrs.\+Repositories.\+I\+Repository$<$ T\+Query\+Strategy, T\+Data $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_a4f83093a92d8141cdc2b908bbbd97f32_a4f83093a92d8141cdc2b908bbbd97f32}\label{classCqrs_1_1Repositories_1_1Repository_a4f83093a92d8141cdc2b908bbbd97f32_a4f83093a92d8141cdc2b908bbbd97f32}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!Retrieve@{Retrieve}}
+\index{Retrieve@{Retrieve}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{Retrieve()}{Retrieve()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery}{I\+Single\+Result\+Query}}$<$T\+Query\+Strategy, T\+Data$>$ \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Retrieve (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery}{I\+Single\+Result\+Query}}$<$ T\+Query\+Strategy, T\+Data $>$}]{single\+Result\+Query,  }\item[{bool}]{throw\+Exception\+When\+No\+Query\+Results = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Builds and executes the provided {\itshape single\+Result\+Query} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em single\+Result\+Query} & The \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1Queries_1_1ISingleResultQuery}{I\+Single\+Result\+Query$<$\+T\+Query\+Strategy,\+T\+Data$>$}} to build and execute.\\
+\hline
+{\em throw\+Exception\+When\+No\+Query\+Results} & If true will throw an Exception if no data is found in storage.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1IRepository_a65848508067b81e82da72af2063f2c07_a65848508067b81e82da72af2063f2c07}{Cqrs.\+Repositories.\+I\+Repository$<$ T\+Query\+Strategy, T\+Data $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_a893276506e64034992d2c29d5ef11100_a893276506e64034992d2c29d5ef11100}\label{classCqrs_1_1Repositories_1_1Repository_a893276506e64034992d2c29d5ef11100_a893276506e64034992d2c29d5ef11100}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!Update@{Update}}
+\index{Update@{Update}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{Update()}{Update()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Update (\begin{DoxyParamCaption}\item[{T\+Data}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Update the provided {\itshape data}  in storage. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Repositories_1_1IRepository_af8a0b1cf5eedd7653d2867ab38657d46_af8a0b1cf5eedd7653d2867ab38657d46}{Cqrs.\+Repositories.\+I\+Repository$<$ T\+Query\+Strategy, T\+Data $>$}}.
+
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_ae15cee6394a223564ad2ead65cd30189_ae15cee6394a223564ad2ead65cd30189}\label{classCqrs_1_1Repositories_1_1Repository_ae15cee6394a223564ad2ead65cd30189_ae15cee6394a223564ad2ead65cd30189}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!CreateDataStoreFunction@{CreateDataStoreFunction}}
+\index{CreateDataStoreFunction@{CreateDataStoreFunction}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{CreateDataStoreFunction}{CreateDataStoreFunction}}
+{\footnotesize\ttfamily Func$<$\mbox{\hyperlink{interfaceCqrs_1_1DataStores_1_1IDataStore}{I\+Data\+Store}}$<$T\+Data$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Create\+Data\+Store\+Function\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the Func$<$\+T\+Result$>$ that is used to create new instances of I\+Data\+Store$<$\+T\+Data$>$. 
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_a4447451b7dbcfcd68dfa3fa65a41f357_a4447451b7dbcfcd68dfa3fa65a41f357}\label{classCqrs_1_1Repositories_1_1Repository_a4447451b7dbcfcd68dfa3fa65a41f357_a4447451b7dbcfcd68dfa3fa65a41f357}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!QueryBuilder@{QueryBuilder}}
+\index{QueryBuilder@{QueryBuilder}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{QueryBuilder}{QueryBuilder}}
+{\footnotesize\ttfamily T\+Query\+Builder \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.\mbox{\hyperlink{classCqrs_1_1Repositories_1_1Queries_1_1QueryBuilder}{Query\+Builder}}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the {\itshape T\+Query\+Builder}  that will be used to build queries. 
+
+\mbox{\Hypertarget{classCqrs_1_1Repositories_1_1Repository_aae263dc1dda61f89c011be6d578620bd_aae263dc1dda61f89c011be6d578620bd}\label{classCqrs_1_1Repositories_1_1Repository_aae263dc1dda61f89c011be6d578620bd_aae263dc1dda61f89c011be6d578620bd}} 
+\index{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}!TelemetryHelper@{TelemetryHelper}}
+\index{TelemetryHelper@{TelemetryHelper}!Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$@{Cqrs.Repositories.Repository$<$ TQueryStrategy, TQueryBuilder, TData $>$}}
+\doxysubsubsection{\texorpdfstring{TelemetryHelper}{TelemetryHelper}}
+{\footnotesize\ttfamily I\+Telemetry\+Helper \mbox{\hyperlink{classCqrs_1_1Repositories_1_1Repository}{Cqrs.\+Repositories.\+Repository}}$<$ T\+Query\+Strategy, T\+Query\+Builder, T\+Data $>$.Telemetry\+Helper\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Telemetry\+Helper. 
+

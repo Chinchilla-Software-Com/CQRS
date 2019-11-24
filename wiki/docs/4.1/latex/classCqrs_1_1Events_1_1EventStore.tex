@@ -1,0 +1,492 @@
+\hypertarget{classCqrs_1_1Events_1_1EventStore}{}\doxysection{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$ Class Template Reference}
+\label{classCqrs_1_1Events_1_1EventStore}\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+
+
+Stores instances of I\+Event$<$\+T\+Authentication\+Token$>$ for replay, I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ and I\+Saga$<$\+T\+Authentication\+Token$>$ rehydration.  
+
+
+Inheritance diagram for Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.863198cm]{classCqrs_1_1Events_1_1EventStore}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a958854f49c3eb4fcf1922ba7737a8dfe_a958854f49c3eb4fcf1922ba7737a8dfe}{Save$<$ T $>$}} (\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ @event)
+\begin{DoxyCompactList}\small\item\em Saves the provided {\itshape event} . \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a3ba5ba04a36382b6d36a6ad8867dc766_a3ba5ba04a36382b6d36a6ad8867dc766}{Save}} (Type aggregate\+Root\+Type, \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ @event)
+\begin{DoxyCompactList}\small\item\em Saves the provided {\itshape event} . \end{DoxyCompactList}\item 
+virtual I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_aa6ffed5d7dd365600669149da29f9e89_aa6ffed5d7dd365600669149da29f9e89}{Get$<$ T $>$}} (Guid aggregate\+Id, bool use\+Last\+Event\+Only=false, int from\+Version=-\/1)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
+abstract I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_aa1d0d399a35c1e3b0759e27202695d8b_aa1d0d399a35c1e3b0759e27202695d8b}{Get}} (Type aggregate\+Root\+Type, Guid aggregate\+Id, bool use\+Last\+Event\+Only=false, int from\+Version=-\/1)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
+abstract I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a2785f85c9d986cdf11ab6054826c195d_a2785f85c9d986cdf11ab6054826c195d}{Get\+To\+Version}} (Type aggregate\+Root\+Type, Guid aggregate\+Id, int version)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . \end{DoxyCompactList}\item 
+virtual I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_abbefa3356d8082902bb2b51f2bfab3fc_abbefa3356d8082902bb2b51f2bfab3fc}{Get\+To\+Version$<$ T $>$}} (Guid aggregate\+Id, int version)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . \end{DoxyCompactList}\item 
+abstract I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_acc2cf147ad6420c5359485f04367d5d1_acc2cf147ad6420c5359485f04367d5d1}{Get\+To\+Date}} (Type aggregate\+Root\+Type, Guid aggregate\+Id, Date\+Time versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
+virtual I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a8a7b9c1ae079b28d3fedb4f815d93fb9_a8a7b9c1ae079b28d3fedb4f815d93fb9}{Get\+To\+Date$<$ T $>$}} (Guid aggregate\+Id, Date\+Time versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
+abstract I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_add415731fcea6a9367e1031c4608c922_add415731fcea6a9367e1031c4608c922}{Get\+Between\+Dates}} (Type aggregate\+Root\+Type, Guid aggregate\+Id, Date\+Time from\+Versioned\+Date, Date\+Time to\+Versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . \end{DoxyCompactList}\item 
+virtual I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a273b6bf609a82564fda68380d381209e_a273b6bf609a82564fda68380d381209e}{Get\+Between\+Dates$<$ T $>$}} (Guid aggregate\+Id, Date\+Time from\+Versioned\+Date, Date\+Time to\+Versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . \end{DoxyCompactList}\item 
+abstract I\+Enumerable$<$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}} $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a0096646f5dff730b0041b9469719c420_a0096646f5dff730b0041b9469719c420}{Get}} (Guid correlation\+Id)
+\begin{DoxyCompactList}\small\item\em Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}{Event\+Store}} (\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventBuilder}{I\+Event\+Builder}}$<$ T\+Authentication\+Token $>$ event\+Builder, \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}}$<$ T\+Authentication\+Token $>$ event\+Deserialiser, I\+Logger logger)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}{Event\+Store$<$\+T\+Authentication\+Token$>$}}. \end{DoxyCompactList}\item 
+virtual string \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a03df06d4ce9c6d16201c079f2de0a7f3_a03df06d4ce9c6d16201c079f2de0a7f3}{Generate\+Stream\+Name}} (Type aggregate\+Root\+Type, \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ @event)
+\begin{DoxyCompactList}\small\item\em Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent_a2974e13d307c62c5cc438d668ff1783b_a2974e13d307c62c5cc438d668ff1783b}{I\+Event$<$\+T\+Authentication\+Token$>$.\+Id}} from the provided {\itshape event} . \end{DoxyCompactList}\item 
+virtual string \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_aba61739e47fdd0f7fce656f896cbe908_aba61739e47fdd0f7fce656f896cbe908}{Generate\+Stream\+Name}} (Type aggregate\+Root\+Type, Guid aggregate\+Id)
+\begin{DoxyCompactList}\small\item\em Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
+abstract void \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_aedb71ca0ddf21220e323bc60ad7508cd_aedb71ca0ddf21220e323bc60ad7508cd}{Persist\+Event}} (\mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}} event\+Data)
+\begin{DoxyCompactList}\small\item\em Persist the provided {\itshape event\+Data}  into storage. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const string \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a1e6d87995d38d6fbb148388ec165a87e_a1e6d87995d38d6fbb148388ec165a87e}{Cqrs\+Event\+Store\+Stream\+Name\+Pattern}} = \char`\"{}\{0\}/\{1\}\char`\"{}
+\begin{DoxyCompactList}\small\item\em The pattern used to generate the stream name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventBuilder}{I\+Event\+Builder}}$<$ T\+Authentication\+Token $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a05393aedf2eae4b2eeae3977e7f1c6f9_a05393aedf2eae4b2eeae3977e7f1c6f9}{Event\+Builder}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The I\+Event\+Builder$<$\+T\+Authentication\+Token$>$ used to build events. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}}$<$ T\+Authentication\+Token $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a24f17302c069058e5814dedfb614d599_a24f17302c069058e5814dedfb614d599}{Event\+Deserialiser}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The I\+Event\+Deserialiser$<$\+T\+Authentication\+Token$>$ used to deserialise events. \end{DoxyCompactList}\item 
+I\+Telemetry\+Helper \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a75d6d3ad3a26fb9b511e2a98e72260f9_a75d6d3ad3a26fb9b511e2a98e72260f9}{Telemetry\+Helper}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The I\+Telemetry\+Helper to use. \end{DoxyCompactList}\item 
+I\+Logger \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a99506f7136a658364f8b74ef6a779a3f_a99506f7136a658364f8b74ef6a779a3f}{Logger}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The I\+Logger to use. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Stores instances of I\+Event$<$\+T\+Authentication\+Token$>$ for replay, I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ and I\+Saga$<$\+T\+Authentication\+Token$>$ rehydration. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of the authentication token.\\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}\label{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!EventStore@{EventStore}}
+\index{EventStore@{EventStore}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{EventStore()}{EventStore()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Event\+Store}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventBuilder}{I\+Event\+Builder}}$<$ T\+Authentication\+Token $>$}]{event\+Builder,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}}$<$ T\+Authentication\+Token $>$}]{event\+Deserialiser,  }\item[{I\+Logger}]{logger }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}{Event\+Store$<$\+T\+Authentication\+Token$>$}}. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_aba61739e47fdd0f7fce656f896cbe908_aba61739e47fdd0f7fce656f896cbe908}\label{classCqrs_1_1Events_1_1EventStore_aba61739e47fdd0f7fce656f896cbe908_aba61739e47fdd0f7fce656f896cbe908}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!GenerateStreamName@{GenerateStreamName}}
+\index{GenerateStreamName@{GenerateStreamName}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GenerateStreamName()}{GenerateStreamName()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual string \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Generate\+Stream\+Name (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the {\itshape aggregate\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em aggregate\+Id} & The ID of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a5cee1f388c1a03d9cfea5ee1a9f42657_a5cee1f388c1a03d9cfea5ee1a9f42657}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a03df06d4ce9c6d16201c079f2de0a7f3_a03df06d4ce9c6d16201c079f2de0a7f3}\label{classCqrs_1_1Events_1_1EventStore_a03df06d4ce9c6d16201c079f2de0a7f3_a03df06d4ce9c6d16201c079f2de0a7f3}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!GenerateStreamName@{GenerateStreamName}}
+\index{GenerateStreamName@{GenerateStreamName}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GenerateStreamName()}{GenerateStreamName()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual string \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Generate\+Stream\+Name (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ @}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent_a2974e13d307c62c5cc438d668ff1783b_a2974e13d307c62c5cc438d668ff1783b}{I\+Event$<$\+T\+Authentication\+Token$>$.\+Id}} from the provided {\itshape event} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em event} & The I\+Event$<$\+T\+Authentication\+Token$>$ to extract information from.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a0096646f5dff730b0041b9469719c420_a0096646f5dff730b0041b9469719c420}\label{classCqrs_1_1Events_1_1EventStore_a0096646f5dff730b0041b9469719c420_a0096646f5dff730b0041b9469719c420}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!Get@{Get}}
+\index{Get@{Get}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily abstract I\+Enumerable$<$\mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}}$>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get (\begin{DoxyParamCaption}\item[{Guid}]{correlation\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em correlation\+Id} & The I\+Message.\+Correlation\+Id of the I\+Event$<$\+T\+Authentication\+Token$>$ instances to retrieve.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_af398bb6768fa661ad97a9fa9ecfbd9fb_af398bb6768fa661ad97a9fa9ecfbd9fb}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ac886ca0a57ad86cb99ef0a3767db9280_ac886ca0a57ad86cb99ef0a3767db9280}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a2a93a3f10423f608527fbc41a7ce8cef_a2a93a3f10423f608527fbc41a7ce8cef}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a9b952a9257dc6f458b98eba87684412e_a9b952a9257dc6f458b98eba87684412e}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_a660c786205693ee34a11e205c6d136ad_a660c786205693ee34a11e205c6d136ad}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_ac59ce599b768ce047869b8ac135f4e22_ac59ce599b768ce047869b8ac135f4e22}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a1b436bbb111b14b85ee6ba7f90fb1a35_a1b436bbb111b14b85ee6ba7f90fb1a35}{Cqrs.\+Azure.\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_aa1d0d399a35c1e3b0759e27202695d8b_aa1d0d399a35c1e3b0759e27202695d8b}\label{classCqrs_1_1Events_1_1EventStore_aa1d0d399a35c1e3b0759e27202695d8b_aa1d0d399a35c1e3b0759e27202695d8b}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!Get@{Get}}
+\index{Get@{Get}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily abstract I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{bool}]{use\+Last\+Event\+Only = {\ttfamily false},  }\item[{int}]{from\+Version = {\ttfamily -\/1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em use\+Last\+Event\+Only} & Loads only the last eventI\+Event$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Version} & Load events starting from this version\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_ae02ef6c804d0c4a92705a447bc4b2214_ae02ef6c804d0c4a92705a447bc4b2214}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a7a1ac8e59dc5bff0bb6562fb4f43e8df_a7a1ac8e59dc5bff0bb6562fb4f43e8df}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a1391c260f52f5cf18058cf88ad2d16de_a1391c260f52f5cf18058cf88ad2d16de}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a420c94c86d8d1c2959aee8602f43c0c0_a420c94c86d8d1c2959aee8602f43c0c0}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a54f298fdde141166e23f01e4911bf188_a54f298fdde141166e23f01e4911bf188}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_ab68b594c54ae5a79e3b8d5db1902752d_ab68b594c54ae5a79e3b8d5db1902752d}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a089514182da7a70f35f9237c521c49f0_a089514182da7a70f35f9237c521c49f0}{Cqrs.\+Azure.\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_aa6ffed5d7dd365600669149da29f9e89_aa6ffed5d7dd365600669149da29f9e89}\label{classCqrs_1_1Events_1_1EventStore_aa6ffed5d7dd365600669149da29f9e89_aa6ffed5d7dd365600669149da29f9e89}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!Get$<$ T $>$@{Get$<$ T $>$}}
+\index{Get$<$ T $>$@{Get$<$ T $>$}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Get$<$ T $>$()}{Get< T >()}}
+{\footnotesize\ttfamily virtual I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_aa1d0d399a35c1e3b0759e27202695d8b_aa1d0d399a35c1e3b0759e27202695d8b}{Get}}$<$ T $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{bool}]{use\+Last\+Event\+Only = {\ttfamily false},  }\item[{int}]{from\+Version = {\ttfamily -\/1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em use\+Last\+Event\+Only} & Loads only the last eventI\+Event$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Version} & Load events starting from this version\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_add6227e2978ff8656aad79b1a51bf34c_add6227e2978ff8656aad79b1a51bf34c}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_add415731fcea6a9367e1031c4608c922_add415731fcea6a9367e1031c4608c922}\label{classCqrs_1_1Events_1_1EventStore_add415731fcea6a9367e1031c4608c922_add415731fcea6a9367e1031c4608c922}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!GetBetweenDates@{GetBetweenDates}}
+\index{GetBetweenDates@{GetBetweenDates}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetBetweenDates()}{GetBetweenDates()}}
+{\footnotesize\ttfamily abstract I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get\+Between\+Dates (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{from\+Versioned\+Date,  }\item[{Date\+Time}]{to\+Versioned\+Date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Versioned\+Date} & Load events from and including from this Date\+Time\\
+\hline
+{\em to\+Versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a0575ba2cce945342dc261eb2286c8a41_a0575ba2cce945342dc261eb2286c8a41}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a95637f6bebb94d505a6b3020275cfdf9_a95637f6bebb94d505a6b3020275cfdf9}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_ac57321649252167214d1661a578c6421_ac57321649252167214d1661a578c6421}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a715c0d5258d8a9203f68a1070420fb7b_a715c0d5258d8a9203f68a1070420fb7b}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_acbb5dac5daaf2eafbf76ab631e7827f8_acbb5dac5daaf2eafbf76ab631e7827f8}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_aae5f14188f0486b70dc9cdb577b15e1c_aae5f14188f0486b70dc9cdb577b15e1c}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a273b6bf609a82564fda68380d381209e_a273b6bf609a82564fda68380d381209e}\label{classCqrs_1_1Events_1_1EventStore_a273b6bf609a82564fda68380d381209e_a273b6bf609a82564fda68380d381209e}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!GetBetweenDates$<$ T $>$@{GetBetweenDates$<$ T $>$}}
+\index{GetBetweenDates$<$ T $>$@{GetBetweenDates$<$ T $>$}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetBetweenDates$<$ T $>$()}{GetBetweenDates< T >()}}
+{\footnotesize\ttfamily virtual I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_add415731fcea6a9367e1031c4608c922_add415731fcea6a9367e1031c4608c922}{Get\+Between\+Dates}}$<$ T $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{from\+Versioned\+Date,  }\item[{Date\+Time}]{to\+Versioned\+Date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Versioned\+Date} & Load events from and including from this Date\+Time\\
+\hline
+{\em to\+Versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a06d24ede807dfab7c4b3a2cf85af83d2_a06d24ede807dfab7c4b3a2cf85af83d2}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_acc2cf147ad6420c5359485f04367d5d1_acc2cf147ad6420c5359485f04367d5d1}\label{classCqrs_1_1Events_1_1EventStore_acc2cf147ad6420c5359485f04367d5d1_acc2cf147ad6420c5359485f04367d5d1}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!GetToDate@{GetToDate}}
+\index{GetToDate@{GetToDate}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetToDate()}{GetToDate()}}
+{\footnotesize\ttfamily abstract I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get\+To\+Date (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{versioned\+Date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_ae7a65fcb0881dbbd62ed86ccd7336712_ae7a65fcb0881dbbd62ed86ccd7336712}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_aaf78eb481e17c4a7dee0efca8a4d47bf_aaf78eb481e17c4a7dee0efca8a4d47bf}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a2913ce1088ce65a88046763a8f1a46d9_a2913ce1088ce65a88046763a8f1a46d9}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_a90fb91dfb58f69deb6f5e91bae69330d_a90fb91dfb58f69deb6f5e91bae69330d}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_a3c2ec49781bbcf7e0c2549133c160591_a3c2ec49781bbcf7e0c2549133c160591}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_ad81c8ea571d926f3d8453bca7ce6a647_ad81c8ea571d926f3d8453bca7ce6a647}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a8a7b9c1ae079b28d3fedb4f815d93fb9_a8a7b9c1ae079b28d3fedb4f815d93fb9}\label{classCqrs_1_1Events_1_1EventStore_a8a7b9c1ae079b28d3fedb4f815d93fb9_a8a7b9c1ae079b28d3fedb4f815d93fb9}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!GetToDate$<$ T $>$@{GetToDate$<$ T $>$}}
+\index{GetToDate$<$ T $>$@{GetToDate$<$ T $>$}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetToDate$<$ T $>$()}{GetToDate< T >()}}
+{\footnotesize\ttfamily virtual I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_acc2cf147ad6420c5359485f04367d5d1_acc2cf147ad6420c5359485f04367d5d1}{Get\+To\+Date}}$<$ T $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{versioned\+Date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_ae0d3304dcab1e6c94eb51b3a0eb645cd_ae0d3304dcab1e6c94eb51b3a0eb645cd}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a2785f85c9d986cdf11ab6054826c195d_a2785f85c9d986cdf11ab6054826c195d}\label{classCqrs_1_1Events_1_1EventStore_a2785f85c9d986cdf11ab6054826c195d_a2785f85c9d986cdf11ab6054826c195d}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!GetToVersion@{GetToVersion}}
+\index{GetToVersion@{GetToVersion}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetToVersion()}{GetToVersion()}}
+{\footnotesize\ttfamily abstract I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get\+To\+Version (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{int}]{version }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em version} & Load events up-\/to and including from this version\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a88b395dbd904b44a8690b630fb2af1ca_a88b395dbd904b44a8690b630fb2af1ca}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_ad319a5e79600fa5a10c2ecb436533a11_ad319a5e79600fa5a10c2ecb436533a11}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a818fe6785622ebb7b0c6033a0b8ffc89_a818fe6785622ebb7b0c6033a0b8ffc89}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_ae6bd61257a3218d7ceb51a5ff54fb442_ae6bd61257a3218d7ceb51a5ff54fb442}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_a46382e3a34210cbc655be11eafdc05d6_a46382e3a34210cbc655be11eafdc05d6}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_a749548ae5196022867d32bbb5a8dd277_a749548ae5196022867d32bbb5a8dd277}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_abbefa3356d8082902bb2b51f2bfab3fc_abbefa3356d8082902bb2b51f2bfab3fc}\label{classCqrs_1_1Events_1_1EventStore_abbefa3356d8082902bb2b51f2bfab3fc_abbefa3356d8082902bb2b51f2bfab3fc}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!GetToVersion$<$ T $>$@{GetToVersion$<$ T $>$}}
+\index{GetToVersion$<$ T $>$@{GetToVersion$<$ T $>$}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetToVersion$<$ T $>$()}{GetToVersion< T >()}}
+{\footnotesize\ttfamily virtual I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a2785f85c9d986cdf11ab6054826c195d_a2785f85c9d986cdf11ab6054826c195d}{Get\+To\+Version}}$<$ T $>$ (\begin{DoxyParamCaption}\item[{Guid}]{aggregate\+Id,  }\item[{int}]{version }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the {\itshape T} aggregate root with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em version} & Load events up-\/to and including from this version\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_af29401f4562cb504cf827b90b8391765_af29401f4562cb504cf827b90b8391765}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_aedb71ca0ddf21220e323bc60ad7508cd_aedb71ca0ddf21220e323bc60ad7508cd}\label{classCqrs_1_1Events_1_1EventStore_aedb71ca0ddf21220e323bc60ad7508cd_aedb71ca0ddf21220e323bc60ad7508cd}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!PersistEvent@{PersistEvent}}
+\index{PersistEvent@{PersistEvent}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PersistEvent()}{PersistEvent()}}
+{\footnotesize\ttfamily abstract void \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Persist\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}}}]{event\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Persist the provided {\itshape event\+Data}  into storage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event\+Data} & The \mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}} to persist.\\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore_afe494469614082cf667f5cf4b6c4a97b_afe494469614082cf667f5cf4b6c4a97b}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore_a13f6823671d7cb9c042d8f7156a51b89_a13f6823671d7cb9c042d8f7156a51b89}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Events_1_1MemoryCacheEventStore_a9b1a1aaab34770bd68ebcedca0fc40b0_a9b1a1aaab34770bd68ebcedca0fc40b0}{Cqrs.\+Events.\+Memory\+Cache\+Event\+Store$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore_ae63921d0ace265b1b269c865080b5712_ae63921d0ace265b1b269c865080b5712}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore_aa27a352076b8967498407d24814f7c83_aa27a352076b8967498407d24814f7c83}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a3ba5ba04a36382b6d36a6ad8867dc766_a3ba5ba04a36382b6d36a6ad8867dc766}\label{classCqrs_1_1Events_1_1EventStore_a3ba5ba04a36382b6d36a6ad8867dc766_a3ba5ba04a36382b6d36a6ad8867dc766}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!Save@{Save}}
+\index{Save@{Save}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Save()}{Save()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Save (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ @}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Saves the provided {\itshape event} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em event} & The I\+Event$<$\+T\+Authentication\+Token$>$ to be saved.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a81fb586703e7c6dea6b23d9a95f3887a_a81fb586703e7c6dea6b23d9a95f3887a}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a958854f49c3eb4fcf1922ba7737a8dfe_a958854f49c3eb4fcf1922ba7737a8dfe}\label{classCqrs_1_1Events_1_1EventStore_a958854f49c3eb4fcf1922ba7737a8dfe_a958854f49c3eb4fcf1922ba7737a8dfe}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!Save$<$ T $>$@{Save$<$ T $>$}}
+\index{Save$<$ T $>$@{Save$<$ T $>$}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Save$<$ T $>$()}{Save< T >()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a3ba5ba04a36382b6d36a6ad8867dc766_a3ba5ba04a36382b6d36a6ad8867dc766}{Save}}$<$ T $>$ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ @}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Saves the provided {\itshape event} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em event} & The I\+Event$<$\+T\+Authentication\+Token$>$ to be saved.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore_a92e768243d6602d09b786bbd06811ce6_a92e768243d6602d09b786bbd06811ce6}{Cqrs.\+Events.\+I\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a1e6d87995d38d6fbb148388ec165a87e_a1e6d87995d38d6fbb148388ec165a87e}\label{classCqrs_1_1Events_1_1EventStore_a1e6d87995d38d6fbb148388ec165a87e_a1e6d87995d38d6fbb148388ec165a87e}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!CqrsEventStoreStreamNamePattern@{CqrsEventStoreStreamNamePattern}}
+\index{CqrsEventStoreStreamNamePattern@{CqrsEventStoreStreamNamePattern}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CqrsEventStoreStreamNamePattern}{CqrsEventStoreStreamNamePattern}}
+{\footnotesize\ttfamily const string \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Cqrs\+Event\+Store\+Stream\+Name\+Pattern = \char`\"{}\{0\}/\{1\}\char`\"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+The pattern used to generate the stream name. 
+
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a05393aedf2eae4b2eeae3977e7f1c6f9_a05393aedf2eae4b2eeae3977e7f1c6f9}\label{classCqrs_1_1Events_1_1EventStore_a05393aedf2eae4b2eeae3977e7f1c6f9_a05393aedf2eae4b2eeae3977e7f1c6f9}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!EventBuilder@{EventBuilder}}
+\index{EventBuilder@{EventBuilder}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{EventBuilder}{EventBuilder}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventBuilder}{I\+Event\+Builder}}$<$T\+Authentication\+Token$>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Events_1_1EventBuilder}{Event\+Builder}}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+The I\+Event\+Builder$<$\+T\+Authentication\+Token$>$ used to build events. 
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a24f17302c069058e5814dedfb614d599_a24f17302c069058e5814dedfb614d599}\label{classCqrs_1_1Events_1_1EventStore_a24f17302c069058e5814dedfb614d599_a24f17302c069058e5814dedfb614d599}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!EventDeserialiser@{EventDeserialiser}}
+\index{EventDeserialiser@{EventDeserialiser}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{EventDeserialiser}{EventDeserialiser}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}}$<$T\+Authentication\+Token$>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Events_1_1EventDeserialiser}{Event\+Deserialiser}}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+The I\+Event\+Deserialiser$<$\+T\+Authentication\+Token$>$ used to deserialise events. 
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a99506f7136a658364f8b74ef6a779a3f_a99506f7136a658364f8b74ef6a779a3f}\label{classCqrs_1_1Events_1_1EventStore_a99506f7136a658364f8b74ef6a779a3f_a99506f7136a658364f8b74ef6a779a3f}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!Logger@{Logger}}
+\index{Logger@{Logger}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Logger}{Logger}}
+{\footnotesize\ttfamily I\+Logger \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Logger\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The I\+Logger to use. 
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1EventStore_a75d6d3ad3a26fb9b511e2a98e72260f9_a75d6d3ad3a26fb9b511e2a98e72260f9}\label{classCqrs_1_1Events_1_1EventStore_a75d6d3ad3a26fb9b511e2a98e72260f9_a75d6d3ad3a26fb9b511e2a98e72260f9}} 
+\index{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}!TelemetryHelper@{TelemetryHelper}}
+\index{TelemetryHelper@{TelemetryHelper}!Cqrs.Events.EventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.EventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{TelemetryHelper}{TelemetryHelper}}
+{\footnotesize\ttfamily I\+Telemetry\+Helper \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Cqrs.\+Events.\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Telemetry\+Helper\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+The I\+Telemetry\+Helper to use. 
+

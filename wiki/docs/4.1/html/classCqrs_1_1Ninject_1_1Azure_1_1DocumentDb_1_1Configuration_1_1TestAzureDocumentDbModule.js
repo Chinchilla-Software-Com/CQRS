@@ -1,0 +1,4 @@
+var classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbModule =
+[
+    [ "RegisterFactories", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbModule_a9bd41611cfee1edc8a88815c366fccae.html#a9bd41611cfee1edc8a88815c366fccae", null ]
+];
