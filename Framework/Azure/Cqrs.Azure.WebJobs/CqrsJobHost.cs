@@ -84,9 +84,9 @@ namespace Cqrs.Azure.WebJobs
 			var builder = new HostBuilder();
 			if (!string.IsNullOrWhiteSpace(environment))
 				builder.UseEnvironment(environment);
-			builder.ConfigureWebJobs(builder =>
+			builder.ConfigureWebJobs(b =>
 			{
-				builder.AddAzureStorageCoreServices();
+				b.AddAzureStorageCoreServices();
 			});
 			IHost host = builder.Build();
 			using (host)
