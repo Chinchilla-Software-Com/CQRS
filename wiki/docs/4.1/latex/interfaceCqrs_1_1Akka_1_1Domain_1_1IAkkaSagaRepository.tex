@@ -1,0 +1,59 @@
+\hypertarget{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository}{}\doxysection{Cqrs.\+Akka.\+Domain.\+I\+Akka\+Saga\+Repository$<$ T\+Authentication\+Token $>$ Interface Template Reference}
+\label{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository}\index{Cqrs.Akka.Domain.IAkkaSagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.IAkkaSagaRepository$<$ TAuthenticationToken $>$}}
+
+
+A Saga\+Repository$<$\+T\+Authentication\+Token$>$ that is safe to use within Akka.\+N\+ET  
+
+
+Inheritance diagram for Cqrs.\+Akka.\+Domain.\+I\+Akka\+Saga\+Repository$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository_a77233d8c2230c0a69a993faaac0101a9_a77233d8c2230c0a69a993faaac0101a9}{Load\+Saga\+History$<$ T\+Saga $>$}} (T\+Saga saga, I\+List$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$$>$ events=null, bool throw\+Exception\+On\+No\+Events=true)
+\begin{DoxyCompactList}\small\item\em If {\itshape events}  is null, loads the events from an I\+Event\+Store$<$\+T\+Authentication\+Token$>$, checks for duplicates and then rehydrates the {\itshape saga}  with the events. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A Saga\+Repository$<$\+T\+Authentication\+Token$>$ that is safe to use within Akka.\+N\+ET 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of authentication token.\\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository_a77233d8c2230c0a69a993faaac0101a9_a77233d8c2230c0a69a993faaac0101a9}\label{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository_a77233d8c2230c0a69a993faaac0101a9_a77233d8c2230c0a69a993faaac0101a9}} 
+\index{Cqrs.Akka.Domain.IAkkaSagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.IAkkaSagaRepository$<$ TAuthenticationToken $>$}!LoadSagaHistory$<$ TSaga $>$@{LoadSagaHistory$<$ TSaga $>$}}
+\index{LoadSagaHistory$<$ TSaga $>$@{LoadSagaHistory$<$ TSaga $>$}!Cqrs.Akka.Domain.IAkkaSagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.IAkkaSagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{LoadSagaHistory$<$ TSaga $>$()}{LoadSagaHistory< TSaga >()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSagaRepository}{Cqrs.\+Akka.\+Domain.\+I\+Akka\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Load\+Saga\+History$<$ T\+Saga $>$ (\begin{DoxyParamCaption}\item[{T\+Saga}]{saga,  }\item[{I\+List$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null},  }\item[{bool}]{throw\+Exception\+On\+No\+Events = {\ttfamily true} }\end{DoxyParamCaption})}
+
+
+
+If {\itshape events}  is null, loads the events from an I\+Event\+Store$<$\+T\+Authentication\+Token$>$, checks for duplicates and then rehydrates the {\itshape saga}  with the events. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Saga} & The Type of I\+Saga$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em saga} & The {\itshape T\+Saga}  to rehydrate.\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Saga$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+{\em throw\+Exception\+On\+No\+Events} & If true will throw an instance of Saga\+Not\+Found\+Exception$<$\+T\+Saga,\+T\+Authentication\+Token$>$ if no aggregate events or provided or found in the I\+Event\+Store$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Saga} : {\em I\+Saga$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}

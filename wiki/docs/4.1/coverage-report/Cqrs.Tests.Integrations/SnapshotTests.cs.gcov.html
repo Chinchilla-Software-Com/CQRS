@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.Tests.Integrations/SnapshotTests.cs</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">Cqrs.Tests.Integrations</a> - SnapshotTests.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">30.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-25 01:36:42</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using System.Collections.Generic;
+<span class="lineNum">       3 </span>            : using Chinchilla.Logging;
+<span class="lineNum">       4 </span>            : using Cqrs.Authentication;
+<span class="lineNum">       5 </span>            : using Cqrs.Configuration;
+<span class="lineNum">       6 </span>            : using Cqrs.Domain;
+<span class="lineNum">       7 </span>            : using Cqrs.Domain.Factories;
+<span class="lineNum">       8 </span>            : using Cqrs.Events;
+<span class="lineNum">       9 </span>            : using Cqrs.Messages;
+<span class="lineNum">      10 </span>            : using Cqrs.Ninject.Configuration;
+<span class="lineNum">      11 </span>            : using Cqrs.Snapshots;
+<span class="lineNum">      12 </span>            : using NUnit.Framework;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : namespace Cqrs.Tests.Integrations
+<span class="lineNum">      15 </span>            : {
+<span class="lineNum">      16 </span>            :         [TestFixture]
+<span class="lineNum">      17 </span>            :         public class SnapshotTests
+<span class="lineNum">      18 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      19 </span>            :                 [Test]
+<span class="lineNum">      20 </span><span class="lineNoCov">          0 :                 public void Should_load_events()</span>
+<span class="lineNum">      21 </span>            :                 {
+<span class="lineNum">      22 </span>            :                         // Arrange
+<span class="lineNum">      23 </span>            :                         NinjectDependencyResolver.ModulesToLoad.Add(new CqrsModule&lt;int, DefaultAuthenticationTokenHelper&gt;());
+<span class="lineNum">      24 </span>            :                         NinjectDependencyResolver.ModulesToLoad.Add(new SimplifiedSqlModule&lt;int&gt;());
+<span class="lineNum">      25 </span>            :                         NinjectDependencyResolver.ModulesToLoad.Add(new InProcessEventBusModule&lt;int&gt;());
+<span class="lineNum">      26 </span>            :                         NinjectDependencyResolver.Start();
+<span class="lineNum">      27 </span>            :                         var unitOfWork = new UnitOfWork&lt;int&gt;(DependencyResolver.Current.Resolve&lt;ISnapshotAggregateRepository&lt;int&gt;&gt;());
+<span class="lineNum">      28 </span>            :                         var aggregate = DependencyResolver.Current.Resolve&lt;IAggregateFactory&gt;().Create&lt;TestAggregate&gt;(Guid.NewGuid());
+<span class="lineNum">      29 </span>            :                         unitOfWork.Add(aggregate);
+<span class="lineNum">      30 </span>            :                         int count = 0;
+<span class="lineNum">      31 </span>            :                         do
+<span class="lineNum">      32 </span>            :                         {
+<span class="lineNum">      33 </span>            :                                 aggregate.GenerateRandomNumber();
+<span class="lineNum">      34 </span>            :                                 if (count%10 == 0)
+<span class="lineNum">      35 </span>            :                                 {
+<span class="lineNum">      36 </span>            :                                         unitOfWork.Commit();
+<span class="lineNum">      37 </span>            :                                         unitOfWork.Add(aggregate);
+<span class="lineNum">      38 </span>            :                                 }
+<span class="lineNum">      39 </span>            :                         } while (count++ &lt;= 20);
+<span class="lineNum">      40 </span>            :                         unitOfWork.Commit();
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                         // Act
+<span class="lineNum">      43 </span>            :                         var aggregate2 = unitOfWork.Get&lt;TestAggregate&gt;(aggregate.Rsn);
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                         // Assert
+<span class="lineNum">      46 </span>            :                         Assert.AreEqual(22, aggregate2.Version);
+<span class="lineNum">      47 </span>            :                         Assert.AreEqual(aggregate.CurrentRandomNumber, aggregate2.CurrentRandomNumber);
+<span class="lineNum">      48 </span>            :                 }
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 public class TestAggregate
+<span class="lineNum">      51 </span>            :                         : SnapshotAggregateRoot&lt;int, TestAggregateSnapshot&gt;
+<span class="lineNum">      52 </span><span class="lineNoCov">          0 :                 {</span>
+<span class="lineNum">      53 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">      54 </span>            :                         /// Gets or sets the &lt;see cref=&quot;IDependencyResolver&quot;/&gt; used.
+<span class="lineNum">      55 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">      56 </span>            :                         protected IDependencyResolver DependencyResolver { get; private set; }
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">      59 </span>            :                         /// Gets or sets the &lt;see cref=&quot;ILogger&quot;/&gt; used.
+<span class="lineNum">      60 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">      61 </span>            :                         protected ILogger Logger { get; private set; }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                         /// Instantiates a new instance of &lt;see cref=&quot;AggregateFactory&quot;/&gt;.
+<span class="lineNum">      65 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">      66 </span><span class="lineCov">          1 :                         public TestAggregate(IDependencyResolver dependencyResolver, ILogger logger, Guid rsn)</span>
+<span class="lineNum">      67 </span>            :                         {
+<span class="lineNum">      68 </span>            :                                 DependencyResolver = dependencyResolver;
+<span class="lineNum">      69 </span>            :                                 Logger = logger;
+<span class="lineNum">      70 </span>            :                                 Rsn = rsn;
+<span class="lineNum">      71 </span>            :                         }
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                         public Guid Rsn
+<span class="lineNum">      74 </span>            :                         {
+<span class="lineNum">      75 </span>            :                                 get { return Id; }
+<span class="lineNum">      76 </span>            :                                 set { Id = value; }
+<span class="lineNum">      77 </span>            :                         }
+<span class="lineNum">      78 </span>            : 
+<span class="lineNum">      79 </span>            :                         public int CurrentRandomNumber { get; set; }
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span><span class="lineNoCov">          0 :                         public void GenerateRandomNumber()</span>
+<span class="lineNum">      82 </span>            :                         {
+<span class="lineNum">      83 </span>            :                                 ApplyChange(new RandomNumberEvent(Rsn));
+<span class="lineNum">      84 </span>            :                         }
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :                         private void Apply(RandomNumberEvent @event)
+<span class="lineNum">      87 </span>            :                         {
+<span class="lineNum">      88 </span>            :                                 CurrentRandomNumber = @event.RandomNumber;
+<span class="lineNum">      89 </span>            :                         }
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :                         #region Overrides of SnapshotAggregateRoot&lt;int,TestAggregateSnapshot&gt;
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">      94 </span>            :                         /// Create a &lt;see cref=&quot;TestAggregateSnapshot&quot;/&gt; of the current state of this instance.
+<span class="lineNum">      95 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">      96 </span><span class="lineCov">          1 :                         protected override TestAggregateSnapshot CreateSnapshot()</span>
+<span class="lineNum">      97 </span>            :                         {
+<span class="lineNum">      98 </span>            :                                 return new TestAggregateSnapshot {CurrentRandomNumber = CurrentRandomNumber};
+<span class="lineNum">      99 </span>            :                         }
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     102 </span>            :                         /// Rehydrate this instance from the provided &lt;paramref name=&quot;snapshot&quot;/&gt;.
+<span class="lineNum">     103 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     104 </span>            :                         /// &lt;param name=&quot;snapshot&quot;&gt;The &lt;see cref=&quot;TestAggregateSnapshot&quot;/&gt; to rehydrate this instance from.&lt;/param&gt;
+<span class="lineNum">     105 </span><span class="lineCov">          1 :                         protected override void RestoreFromSnapshot(TestAggregateSnapshot snapshot)</span>
+<span class="lineNum">     106 </span>            :                         {
+<span class="lineNum">     107 </span>            :                                 CurrentRandomNumber = snapshot.CurrentRandomNumber;
+<span class="lineNum">     108 </span>            :                         }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :                         #endregion
+<span class="lineNum">     111 </span>            :                 }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :                 public class TestAggregateSnapshot
+<span class="lineNum">     114 </span>            :                         : Snapshot
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                 {</span>
+<span class="lineNum">     116 </span>            :                         public int CurrentRandomNumber { get; set; }
+<span class="lineNum">     117 </span>            :                 }
+<span class="lineNum">     118 </span>            : 
+<span class="lineNum">     119 </span>            :                 public class RandomNumberEvent
+<span class="lineNum">     120 </span>            :                         : IEventWithIdentity&lt;int&gt;
+<span class="lineNum">     121 </span><span class="lineNoCov">          0 :                 {</span>
+<span class="lineNum">     122 </span>            :                         #region Implementation of IMessage
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     125 </span>            :                         /// An identifier used to group together several &lt;see cref=&quot;IMessage&quot;/&gt;. Any &lt;see cref=&quot;IMessage&quot;/&gt; with the same &lt;see cref=&quot;CorrelationId&quot;/&gt; were triggered by the same initiating request.
+<span class="lineNum">     126 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     127 </span>            :                         public Guid CorrelationId { get; set; }
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     130 </span>            :                         /// The originating framework this message was sent from.
+<span class="lineNum">     131 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     132 </span>            :                         public string OriginatingFramework { get; set; }
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     135 </span>            :                         /// The frameworks this &lt;see cref=&quot;IMessage&quot;/&gt; has been delivered to/sent via already.
+<span class="lineNum">     136 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     137 </span>            :                         public IEnumerable&lt;string&gt; Frameworks { get; set; }
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :                         #endregion
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :                         #region Implementation of IMessageWithAuthenticationToken&lt;int&gt;
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     144 </span>            :                         /// The &lt;typeparamref name=&quot;TAuthenticationToken&quot;/&gt; of the entity that triggered the event to be raised.
+<span class="lineNum">     145 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     146 </span>            :                         public int AuthenticationToken { get; set; }
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            :                         #endregion
+<span class="lineNum">     149 </span>            : 
+<span class="lineNum">     150 </span>            :                         #region Implementation of IEvent&lt;int&gt;
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     153 </span>            :                         /// The ID of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">     154 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     155 </span>            :                         public Guid Id { get; set; }
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     158 </span>            :                         /// The version of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">     159 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     160 </span>            :                         public int Version { get; set; }
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     163 </span>            :                         /// The date and time the event was raised or published.
+<span class="lineNum">     164 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     165 </span>            :                         public DateTimeOffset TimeStamp { get; set; }
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span>            :                         #endregion
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :                         #region Implementation of IEventWithIdentity&lt;int&gt;
+<span class="lineNum">     170 </span>            : 
+<span class="lineNum">     171 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     172 </span>            :                         /// The identity of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;&gt;aggregate&lt;/see&gt; being targeted.
+<span class="lineNum">     173 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     174 </span>            :                         public Guid Rsn { get; set; }
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            :                         #endregion
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            :                         public int RandomNumber { get; set; }
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                         public RandomNumberEvent(Guid rsn)</span>
+<span class="lineNum">     181 </span>            :                         {
+<span class="lineNum">     182 </span>            :                                 Id = Guid.NewGuid();
+<span class="lineNum">     183 </span>            :                                 Rsn = rsn;
+<span class="lineNum">     184 </span>            :                                 RandomNumber = new Random().Next(0, 99999);
+<span class="lineNum">     185 </span>            :                         }
+<span class="lineNum">     186 </span>            :                 }
+<span class="lineNum">     187 </span>            :         }
+<span class="lineNum">     188 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

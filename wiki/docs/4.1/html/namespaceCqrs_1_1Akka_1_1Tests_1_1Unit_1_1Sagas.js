@@ -1,0 +1,5 @@
+var namespaceCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas =
+[
+    [ "ConversationReportProcessManager", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManager.html", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManager" ],
+    [ "ConversationReportProcessManagerEventHandlers", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManagerEventHandlers.html", "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Sagas_1_1ConversationReportProcessManagerEventHandlers" ]
+];

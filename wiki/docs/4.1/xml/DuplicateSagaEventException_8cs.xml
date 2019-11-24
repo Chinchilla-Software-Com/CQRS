@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="DuplicateSagaEventException_8cs" kind="file" language="C#">
+    <compoundname>DuplicateSagaEventException.cs</compoundname>
+    <innerclass refid="classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateSagaEventException" prot="public">Cqrs::Domain::Exceptions::DuplicateSagaEventException</innerclass>
+    <innernamespace refid="namespaceCqrs">Cqrs</innernamespace>
+    <innernamespace refid="namespaceCqrs_1_1Domain">Cqrs::Domain</innernamespace>
+    <innernamespace refid="namespaceCqrs_1_1Domain_1_1Exceptions">Cqrs::Domain::Exceptions</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#region<sp/>Copyright</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>&lt;copyright<sp/>company=&quot;Chinchilla<sp/>Software<sp/>Limited&quot;&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/><sp/><sp/>Copyright<sp/>Chinchilla<sp/>Software<sp/>Limited.<sp/>All<sp/>rights<sp/>reserved.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>&lt;/copyright&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#endregion</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>.Runtime.Serialization;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceCqrs" kindref="compound">Cqrs</ref>.<ref refid="namespaceCqrs_1_1Events" kindref="compound">Events</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceCqrs_1_1Domain_1_1Exceptions" kindref="compound">Cqrs.Domain.Exceptions</ref></highlight></codeline>
+<codeline lineno="14"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"><sp/><sp/><sp/><sp/>[Serializable]</highlight></codeline>
+<codeline lineno="21" refid="classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateSagaEventException" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateSagaEventException" kindref="compound">DuplicateSagaEventException</ref>&lt;TSaga,<sp/>TAuthenticationToken&gt;<sp/>:<sp/>Exception</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>where<sp/>TSaga<sp/>:<sp/><ref refid="interfaceCqrs_1_1Domain_1_1ISaga" kindref="compound">ISaga</ref>&lt;TAuthenticationToken&gt;</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateSagaEventException_af0a56394404b67c5cb5773d3bd6d1e8e_1af0a56394404b67c5cb5773d3bd6d1e8e" kindref="member">DuplicateSagaEventException</ref>(Guid<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>version)</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>base(</highlight><highlight class="keywordtype">string</highlight><highlight class="normal">.Format(</highlight><highlight class="stringliteral">&quot;Eventstore<sp/>gave<sp/>more<sp/>than<sp/>one<sp/>event<sp/>for<sp/>saga<sp/>&apos;{0}&apos;<sp/>of<sp/>type<sp/>&apos;{1}&apos;<sp/>for<sp/>version<sp/>{2}&quot;</highlight><highlight class="normal">,<sp/></highlight><highlight class="keywordtype">id</highlight><highlight class="normal">,<sp/>typeof(TSaga).FullName,<sp/>version))</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateSagaEventException_a27af6120d7ca542f59b8dc56fff55c36_1a27af6120d7ca542f59b8dc56fff55c36" kindref="member">Id</ref><sp/>=<sp/>id;</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateSagaEventException_ab07350fb5647bff1d9a9b06ef7726584_1ab07350fb5647bff1d9a9b06ef7726584" kindref="member">SagaType</ref><sp/>=<sp/>typeof(TSaga);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[DataMember]</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>Guid<sp/><ref refid="classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateSagaEventException_a27af6120d7ca542f59b8dc56fff55c36_1a27af6120d7ca542f59b8dc56fff55c36" kindref="member">Id</ref><sp/>{<sp/></highlight><highlight class="keyword">get</highlight><highlight class="normal">;<sp/></highlight><highlight class="keyword">set</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[DataMember]</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/>Type<sp/><ref refid="classCqrs_1_1Domain_1_1Exceptions_1_1DuplicateSagaEventException_ab07350fb5647bff1d9a9b06ef7726584_1ab07350fb5647bff1d9a9b06ef7726584" kindref="member">SagaType</ref><sp/>{<sp/></highlight><highlight class="keyword">get</highlight><highlight class="normal">;<sp/></highlight><highlight class="keyword">set</highlight><highlight class="normal">;<sp/>}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="49"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs/Domain/Exceptions/DuplicateSagaEventException.cs"/>
+  </compounddef>
+</doxygen>

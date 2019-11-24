@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Ninject/Azure/Cqrs.Ninject.Azure.Wcf/Configuration/WebHostModule.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">Ninject/Azure/Cqrs.Ninject.Azure.Wcf/Configuration</a> - WebHostModule.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-25 01:36:42</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      10 </span>            : using Chinchilla.Logging.Azure.ApplicationInsights;
+<span class="lineNum">      11 </span>            : using Chinchilla.Logging.Azure.Configuration;
+<span class="lineNum">      12 </span>            : using Chinchilla.Logging.Configuration;
+<span class="lineNum">      13 </span>            : using Chinchilla.StateManagement;
+<span class="lineNum">      14 </span>            : using Cqrs.Azure.ConfigurationManager;
+<span class="lineNum">      15 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      16 </span>            : using Ninject;
+<span class="lineNum">      17 </span>            : using Ninject.Modules;
+<span class="lineNum">      18 </span>            : #if NET472
+<span class="lineNum">      19 </span>            : using Ninject.Web.Common;
+<span class="lineNum">      20 </span>            : using System.Web;
+<span class="lineNum">      21 </span>            : #endif
+<span class="lineNum">      22 </span>            : using System;
+<span class="lineNum">      23 </span>            : using Chinchilla.StateManagement.Web;
+<span class="lineNum">      24 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      25 </span>            : using Cqrs.Ninject.Configuration;
+<span class="lineNum">      26 </span>            : using Cqrs.Services;
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            : namespace Cqrs.Ninject.Azure.Wcf.Configuration
+<span class="lineNum">      29 </span>            : {
+<span class="lineNum">      30 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :         /// The core &lt;see cref=&quot;INinjectModule&quot;/&gt; for use defining base level requirements.
+<span class="lineNum">      32 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      33 </span>            :         public class WebHostModule : ResolvableModule
+<span class="lineNum">      34 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      35 </span>            : #region Overrides of NinjectModule
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// Loads the module into the kernel.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span><span class="lineCov">          1 :                 public override void Load()</span>
+<span class="lineNum">      41 </span>            :                 {
+<span class="lineNum">      42 </span>            :                         RegisterBasicHelpers();
+<span class="lineNum">      43 </span>            :                         RegisterAzureConfigurations();
+<span class="lineNum">      44 </span>            :                         RegisterBasicSerives();
+<span class="lineNum">      45 </span>            :                         RegisterWebBit();
+<span class="lineNum">      46 </span>            :                 }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : #endregion
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      51 </span>            :                 /// Register the all Azure configurations
+<span class="lineNum">      52 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      53 </span><span class="lineCov">          1 :                 protected virtual void RegisterAzureConfigurations()</span>
+<span class="lineNum">      54 </span>            :                 {
+<span class="lineNum">      55 </span>            :                         Bind&lt;ILoggerSettings&gt;()
+<span class="lineNum">      56 </span>            :                                 .To&lt;AzureLoggerSettingsConfiguration&gt;()
+<span class="lineNum">      57 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                         Bind&lt;IConfigurationManager&gt;()
+<span class="lineNum">      60 </span>            :                                 .To&lt;CloudConfigurationManager&gt;()
+<span class="lineNum">      61 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      62 </span>            :                 }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      65 </span>            :                 /// Registers the basic helpers required.
+<span class="lineNum">      66 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      67 </span><span class="lineCov">          1 :                 protected virtual void RegisterBasicHelpers()</span>
+<span class="lineNum">      68 </span>            :                 {
+<span class="lineNum">      69 </span>            :                         RegisterContextItemCollectionFactory();
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                         Bind&lt;ITelemetryHelper&gt;()
+<span class="lineNum">      72 </span>            :                                 .To&lt;TelemetryHelper&gt;()
+<span class="lineNum">      73 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      74 </span>            :                 }
+<span class="lineNum">      75 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      76 </span>            :                 /// Registers the &lt;see cref=&quot;IContextItemCollectionFactory&quot;/&gt; required.
+<span class="lineNum">      77 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      78 </span><span class="lineCov">          1 :                 protected virtual void RegisterContextItemCollectionFactory()</span>
+<span class="lineNum">      79 </span>            :                 {
+<span class="lineNum">      80 </span>            :                         // We use console state as, even though a webjob runs in an azure website, it's technically loaded via something call the 'WindowsScriptHost', which is not web and IIS based so it's threading model is very different and more console based.
+<span class="lineNum">      81 </span>            :                         Bind&lt;IContextItemCollectionFactory&gt;()
+<span class="lineNum">      82 </span>            :                                 .To&lt;WebContextItemCollectionFactory&gt;()
+<span class="lineNum">      83 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      84 </span>            :                 }
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      87 </span>            :                 /// Registers the basic services required.
+<span class="lineNum">      88 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      89 </span><span class="lineCov">          1 :                 protected virtual void RegisterBasicSerives()</span>
+<span class="lineNum">      90 </span>            :                 {
+<span class="lineNum">      91 </span>            :                         string authenticationType;
+<span class="lineNum">      92 </span>            :                         if (!Resolve&lt;IConfigurationManager&gt;().TryGetSetting(&quot;Cqrs.AuthenticationTokenType&quot;, out authenticationType))
+<span class="lineNum">      93 </span>            :                                 authenticationType = &quot;Guid&quot;;
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :                         if (authenticationType.ToLowerInvariant() == &quot;int&quot; || authenticationType.ToLowerInvariant() == &quot;integer&quot;)
+<span class="lineNum">      96 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">      97 </span>            :                                         .To&lt;UnitOfWorkService&lt;int&gt;&gt;()
+<span class="lineNum">      98 </span>            :                                         .InThreadScope();
+<span class="lineNum">      99 </span>            :                         else if (authenticationType.ToLowerInvariant() == &quot;guid&quot;)
+<span class="lineNum">     100 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">     101 </span>            :                                         .To&lt;UnitOfWorkService&lt;Guid&gt;&gt;()
+<span class="lineNum">     102 </span>            :                                         .InThreadScope();
+<span class="lineNum">     103 </span>            :                         else if (authenticationType.ToLowerInvariant() == &quot;string&quot; || authenticationType.ToLowerInvariant() == &quot;text&quot;)
+<span class="lineNum">     104 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">     105 </span>            :                                         .To&lt;UnitOfWorkService&lt;string&gt;&gt;()
+<span class="lineNum">     106 </span>            :                                         .InThreadScope();
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :                         else if (authenticationType == &quot;SingleSignOnToken&quot;)
+<span class="lineNum">     109 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">     110 </span>            :                                         .To&lt;UnitOfWorkService&lt;SingleSignOnToken&gt;&gt;()
+<span class="lineNum">     111 </span>            :                                         .InThreadScope();
+<span class="lineNum">     112 </span>            :                         else if (authenticationType == &quot;SingleSignOnTokenWithUserRsn&quot;)
+<span class="lineNum">     113 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">     114 </span>            :                                         .To&lt;UnitOfWorkService&lt;SingleSignOnTokenWithUserRsn&gt;&gt;()
+<span class="lineNum">     115 </span>            :                                         .InThreadScope();
+<span class="lineNum">     116 </span>            :                         else if (authenticationType == &quot;SingleSignOnTokenWithCompanyRsn&quot;)
+<span class="lineNum">     117 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">     118 </span>            :                                         .To&lt;UnitOfWorkService&lt;SingleSignOnTokenWithCompanyRsn&gt;&gt;()
+<span class="lineNum">     119 </span>            :                                         .InThreadScope();
+<span class="lineNum">     120 </span>            :                         else if (authenticationType == &quot;SingleSignOnTokenWithUserRsnAndCompanyRsn&quot;)
+<span class="lineNum">     121 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">     122 </span>            :                                         .To&lt;UnitOfWorkService&lt;SingleSignOnTokenWithUserRsnAndCompanyRsn&gt;&gt;()
+<span class="lineNum">     123 </span>            :                                         .InThreadScope();
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :                         else if (authenticationType == &quot;ISingleSignOnToken&quot;)
+<span class="lineNum">     126 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">     127 </span>            :                                         .To&lt;UnitOfWorkService&lt;ISingleSignOnToken&gt;&gt;()
+<span class="lineNum">     128 </span>            :                                         .InThreadScope();
+<span class="lineNum">     129 </span>            :                         else if (authenticationType == &quot;ISingleSignOnTokenWithUserRsn&quot;)
+<span class="lineNum">     130 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">     131 </span>            :                                         .To&lt;UnitOfWorkService&lt;ISingleSignOnTokenWithUserRsn&gt;&gt;()
+<span class="lineNum">     132 </span>            :                                         .InThreadScope();
+<span class="lineNum">     133 </span>            :                         else if (authenticationType == &quot;ISingleSignOnTokenWithCompanyRsn&quot;)
+<span class="lineNum">     134 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">     135 </span>            :                                         .To&lt;UnitOfWorkService&lt;ISingleSignOnTokenWithCompanyRsn&gt;&gt;()
+<span class="lineNum">     136 </span>            :                                         .InThreadScope();
+<span class="lineNum">     137 </span>            :                         else if (authenticationType == &quot;ISingleSignOnTokenWithUserRsnAndCompanyRsn&quot;)
+<span class="lineNum">     138 </span>            :                                 Bind&lt;IUnitOfWorkService&gt;()
+<span class="lineNum">     139 </span>            :                                         .To&lt;UnitOfWorkService&lt;ISingleSignOnTokenWithUserRsnAndCompanyRsn&gt;&gt;()
+<span class="lineNum">     140 </span>            :                                         .InThreadScope();
+<span class="lineNum">     141 </span>            :                 }
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     144 </span>            :                 /// Registers some things Ninject likes.
+<span class="lineNum">     145 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     146 </span><span class="lineCov">          1 :                 protected virtual void RegisterWebBit()</span>
+<span class="lineNum">     147 </span>            :                 {
+<span class="lineNum">     148 </span>            : #if NET472
+<span class="lineNum">     149 </span>            :                         Bind&lt;Func&lt;IKernel&gt;&gt;().ToMethod(ctx =&gt; () =&gt; new Bootstrapper().Kernel);
+<span class="lineNum">     150 </span>            :                         Bind&lt;IHttpModule&gt;().To&lt;HttpApplicationInitializationHttpModule&gt;();
+<span class="lineNum">     151 </span>            : #endif
+<span class="lineNum">     152 </span>            :                 }
+<span class="lineNum">     153 </span>            :         }
+<span class="lineNum">     154 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

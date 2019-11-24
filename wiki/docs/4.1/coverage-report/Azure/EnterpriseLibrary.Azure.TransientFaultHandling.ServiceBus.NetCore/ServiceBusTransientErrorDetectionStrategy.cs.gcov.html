@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore/ServiceBusTransientErrorDetectionStrategy.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore</a> - ServiceBusTransientErrorDetectionStrategy.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-25 01:36:42</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿// Copyright (c) Microsoft Corporation. All rights reserved. See License.txt in the project root for license information.
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : namespace Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling
+<span class="lineNum">       4 </span>            : {
+<span class="lineNum">       5 </span>            :         using System;
+<span class="lineNum">       6 </span>            :         using Microsoft.IdentityModel.Tokens;
+<span class="lineNum">       7 </span>            :         using System.Linq;
+<span class="lineNum">       8 </span>            :         using System.Net;
+<span class="lineNum">       9 </span>            :         using System.Net.Sockets;
+<span class="lineNum">      10 </span>            :         using System.Security;
+<span class="lineNum">      11 </span>            :         using System.ServiceModel;
+<span class="lineNum">      12 </span>            :         using System.Text.RegularExpressions;
+<span class="lineNum">      13 </span>            :         using Microsoft.Azure.ServiceBus;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt; 
+<span class="lineNum">      16 </span>            :         /// Provides the transient error detection logic that can recognize transient faults when dealing with Windows Azure Service Bus. 
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt; 
+<span class="lineNum">      18 </span>            :         public class ServiceBusTransientErrorDetectionStrategy : ITransientErrorDetectionStrategy
+<span class="lineNum">      19 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      20 </span>            :                 /// &lt;summary&gt; 
+<span class="lineNum">      21 </span>            :                 /// Provides a compiled regular expression used for extracting the error code from the message. 
+<span class="lineNum">      22 </span>            :                 /// &lt;/summary&gt; 
+<span class="lineNum">      23 </span>            :                 private static readonly Regex acsErrorCodeRegex = new Regex(@&quot;Error:Code:(\d+):SubCode:(\w\d+)&quot;, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+<span class="lineNum">      24 </span>            :                 private static readonly int[] httpStatusCodes = new[] { (int)HttpStatusCode.InternalServerError, (int)HttpStatusCode.GatewayTimeout, (int)HttpStatusCode.ServiceUnavailable, (int)HttpStatusCode.RequestTimeout };
+<span class="lineNum">      25 </span>            :                 private static readonly WebExceptionStatus[] webExceptionStatus = new[] { WebExceptionStatus.ConnectionClosed, WebExceptionStatus.Timeout, WebExceptionStatus.RequestCanceled };
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt; 
+<span class="lineNum">      28 </span>            :                 /// Determines whether the specified exception represents a transient failure that can be compensated by a retry. 
+<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt; 
+<span class="lineNum">      30 </span>            :                 /// &lt;param name=&quot;ex&quot;&gt;The exception object to be verified.&lt;/param&gt; 
+<span class="lineNum">      31 </span>            :                 /// &lt;returns&gt;true if the specified exception is considered transient; otherwise, false.&lt;/returns&gt; 
+<span class="lineNum">      32 </span><span class="lineCov">          1 :                 public bool IsTransient(Exception ex)</span>
+<span class="lineNum">      33 </span>            :                 {
+<span class="lineNum">      34 </span>            :                         return ex != null &amp;&amp; (CheckIsTransient(ex) || (ex.InnerException != null &amp;&amp; CheckIsTransient(ex.InnerException)));
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 // SecuritySafeCritical because it references MessagingException
+<span class="lineNum">      38 </span>            :                 [SecuritySafeCritical]
+<span class="lineNum">      39 </span>            :                 private static bool CheckIsTransient(Exception ex)
+<span class="lineNum">      40 </span>            :                 {
+<span class="lineNum">      41 </span>            :                         var messagingException = ex as ServiceBusException;
+<span class="lineNum">      42 </span>            :                         if (messagingException != null)
+<span class="lineNum">      43 </span>            :                         {
+<span class="lineNum">      44 </span>            :                                 // The IsTransient property already covers the following scenarios:
+<span class="lineNum">      45 </span>            :                                 //if (ex is MessageLockLostException) return false;
+<span class="lineNum">      46 </span>            :                                 //if (ex is MessagingEntityAlreadyExistsException) return false;
+<span class="lineNum">      47 </span>            :                                 //if (ex is MessagingEntityNotFoundException) return false;
+<span class="lineNum">      48 </span>            :                                 //if (ex is MessagingCommunicationException) return true;
+<span class="lineNum">      49 </span>            :                                 //if (ex is ServerBusyException) return true;
+<span class="lineNum">      50 </span>            :                                 return messagingException.IsTransient;
+<span class="lineNum">      51 </span>            :                         }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :                         if (ex is FaultException) return false;
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                         if (ex is CommunicationObjectFaultedException) return false;
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                         if (ex is TimeoutException) return true;
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                         var webException = ex as WebException;
+<span class="lineNum">      60 </span>            :                         if (webException != null)
+<span class="lineNum">      61 </span>            :                         {
+<span class="lineNum">      62 </span>            :                                 if (webExceptionStatus.Contains(webException.Status)) return true;
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                                 if (webException.Status == WebExceptionStatus.ProtocolError)
+<span class="lineNum">      65 </span>            :                                 {
+<span class="lineNum">      66 </span>            :                                         var response = webException.Response as HttpWebResponse;
+<span class="lineNum">      67 </span>            :                                         if (response != null &amp;&amp; httpStatusCodes.Contains((int)response.StatusCode)) return true;
+<span class="lineNum">      68 </span>            :                                 }
+<span class="lineNum">      69 </span>            :                         }
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                         if (ex is SecurityTokenException) return true;
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                         if (ex is ServerTooBusyException) return true;
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                         if (ex is ProtocolException) return true;
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :                         // This exception may occur when a listener and a consumer are being 
+<span class="lineNum">      78 </span>            :                         // initialized out of sync (e.g. consumer is reaching to a listener that 
+<span class="lineNum">      79 </span>            :                         // is still in the process of setting up the Service Host). 
+<span class="lineNum">      80 </span>            :                         if (ex is EndpointNotFoundException) return true;
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                         if (ex is CommunicationException) return true;
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :                         var socketFault = ex as SocketException;
+<span class="lineNum">      85 </span>            :                         if (socketFault != null)
+<span class="lineNum">      86 </span>            :                         {
+<span class="lineNum">      87 </span>            :                                 return socketFault.SocketErrorCode == SocketError.TimedOut;
+<span class="lineNum">      88 </span>            :                         }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :                         if (ex is UnauthorizedAccessException)
+<span class="lineNum">      91 </span>            :                         {
+<span class="lineNum">      92 </span>            :                                 // Need to provide some resilience against the following fault that was seen a few times: 
+<span class="lineNum">      93 </span>            :                                 // System.UnauthorizedAccessException: The token provider was unable to provide a security token while accessing 'https://xxx.accesscontrol.windows.net/WRAPv0.9/'.  
+<span class="lineNum">      94 </span>            :                                 // Token provider returned message: 'Error:Code:500:SubCode:T9002:Detail:An internal network error occured. Please try again.'.  
+<span class="lineNum">      95 </span>            :                                 // System.IdentityModel.Tokens.SecurityTokenException: The token provider was unable to provide a security token while accessing 'https://xxx.accesscontrol.windows.net/WRAPv0.9/'.  
+<span class="lineNum">      96 </span>            :                                 // Token provider returned message: 'Error:Code:500:SubCode:T9002:Detail:An internal network error occured. Please try again.'.  
+<span class="lineNum">      97 </span>            :                                 // System.Net.WebException: The remote server returned an error: (500) Internal Server Error. 
+<span class="lineNum">      98 </span>            :                                 var match = acsErrorCodeRegex.Match(ex.Message);
+<span class="lineNum">      99 </span>            :                                 var errorCode = 0;
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :                                 if (match.Success &amp;&amp; match.Groups.Count &gt; 1 &amp;&amp; int.TryParse(match.Groups[1].Value, out errorCode))
+<span class="lineNum">     102 </span>            :                                 {
+<span class="lineNum">     103 </span>            :                                         return httpStatusCodes.Contains(errorCode);
+<span class="lineNum">     104 </span>            :                                 }
+<span class="lineNum">     105 </span>            :                         }
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            :                         return false;
+<span class="lineNum">     108 </span>            :                 }
+<span class="lineNum">     109 </span>            :         }
+<span class="lineNum">     110 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

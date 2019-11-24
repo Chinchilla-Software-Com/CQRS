@@ -1,0 +1,171 @@
+\hypertarget{classCqrs_1_1Domain_1_1UnitOfWork}{}\doxysection{Cqrs.\+Domain.\+Unit\+Of\+Work$<$ T\+Authentication\+Token $>$ Class Template Reference}
+\label{classCqrs_1_1Domain_1_1UnitOfWork}\index{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}}
+
+
+Provides a basic container to control when \mbox{\hyperlink{}{events}} are store in an I\+Event\+Store$<$\+T\+Authentication\+Token$>$ and then published on an I\+Event\+Publisher$<$\+T\+Authentication\+Token$>$.  
+
+
+Inheritance diagram for Cqrs.\+Domain.\+Unit\+Of\+Work$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCqrs_1_1Domain_1_1UnitOfWork}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_a9ec92dbd580f3885f7cf5a9ad360e1ac_a9ec92dbd580f3885f7cf5a9ad360e1ac}{Unit\+Of\+Work}} (\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISnapshotAggregateRepository}{I\+Snapshot\+Aggregate\+Repository}}$<$ T\+Authentication\+Token $>$ snapshot\+Repository, \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{I\+Aggregate\+Repository}}$<$ T\+Authentication\+Token $>$ repository)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_a9ec92dbd580f3885f7cf5a9ad360e1ac_a9ec92dbd580f3885f7cf5a9ad360e1ac}{Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$}} \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_a717facda044d5025e9d7abdec4f54acd_a717facda044d5025e9d7abdec4f54acd}{Unit\+Of\+Work}} (\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{I\+Aggregate\+Repository}}$<$ T\+Authentication\+Token $>$ repository)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_a9ec92dbd580f3885f7cf5a9ad360e1ac_a9ec92dbd580f3885f7cf5a9ad360e1ac}{Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$}} \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_a91bd702e09fb175e7b6bb4ee2a66bb61_a91bd702e09fb175e7b6bb4ee2a66bb61}{Add$<$ T\+Aggregate\+Root $>$}} (T\+Aggregate\+Root aggregate, bool use\+Snapshots=false)
+\begin{DoxyCompactList}\small\item\em Add an item into the I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$ ready to be committed. \end{DoxyCompactList}\item 
+virtual T\+Aggregate\+Root \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_a72f0ec98b1ea4b74af7d0daa5cb73c03_a72f0ec98b1ea4b74af7d0daa5cb73c03}{Get$<$ T\+Aggregate\+Root $>$}} (Guid id, int? expected\+Version=null, bool use\+Snapshots=false)
+\begin{DoxyCompactList}\small\item\em Get an item from the I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$ if it has already been loaded or get it from the I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+virtual T\+Aggregate\+Root \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_aa0e705ac7f323abfb552bcbce2a7d692_aa0e705ac7f323abfb552bcbce2a7d692}{Get\+To\+Version$<$ T\+Aggregate\+Root $>$}} (Guid id, int version)
+\begin{DoxyCompactList}\small\item\em Get an item from the I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$ up to and including the provided {\itshape version} . \end{DoxyCompactList}\item 
+virtual T\+Aggregate\+Root \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_ac5f0efae335bee99f820d1c53b3e9f93_ac5f0efae335bee99f820d1c53b3e9f93}{Get\+To\+Date$<$ T\+Aggregate\+Root $>$}} (Guid id, Date\+Time versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Get an item from the I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$ up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_a132dd26611fc71d676727f71f1412edd_a132dd26611fc71d676727f71f1412edd}{Commit}} ()
+\begin{DoxyCompactList}\small\item\em Commit any changed Aggregate\+Root$<$\+T\+Authentication\+Token$>$ added to this I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$ via Add$<$\+T$>$ into the I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provides a basic container to control when \mbox{\hyperlink{}{events}} are store in an I\+Event\+Store$<$\+T\+Authentication\+Token$>$ and then published on an I\+Event\+Publisher$<$\+T\+Authentication\+Token$>$. 
+
+This shouldn\textquotesingle{}t normally be used as a singleton. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1UnitOfWork_a9ec92dbd580f3885f7cf5a9ad360e1ac_a9ec92dbd580f3885f7cf5a9ad360e1ac}\label{classCqrs_1_1Domain_1_1UnitOfWork_a9ec92dbd580f3885f7cf5a9ad360e1ac_a9ec92dbd580f3885f7cf5a9ad360e1ac}} 
+\index{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}!UnitOfWork@{UnitOfWork}}
+\index{UnitOfWork@{UnitOfWork}!Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{UnitOfWork()}{UnitOfWork()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork}{Cqrs.\+Domain.\+Unit\+Of\+Work}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork}{Unit\+Of\+Work}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISnapshotAggregateRepository}{I\+Snapshot\+Aggregate\+Repository}}$<$ T\+Authentication\+Token $>$}]{snapshot\+Repository,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{I\+Aggregate\+Repository}}$<$ T\+Authentication\+Token $>$}]{repository }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_a9ec92dbd580f3885f7cf5a9ad360e1ac_a9ec92dbd580f3885f7cf5a9ad360e1ac}{Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$}} 
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1UnitOfWork_a717facda044d5025e9d7abdec4f54acd_a717facda044d5025e9d7abdec4f54acd}\label{classCqrs_1_1Domain_1_1UnitOfWork_a717facda044d5025e9d7abdec4f54acd_a717facda044d5025e9d7abdec4f54acd}} 
+\index{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}!UnitOfWork@{UnitOfWork}}
+\index{UnitOfWork@{UnitOfWork}!Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{UnitOfWork()}{UnitOfWork()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork}{Cqrs.\+Domain.\+Unit\+Of\+Work}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork}{Unit\+Of\+Work}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRepository}{I\+Aggregate\+Repository}}$<$ T\+Authentication\+Token $>$}]{repository }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork_a9ec92dbd580f3885f7cf5a9ad360e1ac_a9ec92dbd580f3885f7cf5a9ad360e1ac}{Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$}} 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1UnitOfWork_a91bd702e09fb175e7b6bb4ee2a66bb61_a91bd702e09fb175e7b6bb4ee2a66bb61}\label{classCqrs_1_1Domain_1_1UnitOfWork_a91bd702e09fb175e7b6bb4ee2a66bb61_a91bd702e09fb175e7b6bb4ee2a66bb61}} 
+\index{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}!Add$<$ TAggregateRoot $>$@{Add$<$ TAggregateRoot $>$}}
+\index{Add$<$ TAggregateRoot $>$@{Add$<$ TAggregateRoot $>$}!Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Add$<$ TAggregateRoot $>$()}{Add< TAggregateRoot >()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork}{Cqrs.\+Domain.\+Unit\+Of\+Work}}$<$ T\+Authentication\+Token $>$.Add$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{T\+Aggregate\+Root}]{aggregate,  }\item[{bool}]{use\+Snapshots = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add an item into the I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$ ready to be committed. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IUnitOfWork_a1899165061529d5c9e77429b1fa72189_a1899165061529d5c9e77429b1fa72189}{Cqrs.\+Domain.\+I\+Unit\+Of\+Work$<$ T\+Authentication\+Token $>$}}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1UnitOfWork_a132dd26611fc71d676727f71f1412edd_a132dd26611fc71d676727f71f1412edd}\label{classCqrs_1_1Domain_1_1UnitOfWork_a132dd26611fc71d676727f71f1412edd_a132dd26611fc71d676727f71f1412edd}} 
+\index{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}!Commit@{Commit}}
+\index{Commit@{Commit}!Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Commit()}{Commit()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork}{Cqrs.\+Domain.\+Unit\+Of\+Work}}$<$ T\+Authentication\+Token $>$.Commit (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Commit any changed Aggregate\+Root$<$\+T\+Authentication\+Token$>$ added to this I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$ via Add$<$\+T$>$ into the I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$ 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IUnitOfWork_ade600c9bf9e8380c24eaf1e7e0df6e01_ade600c9bf9e8380c24eaf1e7e0df6e01}{Cqrs.\+Domain.\+I\+Unit\+Of\+Work$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1UnitOfWork_a72f0ec98b1ea4b74af7d0daa5cb73c03_a72f0ec98b1ea4b74af7d0daa5cb73c03}\label{classCqrs_1_1Domain_1_1UnitOfWork_a72f0ec98b1ea4b74af7d0daa5cb73c03_a72f0ec98b1ea4b74af7d0daa5cb73c03}} 
+\index{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}!Get$<$ TAggregateRoot $>$@{Get$<$ TAggregateRoot $>$}}
+\index{Get$<$ TAggregateRoot $>$@{Get$<$ TAggregateRoot $>$}!Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Get$<$ TAggregateRoot $>$()}{Get< TAggregateRoot >()}}
+{\footnotesize\ttfamily virtual T\+Aggregate\+Root \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork}{Cqrs.\+Domain.\+Unit\+Of\+Work}}$<$ T\+Authentication\+Token $>$.Get$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{id,  }\item[{int?}]{expected\+Version = {\ttfamily null},  }\item[{bool}]{use\+Snapshots = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get an item from the I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$ if it has already been loaded or get it from the I\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IUnitOfWork_aee78f81d472577a65356bc1c05207180_aee78f81d472577a65356bc1c05207180}{Cqrs.\+Domain.\+I\+Unit\+Of\+Work$<$ T\+Authentication\+Token $>$}}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1UnitOfWork_ac5f0efae335bee99f820d1c53b3e9f93_ac5f0efae335bee99f820d1c53b3e9f93}\label{classCqrs_1_1Domain_1_1UnitOfWork_ac5f0efae335bee99f820d1c53b3e9f93_ac5f0efae335bee99f820d1c53b3e9f93}} 
+\index{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}!GetToDate$<$ TAggregateRoot $>$@{GetToDate$<$ TAggregateRoot $>$}}
+\index{GetToDate$<$ TAggregateRoot $>$@{GetToDate$<$ TAggregateRoot $>$}!Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetToDate$<$ TAggregateRoot $>$()}{GetToDate< TAggregateRoot >()}}
+{\footnotesize\ttfamily virtual T\+Aggregate\+Root \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork}{Cqrs.\+Domain.\+Unit\+Of\+Work}}$<$ T\+Authentication\+Token $>$.Get\+To\+Date$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{id,  }\item[{Date\+Time}]{versioned\+Date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get an item from the I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$ up to and including the provided {\itshape versioned\+Date} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_a04aa3198f1371afa345a58e8fcb713d7_a04aa3198f1371afa345a58e8fcb713d7}{I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id}} of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IUnitOfWork_a9878de7ddb925b1ef2193b8734d79a3a_a9878de7ddb925b1ef2193b8734d79a3a}{Cqrs.\+Domain.\+I\+Unit\+Of\+Work$<$ T\+Authentication\+Token $>$}}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1UnitOfWork_aa0e705ac7f323abfb552bcbce2a7d692_aa0e705ac7f323abfb552bcbce2a7d692}\label{classCqrs_1_1Domain_1_1UnitOfWork_aa0e705ac7f323abfb552bcbce2a7d692_aa0e705ac7f323abfb552bcbce2a7d692}} 
+\index{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}!GetToVersion$<$ TAggregateRoot $>$@{GetToVersion$<$ TAggregateRoot $>$}}
+\index{GetToVersion$<$ TAggregateRoot $>$@{GetToVersion$<$ TAggregateRoot $>$}!Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$@{Cqrs.Domain.UnitOfWork$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetToVersion$<$ TAggregateRoot $>$()}{GetToVersion< TAggregateRoot >()}}
+{\footnotesize\ttfamily virtual T\+Aggregate\+Root \mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork}{Cqrs.\+Domain.\+Unit\+Of\+Work}}$<$ T\+Authentication\+Token $>$.Get\+To\+Version$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{id,  }\item[{int}]{version }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get an item from the I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$ up to and including the provided {\itshape version} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_a04aa3198f1371afa345a58e8fcb713d7_a04aa3198f1371afa345a58e8fcb713d7}{I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id}} of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em version} & Load events up-\/to and including from this version\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IUnitOfWork_a449dde9a112fcce6aaab0e4c8b3b9a71_a449dde9a112fcce6aaab0e4c8b3b9a71}{Cqrs.\+Domain.\+I\+Unit\+Of\+Work$<$ T\+Authentication\+Token $>$}}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Aggregate\+Root} : {\em I\+Aggregate\+Root$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}

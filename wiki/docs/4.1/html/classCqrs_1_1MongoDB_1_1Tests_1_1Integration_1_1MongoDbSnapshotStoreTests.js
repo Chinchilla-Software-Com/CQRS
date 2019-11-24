@@ -1,0 +1,7 @@
+var classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests =
+[
+    [ "RandomNumberEvent", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1RandomNumberEvent.html", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1RandomNumberEvent" ],
+    [ "TestAggregate", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate.html", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate" ],
+    [ "TestAggregateSnapshot", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregateSnapshot.html", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregateSnapshot" ],
+    [ "Should_load_events", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_a424d10448b3ab5ab019f99078f895f83.html#a424d10448b3ab5ab019f99078f895f83", null ]
+];

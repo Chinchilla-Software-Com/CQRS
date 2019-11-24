@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="Cqrs_8Azure_8BlobStorage_2DataStores_2TableStorageDataStore_8cs" kind="file" language="C#">
+    <compoundname>Cqrs.Azure.BlobStorage/DataStores/TableStorageDataStore.cs</compoundname>
+    <innerclass refid="classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStore" prot="public">Cqrs::Azure::BlobStorage::DataStores::TableStorageDataStore</innerclass>
+    <innernamespace refid="namespaceCqrs">Cqrs</innernamespace>
+    <innernamespace refid="namespaceCqrs_1_1Azure">Cqrs::Azure</innernamespace>
+    <innernamespace refid="namespaceCqrs_1_1Azure_1_1BlobStorage">Cqrs::Azure::BlobStorage</innernamespace>
+    <innernamespace refid="namespaceCqrs_1_1Azure_1_1BlobStorage_1_1DataStores">Cqrs::Azure::BlobStorage::DataStores</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#region<sp/>Copyright</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>&lt;copyright<sp/>company=&quot;Chinchilla<sp/>Software<sp/>Limited&quot;&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/><sp/><sp/>Copyright<sp/>Chinchilla<sp/>Software<sp/>Limited.<sp/>All<sp/>rights<sp/>reserved.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>&lt;/copyright&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#endregion</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/>Chinchilla.Logging;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceCqrs" kindref="compound">Cqrs</ref>.<ref refid="namespaceCqrs_1_1Entities" kindref="compound">Entities</ref>;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceMicrosoft" kindref="compound">Microsoft</ref>.<ref refid="namespaceMicrosoft_1_1WindowsAzure" kindref="compound">WindowsAzure</ref>.<ref refid="namespaceMicrosoft_1_1WindowsAzure_1_1Storage" kindref="compound">Storage</ref>.<ref refid="namespaceMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table" kindref="compound">Table</ref>;</highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceCqrs_1_1Azure_1_1BlobStorage_1_1DataStores" kindref="compound">Cqrs.Azure.BlobStorage.DataStores</ref></highlight></codeline>
+<codeline lineno="15"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="20" refid="classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStore" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStore" kindref="compound">TableStorageDataStore</ref>&lt;TData&gt;</highlight></codeline>
+<codeline lineno="21"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore" kindref="compound">TableStorageStore</ref>&lt;EntityTableEntity&lt;TData&gt;,<sp/>TData&gt;</highlight></codeline>
+<codeline lineno="22"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>where<sp/>TData<sp/>:<sp/><ref refid="classCqrs_1_1Entities_1_1Entity" kindref="compound">Entity</ref></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStore_a29c0fb07b5b5e6655a24cc831484646a_1a29c0fb07b5b5e6655a24cc831484646a" kindref="member">TableStorageDataStore</ref>(ILogger<sp/>logger,<sp/><ref refid="interfaceCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1ITableStorageDataStoreConnectionStringFactory" kindref="compound">ITableStorageDataStoreConnectionStringFactory</ref><sp/>tableStorageDataStoreConnectionStringFactory)</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>base(logger)</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>GetContainerName<sp/>=<sp/>tableStorageDataStoreConnectionStringFactory.GetTableName&lt;TData&gt;;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>IsContainerPublic<sp/>=<sp/>()<sp/>=&gt;<sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ReSharper<sp/>disable<sp/>DoNotCallOverridableMethodsInConstructor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore_ae775f039a168cc48c731314c7e494bb6_1ae775f039a168cc48c731314c7e494bb6" kindref="member">Initialise</ref>(tableStorageDataStoreConnectionStringFactory);</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>ReSharper<sp/>restore<sp/>DoNotCallOverridableMethodsInConstructor</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#region<sp/>Implementation<sp/>of<sp/>IDataStore&lt;TData&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight></codeline>
+<codeline lineno="43"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStore_a724d1188cdac6a7bfe7c753480f0c09a_1a724d1188cdac6a7bfe7c753480f0c09a" kindref="member">Remove</ref>(TData<sp/>data)</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>data.IsDeleted<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore_aacb673aed5c6f828917f4d2e8c2ff75b_1aacb673aed5c6f828917f4d2e8c2ff75b" kindref="member">Update</ref>(data);</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#endregion</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#region<sp/>Overrides<sp/>of<sp/>TableStorageStore&lt;TData&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal"><sp/>ITableEntity<sp/><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStore_ac28ce10858480acc61d3a3df4fb3dae4_1ac28ce10858480acc61d3a3df4fb3dae4" kindref="member">CreateTableEntity</ref>(TData<sp/>data)</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1EntityTableEntity" kindref="compound">EntityTableEntity&lt;TData&gt;</ref>(data);</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal"><sp/>TableOperation<sp/><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStore_aa4dc1bfeeb55483b68d8af3414000f7a_1aa4dc1bfeeb55483b68d8af3414000f7a" kindref="member">GetUpdatableTableEntity</ref>(TData<sp/>data)</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>TableOperation.Retrieve&lt;<ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1EntityTableEntity" kindref="compound">EntityTableEntity&lt;TData&gt;</ref>&gt;(data.GetType().FullName,<sp/>data.Rsn.ToString(</highlight><highlight class="stringliteral">&quot;N&quot;</highlight><highlight class="normal">));</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal"><sp/>TableOperation<sp/><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStore_aa4dc1bfeeb55483b68d8af3414000f7a_1aa4dc1bfeeb55483b68d8af3414000f7a" kindref="member">GetUpdatableTableEntity</ref>(<ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1EntityTableEntity" kindref="compound">EntityTableEntity&lt;TData&gt;</ref><sp/>data)</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1DataStores_1_1TableStorageDataStore_aa4dc1bfeeb55483b68d8af3414000f7a_1aa4dc1bfeeb55483b68d8af3414000f7a" kindref="member">GetUpdatableTableEntity</ref>(data.<ref refid="classCqrs_1_1Azure_1_1BlobStorage_1_1EntityTableEntity_ac1f795a5b8c45645ebc71bcde126bcb5_1ac1f795a5b8c45645ebc71bcde126bcb5" kindref="member">Entity</ref>);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight><highlight class="preprocessor"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>#endregion</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="84"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Azure/Cqrs.Azure.BlobStorage/DataStores/TableStorageDataStore.cs"/>
+  </compounddef>
+</doxygen>
