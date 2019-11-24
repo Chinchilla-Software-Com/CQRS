@@ -24,7 +24,7 @@ using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
 using RetryPolicy = Microsoft.Practices.TransientFaultHandling.RetryPolicy;
 using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.ServiceBus.Management;
@@ -102,7 +102,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// The <see cref="OnMessageOptions.MaxConcurrentCalls"/> value.
 		/// </summary>
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		/// <summary>
 		/// Used by .NET Framework, but not .Net Core
 		/// </summary>
@@ -216,7 +216,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			NamespaceManager manager = NamespaceManager.CreateFromConnectionString(ConnectionString);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		/// <summary>
 		/// Creates a new instance of <see cref="ManagementClient"/> with the <see cref="ConnectionString"/>.
 		/// </summary>
@@ -237,7 +237,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance<RetryManager>();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				RetryManager retryManager = RetryManager.Instance;
 #endif
 				RetryPolicy retryPolicy = retryManager.GetDefaultAzureServiceBusRetryPolicy();
@@ -306,7 +306,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Sets the handler on <see cref="IMessageReceiver.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage})"/>.
 		/// </summary>
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		/// <summary>
 		/// Sets the handler on <see cref="IReceiverClient.RegisterMessageHandler(Func{Message, System.Threading.CancellationToken, Task}, MessageHandlerOptions)"/>.
 		/// </summary>

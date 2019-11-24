@@ -31,7 +31,7 @@ using Cqrs.Messages;
 #if NET452
 using Microsoft.ServiceBus.Messaging;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
@@ -441,7 +441,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 		public virtual void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		public virtual void RefreshLock(IMessageReceiver client, CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
 #endif
 		{
@@ -463,7 +463,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 						if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-45))
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 						if (DateTime.UtcNow > message.ExpiresAtUtc.AddSeconds(-45))
 #endif
 						{
@@ -477,7 +477,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 									message.RenewLock();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 									client.RenewLockAsync(message).Wait(1500);
 #endif
 									try

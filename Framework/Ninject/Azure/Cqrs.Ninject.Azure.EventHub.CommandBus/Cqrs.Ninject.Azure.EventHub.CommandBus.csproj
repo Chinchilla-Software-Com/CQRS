@@ -1,13 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp3.0;net452</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+		<title>Microsoft Azure EventHub command bus with CQRS.NET and Ninject</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
+		<Description>Use Ninject as your IoC container of choice when using Microsoft Azure Event hubs for CQRS.NET as your command bus</Description>
 		<Copyright>Copyright ©  2019</Copyright>
 		<PackageLicenseFile></PackageLicenseFile>
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
 		<PackageReleaseNotes>
+			Version 4.1.0
+
+			* Switched to .NET Standard 2.0 support from .NET Core 3.0.
+
 			Version 4.0.0
 
 			* Added .NET Core 3.0 support.
@@ -42,12 +48,12 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net452;netcoreapp3.0</TargetFrameworks>
+		<TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
 		<DocumentationFile>Cqrs.Ninject.Azure.EventHub.CommandBus.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
 		<PackageReference Include="Ninject" Version="3.3.4" />
 	</ItemGroup>
 
@@ -57,8 +63,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Chinchilla.StateManagement" Version="4.0.43.24" />
-	  <PackageReference Include="Chinchilla.Logging" Version="4.0.115.95" />
+	  <PackageReference Include="Chinchilla.StateManagement" Version="4.1.51.31" />
+	  <PackageReference Include="Chinchilla.Logging" Version="4.1.119.99" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	</ItemGroup>
 
@@ -71,7 +77,7 @@
 	  <Folder Include="Properties\" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
 	  <PackageReference Include="Ninject">
 	    <Version>3.3.4</Version>
 	  </PackageReference>

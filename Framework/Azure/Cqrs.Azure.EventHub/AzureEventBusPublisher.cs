@@ -20,7 +20,7 @@ using Cqrs.Messages;
 using Microsoft.ServiceBus.Messaging;
 using EventData = Microsoft.ServiceBus.Messaging.EventData;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 using EventData = Microsoft.Azure.EventHubs.EventData;
@@ -82,7 +82,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					EventHubPublisher.Send(brokeredMessage);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					EventHubPublisher.SendAsync(brokeredMessage).Wait();
 #endif
 					wasSuccessfull = true;
@@ -167,7 +167,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 						EventHubPublisher.SendBatch(brokeredMessages);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 						EventHubPublisher.SendAsync(brokeredMessages).Wait();
 #endif
 					}

@@ -26,7 +26,7 @@ using Microsoft.ServiceBus.Messaging;
 using Manager = Microsoft.ServiceBus.NamespaceManager;
 using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.ServiceBus.Management;
@@ -64,7 +64,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// as used by <see cref="IConfigurationManager"/>.
 		/// </summary>
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		/// <summary>
 		/// Used by .NET Framework, but not .Net Core
 		/// </summary>
@@ -169,7 +169,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				SubscriptionClient client = serviceBusReceivers[0];
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				// Since the IMessageReceiver and it's concrete implementation doesn't allow for the management of rules, we're creating a SubscriptionClient just to do the rules... it gets cleaned up somewhat below.
 				SubscriptionClient client = new SubscriptionClient(ConnectionString, topicName, topicSubscriptionName);
 #endif
@@ -179,7 +179,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					IEnumerable<RuleDescription> rules = manager.GetRules(client.TopicPath, client.Name).ToList();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					Task<IList<RuleDescription>> getRulesTask = manager.GetRulesAsync(topicName, topicSubscriptionName);
 					getRulesTask.Wait();
 					IEnumerable<RuleDescription> rules = getRulesTask.Result;
@@ -197,7 +197,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 							client.RemoveRule("CqrsConfiguredFilter");
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 							client.RemoveRuleAsync("CqrsConfiguredFilter").Wait();
 #endif
 						}
@@ -212,7 +212,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 						client.RemoveRule("$Default");
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 						client.RemoveRuleAsync("$Default").Wait();
 #endif
 					}
@@ -227,7 +227,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 						client.AddRule(ruleDescription);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 						client.AddRuleAsync(ruleDescription).Wait();
 #endif
 					}
@@ -252,7 +252,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 						client.AddRule(ruleDescription);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 						client.AddRuleAsync(ruleDescription).Wait();
 #endif
 						break;
@@ -276,7 +276,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 				}
 
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				client.CloseAsync();
 #endif
 			});
@@ -311,7 +311,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 		protected virtual void ReceiveCommand(BrokeredMessage message)
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		protected virtual void ReceiveCommand(IMessageReceiver client, BrokeredMessage message)
 #endif
 		{
@@ -349,7 +349,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 							message.Complete();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 							client.CompleteAsync(message.SystemProperties.LockToken).Wait(1500);
 #endif
 						}
@@ -365,7 +365,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 						AzureBusHelper.RefreshLock(brokeredMessageRenewCancellationTokenSource, message, "command");
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 						AzureBusHelper.RefreshLock(client, brokeredMessageRenewCancellationTokenSource, message, "command");
 #endif
 					}
@@ -396,7 +396,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 						message.Complete();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 						client.CompleteAsync(message.SystemProperties.LockToken).Wait(1500);
 #endif
 					}
@@ -419,7 +419,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					message.Abandon();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					client.AbandonAsync(message.SystemProperties.LockToken).Wait(1500);
 #endif
 					wasSuccessfull = false;
@@ -432,7 +432,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 						message.DeadLetter("LockLostButHandled", "The message was handled but the lock was lost.");
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 						client.DeadLetterAsync(message.SystemProperties.LockToken, "LockLostButHandled", "The message was handled but the lock was lost.").Wait(1500);
 #endif
 					}
@@ -442,7 +442,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 						message.Abandon();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 						client.AbandonAsync(message.SystemProperties.LockToken).Wait(1500);
 #endif
 					}
@@ -457,7 +457,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				message.DeadLetter("UnAuthorisedMessageReceivedException", exception.Message);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				client.DeadLetterAsync(message.SystemProperties.LockToken, "UnAuthorisedMessageReceivedException", exception.Message).Wait(1500);
 #endif
 				wasSuccessfull = false;
@@ -473,7 +473,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				message.DeadLetter("NoHandlersRegisteredException", exception.Message);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				client.DeadLetterAsync(message.SystemProperties.LockToken, "NoHandlersRegisteredException", exception.Message).Wait(1500);
 #endif
 				wasSuccessfull = false;
@@ -489,7 +489,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				message.DeadLetter("NoHandlerRegisteredException", exception.Message);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				client.DeadLetterAsync(message.SystemProperties.LockToken, "NoHandlerRegisteredException", exception.Message).Wait(1500);
 #endif
 				wasSuccessfull = false;
@@ -505,7 +505,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				message.Abandon();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				client.AbandonAsync(message.SystemProperties.LockToken).Wait(1500);
 #endif
 				wasSuccessfull = false;
@@ -636,7 +636,7 @@ namespace Cqrs.Azure.ServiceBus
 				// , MaxConcurrentCalls = MaximumConcurrentReceiverProcessesCount
 			};
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			var options = new MessageHandlerOptions((args) => { return Task.FromResult<object>(null); });
 #endif
 

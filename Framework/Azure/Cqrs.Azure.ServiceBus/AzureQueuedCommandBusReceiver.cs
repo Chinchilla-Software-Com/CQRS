@@ -18,7 +18,7 @@ using Cqrs.Configuration;
 #if NET452
 using Microsoft.ServiceBus.Messaging;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
@@ -59,7 +59,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 		protected override void ReceiveCommand(BrokeredMessage message)
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		protected override void ReceiveCommand(IMessageReceiver client, BrokeredMessage message)
 #endif
 		{
@@ -94,7 +94,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				message.Complete();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				client.CompleteAsync(message.SystemProperties.LockToken).Wait(1500);
 #endif
 
@@ -107,7 +107,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				message.Abandon();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				client.AbandonAsync(message.SystemProperties.LockToken).Wait(1500);
 #endif
 			}

@@ -14,7 +14,7 @@ using Cqrs.Ninject.Azure.WebJobs.Configuration;
 #if NET472
 using Microsoft.Azure.WebJobs;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Extensions.Hosting;
 #endif
 
@@ -37,7 +37,7 @@ namespace Cqrs.Ninject.Azure.WebJobs
 		/// An <see cref="Action"/> that is execute pre <see cref="JobHost.RunAndBlock"/>.
 		/// </summary>
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		/// <summary>
 		/// An <see cref="Action"/> that is execute pre <see cref="HostingAbstractionsHostExtensions.Run(IHost)"/>.
 		/// </summary>
@@ -80,7 +80,7 @@ namespace Cqrs.Ninject.Azure.WebJobs
 			// The following code ensures that the WebJob will be running continuously
 			host.RunAndBlock();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			string environment = null;
 			// I set this to false ... just because.
 			environment = _configurationManager.GetSetting("Cqrs.Azure.WebJobs.Environment");
@@ -88,9 +88,9 @@ namespace Cqrs.Ninject.Azure.WebJobs
 			var builder = new HostBuilder();
 			if (!string.IsNullOrWhiteSpace(environment))
 				builder.UseEnvironment(environment);
-			builder.ConfigureWebJobs(builder =>
+			builder.ConfigureWebJobs(b =>
 			{
-				builder.AddAzureStorageCoreServices();
+				b.AddAzureStorageCoreServices();
 			});
 			IHost host = builder.Build();
 			using (host)

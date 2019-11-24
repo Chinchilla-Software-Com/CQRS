@@ -20,7 +20,7 @@ using Cqrs.Events;
 using Microsoft.ServiceBus.Messaging;
 using EventData = Microsoft.ServiceBus.Messaging.EventData;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 using EventData = Microsoft.Azure.EventHubs.EventData;
@@ -68,13 +68,13 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
 #endif
 #if NET452
 					string messageBody = Encoding.UTF8.GetString(eventData.GetBytes());
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
 #endif
 					IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
@@ -83,7 +83,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					Logger.LogInfo(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3}.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset, @event.GetType().FullName));
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					Logger.LogInfo(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3}.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset, @event.GetType().FullName));
 #endif
 
@@ -101,7 +101,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 						Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3} but with no Rsn property.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset, eventType));
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 						Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3} but with no Rsn property.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset, eventType));
 #endif
 						// Do nothing if there is no rsn. Just use @event type name
@@ -116,7 +116,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					Logger.LogDebug(string.Format("An event message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					Logger.LogDebug(string.Format("An event message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
 #endif
 					return;
@@ -127,7 +127,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
 #endif
 

@@ -8,7 +8,7 @@
 
 using Cqrs.Azure.ConfigurationManager;
 using Ninject;
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -64,7 +64,7 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 		}
 	}
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 	/// <summary>
 	/// The Startup class that configures Simplified SQL by wiring up an eventual replacement for SimplifiedSqlModule
 	/// </summary>

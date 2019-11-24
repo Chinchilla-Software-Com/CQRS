@@ -19,7 +19,7 @@ using Cqrs.Events;
 #if NET452
 using Microsoft.ServiceBus.Messaging;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
 #endif
@@ -122,7 +122,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
 #endif
 								break;
@@ -170,7 +170,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
 #endif
 								break;
@@ -218,7 +218,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 								PrivateServiceBusPublisher.Send(brokeredMessage);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 								PrivateServiceBusPublisher.SendAsync(brokeredMessage).Wait();
 #endif
 								break;
@@ -354,7 +354,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 								PublicServiceBusPublisher.SendAsync(publicBrokeredMessages).Wait();
 #endif
 							}
@@ -403,7 +403,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 								PrivateServiceBusPublisher.SendAsync(privateBrokeredMessages).Wait();
 #endif
 							}

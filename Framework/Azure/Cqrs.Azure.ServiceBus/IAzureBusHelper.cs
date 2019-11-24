@@ -17,7 +17,7 @@ using Cqrs.Messages;
 #if NET452
 using Microsoft.ServiceBus.Messaging;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus.Core;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
 #endif
@@ -114,7 +114,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 		void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message");
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		void RefreshLock(IMessageReceiver client, CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message");
 #endif
 

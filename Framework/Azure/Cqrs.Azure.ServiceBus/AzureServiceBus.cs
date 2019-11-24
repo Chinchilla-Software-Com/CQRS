@@ -29,7 +29,7 @@ using Microsoft.ServiceBus.Messaging;
 using Manager = Microsoft.ServiceBus.NamespaceManager;
 using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using System.Runtime.Serialization;
 using System.Xml;
 using Microsoft.Azure.ServiceBus;
@@ -162,7 +162,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected Action<BrokeredMessage> ReceiverMessageHandler { get; set; }
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		/// <summary>
 		/// The <see cref="Action{IMessageReceiver, TBrokeredMessage}">handler</see> used for <see cref="MessageReceiver.RegisterMessageHandler(Func{BrokeredMessage, CancellationToken, Task}, MessageHandlerOptions)"/> on each receiver.
 		/// </summary>
@@ -175,7 +175,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected OnMessageOptions ReceiverMessageHandlerOptions { get; set; }
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		/// <summary>
 		/// The <see cref="MessageHandlerOptions" /> used for <see cref="MessageReceiver.RegisterMessageHandler(Func{BrokeredMessage, CancellationToken, Task}, MessageHandlerOptions)"/> on each receiver.
 		/// </summary>
@@ -257,7 +257,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 			Manager manager = Manager.CreateFromConnectionString(ConnectionString);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			var manager = new Manager(ConnectionString);
 #endif
 			CheckPrivateTopicExists(manager);
@@ -267,7 +267,7 @@ namespace Cqrs.Azure.ServiceBus
 			PrivateServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PrivateTopicName);
 			PublicServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PublicTopicName);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			PrivateServiceBusPublisher = new TopicClient(ConnectionString, PrivateTopicName);
 			PublicServiceBusPublisher = new TopicClient(ConnectionString, PublicTopicName);
 #endif
@@ -286,7 +286,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 			Manager manager = Manager.CreateFromConnectionString(ConnectionString);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			var manager = new Manager(ConnectionString);
 #endif
 
@@ -336,7 +336,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="topicName">The topic name.</param>
 		/// <param name="topicSubscriptionName">The topic subscription name.</param>
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		/// <summary>
 		/// Creates <see cref="AzureBus{TAuthenticationToken}.NumberOfReceiversCount"/> <see cref="IMessageReceiver"/>.
 		/// If flushing is required, any flushed <see cref="IMessageReceiver"/> has <see cref="ClientEntity.CloseAsync()"/> called on it first.
@@ -353,7 +353,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				IMessageReceiver serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, topicName, topicSubscriptionName);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				IMessageReceiver serviceBusReceiver = new MessageReceiver(ConnectionString, EntityNameHelper.FormatSubscriptionPath(topicName, topicSubscriptionName));
 #endif
 				if (serviceBusReceivers.ContainsKey(i))
@@ -370,7 +370,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					serviceBusReceiver.Close();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					serviceBusReceiver.CloseAsync().Wait(1500);
 #endif
 				}
@@ -408,7 +408,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				MaxSizeInMegabytes = 5120,
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				MaxSizeInMB = 5120,
 #endif
 				DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
@@ -416,7 +416,7 @@ namespace Cqrs.Azure.ServiceBus
 				EnableBatchedOperations = true,
 			};
 
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			Task<bool> checkTask = manager.TopicExistsAsync(topicName);
 			checkTask.Wait(1500);
 			if (!checkTask.Result)
@@ -480,7 +480,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 				serviceBusPublisher.Close();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				serviceBusPublisher.CloseAsync().Wait(1500);
 #endif
 				Logger.LogDebug("Publishing service bus closed.");
@@ -493,7 +493,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					serviceBusReceiver.Close();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					serviceBusReceiver.CloseAsync().Wait(1500);
 #endif
 					Logger.LogDebug("Receiving service bus closed.");
@@ -523,7 +523,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 		protected virtual void RegisterReceiverMessageHandler(Action<BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		protected virtual void RegisterReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, MessageHandlerOptions receiverMessageHandlerOptions)
 #endif
 		{
@@ -538,7 +538,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 		protected virtual void StoreReceiverMessageHandler(Action<BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		protected virtual void StoreReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, MessageHandlerOptions receiverMessageHandlerOptions)
 #endif
 		{
@@ -566,7 +566,7 @@ namespace Cqrs.Azure.ServiceBus
 						ReceiverMessageHandlerOptions
 					);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				serviceBusReceiver
 					.RegisterMessageHandler
 					(
@@ -595,7 +595,7 @@ namespace Cqrs.Azure.ServiceBus
 							ReceiverMessageHandlerOptions
 						);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 				serviceBusReceiver
 					.RegisterMessageHandler
 					(
@@ -628,7 +628,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 			Action<BrokeredMessage, IMessage> leaveDeadlLetterInQueue = (deadLetterBrokeredMessage, deadLetterMessage) =>
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			Action<IMessageReceiver, BrokeredMessage, IMessage> leaveDeadlLetterInQueue = (client, deadLetterBrokeredMessage, deadLetterMessage) =>
 #endif
 			{
@@ -638,7 +638,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					deadLetterBrokeredMessage.Abandon();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					client.AbandonAsync(deadLetterBrokeredMessage.SystemProperties.LockToken).Wait(1500);
 #endif
 					lockIssues = 0;
@@ -653,7 +653,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 			Action <BrokeredMessage> removeDeadlLetterFromQueue = (deadLetterBrokeredMessage) =>
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			Action<IMessageReceiver, BrokeredMessage> removeDeadlLetterFromQueue = (client, deadLetterBrokeredMessage) =>
 #endif
 			{
@@ -663,7 +663,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					deadLetterBrokeredMessage.Complete();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					client.CompleteAsync(deadLetterBrokeredMessage.SystemProperties.LockToken).Wait(1500);
 #endif
 					lockIssues = 0;
@@ -690,12 +690,12 @@ namespace Cqrs.Azure.ServiceBus
 					MessageReceiver client = factory.CreateMessageReceiver(deadLetterPath, ReceiveMode.PeekLock);
 					brokeredMessages = client.ReceiveBatch(1000);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					string deadLetterPath = EntityNameHelper.FormatDeadLetterPath(EntityNameHelper.FormatSubscriptionPath(topicName, topicSubscriptionName));
 					MessageReceiver client = new MessageReceiver(ConnectionString, deadLetterPath, ReceiveMode.PeekLock);
 					Task<IList<BrokeredMessage>> receiveTask = client.ReceiveAsync(1000);
 					receiveTask.Wait(10000);
-					if (receiveTask.IsCompletedSuccessfully && receiveTask.Result != null)
+					if (receiveTask.IsCompleted && receiveTask.Result != null)
 						brokeredMessages = receiveTask.Result;
 					else
 						brokeredMessages = Enumerable.Empty<BrokeredMessage>();
@@ -725,7 +725,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 											removeDeadlLetterFromQueue(message);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 											removeDeadlLetterFromQueue(client, message);
 #endif
 										}
@@ -734,7 +734,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 											leaveDeadlLetterInQueue(message, @event);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 											leaveDeadlLetterInQueue(client, message, @event);
 #endif
 										}
@@ -748,7 +748,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 										removeDeadlLetterFromQueue(message);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 										removeDeadlLetterFromQueue(client, message);
 #endif
 									},
@@ -768,7 +768,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 											removeDeadlLetterFromQueue(message);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 											removeDeadlLetterFromQueue(client, message);
 #endif
 										}
@@ -777,7 +777,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 											leaveDeadlLetterInQueue(message, command);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 											leaveDeadlLetterInQueue(client, message, command);
 #endif
 										}
@@ -791,7 +791,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 										removeDeadlLetterFromQueue(message);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 										removeDeadlLetterFromQueue(client, message);
 #endif
 									},
@@ -809,7 +809,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 								brokeredMessage.Abandon();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 								client.AbandonAsync(brokeredMessage.SystemProperties.LockToken).Wait(1500);
 #endif
 							}
@@ -823,7 +823,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 					client.Close();
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 					client.CloseAsync().Wait(1500);
 #endif
 
@@ -845,7 +845,7 @@ namespace Cqrs.Azure.ServiceBus
 			return brokeredMessageRenewCancellationTokenSource;
 		}
 
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		DataContractSerializer brokeredMessageSerialiser = new DataContractSerializer(typeof(string));
 #endif
 		/// <summary>
@@ -857,7 +857,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 			var brokeredMessage = new BrokeredMessage(messageBody)
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			byte[] messageBodyData;
 			using (var stream = new MemoryStream())
 			{

@@ -1,7 +1,7 @@
 ﻿#if NET452
 using Microsoft.ServiceBus.Messaging;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
 using System.Runtime.Serialization;
 using System.IO;
@@ -17,7 +17,7 @@ namespace Cqrs.Azure.ServiceBus
 			message.Properties.Add(key, value);
 		}
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		public static void AddUserProperty(this Message message, string key, object value)
 		{
 			message.UserProperties.Add(key, value);
@@ -35,7 +35,7 @@ namespace Cqrs.Azure.ServiceBus
 			return message.GetBody<string>();
 		}
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		public static bool TryGetUserPropertyValue(this Message message, string key, out object value)
 		{
 			return message.UserProperties.TryGetValue(key, out value);

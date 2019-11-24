@@ -23,7 +23,7 @@ using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Manager = Microsoft.ServiceBus.NamespaceManager;
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 using Manager = Microsoft.Azure.ServiceBus.Management.ManagementClient;
@@ -204,7 +204,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 			Manager manager = Manager.CreateFromConnectionString(ConnectionString);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			var manager = new Manager(ConnectionString);
 #endif
 			CheckPrivateHubExists(manager);
@@ -213,7 +213,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 			EventHubPublisher = EventHubClient.CreateFromConnectionString(ConnectionString, PublicEventHubName);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			var connectionStringBuilder = new EventHubsConnectionStringBuilder(ConnectionString)
 			{
 				EntityPath = PublicEventHubName
@@ -234,7 +234,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NET452
 			Manager manager = Manager.CreateFromConnectionString(ConnectionString);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			var manager = new Manager(ConnectionString);
 #endif
 
@@ -289,7 +289,7 @@ namespace Cqrs.Azure.ServiceBus
 			if (!manager.SubscriptionExists(eventHubDescription.Path, consumerGroupNames))
 				manager.CreateSubscription(subscriptionDescription);
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			/*
 			// Configure Queue Settings
 			var eventHubDescription = new EventHubDescription(hubName)

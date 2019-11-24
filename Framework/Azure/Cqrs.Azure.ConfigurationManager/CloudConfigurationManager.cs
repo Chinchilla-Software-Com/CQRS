@@ -1,4 +1,4 @@
-﻿#if NETCOREAPP3_0
+﻿#if NETSTANDARD2_0
 using Microsoft.Extensions.Configuration;
 #endif
 
@@ -10,7 +10,7 @@ namespace Cqrs.Azure.ConfigurationManager
 	/// </summary>
 	public class CloudConfigurationManager : Configuration.ConfigurationManager
 	{
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		/// <summary>
 		/// Instantiate a new instance of a <see cref="CloudConfigurationManager"/>
 		/// </summary>
@@ -33,7 +33,7 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// <param name="key">The key (or name) of the setting to read.</param>
 		public override string GetSetting(string key)
 		{
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			IConfigurationSection cqrsSection = Configuration.GetSection("Cqrs");
 			return cqrsSection[key];
 #endif
@@ -46,7 +46,7 @@ namespace Cqrs.Azure.ConfigurationManager
 #endif
 		}
 
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 		/// <summary>
 		/// Read the configuration string named <paramref name="connectionStringName"/>.
 		/// </summary>

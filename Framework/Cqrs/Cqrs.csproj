@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp3.0;net40</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net40;netcoreapp3.0</TargetFrameworks>
 		<title>CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -14,6 +14,10 @@
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
 		<PackageReleaseNotes>
+			Version 4.1.0
+
+			* Added additional Support for .NET Standard 2.0.
+
 			Version 4.0.0
 
 			* Added .NET Core 3.0 support.
@@ -72,14 +76,20 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net40;netcoreapp3.0</TargetFrameworks>
+		<TargetFrameworks>net40;netstandard2.0;netcoreapp3.0</TargetFrameworks>
 		<DocumentationFile>Cqrs.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' OR  '$(TargetFramework)' == 'netcoreapp3.0' ">
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
 		<PackageReference Include="System.ServiceModel.Primitives" Version="4.6.0" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.0.1" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
@@ -94,8 +104,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Chinchilla.StateManagement" Version="4.0.43.24" />
-	  <PackageReference Include="Chinchilla.Logging" Version="4.0.115.95" />
+	  <PackageReference Include="Chinchilla.StateManagement" Version="4.1.51.31" />
+	  <PackageReference Include="Chinchilla.Logging" Version="4.1.119.99" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	</ItemGroup>
 

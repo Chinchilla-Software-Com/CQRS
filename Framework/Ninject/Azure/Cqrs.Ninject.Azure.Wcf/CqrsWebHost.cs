@@ -7,7 +7,7 @@
 #endregion
 
 using System.Collections.Generic;
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 using System.Linq;
 #endif
 using Cqrs.Authentication;
@@ -109,7 +109,7 @@ namespace Cqrs.Ninject.Azure.Wcf
 				new SimplifiedSqlModule<TAuthenticationToken>()
 			};
 #endif
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			return Enumerable.Empty<INinjectModule>();
 #endif
 		}

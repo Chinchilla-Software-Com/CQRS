@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp3.0;net452</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
 		<title>Microsoft Azure EventHubs for CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -10,12 +10,16 @@
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
 		<PackageReleaseNotes>
+			Version 4.1.0
+
+			* Switched to .NET Standard 2.0 support from .NET Core 3.0.
+
 			Version 4.0.0
 
 			* Added .NET Core 3.0 support.
 
 			Breaking Changes:
-			
+
 			* EventHubs for .NET Core no longer create EventHubs and Subscriptions/Consumer Groups until the Azure Libraries provide management facilities to match the .NET framework libraries. A warning will be logged notifying you of the objects you need to create manually.
 		</PackageReleaseNotes>
 		<PackageIcon>images\icon.png</PackageIcon>
@@ -45,12 +49,12 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net452;netcoreapp3.0</TargetFrameworks>
+		<TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
 		<DocumentationFile>Cqrs.Azure.EventHub.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
 		<PackageReference Include="Microsoft.Azure.EventHubs" Version="4.1.0" />
 		<PackageReference Include="Microsoft.Azure.EventHubs.Processor" Version="4.1.0" />
 		<PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.1" />
@@ -83,8 +87,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Chinchilla.StateManagement" Version="4.0.43.24" />
-	  <PackageReference Include="Chinchilla.Logging" Version="4.0.115.95" />
+	  <PackageReference Include="Chinchilla.StateManagement" Version="4.1.51.31" />
+	  <PackageReference Include="Chinchilla.Logging" Version="4.1.119.99" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	</ItemGroup>
 

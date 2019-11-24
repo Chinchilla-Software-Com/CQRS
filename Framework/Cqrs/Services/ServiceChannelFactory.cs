@@ -50,6 +50,9 @@ namespace Cqrs.Services
 				#if NET40
 				serializerBehavior.DataContractResolver = (DataContractResolver)Activator.CreateInstance(AppDomain.CurrentDomain, dataContractType.Assembly.FullName, dataContractType.FullName).Unwrap();
 				#endif
+				#if NETSTANDARD2_0
+				serializerBehavior.DataContractResolver = (DataContractResolver)DotNetStandard2Helper.CreateInstanceFrom(dataContractType.Assembly.FullName, dataContractType.FullName);
+				#endif
 				#if NETCOREAPP3_0
 				serializerBehavior.DataContractResolver = (DataContractResolver)Activator.CreateInstance(dataContractType.Assembly.FullName, dataContractType.FullName).Unwrap();
 				#endif

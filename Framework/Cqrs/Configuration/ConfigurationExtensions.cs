@@ -40,11 +40,19 @@ namespace Cqrs.Configuration
 				ITelemetryHelper helper;
 				try
 				{
+#if NETSTANDARD2_0
+					helper = (ITelemetryHelper)DotNetStandard2Helper.CreateInstanceFrom(string.Format("{0}\\Chinchilla.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>() }, null, null);
+#else
 					helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\Chinchilla.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>() }, null, null).Unwrap();
+#endif
 				}
 				catch
 				{
+#if NETSTANDARD2_0
+					helper = (ITelemetryHelper)DotNetStandard2Helper.CreateInstanceFrom(string.Format("{0}\\Chinchilla.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null);
+#else
 					helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\Chinchilla.Logging.Azure.ApplicationInsights.dll", AppDomain.CurrentDomain.RelativeSearchPath ?? AppDomain.CurrentDomain.BaseDirectory), "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null).Unwrap();
+#endif
 				}
 				return helper;
 			}
