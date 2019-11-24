@@ -10,9 +10,12 @@ jobs:
         os: [windows-2019]
     steps:
     - uses: actions/checkout@v1
-    - name: Build Solution
+    - name: Setup dotnet CLI
       uses: actions/setup-dotnet@v1.2.0
       with:
         dotnet-version: 3.0.100
-    - name: Build with dotnet
+    - name: Prepare Legacy NuGet
+      run: |
+        ren .nuget.nuget.ex_ .nuget.nuget.exe
+    - name: Build with dotnet CLI
       run: dotnet build --configuration Release ./Cqrs.sln
