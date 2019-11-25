@@ -1,5 +1,10 @@
 var NAVTREEINDEX8 =
 {
+"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_afc0f6417f69d5424fe7bba7a6724970f.html#afc0f6417f69d5424fe7bba7a6724970f":[1,0,0,18,2,0,7],
+"classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule.html":[1,0,0,18,2,1],
+"classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule_a01ffbc5d28ee88168fc9058fcde6fff0.html#a01ffbc5d28ee88168fc9058fcde6fff0":[1,0,0,18,2,1,2],
+"classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule_a37ca0381038742667e7253f94e80e4b8.html#a37ca0381038742667e7253f94e80e4b8":[1,0,0,18,2,1,1],
+"classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule_a72c71c7ccd12ca4ef434e3eea4dce7db.html#a72c71c7ccd12ca4ef434e3eea4dce7db":[1,0,0,18,2,1,3],
 "classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule_a90454d879b35a9d8954944e26c5afca9.html#a90454d879b35a9d8954944e26c5afca9":[1,0,0,18,2,1,0],
 "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule.html":[1,0,0,18,2,2],
 "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessCommandBusModule_a292ec8a93f2d35a1b2053bc0b97aa7b2.html#a292ec8a93f2d35a1b2053bc0b97aa7b2":[1,0,0,18,2,2,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX8 =
 "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_acf6a145eb88c5d98b31a541cfb1fb152.html#acf6a145eb88c5d98b31a541cfb1fb152":[1,0,0,20,19,0],
 "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_acf6a145eb88c5d98b31a541cfb1fb152.html#acf6a145eb88c5d98b31a541cfb1fb152a0ebe6df8a3ac338e0512acc741823fdb":[1,0,0,20,19,0,0],
 "classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_acf6a145eb88c5d98b31a541cfb1fb152.html#acf6a145eb88c5d98b31a541cfb1fb152a912a5d95306192c4f037d9e353d2a3ca":[1,0,0,20,19,0,1],
-"classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_acf6a145eb88c5d98b31a541cfb1fb152.html#acf6a145eb88c5d98b31a541cfb1fb152af80a4ad87fee7c9fdc19b7769495fdb5":[1,0,0,20,19,0,2],
-"classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy.html":[1,0,0,21,0],
-"classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a3540a6d621d8c23816da761f929d83a7.html#a3540a6d621d8c23816da761f929d83a7":[1,0,0,21,0,0],
-"classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9.html#a9cdb3d79c55e2eb2796639b273d49ed9":[1,0,0,21,0,2],
-"classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01b526aedb5fa9a3879887a.html#acdbb918ac01b526aedb5fa9a3879887a":[1,0,0,21,0,1],
-"classCqrs_1_1Snapshots_1_1Snapshot.html":[1,0,0,21,3]
+"classCqrs_1_1Services_1_1WcfDataContractResolverConfiguration_acf6a145eb88c5d98b31a541cfb1fb152.html#acf6a145eb88c5d98b31a541cfb1fb152af80a4ad87fee7c9fdc19b7769495fdb5":[1,0,0,20,19,0,2]
 };

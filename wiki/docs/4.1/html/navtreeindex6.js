@@ -1,5 +1,10 @@
 var NAVTREEINDEX6 =
 {
+"classCqrs_1_1Events_1_1EventDeserialiser.html":[1,0,0,10,8],
+"classCqrs_1_1Events_1_1EventDeserialiser_a08bd067ca7ce8c28c7a83d444b7e468b.html#a08bd067ca7ce8c28c7a83d444b7e468b":[1,0,0,10,8,2],
+"classCqrs_1_1Events_1_1EventDeserialiser_a193feac1d58446f0a7447d8ba04179fc.html#a193feac1d58446f0a7447d8ba04179fc":[1,0,0,10,8,0],
+"classCqrs_1_1Events_1_1EventDeserialiser_a3f767a1b793ea47bcafd9c64be47619e.html#a3f767a1b793ea47bcafd9c64be47619e":[1,0,0,10,8,1],
+"classCqrs_1_1Events_1_1EventExtensions.html":[1,0,0,10,9],
 "classCqrs_1_1Events_1_1EventExtensions_a4d8611d80615275d1a7d0571bbee34cc.html#a4d8611d80615275d1a7d0571bbee34cc":[1,0,0,10,9,0],
 "classCqrs_1_1Events_1_1EventStore.html":[1,0,0,10,10],
 "classCqrs_1_1Events_1_1EventStoreRetentionLevelAttribute.html":[1,0,0,10,11],
@@ -244,10 +249,5 @@ var NAVTREEINDEX6 =
 "classCqrs_1_1MongoDB_1_1Factories_1_1MongoDbDataStoreFactory_ab1b732065a4369b09851119969a4815f.html#ab1b732065a4369b09851119969a4815f":[1,0,0,17,3,2,1],
 "classCqrs_1_1MongoDB_1_1Repositories_1_1Authentication_1_1SingleSignOnToken.html":[1,0,0,17,4,0,0],
 "classCqrs_1_1MongoDB_1_1Repositories_1_1Authentication_1_1SingleSignOnToken_a2392ecdb53f1f2a38a67d80a77f11ba4.html#a2392ecdb53f1f2a38a67d80a77f11ba4":[1,0,0,17,4,0,0,0],
-"classCqrs_1_1MongoDB_1_1Repositories_1_1Authentication_1_1SingleSignOnToken_ab91868f3fc18e2369131ab931e04cacc.html#ab91868f3fc18e2369131ab931e04cacc":[1,0,0,17,4,0,0,2],
-"classCqrs_1_1MongoDB_1_1Repositories_1_1Authentication_1_1SingleSignOnToken_abf59456bf30dd139620ed6de3ee11e74.html#abf59456bf30dd139620ed6de3ee11e74":[1,0,0,17,4,0,0,3],
-"classCqrs_1_1MongoDB_1_1Repositories_1_1Authentication_1_1SingleSignOnToken_acf0a5524d873b709b3955374ec6cc76d.html#acf0a5524d873b709b3955374ec6cc76d":[1,0,0,17,4,0,0,1],
-"classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser.html":[1,0,0,17,5,0],
-"classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser_ad27304148a7a67b6c86c277254108c95.html#ad27304148a7a67b6c86c277254108c95":[1,0,0,17,5,0,0],
-"classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser_afeddf8cf8fa5a761f01504795adafa9b.html#afeddf8cf8fa5a761f01504795adafa9b":[1,0,0,17,5,0,1]
+"classCqrs_1_1MongoDB_1_1Repositories_1_1Authentication_1_1SingleSignOnToken_ab91868f3fc18e2369131ab931e04cacc.html#ab91868f3fc18e2369131ab931e04cacc":[1,0,0,17,4,0,0,2]
 };

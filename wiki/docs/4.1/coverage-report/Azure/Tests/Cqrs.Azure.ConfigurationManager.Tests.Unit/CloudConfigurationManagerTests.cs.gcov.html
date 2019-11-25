@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Tests/Cqrs.Azure.ConfigurationManager.Tests.Unit/CloudConfigurationManagerTests.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Azure/Tests/Cqrs.Azure.ConfigurationManager.Tests.Unit</a> - CloudConfigurationManagerTests.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-25 15:23:54</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : using Cqrs.Configuration;
+<span class="lineNum">       2 </span>            : using Microsoft.Extensions.Configuration;
+<span class="lineNum">       3 </span>            : using Microsoft.VisualStudio.TestTools.UnitTesting;
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            : namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
+<span class="lineNum">       6 </span>            : {
+<span class="lineNum">       7 </span>            :         [TestClass]
+<span class="lineNum">       8 </span>            :         public class CloudConfigurationManagerTests
+<span class="lineNum">       9 </span><span class="lineNoCov">          0 :         {</span>
+<span class="lineNum">      10 </span>            :                 [TestMethod]
+<span class="lineNum">      11 </span><span class="lineNoCov">          0 :                 public void GetSetting_TestKey_ReturnsExpectedValue()</span>
+<span class="lineNum">      12 </span>            :                 {
+<span class="lineNum">      13 </span>            :                         // Arrange
+<span class="lineNum">      14 </span>            :                         IConfigurationRoot config = new ConfigurationBuilder()
+<span class="lineNum">      15 </span>            :                                 .AddJsonFile(&quot;test-settings.json&quot;, optional: true, reloadOnChange: true)
+<span class="lineNum">      16 </span>            :                                 .AddEnvironmentVariables()
+<span class="lineNum">      17 </span>            :                                 .Build();
+<span class="lineNum">      18 </span>            :                         IConfigurationManager configurationManager = new CloudConfigurationManager(config);
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            :                         // Act
+<span class="lineNum">      21 </span>            :                         string value = configurationManager.GetSetting(&quot;Cqrs.Azure.CommandBus.ConnectionString&quot;);
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            :                         // Assert
+<span class="lineNum">      24 </span>            :                         Assert.AreEqual(&quot;bob&quot;, value);
+<span class="lineNum">      25 </span>            :                 }
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 [TestMethod]
+<span class="lineNum">      28 </span><span class="lineNoCov">          0 :                 public void GetSetting_TestBooleanKeys_ReturnsExpectedValue()</span>
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         // Arrange
+<span class="lineNum">      31 </span>            :                         IConfigurationRoot config = new ConfigurationBuilder()
+<span class="lineNum">      32 </span>            :                                 .AddJsonFile(&quot;test-settings.json&quot;, optional: true, reloadOnChange: true)
+<span class="lineNum">      33 </span>            :                                 .AddEnvironmentVariables()
+<span class="lineNum">      34 </span>            :                                 .Build();
+<span class="lineNum">      35 </span>            :                         IConfigurationManager configurationManager = new CloudConfigurationManager(config);
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                         // Act
+<span class="lineNum">      38 </span>            :                         bool value1 = bool.Parse(configurationManager.GetSetting(&quot;Cqrs.BooleanTestTrue&quot;));
+<span class="lineNum">      39 </span>            :                         bool value2 = bool.Parse(configurationManager.GetSetting(&quot;Cqrs.BooleanStringTestTrue&quot;));
+<span class="lineNum">      40 </span>            :                         bool value3 = bool.Parse(configurationManager.GetSetting(&quot;Cqrs.BooleanTestFalse&quot;));
+<span class="lineNum">      41 </span>            :                         bool value4 = bool.Parse(configurationManager.GetSetting(&quot;Cqrs.BooleanStringTestFalse&quot;));
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                         // Assert
+<span class="lineNum">      44 </span>            :                         Assert.IsTrue(value1);
+<span class="lineNum">      45 </span>            :                         Assert.IsTrue(value2);
+<span class="lineNum">      46 </span>            :                         Assert.IsFalse(value3);
+<span class="lineNum">      47 </span>            :                         Assert.IsFalse(value4);
+<span class="lineNum">      48 </span>            :                 }
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 [TestMethod]
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :                 public void GetSetting_MissingTestKey_ReturnsNull()</span>
+<span class="lineNum">      52 </span>            :                 {
+<span class="lineNum">      53 </span>            :                         // Arrange
+<span class="lineNum">      54 </span>            :                         IConfigurationRoot config = new ConfigurationBuilder()
+<span class="lineNum">      55 </span>            :                                 .AddJsonFile(&quot;test-settings.json&quot;, optional: true, reloadOnChange: true)
+<span class="lineNum">      56 </span>            :                                 .AddEnvironmentVariables()
+<span class="lineNum">      57 </span>            :                                 .Build();
+<span class="lineNum">      58 </span>            :                         IConfigurationManager configurationManager = new CloudConfigurationManager(config);
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                         // Act
+<span class="lineNum">      61 </span>            :                         string value = configurationManager.GetSetting(&quot;Cqrs.Key.Not.Set&quot;);
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                         // Assert
+<span class="lineNum">      64 </span>            :                         Assert.IsNull(value);
+<span class="lineNum">      65 </span>            :                 }
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :                 [TestMethod]
+<span class="lineNum">      68 </span><span class="lineNoCov">          0 :                 public void GetSetting_RandomTest_ReturnsExpectedValue()</span>
+<span class="lineNum">      69 </span>            :                 {
+<span class="lineNum">      70 </span>            :                         // Arrange
+<span class="lineNum">      71 </span>            :                         IConfigurationRoot config = new ConfigurationBuilder()
+<span class="lineNum">      72 </span>            :                                 .AddJsonFile(&quot;test-settings.json&quot;, optional: true, reloadOnChange: true)
+<span class="lineNum">      73 </span>            :                                 .AddEnvironmentVariables()
+<span class="lineNum">      74 </span>            :                                 .Build();
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            :                         // Act
+<span class="lineNum">      77 </span>            :                         string value1 = config.GetValue&lt;string&gt;(&quot;Chinchilla.Logging.ModuleName&quot;.Replace(&quot;.&quot;, &quot;:&quot;));
+<span class="lineNum">      78 </span>            :                         bool value2 = bool.Parse(config.GetValue&lt;string&gt;(&quot;Chinchilla.Logging.DoAsyncWork.EnableLogProgress&quot;.Replace(&quot;.&quot;, &quot;:&quot;)));
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                         // Assert
+<span class="lineNum">      81 </span>            :                         Assert.AreEqual(&quot;MyCompany&quot;, value1);
+<span class="lineNum">      82 </span>            :                         Assert.IsTrue(value2);
+<span class="lineNum">      83 </span>            :                 }
+<span class="lineNum">      84 </span>            :         }
+<span class="lineNum">      85 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
