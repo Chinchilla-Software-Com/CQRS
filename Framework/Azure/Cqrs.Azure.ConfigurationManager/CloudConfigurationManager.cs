@@ -34,8 +34,7 @@ namespace Cqrs.Azure.ConfigurationManager
 		public override string GetSetting(string key)
 		{
 #if NETSTANDARD2_0
-			IConfigurationSection cqrsSection = Configuration.GetSection("Cqrs");
-			return cqrsSection[key];
+			return Configuration.GetValue<string>(key.Replace(".", ":"));
 #endif
 #if NET472
 #if DEBUG

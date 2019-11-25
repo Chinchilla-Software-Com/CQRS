@@ -42,8 +42,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Chinchilla.Logging, Version=4.1.122.101, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Chinchilla.Logging.4.1.122.101\lib\net40\Chinchilla.Logging.dll</HintPath>
+    <Reference Include="Chinchilla.Logging, Version=4.1.124.102, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Chinchilla.Logging.4.1.124.102\lib\net40\Chinchilla.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Chinchilla.StateManagement, Version=4.1.51.31, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Chinchilla.StateManagement.4.1.51.31\lib\net40\Chinchilla.StateManagement.dll</HintPath>
@@ -54,8 +54,8 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\MSTest.TestFramework.1.3.2\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
@@ -110,7 +110,7 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PreBuildEvent>ECHO &gt; "$(ProjectDir)app.config"
+    <PreBuildEvent>ECHO "&lt;?xml version=""1.0"" encoding=""utf-8""?&gt;&lt;configuration&gt;&lt;/configuration&gt;" &gt; "$(ProjectDir)app.config"
 IF EXIST "$(SolutionDir)Code\Cqrs.Azure.ServiceBus.Tests.Integration.app.config" copy /Y "$(SolutionDir)Code\Cqrs.Azure.ServiceBus.Tests.Integration.app.config" "$(ProjectDir)app.config"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
