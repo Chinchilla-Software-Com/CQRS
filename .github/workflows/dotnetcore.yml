@@ -18,5 +18,7 @@ jobs:
       run: |
         cd .\.nuget
         ren NuGet.ex_ NuGet.exe
+        cd ..
+        .nuget\NuGet.exe restore Cqrs.sln
     - name: Build with dotnet CLI
       run: dotnet build --configuration Release .\Cqrs.sln
