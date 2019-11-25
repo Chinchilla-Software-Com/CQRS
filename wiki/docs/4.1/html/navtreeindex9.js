@@ -1,5 +1,10 @@
 var NAVTREEINDEX9 =
 {
+"classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy.html":[1,0,0,21,0],
+"classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a3540a6d621d8c23816da761f929d83a7.html#a3540a6d621d8c23816da761f929d83a7":[1,0,0,21,0,0],
+"classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_a9cdb3d79c55e2eb2796639b273d49ed9.html#a9cdb3d79c55e2eb2796639b273d49ed9":[1,0,0,21,0,2],
+"classCqrs_1_1Snapshots_1_1DefaultSnapshotStrategy_acdbb918ac01b526aedb5fa9a3879887a.html#acdbb918ac01b526aedb5fa9a3879887a":[1,0,0,21,0,1],
+"classCqrs_1_1Snapshots_1_1Snapshot.html":[1,0,0,21,3],
 "classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot.html":[1,0,0,21,4],
 "classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot_a0b39f2941c828d987c84dc6cbb0a02be.html#a0b39f2941c828d987c84dc6cbb0a02be":[1,0,0,21,4,2],
 "classCqrs_1_1Snapshots_1_1SnapshotAggregateRoot_a2d8cd57c7b6c2696d286c6dc5e9f0479.html#a2d8cd57c7b6c2696d286c6dc5e9f0479":[1,0,0,21,4,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX9 =
 "classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_a3beb7c8638a8f6a84bd16c0f0a00521d.html#a3beb7c8638a8f6a84bd16c0f0a00521d":[1,0,1,1,0,0,0,0],
 "classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_a45373e2614d05c18ecb74bdcafc572b6.html#a45373e2614d05c18ecb74bdcafc572b6":[1,0,1,1,0,0,0,2],
 "classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_ab1aaabbbfb7723aa066a418ca312a565.html#ab1aaabbbfb7723aa066a418ca312a565":[1,0,1,1,0,0,0,3],
-"classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_ae422716e2356233ae6dda2bd9e73f250.html#ae422716e2356233ae6dda2bd9e73f250":[1,0,1,1,0,0,0,5],
-"classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_afb4edd95dfd79d576091119b5ac13ad7.html#afb4edd95dfd79d576091119b5ac13ad7":[1,0,1,1,0,0,0,1],
-"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions.html":[1,0,2,0,0],
-"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a0db5f545a8b606324451bfec69db7862.html#a0db5f545a8b606324451bfec69db7862":[1,0,2,0,0,4],
-"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a37c11caa4a5e82f4761bf3b910ee0f15.html#a37c11caa4a5e82f4761bf3b910ee0f15":[1,0,2,0,0,7],
-"classSystem_1_1Linq_1_1AzureDocumentDbDataStoreExtensions_a5508e54e8c57884a4d220f6943dd356d.html#a5508e54e8c57884a4d220f6943dd356d":[1,0,2,0,0,2]
+"classMicrosoft_1_1WindowsAzure_1_1Storage_1_1Table_1_1EntityPropertyConverter_ae422716e2356233ae6dda2bd9e73f250.html#ae422716e2356233ae6dda2bd9e73f250":[1,0,1,1,0,0,0,5]
 };

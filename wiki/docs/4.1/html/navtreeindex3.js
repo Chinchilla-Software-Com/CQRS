@@ -1,5 +1,10 @@
 var NAVTREEINDEX3 =
 {
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a069d9161ed5649cc3e65cda641d5173d.html#a069d9161ed5649cc3e65cda641d5173d":[1,0,0,2,2,10,3],
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a0986cecb40fc143751abb4605f507975.html#a0986cecb40fc143751abb4605f507975":[1,0,0,2,2,10,6],
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a0cf4a79ec6bcc1021182f95ddc27edea.html#a0cf4a79ec6bcc1021182f95ddc27edea":[1,0,0,2,2,10,4],
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a4fbbe06abc4c5664243b7be029a4031f.html#a4fbbe06abc4c5664243b7be029a4031f":[1,0,0,2,2,10,1],
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a665571c992cc75f8acc156af72285020.html#a665571c992cc75f8acc156af72285020":[1,0,0,2,2,10,0],
 "classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_ab3c996b8e717aec1e4fc2a70fea52d53.html#ab3c996b8e717aec1e4fc2a70fea52d53":[1,0,0,2,2,10,2],
 "classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_ade4db14c86a07454b713e1fb711692e2.html#ade4db14c86a07454b713e1fb711692e2":[1,0,0,2,2,10,7],
 "classCqrs_1_1Azure_1_1EventHub_1_1CommandBus_1_1Configuration_1_1AzureCommandBusPublisherModule.html":[1,0,0,2,3,0,0,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX3 =
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore.html":[1,0,0,2,5,1,0],
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer.html":[1,0,0,2,5,1,0,0],
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer_a1da892250407e9d6e184c27f45f24cff.html#a1da892250407e9d6e184c27f45f24cff":[1,0,0,2,5,1,0,0,2],
-"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer_af509f62b1369a6642e9f13beeb1aaf8f.html#af509f62b1369a6642e9f13beeb1aaf8f":[1,0,0,2,5,1,0,0,1],
-"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer_af5ed87f6a4d32ff3581a6d2ae107dcd1.html#af5ed87f6a4d32ff3581a6d2ae107dcd1":[1,0,0,2,5,1,0,0,0],
-"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a089514182da7a70f35f9237c521c49f0.html#a089514182da7a70f35f9237c521c49f0":[1,0,0,2,5,1,0,3],
-"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a1b436bbb111b14b85ee6ba7f90fb1a35.html#a1b436bbb111b14b85ee6ba7f90fb1a35":[1,0,0,2,5,1,0,2],
-"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_af9497418dd323ce2a9d8615ebc7da054.html#af9497418dd323ce2a9d8615ebc7da054":[1,0,0,2,5,1,0,1],
-"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore.html":[1,0,0,2,5,1,1]
+"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer_af509f62b1369a6642e9f13beeb1aaf8f.html#af509f62b1369a6642e9f13beeb1aaf8f":[1,0,0,2,5,1,0,0,1]
 };

@@ -1,5 +1,10 @@
 var NAVTREEINDEX4 =
 {
+"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer_af5ed87f6a4d32ff3581a6d2ae107dcd1.html#af5ed87f6a4d32ff3581a6d2ae107dcd1":[1,0,0,2,5,1,0,0,0],
+"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a089514182da7a70f35f9237c521c49f0.html#a089514182da7a70f35f9237c521c49f0":[1,0,0,2,5,1,0,3],
+"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a1b436bbb111b14b85ee6ba7f90fb1a35.html#a1b436bbb111b14b85ee6ba7f90fb1a35":[1,0,0,2,5,1,0,2],
+"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_af9497418dd323ce2a9d8615ebc7da054.html#af9497418dd323ce2a9d8615ebc7da054":[1,0,0,2,5,1,0,1],
+"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore.html":[1,0,0,2,5,1,1],
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStorer.html":[1,0,0,2,5,1,1,0],
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStorer_a60d3f056786a231d63b756823d220cc9.html#a60d3f056786a231d63b756823d220cc9":[1,0,0,2,5,1,1,0,2],
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStorer_a76c9bac0cbad526e8b7b53c7eccce23f.html#a76c9bac0cbad526e8b7b53c7eccce23f":[1,0,0,2,5,1,1,0,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1Domain_1_1DtoAggregateRoot_aa99d95d5b4b1fb8a59beda77f7e12c20.html#aa99d95d5b4b1fb8a59beda77f7e12c20":[1,0,0,8,4,0],
 "classCqrs_1_1Domain_1_1Exceptions_1_1AggregateNotFoundException.html":[1,0,0,8,0,0],
 "classCqrs_1_1Domain_1_1Exceptions_1_1AggregateNotFoundException_a44057befbb31c652727d04c5b34211ee.html#a44057befbb31c652727d04c5b34211ee":[1,0,0,8,0,0,0],
-"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateNotFoundException_a78bad13ffb5f3ddf2cb898c7ee97a6bb.html#a78bad13ffb5f3ddf2cb898c7ee97a6bb":[1,0,0,8,0,0,1],
-"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateNotFoundException_abba04fe9e621cfbefc57482981e8b245.html#abba04fe9e621cfbefc57482981e8b245":[1,0,0,8,0,0,2],
-"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateOrEventMissingIdException.html":[1,0,0,8,0,1],
-"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateOrEventMissingIdException_a05dd2bfa86d067aca316a7d880dc3c18.html#a05dd2bfa86d067aca316a7d880dc3c18":[1,0,0,8,0,1,1],
-"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateOrEventMissingIdException_ac63e413557df17ed490a8b787e17d960.html#ac63e413557df17ed490a8b787e17d960":[1,0,0,8,0,1,0],
-"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateOrEventMissingIdException_ac9f60e1491680ab596b0501b669a4e1c.html#ac9f60e1491680ab596b0501b669a4e1c":[1,0,0,8,0,1,2]
+"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateNotFoundException_a78bad13ffb5f3ddf2cb898c7ee97a6bb.html#a78bad13ffb5f3ddf2cb898c7ee97a6bb":[1,0,0,8,0,0,1]
 };

@@ -125,6 +125,7 @@ var hierarchy =
     [ "Cqrs.Azure.BlobStorage.Test.Integration.TableStorageEventStoreTests", "classCqrs_1_1Azure_1_1BlobStorage_1_1Test_1_1Integration_1_1TableStorageEventStoreTests.html", [
       [ "Cqrs.Azure.Storage.Test.Integration.TableStorageEventStoreTests", "classCqrs_1_1Azure_1_1Storage_1_1Test_1_1Integration_1_1TableStorageEventStoreTests.html", null ]
     ] ],
+    [ "Cqrs.Azure.ConfigurationManager.Tests.Unit.CloudConfigurationManagerTests", "classCqrs_1_1Azure_1_1ConfigurationManager_1_1Tests_1_1Unit_1_1CloudConfigurationManagerTests.html", null ],
     [ "Cqrs.Azure.DocumentDb.Events.IAzureDocumentDbEventStoreConnectionStringFactory", "interfaceCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1IAzureDocumentDbEventStoreConnectionStringFactory.html", [
       [ "Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStoreConnectionStringFactory.html", [
         [ "Cqrs.Ninject.Azure.DocumentDb.Events.TestAzureDocumentDbEventStoreConnectionStringFactory", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Events_1_1TestAzureDocumentDbEventStoreConnectionStringFactory.html", null ]

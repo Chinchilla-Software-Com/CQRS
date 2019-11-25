@@ -1,5 +1,10 @@
 var NAVTREEINDEX7 =
 {
+"classCqrs_1_1MongoDB_1_1Repositories_1_1Authentication_1_1SingleSignOnToken_abf59456bf30dd139620ed6de3ee11e74.html#abf59456bf30dd139620ed6de3ee11e74":[1,0,0,17,4,0,0,3],
+"classCqrs_1_1MongoDB_1_1Repositories_1_1Authentication_1_1SingleSignOnToken_acf0a5524d873b709b3955374ec6cc76d.html#acf0a5524d873b709b3955374ec6cc76d":[1,0,0,17,4,0,0,1],
+"classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser.html":[1,0,0,17,5,0],
+"classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser_ad27304148a7a67b6c86c277254108c95.html#ad27304148a7a67b6c86c277254108c95":[1,0,0,17,5,0,0],
+"classCqrs_1_1MongoDB_1_1Serialisers_1_1BasicStructSerialiser_afeddf8cf8fa5a761f01504795adafa9b.html#afeddf8cf8fa5a761f01504795adafa9b":[1,0,0,17,5,0,1],
 "classCqrs_1_1MongoDB_1_1Serialisers_1_1MongoDbEventBuilder.html":[1,0,0,17,5,1],
 "classCqrs_1_1MongoDB_1_1Serialisers_1_1MongoDbEventBuilder_a06afbb994fd3f679f275dea3d1d60c6e.html#a06afbb994fd3f679f275dea3d1d60c6e":[1,0,0,17,5,1,0],
 "classCqrs_1_1MongoDB_1_1Serialisers_1_1MongoDbEventDeserialiser.html":[1,0,0,17,5,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX7 =
 "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_ac6f0db82440e24190a5692d352fb4524.html#ac6f0db82440e24190a5692d352fb4524":[1,0,0,18,2,0,9],
 "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_ace2719e6bb393336cc5b7d4e7e0550e3.html#ace2719e6bb393336cc5b7d4e7e0550e3":[1,0,0,18,2,0,11],
 "classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_ae4bbc2d44f283644a328d308dc78edc5.html#ae4bbc2d44f283644a328d308dc78edc5":[1,0,0,18,2,0,15],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_afae0f84460f7cf9d1f9b62ec148b02ad.html#afae0f84460f7cf9d1f9b62ec148b02ad":[1,0,0,18,2,0,5],
-"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_afc0f6417f69d5424fe7bba7a6724970f.html#afc0f6417f69d5424fe7bba7a6724970f":[1,0,0,18,2,0,7],
-"classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule.html":[1,0,0,18,2,1],
-"classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule_a01ffbc5d28ee88168fc9058fcde6fff0.html#a01ffbc5d28ee88168fc9058fcde6fff0":[1,0,0,18,2,1,2],
-"classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule_a37ca0381038742667e7253f94e80e4b8.html#a37ca0381038742667e7253f94e80e4b8":[1,0,0,18,2,1,1],
-"classCqrs_1_1Ninject_1_1Configuration_1_1EventStoreModule_a72c71c7ccd12ca4ef434e3eea4dce7db.html#a72c71c7ccd12ca4ef434e3eea4dce7db":[1,0,0,18,2,1,3]
+"classCqrs_1_1Ninject_1_1Configuration_1_1CqrsModule_afae0f84460f7cf9d1f9b62ec148b02ad.html#afae0f84460f7cf9d1f9b62ec148b02ad":[1,0,0,18,2,0,5]
 };

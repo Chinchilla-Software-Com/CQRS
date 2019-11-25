@@ -1,5 +1,10 @@
 var NAVTREEINDEX5 =
 {
+"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateNotFoundException_abba04fe9e621cfbefc57482981e8b245.html#abba04fe9e621cfbefc57482981e8b245":[1,0,0,8,0,0,2],
+"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateOrEventMissingIdException.html":[1,0,0,8,0,1],
+"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateOrEventMissingIdException_a05dd2bfa86d067aca316a7d880dc3c18.html#a05dd2bfa86d067aca316a7d880dc3c18":[1,0,0,8,0,1,1],
+"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateOrEventMissingIdException_ac63e413557df17ed490a8b787e17d960.html#ac63e413557df17ed490a8b787e17d960":[1,0,0,8,0,1,0],
+"classCqrs_1_1Domain_1_1Exceptions_1_1AggregateOrEventMissingIdException_ac9f60e1491680ab596b0501b669a4e1c.html#ac9f60e1491680ab596b0501b669a4e1c":[1,0,0,8,0,1,2],
 "classCqrs_1_1Domain_1_1Exceptions_1_1ConcurrencyException.html":[1,0,0,8,0,2],
 "classCqrs_1_1Domain_1_1Exceptions_1_1ConcurrencyException_a7b8143f3a8047307373503c31e8b3366.html#a7b8143f3a8047307373503c31e8b3366":[1,0,0,8,0,2,1],
 "classCqrs_1_1Domain_1_1Exceptions_1_1ConcurrencyException_aed52d2484adb911db51fd50f18f3e477.html#aed52d2484adb911db51fd50f18f3e477":[1,0,0,8,0,2,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX5 =
 "classCqrs_1_1Events_1_1EventData_a6abb7d888f3bba44c081587aacab0181.html#a6abb7d888f3bba44c081587aacab0181":[1,0,0,10,6,8],
 "classCqrs_1_1Events_1_1EventData_a8d854d86e700a99f7cede8cda598d271.html#a8d854d86e700a99f7cede8cda598d271":[1,0,0,10,6,3],
 "classCqrs_1_1Events_1_1EventData_ace1a7435af5c3fd14cfb2dc095d12a85.html#ace1a7435af5c3fd14cfb2dc095d12a85":[1,0,0,10,6,7],
-"classCqrs_1_1Events_1_1EventData_ae001b9d06977e5fd407744459fad2da5.html#ae001b9d06977e5fd407744459fad2da5":[1,0,0,10,6,4],
-"classCqrs_1_1Events_1_1EventDeserialiser.html":[1,0,0,10,8],
-"classCqrs_1_1Events_1_1EventDeserialiser_a08bd067ca7ce8c28c7a83d444b7e468b.html#a08bd067ca7ce8c28c7a83d444b7e468b":[1,0,0,10,8,2],
-"classCqrs_1_1Events_1_1EventDeserialiser_a193feac1d58446f0a7447d8ba04179fc.html#a193feac1d58446f0a7447d8ba04179fc":[1,0,0,10,8,0],
-"classCqrs_1_1Events_1_1EventDeserialiser_a3f767a1b793ea47bcafd9c64be47619e.html#a3f767a1b793ea47bcafd9c64be47619e":[1,0,0,10,8,1],
-"classCqrs_1_1Events_1_1EventExtensions.html":[1,0,0,10,9]
+"classCqrs_1_1Events_1_1EventData_ae001b9d06977e5fd407744459fad2da5.html#ae001b9d06977e5fd407744459fad2da5":[1,0,0,10,6,4]
 };

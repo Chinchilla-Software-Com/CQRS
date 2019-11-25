@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2019-11-25 10:59:39</td>
+            <td class="headerValue">2019-11-25 15:23:54</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -92,32 +92,31 @@
 <span class="lineNum">      34 </span><span class="lineCov">          1 :                 public override string GetSetting(string key)</span>
 <span class="lineNum">      35 </span>            :                 {
 <span class="lineNum">      36 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">      37 </span>            :                         IConfigurationSection cqrsSection = Configuration.GetSection(&quot;Cqrs&quot;);
-<span class="lineNum">      38 </span>            :                         return cqrsSection[key];
-<span class="lineNum">      39 </span>            : #endif
-<span class="lineNum">      40 </span>            : #if NET472
-<span class="lineNum">      41 </span>            : #if DEBUG
-<span class="lineNum">      42 </span>            :                         return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, true);
-<span class="lineNum">      43 </span>            : #else
-<span class="lineNum">      44 </span>            :                         return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, false);
+<span class="lineNum">      37 </span>            :                         return Configuration.GetValue&lt;string&gt;(key.Replace(&quot;.&quot;, &quot;:&quot;));
+<span class="lineNum">      38 </span>            : #endif
+<span class="lineNum">      39 </span>            : #if NET472
+<span class="lineNum">      40 </span>            : #if DEBUG
+<span class="lineNum">      41 </span>            :                         return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, true);
+<span class="lineNum">      42 </span>            : #else
+<span class="lineNum">      43 </span>            :                         return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, false);
+<span class="lineNum">      44 </span>            : #endif
 <span class="lineNum">      45 </span>            : #endif
-<span class="lineNum">      46 </span>            : #endif
-<span class="lineNum">      47 </span>            :                 }
-<span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">      50 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      51 </span>            :                 /// Read the configuration string named &lt;paramref name=&quot;connectionStringName&quot;/&gt;.
-<span class="lineNum">      52 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      53 </span>            :                 /// &lt;param name=&quot;connectionStringName&quot;&gt;The name (or key) of the connection string to read.&lt;/param&gt;
-<span class="lineNum">      54 </span>            :                 public override string GetConnectionString(string connectionStringName)
-<span class="lineNum">      55 </span>            :                 {
-<span class="lineNum">      56 </span>            :                         return Configuration.GetConnectionString(connectionStringName);
-<span class="lineNum">      57 </span>            :                 }
-<span class="lineNum">      58 </span>            : #endif
-<span class="lineNum">      59 </span>            : 
-<span class="lineNum">      60 </span>            :                 #endregion
-<span class="lineNum">      61 </span>            :         }
-<span class="lineNum">      62 </span>            : }
+<span class="lineNum">      46 </span>            :                 }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Read the configuration string named &lt;paramref name=&quot;connectionStringName&quot;/&gt;.
+<span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      52 </span>            :                 /// &lt;param name=&quot;connectionStringName&quot;&gt;The name (or key) of the connection string to read.&lt;/param&gt;
+<span class="lineNum">      53 </span>            :                 public override string GetConnectionString(string connectionStringName)
+<span class="lineNum">      54 </span>            :                 {
+<span class="lineNum">      55 </span>            :                         return Configuration.GetConnectionString(connectionStringName);
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            : #endif
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                 #endregion
+<span class="lineNum">      60 </span>            :         }
+<span class="lineNum">      61 </span>            : }
 </pre>
       </td>
     </tr>
