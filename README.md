@@ -1,6 +1,6 @@
 # CQRS.NET
 #### https://www.nuget.org/packages/Cqrs
-Nightly build packages and symbols available at http://nightlies.chinchillasoftware.co.nz/
+Symbols now available on [nuget.org](https://symbols.nuget.org/download/symbols). See https://devblogs.microsoft.com/nuget/improved-package-debugging-experience-with-the-nuget-org-symbol-server/ for details on how to use them
 
 ## The framework
 A lightweight enterprise Function as a service (FaaS) framework to write function based serverless and micro-service applications in hybrid multi-datacentre, on-premise and Azure environments, offering modern patterns such as CQRS and event-sourcing. Offering a superior combination of serverless, micro-service and traditional deployments both in the cloud and on-premise to suit any business. Deployments can be inter-connected with each other sharing data and resourcing or independent and isolated while providing a consistent framework and guideline for both development, deployment, DevOps and administration.
