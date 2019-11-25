@@ -16,8 +16,7 @@ jobs:
         dotnet-version: 3.0.100
     - name: Prepare Legacy NuGet
       run: |
-        dir 
-        dir .\.nuget
-        ren .\.nuget\NuGet.ex_ .\.nuget\NuGet.exe
+        cd .\.nuget
+        ren NuGet.ex_ NuGet.exe
     - name: Build with dotnet CLI
       run: dotnet build --configuration Release .\Cqrs.sln
