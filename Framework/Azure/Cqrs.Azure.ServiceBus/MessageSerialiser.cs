@@ -7,6 +7,9 @@
 #endregion
 
 using System;
+#if NET452
+using System.Reflection;
+#endif
 using Cqrs.Commands;
 using Cqrs.Events;
 using Newtonsoft.Json;
@@ -26,8 +29,48 @@ namespace Cqrs.Azure.ServiceBus
 
 		static MessageSerialiser()
 		{
+#if NET452
+			RedirectAssembly("System.Private.CoreLib", "mscorlib");
+#endif
 			DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
 		}
+
+#if NET452
+		/// <summary>
+		/// Redirect an assembly resolution, used heavily for polumorphic serialisation and deserialisation such as between .NET Core and the .NET Framework
+		/// </summary>
+		/// <param name="fromAssemblyShortName">The name of the assembly to redirect.</param>
+		/// <param name="replacmentAssemblyShortName">The name of the replacement assembly.</param>
+		public static void RedirectAssembly(string fromAssemblyShortName, string replacmentAssemblyShortName)
+		{
+			Console.WriteLine($"Adding custom resolver redirect rule form:{fromAssemblyShortName}, to:{replacmentAssemblyShortName}");
+			ResolveEventHandler handler = null;
+			handler = (sender, args) =>
+			{
+				// Use latest strong name & version when trying to load SDK assemblies
+				var requestedAssembly = new AssemblyName(args.Name);
+				Console.WriteLine($"RedirectAssembly >  requesting:{requestedAssembly}; replacment from:{fromAssemblyShortName}, to:{replacmentAssemblyShortName}");
+				if (requestedAssembly.Name != fromAssemblyShortName)
+					return null;
+
+				try
+				{
+					Console.WriteLine($"Redirecting Assembly {fromAssemblyShortName} to: {replacmentAssemblyShortName}");
+					var replacmentAssembly = Assembly.Load(replacmentAssemblyShortName);
+					return replacmentAssembly;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine($"ERROR while trying to provide replacement Assembly {fromAssemblyShortName} to: {replacmentAssemblyShortName}");
+					Console.WriteLine(e);
+					return null;
+				}
+			};
+
+			AppDomain.CurrentDomain.AssemblyResolve += handler;
+		}
+#endif
+
 
 		/// <summary>
 		/// Serialise the provided <paramref name="event"/>.
