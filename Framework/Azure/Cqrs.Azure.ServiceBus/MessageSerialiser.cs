@@ -41,6 +41,9 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		/// <param name="fromAssemblyShortName">The name of the assembly to redirect.</param>
 		/// <param name="replacmentAssemblyShortName">The name of the replacement assembly.</param>
+		/// <remarks>
+		/// https://stackoverflow.com/questions/50190568/net-standard-4-7-1-could-not-load-system-private-corelib-during-serialization
+		/// </remarks>
 		public static void RedirectAssembly(string fromAssemblyShortName, string replacmentAssemblyShortName)
 		{
 			Console.WriteLine($"Adding custom resolver redirect rule form:{fromAssemblyShortName}, to:{replacmentAssemblyShortName}");
