@@ -1,4 +1,6 @@
-﻿#region Copyright
+﻿#if NET40
+
+#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
 // // 	Copyright Chinchilla Software Limited. All rights reserved.
@@ -8,12 +10,7 @@
 
 using System;
 using System.Configuration;
-#if NET40
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-#else
-using Microsoft.EntityFrameworkCore;
-#endif
+using System.Data.Linq;
 using System.Linq;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
@@ -26,7 +23,7 @@ namespace Cqrs.Events
 	/// <summary>
 	/// Stores the most recent <see cref="Snapshot">snapshots</see> for replay and <see cref="IAggregateRoot{TAuthenticationToken}"/> rehydration on a <see cref="SnapshotAggregateRoot{TAuthenticationToken,TSnapshot}"/> in SqlServer that uses LinqToSql and follows a rigid schema.
 	/// </summary>
-	public class SqlSnapshotStore
+	public class LinqToSqlSnapshotStore
 		: SnapshotStore
 	{
 		internal const string SqlSnapshotStoreConnectionNameApplicationKey = @"Cqrs.SqlSnapshotStore.ConnectionStringName";
@@ -34,9 +31,9 @@ namespace Cqrs.Events
 		internal const string SqlSnapshotStoreTableNameApplicationKeyPattern = @"Cqrs.SqlSnapshotStore.CustomTableNames.{0}";
 
 		/// <summary>
-		/// Instantiate a new instance of the <see cref="SqlSnapshotStore"/> class.
+		/// Instantiate a new instance of the <see cref="LinqToSqlSnapshotStore"/> class.
 		/// </summary>
-		public SqlSnapshotStore(IConfigurationManager configurationManager, ISnapshotDeserialiser eventDeserialiser, ILogger logger, ICorrelationIdHelper correlationIdHelper, ISnapshotBuilder snapshotBuilder)
+		public LinqToSqlSnapshotStore(IConfigurationManager configurationManager, ISnapshotDeserialiser eventDeserialiser, ILogger logger, ICorrelationIdHelper correlationIdHelper, ISnapshotBuilder snapshotBuilder)
 			: base(configurationManager, eventDeserialiser, snapshotBuilder, logger, correlationIdHelper)
 		{
 		}
@@ -49,7 +46,7 @@ namespace Cqrs.Events
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
 		protected override Snapshot Get(Type aggregateRootType, string streamName)
 		{
-			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
 			{
 				EventData query = GetEventStoreSnapshotTable(dbDataContext)
 					.AsQueryable()
@@ -70,16 +67,16 @@ namespace Cqrs.Events
 		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>
 		public override void Save(Snapshot snapshot)
 		{
-			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(snapshot.GetType().Name))
+			using (DataContext dbDataContext = CreateDbDataContext(snapshot.GetType().Name))
 				Add(dbDataContext, snapshot);
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Creates a new <see cref="DbContext"/> using connection string settings from ConfigurationManager.
+		/// Creates a new <see cref="DataContext"/> using connection string settings from ConfigurationManager.
 		/// </summary>
-		protected virtual SqlEventStoreDataContext CreateDbDataContext(string aggregateRootTypeName = null)
+		protected virtual DataContext CreateDbDataContext(string aggregateRootTypeName = null)
 		{
 			string connectionStringKey;
 			string applicationKey;
@@ -97,39 +94,39 @@ namespace Cqrs.Events
 				if (bool.TryParse(tableName, out autoname))
 				{
 					if (autoname)
-						return SqlEventStoreDataContext.New(aggregateRootTypeName.Replace(".", "_"), connectionStringKey);
+						return LinqToSqlEventStoreDataContext.New<EventData>(aggregateRootTypeName.Replace(".", "_"), connectionStringKey);
 				}
 				else
-					return SqlEventStoreDataContext.New(tableName, connectionStringKey);
+					return LinqToSqlEventStoreDataContext.New<EventData>(tableName, connectionStringKey);
 			}
 
-			return SqlEventStoreDataContext.New("Snapshots", connectionStringKey);
+			return LinqToSqlEventStoreDataContext.New<EventData>("Snapshots", connectionStringKey);
 		}
 
 		/// <summary>
-		/// Gets the <see cref="DbSet{TEntity}"/> of <see cref="Snapshot"/>.
+		/// Gets the <see cref="Table{TEntity}"/> of <see cref="Snapshot"/>.
 		/// </summary>
-		/// <param name="dbDataContext">The <see cref="DbContext"/> to use.</param>
-		protected virtual DbSet<EventData> GetEventStoreSnapshotTable(SqlEventStoreDataContext dbDataContext)
+		/// <param name="dbDataContext">The <see cref="DataContext"/> to use.</param>
+		protected virtual Table<EventData> GetEventStoreSnapshotTable(DataContext dbDataContext)
 		{
 			// Get a typed table to run queries.
-			return dbDataContext.Set<EventData>();
+			return dbDataContext.GetTable<EventData>();
 		}
 
 		/// <summary>
 		/// Persist the provided <paramref name="snapshot"/> into SQL Server using the provided <paramref name="dbDataContext"/>.
 		/// </summary>
-		protected virtual void Add(SqlEventStoreDataContext dbDataContext, Snapshot snapshot)
+		protected virtual void Add(DataContext dbDataContext, Snapshot snapshot)
 		{
-			Logger.LogDebug("Adding data to the SQL snapshot database", "SqlSnapshotStore\\Add");
+			Logger.LogDebug("Adding data to the SQL snapshot database", "LinqToSqlSnapshotStore\\Add");
 			try
 			{
 				DateTime start = DateTime.Now;
 				EventData eventData = BuildEventData(snapshot);
-				GetEventStoreSnapshotTable(dbDataContext).Add(eventData);
-				dbDataContext.SaveChanges();
+				GetEventStoreSnapshotTable(dbDataContext).InsertOnSubmit(eventData);
+				dbDataContext.SubmitChanges();
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Adding data in the SQL snapshot database took {0}.", end - start), "SqlSnapshotStore\\Add");
+				Logger.LogDebug(string.Format("Adding data in the SQL snapshot database took {0}.", end - start), "LinqToSqlSnapshotStore\\Add");
 			}
 			catch (Exception exception)
 			{
@@ -138,8 +135,9 @@ namespace Cqrs.Events
 			}
 			finally
 			{
-				Logger.LogDebug("Adding data to the SQL snapshot database... Done", "SqlSnapshotStore\\Add");
+				Logger.LogDebug("Adding data to the SQL snapshot database... Done", "LinqToSqlSnapshotStore\\Add");
 			}
 		}
 	}
 }
+#endif

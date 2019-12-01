@@ -14,6 +14,16 @@
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
 		<PackageReleaseNotes>
+			Version 4.2.0
+
+			* Added support for Simplified SQL operations using Entiry Framework
+
+			Breaking Changes
+
+			* The old Sql classes are now labeled LinqToSQL
+			* .NET Framework 4.0+ and .NET Core 3.0 both support using different tables for the Simplified SQL Event Store, .Net Standard 2.0 does not.
+			* Removed deprecated Simplified SQL application settings.
+
 			Version 4.1.0
 
 			* Added additional Support for .NET Standard 2.0.
@@ -33,6 +43,11 @@
 		</PackageReleaseNotes>
 		<PackageIcon>images\icon.png</PackageIcon>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="Repositories\Visual Studio 2013\**" />
+	  <EmbeddedResource Remove="Repositories\Visual Studio 2013\**" />
+	  <None Remove="Repositories\Visual Studio 2013\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="tools\init.ps1">
@@ -81,6 +96,22 @@
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' OR  '$(TargetFramework)' == 'netcoreapp3.0' ">
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
 		<PackageReference Include="System.ServiceModel.Primitives" Version="4.6.0" />
@@ -101,6 +132,10 @@
 		<Reference Include="System.ServiceModel" />
 		<Reference Include="System.Transactions" />
 		<Reference Include="System.Web" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+		<PackageReference Include="EntityFramework" Version="6.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>

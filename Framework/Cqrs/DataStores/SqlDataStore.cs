@@ -1,6 +1,4 @@
-﻿#if NET40
-
-#region Copyright
+﻿#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
 // // 	Copyright Chinchilla Software Limited. All rights reserved.
@@ -11,7 +9,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Linq;
+#if NET40
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+#else
+using Microsoft.EntityFrameworkCore;
+#endif
 using System.Linq;
 using System.Linq.Expressions;
 using System.Transactions;
@@ -27,8 +30,6 @@ namespace Cqrs.DataStores
 	public class SqlDataStore<TData> : IDataStore<TData>
 		where TData : Entity
 	{
-		internal const string SqlDataStoreDbFileOrServerOrConnectionApplicationKey = @"SqlDataStoreDbFileOrServerOrConnection";
-
 		internal const string SqlDataStoreConnectionNameApplicationKey = @"Cqrs.SqlDataStore.ConnectionStringName";
 
 		internal const string SqlReadableDataStoreConnectionStringKey = "Cqrs.SqlDataStore.Read.ConnectionStringName";
@@ -51,13 +52,13 @@ namespace Cqrs.DataStores
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 
 			// Get a typed table to run queries.
-			Table = DbDataContext.GetTable<TData>();
+			Table = DbDataContext.Set<TData>();
 		}
 
 		/// <summary>
 		/// Gets or sets the DataContext.
 		/// </summary>
-		protected DataContext DbDataContext { get; private set; }
+		protected DbContext DbDataContext { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the list of writeable connection strings for data mirroring
@@ -67,20 +68,20 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Gets or sets the list of writeable DataContexts for data mirroring
 		/// </summary>
-		private IList<DataContext> _writeableConnections;
+		private IList<DbContext> _writeableConnections;
 
 		/// <summary>
 		/// Gets or sets the list of writeable DataContexts for data mirroring
 		/// </summary>
-		protected IEnumerable<DataContext> WriteableConnections
+		protected IEnumerable<DbContext> WriteableConnections
 		{
 			get
 			{
 				if (_writeableConnections == null)
 				{
-					_writeableConnections = new List<DataContext>();
+					_writeableConnections = new List<DbContext>();
 					foreach (string writeableConnectionString in WriteableConnectionStrings)
-						_writeableConnections.Add(new DataContext(writeableConnectionString));
+						_writeableConnections.Add(new SqlDbContext(writeableConnectionString));
 				}
 				return _writeableConnections;
 			}
@@ -89,7 +90,7 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Gets or sets the readable Table
 		/// </summary>
-		protected Table<TData> Table { get; private set; }
+		protected DbSet<TData> Table { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the Logger
@@ -97,9 +98,9 @@ namespace Cqrs.DataStores
 		protected ILogger Logger { get; private set; }
 
 		/// <summary>
-		/// Locate the connection settings and create a <see cref="DataContext"/>.
+		/// Locate the connection settings and create a <see cref="DbContext"/>.
 		/// </summary>
-		protected virtual DataContext CreateDbDataContext()
+		protected virtual DbContext CreateDbDataContext()
 		{
 			string connectionStringKey;
 			string applicationKey;
@@ -109,12 +110,7 @@ namespace Cqrs.DataStores
 			{
 				// Try single connection value
 				if (!ConfigurationManager.TryGetSetting(SqlDataStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
-				{
-					// Default to old connection value
-					if (!ConfigurationManager.TryGetSetting(SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
-						throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlDataStoreConnectionNameApplicationKey));
-					return new DataContext(connectionStringKey);
-				}
+					throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlDataStoreConnectionNameApplicationKey));
 			}
 
 			try
@@ -126,7 +122,7 @@ namespace Cqrs.DataStores
 				throw new NullReferenceException(string.Format("No connection string setting named '{0}' was found in the configuration file with the SQL Data Store connection string.", applicationKey), exception);
 			}
 
-			return new DataContext(connectionStringKey);
+			return new SqlDbContext(connectionStringKey);
 		}
 
 		/// <summary>
@@ -146,12 +142,7 @@ namespace Cqrs.DataStores
 				// Try single connection value
 				if (!ConfigurationManager.TryGetSetting(SqlDataStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
 				{
-					Logger.LogDebug(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlDataStoreConnectionNameApplicationKey), "SqlDataStore\\GetWriteableConnectionStrings");
-					// Default to old connection value
-					if (!ConfigurationManager.TryGetSetting(SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
-						throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlDataStoreConnectionNameApplicationKey));
-					_writeableConnections = new List<DataContext> { DbDataContext };
-					return new List<string> {connectionStringKey};
+					throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlDataStoreConnectionNameApplicationKey));
 				}
 			}
 
@@ -194,7 +185,7 @@ namespace Cqrs.DataStores
 			}
 		}
 
-#region Implementation of IEnumerable
+		#region Implementation of IEnumerable
 
 		/// <summary>
 		/// Returns an enumerator that iterates through the collection.
@@ -218,9 +209,9 @@ namespace Cqrs.DataStores
 			return GetEnumerator();
 		}
 
-#endregion
+		#endregion
 
-#region Implementation of IQueryable
+		#region Implementation of IQueryable
 
 		/// <summary>
 		/// Gets the expression tree that is associated with the instance of <see cref="T:System.Linq.IQueryable"/>.
@@ -301,14 +292,14 @@ namespace Cqrs.DataStores
 				DateTime start = DateTime.Now;
 				using (var transaction = new TransactionScope())
 				{
-					foreach (DataContext writeableConnection in WriteableConnections)
+					foreach (DbContext writeableConnection in WriteableConnections)
 					{
-						Table<TData> table = Table;
+						DbSet<TData> table = Table;
 						// This optimises for single connection handling
 						if (writeableConnection != DbDataContext)
-							table = writeableConnection.GetTable<TData>();
-						table.InsertOnSubmit(data);
-						writeableConnection.SubmitChanges();
+							table = writeableConnection.Set<TData>();
+						table.Add(data);
+						writeableConnection.SaveChanges();
 					}
 					transaction.Complete();
 				}
@@ -334,14 +325,14 @@ namespace Cqrs.DataStores
 				data = data.ToList();
 				using (var transaction = new TransactionScope())
 				{
-					foreach (DataContext writeableConnection in WriteableConnections)
+					foreach (DbContext writeableConnection in WriteableConnections)
 					{
-						Table<TData> table = Table;
+						DbSet<TData> table = Table;
 						// This optimises for single connection handling
 						if (writeableConnection != DbDataContext)
-							table = writeableConnection.GetTable<TData>();
-						table.InsertAllOnSubmit(data);
-						writeableConnection.SubmitChanges();
+							table = writeableConnection.Set<TData>();
+						table.AddRange(data);
+						writeableConnection.SaveChanges();
 					}
 					transaction.Complete();
 				}
@@ -385,40 +376,14 @@ namespace Cqrs.DataStores
 				DateTime start = DateTime.Now;
 				using (var transaction = new TransactionScope())
 				{
-					foreach (DataContext writeableConnection in WriteableConnections)
+					foreach (DbContext writeableConnection in WriteableConnections)
 					{
-						Table<TData> table = Table;
+						DbSet<TData> table = Table;
 						// This optimises for single connection handling
 						if (writeableConnection != DbDataContext)
-							table = writeableConnection.GetTable<TData>();
-						try
-						{
-							table.DeleteOnSubmit(data);
-						}
-						catch (InvalidOperationException exception)
-						{
-							if (exception.Message != "Cannot remove an entity that has not been attached.")
-								throw;
-							try
-							{
-								table.Attach(data);
-								writeableConnection.Refresh(RefreshMode.KeepCurrentValues, data);
-							}
-							catch (DuplicateKeyException)
-							{
-								// We're using the same context apparently
-							}
-							table.DeleteOnSubmit(data);
-						}
-						try
-						{
-							writeableConnection.SubmitChanges();
-						}
-						catch (ChangeConflictException)
-						{
-							writeableConnection.Refresh(RefreshMode.KeepCurrentValues, data);
-							writeableConnection.SubmitChanges();
-						}
+							table = writeableConnection.Set<TData>();
+						table.Remove(data);
+						writeableConnection.SaveChanges();
 					}
 					transaction.Complete();
 				}
@@ -441,14 +406,14 @@ namespace Cqrs.DataStores
 			{
 				using (var transaction = new TransactionScope())
 				{
-					foreach (DataContext writeableConnection in WriteableConnections)
+					foreach (DbContext writeableConnection in WriteableConnections)
 					{
-						Table<TData> table = Table;
+						DbSet<TData> table = Table;
 						// This optimises for single connection handling
 						if (writeableConnection != DbDataContext)
-							table = writeableConnection.GetTable<TData>();
+							table = writeableConnection.Set<TData>();
 						table.Truncate();
-						writeableConnection.SubmitChanges();
+						writeableConnection.SaveChanges();
 					}
 					transaction.Complete();
 				}
@@ -470,22 +435,14 @@ namespace Cqrs.DataStores
 				DateTime start = DateTime.Now;
 				using (var transaction = new TransactionScope())
 				{
-					foreach (DataContext writeableConnection in WriteableConnections)
+					foreach (DbContext writeableConnection in WriteableConnections)
 					{
-						Table<TData> table = Table;
+						DbSet<TData> table = Table;
 						// This optimises for single connection handling
 						if (writeableConnection != DbDataContext)
-							table = writeableConnection.GetTable<TData>();
-						try
-						{
-							table.Attach(data);
-							writeableConnection.Refresh(RefreshMode.KeepCurrentValues, data);
-						}
-						catch (DuplicateKeyException)
-						{
-							// We're using the same context apparently
-						}
-						writeableConnection.SubmitChanges();
+							table = writeableConnection.Set<TData>();
+						table.Attach(data);
+						writeableConnection.SaveChanges();
 					}
 					transaction.Complete();
 				}
@@ -499,6 +456,40 @@ namespace Cqrs.DataStores
 		}
 
 #endregion
+
+		class SqlDbContext : DbContext
+		{
+#if NET40
+			/// <summary>
+			/// Instantiates a new instance of the <see cref="SqlDbContext"/> class using the given string as the name or connection string for the database to which a connection will be made. See the class remarks for how this is used to create a connection.
+			/// </summary>
+			/// <param name="nameOrConnectionString">Either the database name or a connection string.</param>
+			public SqlDbContext(string nameOrConnectionString)
+			: base(nameOrConnectionString) { }
+#else
+			/// <summary>
+			/// Instantiates a new instance of the <see cref="SqlDbContext"/> class using the given string as the name or connection string for the database to which a connection will be made. See the class remarks for how this is used to create a connection.
+			/// </summary>
+			/// <param name="nameOrConnectionString">Either the database name or a connection string.</param>
+			public SqlDbContext(string nameOrConnectionString)
+			: base()
+			{
+				NameOrConnectionString = nameOrConnectionString;
+			}
+
+			private string NameOrConnectionString { get; }
+
+			/// <summary>
+			/// Override this method to configure the database (and other options) to be used for this context. This method is called for each instance of the context that is created. The base implementation does nothing.
+			/// In situations where an instance of Microsoft.EntityFrameworkCore.DbContextOptions may or may not have been passed to the constructor, you can use Microsoft.EntityFrameworkCore.DbContextOptionsBuilder.IsConfigured to determine if the options have already been set, and skip some or all of the logic in Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder).
+			/// </summary>
+			/// <param name="optionsBuilder">A builder used to create or modify options for this context. Databases (and other extensions) typically define extension methods on this object that allow you to configure the context.</param>
+			protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+			{
+				optionsBuilder.UseSqlServer(NameOrConnectionString);
+				base.OnConfiguring(optionsBuilder);
+			}
+#endif
+		}
 	}
 }
-#endif

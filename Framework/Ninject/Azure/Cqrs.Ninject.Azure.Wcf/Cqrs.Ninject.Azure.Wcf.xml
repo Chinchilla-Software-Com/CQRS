@@ -6,23 +6,26 @@
     <members>
         <member name="T:Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf">
             <summary>
-            The Startup class that configures Simplified SQL by wiring up an eventual replacement for SimplifiedSqlModule
+            A <see cref="T:WebActivatorEx.PreApplicationStartMethodAttribute"/> that calls <see cref="M:Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf.Start"/>
+            and <see cref="T:WebActivatorEx.ApplicationShutdownMethodAttribute"/> that calls <see cref="M:Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf.Stop"/>
+            configuring Simplified SQL by wiring up <see cref="T:Cqrs.Ninject.Configuration.SimplifiedSqlModule`1"/>.
             </summary>
         </member>
-        <member name="P:Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf.Configuration">
+        <member name="M:Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf.Start">
             <summary>
-            The <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/> that can be use to get configuration settings
+            Starts the application
             </summary>
         </member>
-        <member name="M:Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf.Stop">
             <summary>
-            Instantiate a new instance of a <see cref="T:Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf"/>
+            Stops the application.
             </summary>
         </member>
-        <member name="M:Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment,Microsoft.Extensions.Logging.ILoggerFactory)">
+        <member name="M:Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf.CreateKernel">
             <summary>
             Creates the kernel that will manage your application.
             </summary>
+            <returns>The created kernel.</returns>
         </member>
         <member name="T:Cqrs.Ninject.Azure.Wcf.Configuration.WcfStartUp">
             <summary>
@@ -32,6 +35,11 @@
         <member name="M:Cqrs.Ninject.Azure.Wcf.Configuration.WcfStartUp.#ctor(Cqrs.Configuration.IConfigurationManager)">
             <summary>
             Instantiate a new instance of <see cref="T:Cqrs.Ninject.Azure.Wcf.Configuration.WcfStartUp"/>
+            </summary>
+        </member>
+        <member name="M:Cqrs.Ninject.Azure.Wcf.Configuration.WcfStartUp.AddSupplementryModules">
+            <summary>
+            Adds the <see cref="T:Cqrs.Ninject.Configuration.SimplifiedSqlModule`1"/> into <see cref="F:Cqrs.Ninject.Configuration.NinjectDependencyResolver.ModulesToLoad"/>.
             </summary>
         </member>
         <member name="T:Cqrs.Ninject.Azure.Wcf.Configuration.WebHostModule">

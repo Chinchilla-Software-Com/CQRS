@@ -6,6 +6,8 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using Cqrs.Exceptions;
+
 namespace Cqrs.Configuration
 {
 	/// <summary>
@@ -45,6 +47,8 @@ namespace Cqrs.Configuration
 		/// Read the configuration string where the name (or key) of the connection string is stored in a setting, first obtained with a call to <see cref="GetSetting(string)"/>
 		/// </summary>
 		/// <param name="key">The key (or name) of the setting that has the name (or key) of the connection string to read.</param>
-		string GetConnectionStringBySettingKey(string key);
+		/// <param name="throwIfKeyMissing">If true, will throw a <see cref="MissingApplicationSettingForConnectionStringException"/> if no application setting with the provided <paramref name="key"/> is found.</param>
+		/// <param name="throwIfConnectionstringMissing">If true, will throw a <see cref="MissingConnectionStringException"/> if no connection string is found.</param>
+		string GetConnectionStringBySettingKey(string key, bool throwIfKeyMissing = false, bool throwIfConnectionstringMissing = false);
 	}
 }

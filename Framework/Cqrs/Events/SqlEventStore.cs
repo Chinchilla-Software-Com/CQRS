@@ -1,6 +1,4 @@
-﻿#if NET40
-
-#region Copyright
+﻿#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
 // // 	Copyright Chinchilla Software Limited. All rights reserved.
@@ -10,15 +8,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.Linq;
+#if NET40
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+#else
+using Microsoft.EntityFrameworkCore;
+#endif
 using System.Linq;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
-using Cqrs.DataStores;
 using Cqrs.Domain;
-using Cqrs.Entities;
-using Cqrs.Exceptions;
 using Cqrs.Messages;
 
 namespace Cqrs.Events
@@ -27,14 +26,10 @@ namespace Cqrs.Events
 	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses LinqToSql and follows a rigid schema.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class SqlEventStore<TAuthenticationToken>
+	public class LinqToSqlEventStore<TAuthenticationToken>
 		: EventStore<TAuthenticationToken> 
 	{
-		internal const string SqlEventStoreDbFileOrServerOrConnectionApplicationKey = @"SqlEventStoreDbFileOrServerOrConnection";
-
 		internal const string SqlEventStoreConnectionNameApplicationKey = @"Cqrs.SqlEventStore.ConnectionStringName";
-
-		internal const string OldSqlEventStoreGetByCorrelationIdCommandTimeout = @"SqlEventStoreGetByCorrelationIdCommandTimeout";
 
 		internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @"Cqrs.SqlEventStore.GetByCorrelationId.CommandTimeout";
 
@@ -46,9 +41,9 @@ namespace Cqrs.Events
 		protected IConfigurationManager ConfigurationManager { get; private set; }
 
 		/// <summary>
-		/// Instantiate a new instance of the <see cref="SqlEventStore{TAuthenticationToken}"/> class.
+		/// Instantiate a new instance of the <see cref="LinqToSqlEventStore{TAuthenticationToken}"/> class.
 		/// </summary>
-		public SqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
+		public LinqToSqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
 			: base(eventBuilder, eventDeserialiser, logger)
 		{
 			ConfigurationManager = configurationManager;
@@ -67,7 +62,7 @@ namespace Cqrs.Events
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
-			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
 			{
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
@@ -93,7 +88,7 @@ namespace Cqrs.Events
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
-			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
 			{
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
@@ -116,7 +111,7 @@ namespace Cqrs.Events
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
-			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
 			{
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
@@ -140,7 +135,7 @@ namespace Cqrs.Events
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
-			using (DataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
 			{
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
@@ -159,15 +154,23 @@ namespace Cqrs.Events
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
 		public override IEnumerable<EventData> Get(Guid correlationId)
 		{
-			using (DataContext dbDataContext = CreateDbDataContext())
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext())
 			{
 				string commandTimeoutValue;
 				int commandTimeout;
 				bool found = ConfigurationManager.TryGetSetting(SqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
-				if (!found)
-					found = ConfigurationManager.TryGetSetting(OldSqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
 				if (found && int.TryParse(commandTimeoutValue, out commandTimeout))
-					dbDataContext.CommandTimeout = commandTimeout;
+				{
+#if NET40
+					// Get the ObjectContext related to this DbContext
+					var objectContext = (dbDataContext as IObjectContextAdapter).ObjectContext;
+
+					// Sets the command timeout for all the commands
+					objectContext.CommandTimeout = commandTimeout;
+#else
+					dbDataContext.Database.SetCommandTimeout(commandTimeout);
+#endif
+				}
 
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
@@ -184,7 +187,7 @@ namespace Cqrs.Events
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected override void PersistEvent(EventData eventData)
 		{
-			using (DataContext dbDataContext = CreateDbDataContext(eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf("/", StringComparison.InvariantCultureIgnoreCase))))
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf("/", StringComparison.InvariantCultureIgnoreCase))))
 			{
 				Add(dbDataContext, eventData);
 			}
@@ -193,29 +196,11 @@ namespace Cqrs.Events
 #endregion
 
 		/// <summary>
-		/// Creates a new <see cref="DataContext"/> using connection string settings from <see cref="ConfigurationManager"/>.
+		/// Creates a new <see cref="DbContext"/> using connection string settings from <see cref="ConfigurationManager"/>.
 		/// </summary>
-		protected virtual DataContext CreateDbDataContext(string aggregateRootTypeName = null)
+		protected virtual SqlEventStoreDataContext CreateDbDataContext(string aggregateRootTypeName = null)
 		{
-			string connectionStringKey;
-			string applicationKey;
-			if (!ConfigurationManager.TryGetSetting(SqlEventStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
-			{
-				if (!ConfigurationManager.TryGetSetting(SqlEventStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
-				{
-					if (!ConfigurationManager.TryGetSetting(SqlDataStore<Entity>.SqlDataStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
-					{
-						throw new MissingApplicationSettingForConnectionStringException(SqlEventStoreConnectionNameApplicationKey);
-					}
-				}
-			}
-			else
-			{
-				ConnectionStringSettings connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey];
-				if (connectionString == null)
-					throw new MissingConnectionStringException(applicationKey);
-				connectionStringKey = connectionString.ConnectionString;
-			}
+			string connectionStringKey = ConfigurationManager.GetConnectionStringBySettingKey(SqlEventStoreConnectionNameApplicationKey, true, true);
 
 			string tableName;
 			if (!string.IsNullOrWhiteSpace(aggregateRootTypeName) && ConfigurationManager.TryGetSetting(string.Format(SqlEventStoreTableNameApplicationKeyPattern, aggregateRootTypeName), out tableName) && !string.IsNullOrEmpty(tableName))
@@ -224,36 +209,36 @@ namespace Cqrs.Events
 				if (bool.TryParse(tableName, out autoname))
 				{
 					if (autoname)
-						return SqlEventStoreDataContext.New<EventData>(aggregateRootTypeName.Replace(".", "_"), connectionStringKey);
+						return SqlEventStoreDataContext.New(aggregateRootTypeName.Replace(".", "_"), connectionStringKey);
 				}
 				else
-					return SqlEventStoreDataContext.New<EventData>(tableName, connectionStringKey);
+					return SqlEventStoreDataContext.New(tableName, connectionStringKey);
 			}
 
 			return new SqlEventStoreDataContext(connectionStringKey);
 		}
 
 		/// <summary>
-		/// Gets the <see cref="Table{TEntity}"/> of <see cref="EventData"/>.
+		/// Gets the <see cref="DbSet{TEntity}"/> of <see cref="EventData"/>.
 		/// </summary>
-		/// <param name="dbDataContext">The <see cref="DataContext"/> to use.</param>
-		protected virtual Table<EventData> GetEventStoreTable(DataContext dbDataContext)
+		/// <param name="dbDataContext">The <see cref="SqlEventStoreDataContext"/> to use.</param>
+		protected virtual DbSet<EventData> GetEventStoreTable(SqlEventStoreDataContext dbDataContext)
 		{
 			// Get a typed table to run queries.
-			return dbDataContext.GetTable<EventData>();
+			return dbDataContext.Set<EventData>();
 		}
 
 		/// <summary>
 		/// Persist the provided <paramref name="data"/> into SQL Server using the provided <paramref name="dbDataContext"/>.
 		/// </summary>
-		protected virtual void Add(DataContext dbDataContext, EventData data)
+		protected virtual void Add(SqlEventStoreDataContext dbDataContext, EventData data)
 		{
 			Logger.LogDebug("Adding data to the SQL eventstore database", "SqlEventStore\\Add");
 			try
 			{
 				DateTime start = DateTime.Now;
-				GetEventStoreTable(dbDataContext).InsertOnSubmit(data);
-				dbDataContext.SubmitChanges();
+				GetEventStoreTable(dbDataContext).Add(data);
+				dbDataContext.SaveChanges();
 				DateTime end = DateTime.Now;
 				Logger.LogDebug(string.Format("Adding data in the SQL eventstore database took {0}.", end - start), "SqlEventStore\\Add");
 			}
@@ -269,4 +254,3 @@ namespace Cqrs.Events
 		}
 	}
 }
-#endif
