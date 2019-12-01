@@ -1,0 +1,513 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.WebApi/Formatters/FormMultipart/Converters/FormDataToObjectConverter.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">Cqrs.WebApi/Formatters/FormMultipart/Converters</a> - FormDataToObjectConverter.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using System.Net.Http.Formatting;
+<span class="lineNum">      13 </span>            : using System.Reflection;
+<span class="lineNum">      14 </span>            : using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure;
+<span class="lineNum">      15 </span>            : using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Extensions;
+<span class="lineNum">      16 </span>            : using Cqrs.WebApi.Formatters.FormMultipart.Infrastructure.Logger;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.WebApi.Formatters.FormMultipart.Converters
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :         /// Converts multi-part form-data to &lt;see cref=&quot;object&quot;&gt;objects&lt;/see&gt;.
+<span class="lineNum">      22 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      23 </span>            :         public class FormDataToObjectConverter
+<span class="lineNum">      24 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      25 </span>            :                 private readonly FormData _sourceData;
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :                 private readonly IFormDataConverterLogger _logger;
+<span class="lineNum">      28 </span>            : 
+<span class="lineNum">      29 </span>            :                 private readonly MultipartFormatterSettings _settings;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Instantiate and initialise a new instance of &lt;see cref=&quot;FormDataToObjectConverter&quot;/&gt;
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 /// &lt;param name=&quot;sourceData&quot;&gt;The &lt;see cref=&quot;FormData&quot;/&gt; to convert.&lt;/param&gt;
+<span class="lineNum">      35 </span>            :                 /// &lt;param name=&quot;logger&quot;&gt;The &lt;see cref=&quot;IFormatterLogger&quot;/&gt; to log events to.&lt;/param&gt;
+<span class="lineNum">      36 </span>            :                 /// &lt;param name=&quot;settings&quot;&gt;The &lt;see cref=&quot;MultipartFormatterSettings&quot;/&gt; to use.&lt;/param&gt;
+<span class="lineNum">      37 </span><span class="lineCov">          1 :                 public FormDataToObjectConverter(FormData sourceData, IFormDataConverterLogger logger, MultipartFormatterSettings settings) </span>
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            :                         if (sourceData == null)
+<span class="lineNum">      40 </span>            :                                 throw new ArgumentNullException(&quot;sourceData&quot;);
+<span class="lineNum">      41 </span>            :                         if (logger == null)
+<span class="lineNum">      42 </span>            :                                 throw new ArgumentNullException(&quot;logger&quot;);
+<span class="lineNum">      43 </span>            :                         if (settings == null)
+<span class="lineNum">      44 </span>            :                                 throw new ArgumentNullException(&quot;settings&quot;);
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                         _settings = settings;
+<span class="lineNum">      47 </span>            :                         _sourceData = sourceData;
+<span class="lineNum">      48 </span>            :                         _logger = logger;
+<span class="lineNum">      49 </span>            :                 }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      52 </span>            :                 /// Converts the multi-part form-data to the provided &lt;paramref name=&quot;destinationType&quot;/&gt;
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span>            :                 /// &lt;param name=&quot;destinationType&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; to convert the multi-part form-data to.&lt;/param&gt;
+<span class="lineNum">      55 </span><span class="lineCov">          1 :                 public object Convert(Type destinationType) </span>
+<span class="lineNum">      56 </span>            :                 {
+<span class="lineNum">      57 </span>            :                         if (destinationType == null)
+<span class="lineNum">      58 </span>            :                                 throw new ArgumentNullException(&quot;destinationType&quot;);
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                         if (destinationType == typeof(FormData))
+<span class="lineNum">      61 </span>            :                                 return _sourceData;
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                         var objResult = CreateObject(destinationType);
+<span class="lineNum">      64 </span>            :                         return objResult;
+<span class="lineNum">      65 </span>            :                 } 
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :                 private object CreateObject(Type destinationType, string propertyName = &quot;&quot;)
+<span class="lineNum">      68 </span>            :                 {
+<span class="lineNum">      69 </span>            :                         object propValue = null;
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                         if (propertyName == null)
+<span class="lineNum">      72 </span>            :                         {
+<span class="lineNum">      73 </span>            :                                 propertyName = &quot;&quot;;
+<span class="lineNum">      74 </span>            :                         }
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            :                         object buf;
+<span class="lineNum">      77 </span>            :                         if (TryGetAsNotIndexedListOrArray(destinationType, propertyName, out buf)
+<span class="lineNum">      78 </span>            :                                 || TryGetFromFormData(destinationType, propertyName, out buf)
+<span class="lineNum">      79 </span>            :                                 || TryGetAsGenericDictionary(destinationType, propertyName, out buf)
+<span class="lineNum">      80 </span>            :                                 || TryGetAsIndexedGenericListOrArray(destinationType, propertyName, out buf)
+<span class="lineNum">      81 </span>            :                                 || TryGetAsCustomType(destinationType, propertyName, out buf))
+<span class="lineNum">      82 </span>            :                         {
+<span class="lineNum">      83 </span>            :                                 propValue = buf;
+<span class="lineNum">      84 </span>            :                         }
+<span class="lineNum">      85 </span>            :                         else if (IsNotNullableValueType(destinationType)
+<span class="lineNum">      86 </span>            :                                 &amp;&amp; IsNeedValidateMissedProperty(propertyName))
+<span class="lineNum">      87 </span>            :                         {
+<span class="lineNum">      88 </span>            :                                 _logger.LogError(propertyName, &quot;The value is required.&quot;);
+<span class="lineNum">      89 </span>            :                         }
+<span class="lineNum">      90 </span>            :                         else if (!IsFileOrConvertableFromString(destinationType))
+<span class="lineNum">      91 </span>            :                         {
+<span class="lineNum">      92 </span>            :                                 _logger.LogError(propertyName, String.Format(&quot;Cannot parse type \&quot;{0}\&quot;.&quot;, destinationType.FullName));
+<span class="lineNum">      93 </span>            :                         }
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :                         return propValue;
+<span class="lineNum">      96 </span>            :                 }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                 private bool TryGetAsNotIndexedListOrArray(Type destinationType, string propertyName, out object propValue)
+<span class="lineNum">      99 </span>            :                 {
+<span class="lineNum">     100 </span>            :                         propValue = null;
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :                         Type genericListItemType;
+<span class="lineNum">     103 </span>            :                         bool isGenericList = IsGenericListOrArray(destinationType, out genericListItemType);
+<span class="lineNum">     104 </span>            :                         if (isGenericList)
+<span class="lineNum">     105 </span>            :                         {
+<span class="lineNum">     106 </span>            :                                 var items = GetNotIndexedListItems(propertyName, genericListItemType);
+<span class="lineNum">     107 </span>            :                                 propValue = MakeList(genericListItemType, destinationType, items, propertyName);
+<span class="lineNum">     108 </span>            :                         }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :                         return propValue != null;
+<span class="lineNum">     111 </span>            :                 }
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :                 private List&lt;object&gt; GetNotIndexedListItems(string propertyName, Type genericListItemType)
+<span class="lineNum">     114 </span>            :                 {
+<span class="lineNum">     115 </span>            :                         List&lt;object&gt; res;
+<span class="lineNum">     116 </span>            :                         if (!TryGetListFromFormData(genericListItemType, propertyName, out res))
+<span class="lineNum">     117 </span>            :                         {
+<span class="lineNum">     118 </span>            :                                 TryGetListFromFormData(genericListItemType, propertyName + &quot;[]&quot;, out res);
+<span class="lineNum">     119 </span>            :                         }
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :                         return res ?? new List&lt;object&gt;();
+<span class="lineNum">     122 </span>            :                 }
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :                 private bool TryGetFromFormData(Type destinationType, string propertyName, out object propValue)
+<span class="lineNum">     125 </span>            :                 {
+<span class="lineNum">     126 </span>            :                         propValue = null;
+<span class="lineNum">     127 </span>            :                         List&lt;object&gt; values;
+<span class="lineNum">     128 </span>            :                         if (TryGetListFromFormData(destinationType, propertyName, out values))
+<span class="lineNum">     129 </span>            :                         {
+<span class="lineNum">     130 </span>            :                                 propValue = values.FirstOrDefault();
+<span class="lineNum">     131 </span>            :                                 return true;
+<span class="lineNum">     132 </span>            :                         }
+<span class="lineNum">     133 </span>            :                         return false;
+<span class="lineNum">     134 </span>            :                 }
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :                 private bool TryGetListFromFormData(Type destinationType, string propertyName, out List&lt;object&gt; propValue)
+<span class="lineNum">     137 </span>            :                 {
+<span class="lineNum">     138 </span>            :                         bool existsInFormData = false;
+<span class="lineNum">     139 </span>            :                         propValue = null;
+<span class="lineNum">     140 </span>            : 
+<span class="lineNum">     141 </span>            :                         if (destinationType == typeof(HttpFile) || destinationType == typeof(byte[]))
+<span class="lineNum">     142 </span>            :                         {
+<span class="lineNum">     143 </span>            :                                 var files = _sourceData.GetFiles(propertyName, _settings.CultureInfo);
+<span class="lineNum">     144 </span>            :                                 if (files.Any())
+<span class="lineNum">     145 </span>            :                                 {
+<span class="lineNum">     146 </span>            :                                         existsInFormData = true;
+<span class="lineNum">     147 </span>            :                                         propValue = new List&lt;object&gt;();
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            :                                         foreach (var httpFile in files)
+<span class="lineNum">     150 </span>            :                                         {
+<span class="lineNum">     151 </span>            :                                                 var item = destinationType == typeof(byte[])
+<span class="lineNum">     152 </span>            :                                                         ? httpFile.Buffer
+<span class="lineNum">     153 </span>            :                                                         : (object)httpFile;
+<span class="lineNum">     154 </span>            : 
+<span class="lineNum">     155 </span>            :                                                 propValue.Add(item);
+<span class="lineNum">     156 </span>            :                                         }
+<span class="lineNum">     157 </span>            :                                 }
+<span class="lineNum">     158 </span>            :                         }
+<span class="lineNum">     159 </span>            :                         else
+<span class="lineNum">     160 </span>            :                         {
+<span class="lineNum">     161 </span>            :                                 var values = _sourceData.GetValues(propertyName, _settings.CultureInfo);
+<span class="lineNum">     162 </span>            :                                 if (values.Any())
+<span class="lineNum">     163 </span>            :                                 {
+<span class="lineNum">     164 </span>            :                                         existsInFormData = true;
+<span class="lineNum">     165 </span>            :                                         propValue = new List&lt;object&gt;();
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span>            :                                         foreach (var value in values)
+<span class="lineNum">     168 </span>            :                                         {
+<span class="lineNum">     169 </span>            :                                                 object val;
+<span class="lineNum">     170 </span>            :                                                 if(TryConvertFromString(destinationType, propertyName, value, out val))
+<span class="lineNum">     171 </span>            :                                                 {
+<span class="lineNum">     172 </span>            :                                                         propValue.Add(val);
+<span class="lineNum">     173 </span>            :                                                 }
+<span class="lineNum">     174 </span>            :                                         }
+<span class="lineNum">     175 </span>            :                                 }
+<span class="lineNum">     176 </span>            :                         }
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            :                         return existsInFormData;
+<span class="lineNum">     179 </span>            :                 }
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span>            :                 private bool TryConvertFromString(Type destinationType, string propertyName, string val, out object propValue)
+<span class="lineNum">     182 </span>            :                 {
+<span class="lineNum">     183 </span>            :                         propValue = null;
+<span class="lineNum">     184 </span>            :                         var typeConverter = destinationType.GetFromStringConverter();
+<span class="lineNum">     185 </span>            :                         if (typeConverter == null)
+<span class="lineNum">     186 </span>            :                         {
+<span class="lineNum">     187 </span>            :                                 _logger.LogError(propertyName, &quot;Cannot find type converter for field - &quot; + propertyName);
+<span class="lineNum">     188 </span>            :                         }
+<span class="lineNum">     189 </span>            :                         else
+<span class="lineNum">     190 </span>            :                         {
+<span class="lineNum">     191 </span>            :                                 try
+<span class="lineNum">     192 </span>            :                                 {
+<span class="lineNum">     193 </span>            :                                         propValue = typeConverter.ConvertFromString(val, _settings.CultureInfo);
+<span class="lineNum">     194 </span>            :                                         return true;
+<span class="lineNum">     195 </span>            :                                 }
+<span class="lineNum">     196 </span>            :                                 catch (Exception ex)
+<span class="lineNum">     197 </span>            :                                 {
+<span class="lineNum">     198 </span>            :                                         _logger.LogError(propertyName, String.Format(&quot;Error parsing field \&quot;{0}\&quot;: {1}&quot;, propertyName, ex.Message));
+<span class="lineNum">     199 </span>            :                                 }
+<span class="lineNum">     200 </span>            :                         }
+<span class="lineNum">     201 </span>            :                         return false;
+<span class="lineNum">     202 </span>            :                 }
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :                 private bool TryGetAsGenericDictionary(Type destinationType, string propertyName, out object propValue)
+<span class="lineNum">     205 </span>            :                 {
+<span class="lineNum">     206 </span>            :                         propValue = null;
+<span class="lineNum">     207 </span>            :                         Type keyType, valueType;
+<span class="lineNum">     208 </span>            :                         bool isGenericDictionary = IsGenericDictionary(destinationType, out keyType, out valueType);
+<span class="lineNum">     209 </span>            :                         if (isGenericDictionary)
+<span class="lineNum">     210 </span>            :                         {
+<span class="lineNum">     211 </span>            :                                 var dictType = typeof(Dictionary&lt;,&gt;).MakeGenericType(new[] { keyType, valueType });
+<span class="lineNum">     212 </span>            :                                 var add = dictType.GetMethod(&quot;Add&quot;);
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :                                 var pValue = Activator.CreateInstance(dictType);
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :                                 int index = 0;
+<span class="lineNum">     217 </span>            :                                 string origPropName = propertyName;
+<span class="lineNum">     218 </span>            :                                 bool isFilled = false;
+<span class="lineNum">     219 </span>            :                                 while (true)
+<span class="lineNum">     220 </span>            :                                 {
+<span class="lineNum">     221 </span>            :                                         string propertyKeyName = String.Format(&quot;{0}[{1}].Key&quot;, origPropName, index);
+<span class="lineNum">     222 </span>            :                                         var objKey = CreateObject(keyType, propertyKeyName);
+<span class="lineNum">     223 </span>            :                                         if (objKey != null)
+<span class="lineNum">     224 </span>            :                                         {
+<span class="lineNum">     225 </span>            :                                                 string propertyValueName = String.Format(&quot;{0}[{1}].Value&quot;, origPropName, index);
+<span class="lineNum">     226 </span>            :                                                 var objValue = CreateObject(valueType, propertyValueName);
+<span class="lineNum">     227 </span>            : 
+<span class="lineNum">     228 </span>            :                                                 if (objValue != null)
+<span class="lineNum">     229 </span>            :                                                 {
+<span class="lineNum">     230 </span>            :                                                         add.Invoke(pValue, new[] { objKey, objValue });
+<span class="lineNum">     231 </span>            :                                                         isFilled = true;
+<span class="lineNum">     232 </span>            :                                                 }
+<span class="lineNum">     233 </span>            :                                         }
+<span class="lineNum">     234 </span>            :                                         else
+<span class="lineNum">     235 </span>            :                                         {
+<span class="lineNum">     236 </span>            :                                                 break;
+<span class="lineNum">     237 </span>            :                                         }
+<span class="lineNum">     238 </span>            :                                         index++;
+<span class="lineNum">     239 </span>            :                                 }
+<span class="lineNum">     240 </span>            : 
+<span class="lineNum">     241 </span>            :                                 if (isFilled || IsRootProperty(propertyName))
+<span class="lineNum">     242 </span>            :                                 {
+<span class="lineNum">     243 </span>            :                                         propValue = pValue;
+<span class="lineNum">     244 </span>            :                                 }
+<span class="lineNum">     245 </span>            :                         }
+<span class="lineNum">     246 </span>            : 
+<span class="lineNum">     247 </span>            :                         return isGenericDictionary;
+<span class="lineNum">     248 </span>            :                 }
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span>            :                 private bool TryGetAsIndexedGenericListOrArray(Type destinationType, string propertyName, out object propValue)
+<span class="lineNum">     251 </span>            :                 {
+<span class="lineNum">     252 </span>            :                         propValue = null;
+<span class="lineNum">     253 </span>            :                         Type genericListItemType;
+<span class="lineNum">     254 </span>            :                         bool isGenericList = IsGenericListOrArray(destinationType, out genericListItemType);
+<span class="lineNum">     255 </span>            :                         if (isGenericList)
+<span class="lineNum">     256 </span>            :                         {
+<span class="lineNum">     257 </span>            :                                 var items = GetIndexedListItems(propertyName, genericListItemType);
+<span class="lineNum">     258 </span>            :                                 propValue =  MakeList(genericListItemType, destinationType, items, propertyName);
+<span class="lineNum">     259 </span>            :                         }
+<span class="lineNum">     260 </span>            : 
+<span class="lineNum">     261 </span>            :                         return isGenericList;
+<span class="lineNum">     262 </span>            :                 }
+<span class="lineNum">     263 </span>            : 
+<span class="lineNum">     264 </span>            :                 private object MakeList(Type genericListItemType, Type destinationType, List&lt;object&gt; listItems, string propertyName)
+<span class="lineNum">     265 </span>            :                 {
+<span class="lineNum">     266 </span>            :                         object result = null;
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            :                         if (listItems.Any() || IsRootProperty(propertyName))
+<span class="lineNum">     269 </span>            :                         {
+<span class="lineNum">     270 </span>            :                                 var listType = typeof(List&lt;&gt;).MakeGenericType(genericListItemType);
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span>            :                                 var add = listType.GetMethod(&quot;Add&quot;);
+<span class="lineNum">     273 </span>            :                                 var pValue = Activator.CreateInstance(listType);
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span>            :                                 foreach (var listItem in listItems)
+<span class="lineNum">     276 </span>            :                                 {
+<span class="lineNum">     277 </span>            :                                         add.Invoke(pValue, new[] { listItem });
+<span class="lineNum">     278 </span>            :                                 }
+<span class="lineNum">     279 </span>            : 
+<span class="lineNum">     280 </span>            :                                 if (destinationType.IsArray)
+<span class="lineNum">     281 </span>            :                                 {
+<span class="lineNum">     282 </span>            :                                         var toArrayMethod = listType.GetMethod(&quot;ToArray&quot;);
+<span class="lineNum">     283 </span>            :                                         result = toArrayMethod.Invoke(pValue, new object[0]);
+<span class="lineNum">     284 </span>            :                                 }
+<span class="lineNum">     285 </span>            :                                 else
+<span class="lineNum">     286 </span>            :                                 {
+<span class="lineNum">     287 </span>            :                                         result = pValue;
+<span class="lineNum">     288 </span>            :                                 }
+<span class="lineNum">     289 </span>            :                         }
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span>            :                         return result;
+<span class="lineNum">     292 </span>            :                 }
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span>            :                 private List&lt;object&gt; GetIndexedListItems(string origPropName, Type genericListItemType)
+<span class="lineNum">     295 </span>            :                 {
+<span class="lineNum">     296 </span>            :                         var res = new List&lt;object&gt;();
+<span class="lineNum">     297 </span>            :                         int index = 0;
+<span class="lineNum">     298 </span>            :                         while (true)
+<span class="lineNum">     299 </span>            :                         {
+<span class="lineNum">     300 </span>            :                                 var propertyName = String.Format(&quot;{0}[{1}]&quot;, origPropName, index);
+<span class="lineNum">     301 </span>            :                                 var objValue = CreateObject(genericListItemType, propertyName);
+<span class="lineNum">     302 </span>            :                                 if (objValue != null)
+<span class="lineNum">     303 </span>            :                                 {
+<span class="lineNum">     304 </span>            :                                         res.Add(objValue);
+<span class="lineNum">     305 </span>            :                                 }
+<span class="lineNum">     306 </span>            :                                 else
+<span class="lineNum">     307 </span>            :                                 {
+<span class="lineNum">     308 </span>            :                                         break;
+<span class="lineNum">     309 </span>            :                                 }
+<span class="lineNum">     310 </span>            : 
+<span class="lineNum">     311 </span>            :                                 index++;
+<span class="lineNum">     312 </span>            :                         }
+<span class="lineNum">     313 </span>            :                         return res;
+<span class="lineNum">     314 </span>            :                 }
+<span class="lineNum">     315 </span>            : 
+<span class="lineNum">     316 </span>            :                 private bool TryGetAsCustomType(Type destinationType, string propertyName, out object propValue)
+<span class="lineNum">     317 </span>            :                 {
+<span class="lineNum">     318 </span>            :                         propValue = null;
+<span class="lineNum">     319 </span>            :                         bool isCustomNonEnumerableType = destinationType.IsCustomNonEnumerableType();
+<span class="lineNum">     320 </span>            :                         if (isCustomNonEnumerableType &amp;&amp; IsRootPropertyOrAnyChildPropertiesExistsInFormData(propertyName))
+<span class="lineNum">     321 </span>            :                         {
+<span class="lineNum">     322 </span>            :                                 propValue = Activator.CreateInstance(destinationType);
+<span class="lineNum">     323 </span>            :                                 foreach (PropertyInfo propertyInfo in destinationType.GetProperties().Where(m =&gt; m.SetMethod != null))
+<span class="lineNum">     324 </span>            :                                 {
+<span class="lineNum">     325 </span>            :                                         var propName = (!String.IsNullOrEmpty(propertyName) ? propertyName + &quot;.&quot; : &quot;&quot;) + propertyInfo.Name;
+<span class="lineNum">     326 </span>            : 
+<span class="lineNum">     327 </span>            :                                         var objValue = CreateObject(propertyInfo.PropertyType, propName);
+<span class="lineNum">     328 </span>            :                                         if (objValue != null)
+<span class="lineNum">     329 </span>            :                                         {
+<span class="lineNum">     330 </span>            :                                                 propertyInfo.SetValue(propValue, objValue);
+<span class="lineNum">     331 </span>            :                                         }
+<span class="lineNum">     332 </span>            :                                 }
+<span class="lineNum">     333 </span>            :                         }
+<span class="lineNum">     334 </span>            :                         return isCustomNonEnumerableType;
+<span class="lineNum">     335 </span>            :                 }
+<span class="lineNum">     336 </span>            : 
+<span class="lineNum">     337 </span>            :                 private bool IsGenericDictionary(Type type, out Type keyType, out Type valueType)
+<span class="lineNum">     338 </span>            :                 {
+<span class="lineNum">     339 </span>            :                         Type iDictType = type.GetInterface(typeof (IDictionary&lt;,&gt;).Name);
+<span class="lineNum">     340 </span>            :                         if (iDictType != null)
+<span class="lineNum">     341 </span>            :                         {
+<span class="lineNum">     342 </span>            :                                 var types = iDictType.GetGenericArguments();
+<span class="lineNum">     343 </span>            :                                 if (types.Length == 2)
+<span class="lineNum">     344 </span>            :                                 {
+<span class="lineNum">     345 </span>            :                                         keyType = types[0];
+<span class="lineNum">     346 </span>            :                                         valueType = types[1];
+<span class="lineNum">     347 </span>            :                                         return true;
+<span class="lineNum">     348 </span>            :                                 }
+<span class="lineNum">     349 </span>            :                         }
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span>            :                         keyType = null;
+<span class="lineNum">     352 </span>            :                         valueType = null;
+<span class="lineNum">     353 </span>            :                         return false;
+<span class="lineNum">     354 </span>            :                 }
+<span class="lineNum">     355 </span>            : 
+<span class="lineNum">     356 </span>            :                 private bool IsGenericListOrArray(Type type, out Type itemType)
+<span class="lineNum">     357 </span>            :                 {
+<span class="lineNum">     358 </span>            :                         if (type.GetInterface(typeof(IDictionary&lt;,&gt;).Name) == null) //not a dictionary
+<span class="lineNum">     359 </span>            :                         {
+<span class="lineNum">     360 </span>            :                                 if (type.IsArray)
+<span class="lineNum">     361 </span>            :                                 {
+<span class="lineNum">     362 </span>            :                                         itemType = type.GetElementType();
+<span class="lineNum">     363 </span>            :                                         return true;
+<span class="lineNum">     364 </span>            :                                 }
+<span class="lineNum">     365 </span>            : 
+<span class="lineNum">     366 </span>            :                                 Type iListType = type.GetInterface(typeof(ICollection&lt;&gt;).Name);
+<span class="lineNum">     367 </span>            :                                 if (iListType != null) 
+<span class="lineNum">     368 </span>            :                                 {
+<span class="lineNum">     369 </span>            :                                         Type[] genericArguments = iListType.GetGenericArguments();
+<span class="lineNum">     370 </span>            :                                         if (genericArguments.Length == 1)
+<span class="lineNum">     371 </span>            :                                         {
+<span class="lineNum">     372 </span>            :                                                 itemType = genericArguments[0];
+<span class="lineNum">     373 </span>            :                                                 return true;
+<span class="lineNum">     374 </span>            :                                         }
+<span class="lineNum">     375 </span>            :                                 }
+<span class="lineNum">     376 </span>            :                         }
+<span class="lineNum">     377 </span>            :                   
+<span class="lineNum">     378 </span>            :                         itemType = null;
+<span class="lineNum">     379 </span>            :                         return false;
+<span class="lineNum">     380 </span>            :                 }
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span>            :                 private bool IsFileOrConvertableFromString(Type type)
+<span class="lineNum">     383 </span>            :                 {
+<span class="lineNum">     384 </span>            :                         if (type == typeof (HttpFile))
+<span class="lineNum">     385 </span>            :                                 return true;
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span>            :                         return type.GetFromStringConverter() != null;
+<span class="lineNum">     388 </span>            :                 }
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span>            :                 private bool IsNotNullableValueType(Type type)
+<span class="lineNum">     391 </span>            :                 {
+<span class="lineNum">     392 </span>            :                         if (!type.IsValueType)
+<span class="lineNum">     393 </span>            :                                 return false;
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span>            :                         return Nullable.GetUnderlyingType(type) == null;
+<span class="lineNum">     396 </span>            :                 }
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span>            :                 private bool IsNeedValidateMissedProperty(string propertyName)
+<span class="lineNum">     399 </span>            :                 {
+<span class="lineNum">     400 </span>            :                         return _settings.ValidateNonNullableMissedProperty
+<span class="lineNum">     401 </span>            :                                         &amp;&amp; !IsIndexedProperty(propertyName)
+<span class="lineNum">     402 </span>            :                                         &amp;&amp; IsRootPropertyOrAnyParentsPropertyExistsInFormData(propertyName);
+<span class="lineNum">     403 </span>            :                 }
+<span class="lineNum">     404 </span>            : 
+<span class="lineNum">     405 </span>            :                 private bool IsRootPropertyOrAnyParentsPropertyExistsInFormData(string propertyName)
+<span class="lineNum">     406 </span>            :                 {
+<span class="lineNum">     407 </span>            :                         string parentName = &quot;&quot;;
+<span class="lineNum">     408 </span>            :                         if (propertyName != null)
+<span class="lineNum">     409 </span>            :                         {
+<span class="lineNum">     410 </span>            :                                 int lastDotIndex = propertyName.LastIndexOf('.');
+<span class="lineNum">     411 </span>            :                                 if (lastDotIndex &gt;= 0)
+<span class="lineNum">     412 </span>            :                                 {
+<span class="lineNum">     413 </span>            :                                         parentName = propertyName.Substring(0, lastDotIndex);
+<span class="lineNum">     414 </span>            :                                 }
+<span class="lineNum">     415 </span>            :                         }
+<span class="lineNum">     416 </span>            : 
+<span class="lineNum">     417 </span>            :                         bool result = IsRootPropertyOrAnyChildPropertiesExistsInFormData(parentName);
+<span class="lineNum">     418 </span>            :                         return result;
+<span class="lineNum">     419 </span>            :                 }
+<span class="lineNum">     420 </span>            : 
+<span class="lineNum">     421 </span>            :                 private bool IsRootPropertyOrAnyChildPropertiesExistsInFormData(string propertyName)
+<span class="lineNum">     422 </span>            :                 {
+<span class="lineNum">     423 </span>            :                         if (IsRootProperty(propertyName))
+<span class="lineNum">     424 </span>            :                                 return true;
+<span class="lineNum">     425 </span>            : 
+<span class="lineNum">     426 </span>            :                         string prefixWithDot = propertyName + &quot;.&quot;;
+<span class="lineNum">     427 </span>            :                         bool result = _sourceData.GetAllKeys().Any(m =&gt; m.StartsWith(prefixWithDot, true, _settings.CultureInfo));
+<span class="lineNum">     428 </span>            :                         return result;
+<span class="lineNum">     429 </span>            :                 }
+<span class="lineNum">     430 </span>            : 
+<span class="lineNum">     431 </span>            :                 private bool IsRootProperty(string propertyName)
+<span class="lineNum">     432 </span>            :                 {
+<span class="lineNum">     433 </span>            :                         return propertyName == &quot;&quot;;
+<span class="lineNum">     434 </span>            :                 }
+<span class="lineNum">     435 </span>            : 
+<span class="lineNum">     436 </span>            :                 private bool IsIndexedProperty(string propName)
+<span class="lineNum">     437 </span>            :                 {
+<span class="lineNum">     438 </span>            :                         return propName != null &amp;&amp; propName.EndsWith(&quot;]&quot;);
+<span class="lineNum">     439 </span>            :                 }
+<span class="lineNum">     440 </span>            :         }
+<span class="lineNum">     441 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

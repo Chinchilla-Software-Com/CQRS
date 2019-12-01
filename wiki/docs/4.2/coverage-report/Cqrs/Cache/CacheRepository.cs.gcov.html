@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Cache/CacheRepository.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Cache</a> - CacheRepository.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Concurrent;
+<span class="lineNum">      11 </span>            : using System.Collections.Generic;
+<span class="lineNum">      12 </span>            : using System.Linq;
+<span class="lineNum">      13 </span>            : using System.Runtime.Caching;
+<span class="lineNum">      14 </span>            : using Cqrs.Domain;
+<span class="lineNum">      15 </span>            : using Cqrs.Events;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : namespace Cqrs.Cache
+<span class="lineNum">      18 </span>            : {
+<span class="lineNum">      19 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      20 </span>            :         /// Uses &lt;see cref=&quot;MemoryCache.Default&quot;/&gt; to provide a caching mechanism to improve performance of a &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      23 </span>            :         public class CacheRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      24 </span>            :                 : IAggregateRepository&lt;TAuthenticationToken&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// Sets or set the &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}&quot;/&gt; that will be used, and cached over.
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span>            :                 private IAggregateRepository&lt;TAuthenticationToken&gt; Repository { get; set; }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; used to retrieve events from when a cache hit occurs.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 private IEventStore&lt;TAuthenticationToken&gt; EventStore { get; set; }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      37 </span>            :                 /// Gets or sets the &lt;see cref=&quot;MemoryCache&quot;/&gt; used.
+<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      39 </span>            :                 private MemoryCache Cache { get; set; }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 private Func&lt;CacheItemPolicy&gt; PolicyFactory { get; set; }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 private static readonly ConcurrentDictionary&lt;string, object&gt; Locks = new ConcurrentDictionary&lt;string, object&gt;();
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;CacheRepository{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span><span class="lineCov">          1 :                 public CacheRepository(IAggregateRepository&lt;TAuthenticationToken&gt; repository, IEventStore&lt;TAuthenticationToken&gt; eventStore)</span>
+<span class="lineNum">      49 </span>            :                 {
+<span class="lineNum">      50 </span>            :                         if(repository == null)
+<span class="lineNum">      51 </span>            :                                 throw new ArgumentNullException(&quot;repository&quot;);
+<span class="lineNum">      52 </span>            :                         if(eventStore == null)
+<span class="lineNum">      53 </span>            :                                 throw new ArgumentNullException(&quot;eventStore&quot;);
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                         Repository = repository;
+<span class="lineNum">      56 </span>            :                         EventStore = eventStore;
+<span class="lineNum">      57 </span>            :                         Cache = MemoryCache.Default;
+<span class="lineNum">      58 </span>            :                         PolicyFactory = () =&gt; new CacheItemPolicy
+<span class="lineNum">      59 </span>            :                                 {
+<span class="lineNum">      60 </span>            :                                         SlidingExpiration = new TimeSpan(0,0,15,0),
+<span class="lineNum">      61 </span>            :                                         RemovedCallback = x =&gt;
+<span class="lineNum">      62 </span>            :                                         {
+<span class="lineNum">      63 </span>            :                                                 object o;
+<span class="lineNum">      64 </span>            :                                                 Locks.TryRemove(x.CacheItem.Key, out o);
+<span class="lineNum">      65 </span>            :                                         }
+<span class="lineNum">      66 </span>            :                                 };
+<span class="lineNum">      67 </span>            :                 }
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      70 </span>            :                 /// Locks the cache, adds the provided &lt;paramref name=&quot;aggregate&quot;/&gt; to the cache if not already in it, then calls &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}.Save{TAggregateRoot}&quot;/&gt; on &lt;see cref=&quot;Repository&quot;/&gt;.
+<span class="lineNum">      71 </span>            :                 /// In the event of an &lt;see cref=&quot;Exception&quot;/&gt; the &lt;paramref name=&quot;aggregate&quot;/&gt; is always ejected out of the &lt;see cref=&quot;Cache&quot;/&gt;.
+<span class="lineNum">      72 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      73 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      74 </span>            :                 /// &lt;param name=&quot;aggregate&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to save and persist.&lt;/param&gt;
+<span class="lineNum">      75 </span>            :                 /// &lt;param name=&quot;expectedVersion&quot;&gt;The version number the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; is expected to be at.&lt;/param&gt;
+<span class="lineNum">      76 </span><span class="lineCov">          1 :                 public virtual void Save&lt;TAggregateRoot&gt;(TAggregateRoot aggregate, int? expectedVersion = null)</span>
+<span class="lineNum">      77 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">      78 </span>            :                 {
+<span class="lineNum">      79 </span>            :                         var idstring = aggregate.Id.ToString();
+<span class="lineNum">      80 </span>            :                         try
+<span class="lineNum">      81 </span>            :                         {
+<span class="lineNum">      82 </span>            :                                 lock (Locks.GetOrAdd(idstring, x =&gt; new object()))
+<span class="lineNum">      83 </span>            :                                 {
+<span class="lineNum">      84 </span>            :                                         if (aggregate.Id != Guid.Empty &amp;&amp; !IsTracked(aggregate.Id))
+<span class="lineNum">      85 </span>            :                                                 Cache.Add(idstring, aggregate, PolicyFactory.Invoke());
+<span class="lineNum">      86 </span>            :                                         Repository.Save(aggregate, expectedVersion);
+<span class="lineNum">      87 </span>            :                                 }
+<span class="lineNum">      88 </span>            :                         }
+<span class="lineNum">      89 </span>            :                         catch (Exception)
+<span class="lineNum">      90 </span>            :                         {
+<span class="lineNum">      91 </span>            :                                 Cache.Remove(idstring);
+<span class="lineNum">      92 </span>            :                                 throw;
+<span class="lineNum">      93 </span>            :                         }
+<span class="lineNum">      94 </span>            :                 }
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      97 </span>            :                 /// Locks the cache, checks if the aggregate is tracked in the &lt;see cref=&quot;Cache&quot;/&gt;, if it is
+<span class="lineNum">      98 </span>            :                 /// retrieves the aggregate from the &lt;see cref=&quot;Cache&quot;/&gt; and then uses either the provided &lt;paramref name=&quot;events&quot;/&gt; or makes a call &lt;see cref=&quot;IEventStore{TAuthenticationToken}.Get(System.Type,System.Guid,bool,int)&quot;/&gt; on the &lt;see cref=&quot;EventStore&quot;/&gt;
+<span class="lineNum">      99 </span>            :                 /// and rehydrates the cached aggregate with any new events from it's cached version.
+<span class="lineNum">     100 </span>            :                 /// If the aggregate is not in the &lt;see cref=&quot;Cache&quot;/&gt;
+<span class="lineNum">     101 </span>            :                 /// &lt;see cref=&quot;IAggregateRepository{TAuthenticationToken}.Get{TAggregateRoot}&quot;/&gt; is called on the &lt;see cref=&quot;Repository&quot;/&gt;.
+<span class="lineNum">     102 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     103 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     104 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The ID of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to get.&lt;/param&gt;
+<span class="lineNum">     105 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     106 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     107 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     108 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     109 </span><span class="lineCov">          1 :                 public virtual TAggregateRoot Get&lt;TAggregateRoot&gt;(Guid aggregateId, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
+<span class="lineNum">     110 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     111 </span>            :                 {
+<span class="lineNum">     112 </span>            :                         string idstring = aggregateId.ToString();
+<span class="lineNum">     113 </span>            :                         try
+<span class="lineNum">     114 </span>            :                         {
+<span class="lineNum">     115 </span>            :                                 IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; theseEvents = null;
+<span class="lineNum">     116 </span>            :                                 lock (Locks.GetOrAdd(idstring, _ =&gt; new object()))
+<span class="lineNum">     117 </span>            :                                 {
+<span class="lineNum">     118 </span>            :                                         TAggregateRoot aggregate;
+<span class="lineNum">     119 </span>            :                                         if (IsTracked(aggregateId))
+<span class="lineNum">     120 </span>            :                                         {
+<span class="lineNum">     121 </span>            :                                                 aggregate = (TAggregateRoot)Cache.Get(idstring);
+<span class="lineNum">     122 </span>            :                                                 theseEvents = events ?? EventStore.Get&lt;TAggregateRoot&gt;(aggregateId, false, aggregate.Version).ToList();
+<span class="lineNum">     123 </span>            :                                                 if (theseEvents.Any() &amp;&amp; theseEvents.First().Version != aggregate.Version + 1)
+<span class="lineNum">     124 </span>            :                                                 {
+<span class="lineNum">     125 </span>            :                                                         Cache.Remove(idstring);
+<span class="lineNum">     126 </span>            :                                                 }
+<span class="lineNum">     127 </span>            :                                                 else
+<span class="lineNum">     128 </span>            :                                                 {
+<span class="lineNum">     129 </span>            :                                                         aggregate.LoadFromHistory(theseEvents);
+<span class="lineNum">     130 </span>            :                                                         return aggregate;
+<span class="lineNum">     131 </span>            :                                                 }
+<span class="lineNum">     132 </span>            :                                         }
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            :                                         aggregate = Repository.Get&lt;TAggregateRoot&gt;(aggregateId, theseEvents);
+<span class="lineNum">     135 </span>            :                                         Cache.Add(aggregateId.ToString(), aggregate, PolicyFactory.Invoke());
+<span class="lineNum">     136 </span>            :                                         return aggregate;
+<span class="lineNum">     137 </span>            :                                 }
+<span class="lineNum">     138 </span>            :                         }
+<span class="lineNum">     139 </span>            :                         catch (Exception)
+<span class="lineNum">     140 </span>            :                         {
+<span class="lineNum">     141 </span>            :                                 Cache.Remove(idstring);
+<span class="lineNum">     142 </span>            :                                 throw;
+<span class="lineNum">     143 </span>            :                         }
+<span class="lineNum">     144 </span>            :                 }
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     147 </span>            :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">     148 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     149 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     150 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">     151 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">     152 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     153 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     154 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     155 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     156 </span><span class="lineCov">          1 :                 public TAggregateRoot GetToVersion&lt;TAggregateRoot&gt;(Guid aggregateId, int version, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
+<span class="lineNum">     157 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     158 </span>            :                 {
+<span class="lineNum">     159 </span>            :                         throw new InvalidOperationException(&quot;Verion replay is not appriopriate with caching.&quot;);
+<span class="lineNum">     160 </span>            :                 }
+<span class="lineNum">     161 </span>            : 
+<span class="lineNum">     162 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     163 </span>            :                 /// Retrieves an &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;typeparamref name=&quot;TAggregateRoot&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">     164 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     165 </span>            :                 /// &lt;typeparam name=&quot;TAggregateRoot&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     166 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The identifier of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; to retrieve.&lt;/param&gt;
+<span class="lineNum">     167 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     168 </span>            :                 /// &lt;param name=&quot;events&quot;&gt;
+<span class="lineNum">     169 </span>            :                 /// A collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to replay on the retrieved &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     170 </span>            :                 /// If null, the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt; will be used to retrieve a list of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for you.
+<span class="lineNum">     171 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     172 </span><span class="lineCov">          1 :                 public TAggregateRoot GetToDate&lt;TAggregateRoot&gt;(Guid aggregateId, DateTime versionedDate, IList&lt;IEvent&lt;TAuthenticationToken&gt;&gt; events = null)</span>
+<span class="lineNum">     173 </span>            :                         where TAggregateRoot : IAggregateRoot&lt;TAuthenticationToken&gt;
+<span class="lineNum">     174 </span>            :                 {
+<span class="lineNum">     175 </span>            :                         throw new InvalidOperationException(&quot;Verion replay is not appriopriate with caching.&quot;);
+<span class="lineNum">     176 </span>            :                 }
+<span class="lineNum">     177 </span>            : 
+<span class="lineNum">     178 </span>            :                 private bool IsTracked(Guid id)
+<span class="lineNum">     179 </span>            :                 {
+<span class="lineNum">     180 </span>            :                         return Cache.Contains(id.ToString());
+<span class="lineNum">     181 </span>            :                 }
+<span class="lineNum">     182 </span>            :         }
+<span class="lineNum">     183 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

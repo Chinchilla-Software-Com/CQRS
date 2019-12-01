@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.WebApi/Events/Handlers/SingleSignOnTokenEventToHubProxy.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Cqrs.WebApi/Events/Handlers</a> - SingleSignOnTokenEventToHubProxy.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : #region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      11 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      12 </span>            : using Cqrs.Events;
+<span class="lineNum">      13 </span>            : using Cqrs.WebApi.SignalR.Hubs;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : namespace Cqrs.WebApi.Events.Handlers
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// Proxies &lt;see cref=&quot;IEvent{TSingleSignOnToken}&quot;&gt;events&lt;/see&gt; from the event bus to the &lt;see cref=&quot;INotificationHub&quot;/&gt;.
+<span class="lineNum">      19 </span>            :         /// This requires one or more &lt;see cref=&quot;IEventHandler&quot;/&gt; implementations in order to be triggered.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TSingleSignOnToken&quot;&gt;The &lt;see cref=&quot;ISingleSignOnToken&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      22 </span>            :         public abstract class SingleSignOnTokenEventToHubProxy&lt;TSingleSignOnToken&gt;
+<span class="lineNum">      23 </span>            :                 where TSingleSignOnToken : ISingleSignOnToken, new()
+<span class="lineNum">      24 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;SingleSignOnTokenEventToHubProxy{TSingleSignOnToken}&quot;/&gt;.
+<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 protected SingleSignOnTokenEventToHubProxy(ILogger logger, INotificationHub notificationHub, IAuthenticationTokenHelper&lt;TSingleSignOnToken&gt; authenticationTokenHelper)</span>
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         Logger = logger;
+<span class="lineNum">      31 </span>            :                         NotificationHub = notificationHub;
+<span class="lineNum">      32 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">      33 </span>            :                 }
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      36 </span>            :                 /// Gets or sets the &lt;see cref=&quot;ILogger&quot;/&gt;.
+<span class="lineNum">      37 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      38 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      41 </span>            :                 /// The &lt;see cref=&quot;INotificationHub&quot;/&gt; to proxy &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; to.
+<span class="lineNum">      42 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      43 </span>            :                 protected INotificationHub NotificationHub { get; private set; }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IAuthenticationTokenHelper{TSingleSignOnToken}&quot;/&gt;.
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span>            :                 protected IAuthenticationTokenHelper&lt;TSingleSignOnToken&gt; AuthenticationTokenHelper { get; private set; }
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      51 </span>            :                 /// Get the authentication token of the entity that triggered the request generating the provided &lt;paramref name=&quot;message&quot;/&gt;
+<span class="lineNum">      52 </span>            :                 /// Extract any proxy information attributes (&lt;see cref=&quot;NotifyCallerEventAttribute&quot;/&gt;, &lt;see cref=&quot;NotifyEveryoneEventAttribute&quot;/&gt; and &lt;see cref=&quot;NotifyEveryoneExceptCallerEventAttribute&quot;/&gt;)
+<span class="lineNum">      53 </span>            :                 /// then proxy the provided &lt;paramref name=&quot;message&quot;/&gt; to &lt;see cref=&quot;NotificationHub&quot;/&gt; if an attribute is present.
+<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      55 </span>            :                 /// &lt;param name=&quot;message&quot;&gt;The &lt;see cref=&quot;IEvent{TSingleSignOnToken}&quot;/&gt; to proxy.&lt;/param&gt;
+<span class="lineNum">      56 </span><span class="lineCov">          1 :                 protected virtual void HandleGenericEvent(IEvent&lt;TSingleSignOnToken&gt; message)</span>
+<span class="lineNum">      57 </span>            :                 {
+<span class="lineNum">      58 </span>            :                         Type eventType = message.GetType();
+<span class="lineNum">      59 </span>            :                         var notifyCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyCallerEventAttribute)) as NotifyCallerEventAttribute;
+<span class="lineNum">      60 </span>            :                         var notifyEveryoneEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneEventAttribute)) as NotifyEveryoneEventAttribute;
+<span class="lineNum">      61 </span>            :                         var notifyEveryoneExceptCallerEventAttribute = Attribute.GetCustomAttribute(eventType, typeof(NotifyEveryoneExceptCallerEventAttribute)) as NotifyEveryoneExceptCallerEventAttribute;
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                         string userToken = (AuthenticationTokenHelper.GetAuthenticationToken().Token ?? string.Empty).Replace(&quot;.&quot;, string.Empty);
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                         if (notifyCallerEventAttribute != null)
+<span class="lineNum">      66 </span>            :                         {
+<span class="lineNum">      67 </span>            :                                 NotificationHub.SendUserEvent(message, userToken);
+<span class="lineNum">      68 </span>            :                         }
+<span class="lineNum">      69 </span>            :                         if (notifyEveryoneEventAttribute != null)
+<span class="lineNum">      70 </span>            :                         {
+<span class="lineNum">      71 </span>            :                                 NotificationHub.SendAllUsersEvent(message);
+<span class="lineNum">      72 </span>            :                         }
+<span class="lineNum">      73 </span>            :                         if (notifyEveryoneExceptCallerEventAttribute != null)
+<span class="lineNum">      74 </span>            :                         {
+<span class="lineNum">      75 </span>            :                                 NotificationHub.SendExceptThisUserEvent(message, userToken);
+<span class="lineNum">      76 </span>            :                         }
+<span class="lineNum">      77 </span>            :                 }
+<span class="lineNum">      78 </span>            :         }
+<span class="lineNum">      79 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

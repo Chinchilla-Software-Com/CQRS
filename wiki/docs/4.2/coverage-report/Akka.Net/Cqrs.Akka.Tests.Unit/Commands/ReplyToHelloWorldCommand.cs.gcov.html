@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Akka.Net/Cqrs.Akka.Tests.Unit/Commands/ReplyToHelloWorldCommand.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Akka.Net/Cqrs.Akka.Tests.Unit/Commands</a> - ReplyToHelloWorldCommand.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">      12 </span>            : using Cqrs.Commands;
+<span class="lineNum">      13 </span>            : using Cqrs.Domain;
+<span class="lineNum">      14 </span>            : using Cqrs.Messages;
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            : namespace Cqrs.Akka.Tests.Unit.Commands
+<span class="lineNum">      17 </span>            : {
+<span class="lineNum">      18 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      19 </span>            :         /// Someone wants to reply to someone saying &quot;Hello World&quot;.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         public class ReplyToHelloWorldCommand : ICommand&lt;Guid&gt;
+<span class="lineNum">      22 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      23 </span>            :                 #region Implementation of IMessage
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :                 /// An identifier used to group together several &lt;see cref=&quot;IMessage&quot;/&gt;. Any &lt;see cref=&quot;IMessage&quot;/&gt; with the same &lt;see cref=&quot;CorrelationId&quot;/&gt; were triggered by the same initiating request.
+<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      28 </span>            :                 [DataMember]
+<span class="lineNum">      29 </span>            :                 public Guid CorrelationId { get; set; }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// The originating framework this message was sent from.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 [DataMember]
+<span class="lineNum">      35 </span>            :                 public string OriginatingFramework { get; set; }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// The frameworks this &lt;see cref=&quot;IMessage&quot;/&gt; has been delivered to/sent via already.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :                 [DataMember]
+<span class="lineNum">      41 </span>            :                 public IEnumerable&lt;string&gt; Frameworks { get; set; }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 #endregion
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 #region Implementation of IMessageWithAuthenticationToken&lt;Guid&gt;
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      48 </span>            :                 /// The authentication token of the entity that triggered the event to be raised.
+<span class="lineNum">      49 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      50 </span>            :                 [DataMember]
+<span class="lineNum">      51 </span>            :                 public Guid AuthenticationToken { get; set; }
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span>            :                 #endregion
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 #region Implementation of ICommand&lt;Guid&gt;
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// The identifier of the command itself.
+<span class="lineNum">      59 </span>            :                 /// In some cases this may be the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; or &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; this command targets.
+<span class="lineNum">      60 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      61 </span>            :                 [DataMember]
+<span class="lineNum">      62 </span>            :                 public Guid Id { get; set; }
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      65 </span>            :                 /// The expected version number the targeted &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; or &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt; is expected to be.
+<span class="lineNum">      66 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      67 </span>            :                 [DataMember]
+<span class="lineNum">      68 </span>            :                 public int ExpectedVersion { get; set; }
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :                 #endregion
+<span class="lineNum">      71 </span>            :         }
+<span class="lineNum">      72 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

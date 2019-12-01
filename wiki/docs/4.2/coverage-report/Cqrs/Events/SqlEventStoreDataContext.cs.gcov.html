@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Events/SqlEventStoreDataContext.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Events</a> - SqlEventStoreDataContext.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : #region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">      10 </span>            : using System;
+<span class="lineNum">      11 </span>            : #else
+<span class="lineNum">      12 </span>            : using System.Collections.Generic;
+<span class="lineNum">      13 </span>            : using System.Data.Common;
+<span class="lineNum">      14 </span>            : #endif
+<span class="lineNum">      15 </span>            : #if NET40
+<span class="lineNum">      16 </span>            : using System.Data.Entity;
+<span class="lineNum">      17 </span>            : using System.Data.Entity.Infrastructure.Interception;
+<span class="lineNum">      18 </span>            : #else
+<span class="lineNum">      19 </span>            : using Microsoft.EntityFrameworkCore;
+<span class="lineNum">      20 </span>            : #endif
+<span class="lineNum">      21 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">      22 </span>            : using Microsoft.EntityFrameworkCore.Diagnostics;
+<span class="lineNum">      23 </span>            : #endif
+<span class="lineNum">      24 </span>            : using System.Linq;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            : namespace Cqrs.Events
+<span class="lineNum">      27 </span>            : {
+<span class="lineNum">      28 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :         /// A custom &lt;see cref=&quot;DbContext&quot;/&gt; that supports specifying a table name.
+<span class="lineNum">      30 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      31 </span>            :         public class SqlEventStoreDataContext : DbContext
+<span class="lineNum">      32 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      34 </span>            :                 /// Name of Table this entity will use
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span>            :                 protected string TableName { get; private set; }
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// Instantiates a new instance of the &lt;see cref=&quot;SqlEventStoreDataContext&quot;/&gt; class using the given string as the name or connection string for the database to which a connection will be made. See the class remarks for how this is used to create a connection.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 /// &lt;param name=&quot;nameOrConnectionString&quot;&gt;Either the database name or a connection string.&lt;/param&gt;
+<span class="lineNum">      42 </span><span class="lineCov">          1 :                 public SqlEventStoreDataContext(string nameOrConnectionString)</span>
+<span class="lineNum">      43 </span>            : #if NET40
+<span class="lineNum">      44 </span>            :                         : base(nameOrConnectionString) { }
+<span class="lineNum">      45 </span>            : #else
+<span class="lineNum">      46 </span>            :                         : base()
+<span class="lineNum">      47 </span>            :                 {
+<span class="lineNum">      48 </span>            :                         NameOrConnectionString = nameOrConnectionString;
+<span class="lineNum">      49 </span>            :                 }
+<span class="lineNum">      50 </span>            : #endif
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            : #if NET40
+<span class="lineNum">      53 </span>            : #else
+<span class="lineNum">      54 </span>            :                 private string NameOrConnectionString { get; }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">      57 </span>            :                 private static  DbCommandInterceptor Interceptor { get; }
+<span class="lineNum">      58 </span>            : #endif
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      61 </span>            :                 /// Override this method to configure the database (and other options) to be used for this context. This method is called for each instance of the context that is created. The base implementation does nothing.
+<span class="lineNum">      62 </span>            :                 /// In situations where an instance of Microsoft.EntityFrameworkCore.DbContextOptions may or may not have been passed to the constructor, you can use Microsoft.EntityFrameworkCore.DbContextOptionsBuilder.IsConfigured to determine if the options have already been set, and skip some or all of the logic in Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder).
+<span class="lineNum">      63 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      64 </span>            :                 /// &lt;param name=&quot;optionsBuilder&quot;&gt;A builder used to create or modify options for this context. Databases (and other extensions) typically define extension methods on this object that allow you to configure the context.&lt;/param&gt;
+<span class="lineNum">      65 </span><span class="lineCov">          1 :                 protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)</span>
+<span class="lineNum">      66 </span>            :                 {
+<span class="lineNum">      67 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">      68 </span>            :                         optionsBuilder.UseSqlServer(NameOrConnectionString)
+<span class="lineNum">      69 </span>            :                           .AddInterceptors(Interceptor);
+<span class="lineNum">      70 </span>            : #else
+<span class="lineNum">      71 </span>            :                         optionsBuilder.UseSqlServer(NameOrConnectionString);
+<span class="lineNum">      72 </span>            : #endif
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                         base.OnConfiguring(optionsBuilder);
+<span class="lineNum">      75 </span>            :                 }
+<span class="lineNum">      76 </span>            : #endif
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                 static SqlEventStoreDataContext()
+<span class="lineNum">      79 </span>            :                 {
+<span class="lineNum">      80 </span>            : #if NET40
+<span class="lineNum">      81 </span>            :                         DbInterception.Add(new QueueMessageInterceptor());
+<span class="lineNum">      82 </span>            : #endif
+<span class="lineNum">      83 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">      84 </span>            :                         Interceptor = new QueueMessageInterceptor();
+<span class="lineNum">      85 </span>            : #endif
+<span class="lineNum">      86 </span>            :                 }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      89 </span>            :                 /// Instantiates a new instance of the &lt;see cref=&quot;SqlEventStoreDataContext&quot;/&gt; class using the given string as the name or connection string for the database to which a connection will be made. See the class remarks for how this is used to create a connection.
+<span class="lineNum">      90 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      91 </span>            :                 /// &lt;param name=&quot;nameOrConnectionString&quot;&gt;Either the database name or a connection string.&lt;/param&gt;
+<span class="lineNum">      92 </span>            :                 /// &lt;param name=&quot;tableName&quot;&gt;The name of the table to use for this entity.&lt;/param&gt;
+<span class="lineNum">      93 </span><span class="lineCov">          1 :                 protected SqlEventStoreDataContext(string nameOrConnectionString, string tableName)</span>
+<span class="lineNum">      94 </span>            :                         : this(nameOrConnectionString)
+<span class="lineNum">      95 </span>            :                 {
+<span class="lineNum">      96 </span>            :                         TableName = tableName;
+<span class="lineNum">      97 </span>            :                 }
+<span class="lineNum">      98 </span>            : 
+<span class="lineNum">      99 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     100 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     101 </span>            :                 /// Instantiates a new instance of the &lt;see cref=&quot;SqlEventStoreDataContext&quot;/&gt; class by referencing a file source.
+<span class="lineNum">     102 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     103 </span>            :                 /// &lt;param name=&quot;tableName&quot;&gt;The name of the table.&lt;/param&gt;
+<span class="lineNum">     104 </span>            :                 /// &lt;param name=&quot;fileOrServerOrConnection&quot;&gt;
+<span class="lineNum">     105 </span>            :                 /// This argument can be any one of the following: 
+<span class="lineNum">     106 </span>            :                 /// The name of a file where a SQL Server Express database resides. 
+<span class="lineNum">     107 </span>            :                 /// The name of a server where a database is present. In this case the provider uses the default database for a user. 
+<span class="lineNum">     108 </span>            :                 /// A complete connection string. LINQ to SQL just passes the string to the provider without modification.
+<span class="lineNum">     109 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     110 </span>            :                 public static SqlEventStoreDataContext New(string tableName, string fileOrServerOrConnection)
+<span class="lineNum">     111 </span>            :                 {
+<span class="lineNum">     112 </span>            :                         throw new NotSupportedException(&quot;Upgrade to .NET Core 3.0 or downgrade to .NET Framework 4.0 in-order to specify table name overrides.&quot;);
+<span class="lineNum">     113 </span>            :                 }
+<span class="lineNum">     114 </span>            : #else
+<span class="lineNum">     115 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     116 </span>            :                 /// Instantiates a new instance of the &lt;see cref=&quot;SqlEventStoreDataContext&quot;/&gt; class by referencing a file source.
+<span class="lineNum">     117 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     118 </span>            :                 /// &lt;param name=&quot;tableName&quot;&gt;The name of the table.&lt;/param&gt;
+<span class="lineNum">     119 </span>            :                 /// &lt;param name=&quot;fileOrServerOrConnection&quot;&gt;
+<span class="lineNum">     120 </span>            :                 /// This argument can be any one of the following: 
+<span class="lineNum">     121 </span>            :                 /// The name of a file where a SQL Server Express database resides. 
+<span class="lineNum">     122 </span>            :                 /// The name of a server where a database is present. In this case the provider uses the default database for a user. 
+<span class="lineNum">     123 </span>            :                 /// A complete connection string. LINQ to SQL just passes the string to the provider without modification.
+<span class="lineNum">     124 </span>            :                 /// &lt;/param&gt;
+<span class="lineNum">     125 </span><span class="lineCov">          1 :                 public static SqlEventStoreDataContext New(string tableName, string fileOrServerOrConnection)</span>
+<span class="lineNum">     126 </span>            :                 {
+<span class="lineNum">     127 </span>            :                         return new SqlEventStoreDataContext(tableName, fileOrServerOrConnection);
+<span class="lineNum">     128 </span>            :                 }
+<span class="lineNum">     129 </span>            : #endif
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">     132 </span>            :                 internal class QueueMessageInterceptor : DbCommandInterceptor
+<span class="lineNum">     133 </span>            :                 {
+<span class="lineNum">     134 </span>            :                         private const string TableReplaceString = &quot;[EventStore]&quot;;
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :                         private void ReplaceTableName(DbCommand command, CommandEventData eventData)
+<span class="lineNum">     137 </span>            :                         {
+<span class="lineNum">     138 </span>            :                                 var myContext = eventData.Context as SqlEventStoreDataContext;
+<span class="lineNum">     139 </span>            :                                 if (myContext != null &amp;&amp; command != null &amp;&amp; command.CommandText.Contains(TableReplaceString))
+<span class="lineNum">     140 </span>            : #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+<span class="lineNum">     141 </span>            :                                         command.CommandText = command.CommandText.Replace(TableReplaceString, $&quot;[{myContext.TableName}]&quot;);
+<span class="lineNum">     142 </span>            : #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+<span class="lineNum">     143 </span>            :                         }
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :                         public override InterceptionResult&lt;int&gt; NonQueryExecuting(DbCommand command, CommandEventData eventData, InterceptionResult&lt;int&gt; result)
+<span class="lineNum">     146 </span>            :                         {
+<span class="lineNum">     147 </span>            :                                 ReplaceTableName(command, eventData);
+<span class="lineNum">     148 </span>            :                                 return result;
+<span class="lineNum">     149 </span>            :                         }
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :                         public override int NonQueryExecuted(DbCommand command, CommandExecutedEventData eventData, int result)
+<span class="lineNum">     152 </span>            :                         {
+<span class="lineNum">     153 </span>            :                                 ReplaceTableName(command, eventData);
+<span class="lineNum">     154 </span>            :                                 return result;
+<span class="lineNum">     155 </span>            :                         }
+<span class="lineNum">     156 </span>            : 
+<span class="lineNum">     157 </span>            :                         public override InterceptionResult&lt;DbDataReader&gt; ReaderExecuting(DbCommand command, CommandEventData eventData, InterceptionResult&lt;DbDataReader&gt; result)
+<span class="lineNum">     158 </span>            :                         {
+<span class="lineNum">     159 </span>            :                                 ReplaceTableName(command, eventData);
+<span class="lineNum">     160 </span>            :                                 return result;
+<span class="lineNum">     161 </span>            :                         }
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span>            :                         public override DbDataReader ReaderExecuted(DbCommand command, CommandExecutedEventData eventData, DbDataReader result)
+<span class="lineNum">     164 </span>            :                         {
+<span class="lineNum">     165 </span>            :                                 ReplaceTableName(command, eventData);
+<span class="lineNum">     166 </span>            :                                 return result;
+<span class="lineNum">     167 </span>            :                         }
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :                         public override InterceptionResult&lt;object&gt; ScalarExecuting(DbCommand command, CommandEventData eventData, InterceptionResult&lt;object&gt; result)
+<span class="lineNum">     170 </span>            :                         {
+<span class="lineNum">     171 </span>            :                                 ReplaceTableName(command, eventData);
+<span class="lineNum">     172 </span>            :                                 return result;
+<span class="lineNum">     173 </span>            :                         }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :                         public override object ScalarExecuted(DbCommand command, CommandExecutedEventData eventData, object result)
+<span class="lineNum">     176 </span>            :                         {
+<span class="lineNum">     177 </span>            :                                 ReplaceTableName(command, eventData);
+<span class="lineNum">     178 </span>            :                                 return result;
+<span class="lineNum">     179 </span>            :                         }
+<span class="lineNum">     180 </span>            :                 }
+<span class="lineNum">     181 </span>            : #endif
+<span class="lineNum">     182 </span>            : #if NET40
+<span class="lineNum">     183 </span>            :                 internal class QueueMessageInterceptor : IDbCommandInterceptor
+<span class="lineNum">     184 </span>            :                 {
+<span class="lineNum">     185 </span>            :                         private const string TableReplaceString = &quot;[EventStore]&quot;;
+<span class="lineNum">     186 </span>            : 
+<span class="lineNum">     187 </span>            :                         private void ReplaceTableName(DbCommand command, IEnumerable&lt;DbContext&gt; contexts)
+<span class="lineNum">     188 </span>            :                         {
+<span class="lineNum">     189 </span>            :                                 var myContext = contexts?.FirstOrDefault(x =&gt; x is SqlEventStoreDataContext) as SqlEventStoreDataContext;
+<span class="lineNum">     190 </span>            :                                 if (myContext != null &amp;&amp; command != null &amp;&amp; command.CommandText.Contains(TableReplaceString))
+<span class="lineNum">     191 </span>            : #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+<span class="lineNum">     192 </span>            :                                         command.CommandText = command.CommandText.Replace(TableReplaceString, $&quot;[{myContext.TableName}]&quot;);
+<span class="lineNum">     193 </span>            : #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+<span class="lineNum">     194 </span>            :                         }
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :                         public void NonQueryExecuting(DbCommand command, DbCommandInterceptionContext&lt;int&gt; interceptionContext)
+<span class="lineNum">     197 </span>            :                         {
+<span class="lineNum">     198 </span>            :                                 ReplaceTableName(command, interceptionContext.DbContexts);
+<span class="lineNum">     199 </span>            :                         }
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span>            :                         public void NonQueryExecuted(DbCommand command, DbCommandInterceptionContext&lt;int&gt; interceptionContext)
+<span class="lineNum">     202 </span>            :                         {
+<span class="lineNum">     203 </span>            :                                 ReplaceTableName(command, interceptionContext.DbContexts);
+<span class="lineNum">     204 </span>            :                         }
+<span class="lineNum">     205 </span>            : 
+<span class="lineNum">     206 </span>            :                         public void ReaderExecuting(DbCommand command, DbCommandInterceptionContext&lt;DbDataReader&gt; interceptionContext)
+<span class="lineNum">     207 </span>            :                         {
+<span class="lineNum">     208 </span>            :                                 ReplaceTableName(command, interceptionContext.DbContexts);
+<span class="lineNum">     209 </span>            :                         }
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :                         public void ReaderExecuted(DbCommand command, DbCommandInterceptionContext&lt;DbDataReader&gt; interceptionContext)
+<span class="lineNum">     212 </span>            :                         {
+<span class="lineNum">     213 </span>            :                                 ReplaceTableName(command, interceptionContext.DbContexts);
+<span class="lineNum">     214 </span>            :                         }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :                         public void ScalarExecuting(DbCommand command, DbCommandInterceptionContext&lt;object&gt; interceptionContext)
+<span class="lineNum">     217 </span>            :                         {
+<span class="lineNum">     218 </span>            :                                 ReplaceTableName(command, interceptionContext.DbContexts);
+<span class="lineNum">     219 </span>            :                         }
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            :                         public void ScalarExecuted(DbCommand command, DbCommandInterceptionContext&lt;object&gt; interceptionContext)
+<span class="lineNum">     222 </span>            :                         {
+<span class="lineNum">     223 </span>            :                                 ReplaceTableName(command, interceptionContext.DbContexts);
+<span class="lineNum">     224 </span>            :                         }
+<span class="lineNum">     225 </span>            :                 }
+<span class="lineNum">     226 </span>            : #endif
+<span class="lineNum">     227 </span>            :         }
+<span class="lineNum">     228 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

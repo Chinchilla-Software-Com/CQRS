@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Hosts/CoreHost.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Hosts</a> - CoreHost.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      11 </span>            : using Cqrs.Events;
+<span class="lineNum">      12 </span>            : using Cqrs.Messages;
+<span class="lineNum">      13 </span>            : using System.Net;
+<span class="lineNum">      14 </span>            : using Cqrs.Commands;
+<span class="lineNum">      15 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      16 </span>            : using Cqrs.Infrastructure;
+<span class="lineNum">      17 </span>            : using Cqrs.Bus;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : namespace Cqrs.Hosts
+<span class="lineNum">      20 </span>            : {
+<span class="lineNum">      21 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :         /// Configure and start command and event handlers in a host
+<span class="lineNum">      23 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :         public abstract class CoreHost&lt;TAuthenticationToken&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// The &lt;see cref=&quot;IConfigurationManager&quot;/&gt; that can be use before the &lt;see cref=&quot;DependencyResolver.Current&quot;/&gt; is set.
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span>            :                 protected abstract IConfigurationManager ConfigurationManager { get; }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Each &lt;see cref=&quot;Type&quot;/&gt; will be traced back to it's assembly, and that assembly will be scanned for other handlers to auto register.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 protected Type[] HandlerTypes { get; set; }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      37 </span>            :                 /// The &lt;see cref=&quot;IEventReceiver&quot;/&gt; that will be configured to receive &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt;.
+<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      39 </span>            :                 protected IEventReceiver&lt;TAuthenticationToken&gt; EventBus { get; private set; }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// The &lt;see cref=&quot;ICommandReceiver&quot;/&gt; that will be configured to receive &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;&gt;commands&lt;/see&gt;.
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span>            :                 protected ICommandReceiver&lt;TAuthenticationToken&gt; CommandBus { get; private set; }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      47 </span>            :                 /// The hosts telemetry name if telemetry is configured
+<span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      49 </span>            :                 protected string TelemetryName { get; set; }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      52 </span>            :                 /// The &lt;see cref=&quot;ICorrelationIdHelper&quot;/&gt; that will be used when starting and stopping the host.
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      57 </span>            :                 /// The &lt;see cref=&quot;ILogger&quot;/&gt; that will be used when starting and stopping the host.
+<span class="lineNum">      58 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      59 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :                 // ReSharper disable DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">      62 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      63 </span>            :                 /// Instantiate a new instance of a &lt;see cref=&quot;CoreHost{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      64 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      65 </span><span class="lineCov">          1 :                 protected CoreHost()</span>
+<span class="lineNum">      66 </span>            :                 {
+<span class="lineNum">      67 </span>            :                         HandlerTypes = new Type[]{};
+<span class="lineNum">      68 </span>            :                         bool pauseAndWait;
+<span class="lineNum">      69 </span>            :                         long waitCounter = 0;
+<span class="lineNum">      70 </span>            :                         long maximumCount;
+<span class="lineNum">      71 </span>            :                         if (!long.TryParse(ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.PauseAndWaitMaximumCount&quot;), out maximumCount))
+<span class="lineNum">      72 </span>            :                                 maximumCount = 300;
+<span class="lineNum">      73 </span>            :                         SpinWait.SpinUntil
+<span class="lineNum">      74 </span>            :                         (
+<span class="lineNum">      75 </span>            :                                 () =&gt;
+<span class="lineNum">      76 </span>            :                                 {
+<span class="lineNum">      77 </span>            :                                         if (waitCounter++ &gt; maximumCount)
+<span class="lineNum">      78 </span>            :                                                 return true;
+<span class="lineNum">      79 </span>            :                                         Console.WriteLine(&quot;Pause and wait counter is at {0:N0}&quot;, waitCounter);
+<span class="lineNum">      80 </span>            :                                         return !bool.TryParse(ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.PauseAndWait&quot;), out pauseAndWait) || !pauseAndWait;
+<span class="lineNum">      81 </span>            :                                 },
+<span class="lineNum">      82 </span>            :                                 (short)1000
+<span class="lineNum">      83 </span>            :                         );
+<span class="lineNum">      84 </span>            : 
+<span class="lineNum">      85 </span>            :                         TelemetryName = ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.AppName&quot;) ?? AppDomain.CurrentDomain.FriendlyName;
+<span class="lineNum">      86 </span>            :                         ConfigureTelemetry();
+<span class="lineNum">      87 </span>            :                 }
+<span class="lineNum">      88 </span>            :                 // ReSharper restore DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      91 </span>            :                 /// When overridden, allows you to configure Telemetry
+<span class="lineNum">      92 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      93 </span><span class="lineCov">          1 :                 protected virtual void ConfigureTelemetry()</span>
+<span class="lineNum">      94 </span>            :                 {
+<span class="lineNum">      95 </span>            :                 }
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      98 </span>            :                 /// Calls &lt;see cref=&quot;Prepare&quot;/&gt;, &lt;paramref name=&quot;handlerRegistation&quot;/&gt; and then &lt;see cref=&quot;Start&quot;/&gt;
+<span class="lineNum">      99 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     100 </span><span class="lineCov">          1 :                 public virtual void Run(Action handlerRegistation = null)</span>
+<span class="lineNum">     101 </span>            :                 {
+<span class="lineNum">     102 </span>            :                         Prepare();
+<span class="lineNum">     103 </span>            :                         if (handlerRegistation != null)
+<span class="lineNum">     104 </span>            :                                 handlerRegistation();
+<span class="lineNum">     105 </span>            :                         Start();
+<span class="lineNum">     106 </span>            :                 }
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     109 </span>            :                 /// Sets the &lt;see cref=&quot;ServicePointManager.SecurityProtocol&quot;/&gt; to &lt;see cref=&quot;SecurityProtocolType.Tls&quot;/&gt;.
+<span class="lineNum">     110 </span>            :                 /// You might want to override this to .net 4.5 and above to SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls
+<span class="lineNum">     111 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     112 </span><span class="lineCov">          1 :                 protected virtual void PrepareSecurityProtocol()</span>
+<span class="lineNum">     113 </span>            :                 {
+<span class="lineNum">     114 </span>            :                         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+<span class="lineNum">     115 </span>            :                 }
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     118 </span>            :                 /// Prepare the host before registering handlers and starting the host.
+<span class="lineNum">     119 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     120 </span><span class="lineCov">          1 :                 protected virtual void Prepare()</span>
+<span class="lineNum">     121 </span>            :                 {
+<span class="lineNum">     122 </span>            :                         PrepareSecurityProtocol();
+<span class="lineNum">     123 </span>            :                         // https://alexandrebrisebois.wordpress.com/2013/03/24/why-are-webrequests-throttled-i-want-more-throughput/
+<span class="lineNum">     124 </span>            :                         ServicePointManager.UseNagleAlgorithm = false;
+<span class="lineNum">     125 </span>            :                         ServicePointManager.DefaultConnectionLimit = 1000;
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :                         new StartUp(ConfigureDefaultDependencyResolver).Initialise();
+<span class="lineNum">     128 </span>            :                         EventBus = DependencyResolver.Current.Resolve&lt;IEventReceiver&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">     129 </span>            :                         CommandBus = DependencyResolver.Current.Resolve&lt;ICommandReceiver&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">     130 </span>            :                         Guid correlationId = Guid.NewGuid();
+<span class="lineNum">     131 </span>            :                         CorrelationIdHelper = DependencyResolver.Current.Resolve&lt;ICorrelationIdHelper&gt;();
+<span class="lineNum">     132 </span>            :                         CorrelationIdHelper.SetCorrelationId(correlationId);
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            :                         Logger = DependencyResolver.Current.Resolve&lt;ILogger&gt;();
+<span class="lineNum">     135 </span>            :                 }
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     138 </span>            :                 /// Configure the &lt;see cref=&quot;DependencyResolver&quot;/&gt;.
+<span class="lineNum">     139 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     140 </span><span class="lineCov">          1 :                 protected abstract void ConfigureDefaultDependencyResolver();</span>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     143 </span>            :                 /// Start the host post preparing and registering handlers.
+<span class="lineNum">     144 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     145 </span><span class="lineCov">          1 :                 protected virtual void Start()</span>
+<span class="lineNum">     146 </span>            :                 {
+<span class="lineNum">     147 </span>            :                         StartBusRegistrar();
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            :                         var configurationManager = DependencyResolver.Current.Resolve&lt;IConfigurationManager&gt;();
+<span class="lineNum">     150 </span>            :                         bool setting;
+<span class="lineNum">     151 </span>            :                         if (!configurationManager.TryGetSetting(&quot;Cqrs.Hosts.EnableEventReceiving&quot;, out setting))
+<span class="lineNum">     152 </span>            :                                 setting = true;
+<span class="lineNum">     153 </span>            :                         if (setting)
+<span class="lineNum">     154 </span>            :                                 EventBus.Start();
+<span class="lineNum">     155 </span>            :                         if (!configurationManager.TryGetSetting(&quot;Cqrs.Hosts.EnableCommandReceiving&quot;, out setting))
+<span class="lineNum">     156 </span>            :                                 setting = true;
+<span class="lineNum">     157 </span>            :                         if (setting)
+<span class="lineNum">     158 </span>            :                                 CommandBus.Start();
+<span class="lineNum">     159 </span>            :                 }
+<span class="lineNum">     160 </span>            : 
+<span class="lineNum">     161 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     162 </span>            :                 /// Register an event handler that will listen and respond to events.
+<span class="lineNum">     163 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     164 </span>            :                 /// &lt;param name=&quot;eventHandler&quot;&gt;The event handler to call&lt;/param&gt;
+<span class="lineNum">     165 </span>            :                 /// &lt;param name=&quot;holdMessageLock&quot;&gt;If false, this will spin off another thread. This is a bad performance impact. Strongly suggest you use lock renewing instead... which is configuration based... so even better.&lt;/param&gt;
+<span class="lineNum">     166 </span><span class="lineCov">          1 :                 protected virtual void ManuallyRegisterEventHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; eventHandler, bool holdMessageLock = true)</span>
+<span class="lineNum">     167 </span>            :                         where TMessage : IMessage
+<span class="lineNum">     168 </span>            :                 {
+<span class="lineNum">     169 </span>            :                         var eventHandlerRegistrar = DependencyResolver.Current.Resolve&lt;IEventHandlerRegistrar&gt;();
+<span class="lineNum">     170 </span>            :                         eventHandlerRegistrar.RegisterHandler(eventHandler, holdMessageLock);
+<span class="lineNum">     171 </span>            :                 }
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     174 </span>            :                 /// Register an command handler that will listen and respond to commands.
+<span class="lineNum">     175 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     176 </span>            :                 /// &lt;param name=&quot;commandHandler&quot;&gt;The command handler to call&lt;/param&gt;
+<span class="lineNum">     177 </span>            :                 /// &lt;param name=&quot;holdMessageLock&quot;&gt;If false, this will spin off another thread. This is a bad performance impact. Strongly suggest you use lock renewing instead... which is configuration based... so even better.&lt;/param&gt;
+<span class="lineNum">     178 </span><span class="lineCov">          1 :                 protected virtual void ManuallyRegisterCommandHandler&lt;TMessage&gt;(Action&lt;TMessage&gt; commandHandler, bool holdMessageLock = true)</span>
+<span class="lineNum">     179 </span>            :                         where TMessage : IMessage
+<span class="lineNum">     180 </span>            :                 {
+<span class="lineNum">     181 </span>            :                         var eventHandlerRegistrar = DependencyResolver.Current.Resolve&lt;IEventHandlerRegistrar&gt;();
+<span class="lineNum">     182 </span>            :                         eventHandlerRegistrar.RegisterHandler(commandHandler, holdMessageLock);
+<span class="lineNum">     183 </span>            :                 }
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     186 </span>            :                 /// Start the &lt;see cref=&quot;BusRegistrar&quot;/&gt; by calling &lt;see cref=&quot;BusRegistrar.Register(System.Type[])&quot;/&gt; passing &lt;see cref=&quot;HandlerTypes&quot;/&gt;
+<span class="lineNum">     187 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     188 </span><span class="lineCov">          1 :                 protected virtual void StartBusRegistrar()</span>
+<span class="lineNum">     189 </span>            :                 {
+<span class="lineNum">     190 </span>            :                         var registrar = new BusRegistrar(DependencyResolver.Current);
+<span class="lineNum">     191 </span>            :                         registrar.Register(HandlerTypes);
+<span class="lineNum">     192 </span>            :                 }
+<span class="lineNum">     193 </span>            :         }
+<span class="lineNum">     194 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

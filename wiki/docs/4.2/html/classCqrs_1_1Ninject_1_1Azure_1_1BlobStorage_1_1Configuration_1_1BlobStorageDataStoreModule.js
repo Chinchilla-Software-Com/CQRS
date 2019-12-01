@@ -1,0 +1,5 @@
+var classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStorageDataStoreModule =
+[
+    [ "Load", "classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStorageDataStoreModule_a6d22aa3f1093d4892b298dc770430a89.html#a6d22aa3f1093d4892b298dc770430a89", null ],
+    [ "RegisterFactories", "classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStorageDataStoreModule_a275c2a6bb6004ad0a5119041d64097be.html#a275c2a6bb6004ad0a5119041d64097be", null ]
+];

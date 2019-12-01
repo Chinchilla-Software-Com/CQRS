@@ -1,0 +1,541 @@
+\hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{}\doxysection{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub$<$ T\+Authentication\+Token $>$ Class Template Reference}
+\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+
+
+An \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_a1046ff74282fd178f43e28420433d2a9_a1046ff74282fd178f43e28420433d2a9}{Azure\+Bus$<$\+T\+Authentication\+Token$>$}} that uses \mbox{\hyperlink{namespaceCqrs_1_1Azure}{Azure}} Service Event Hubs.  
+
+
+Inheritance diagram for Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.689291cm]{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}
+\end{center}
+\end{figure}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b548165ac5b1e3d0312af5c62e3c6cd_a2b548165ac5b1e3d0312af5c62e3c6cd}{Azure\+Event\+Hub}} (\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} configuration\+Manager, \mbox{\hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser}{I\+Message\+Serialiser}}$<$ T\+Authentication\+Token $>$ message\+Serialiser, \mbox{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}}$<$ T\+Authentication\+Token $>$ authentication\+Token\+Helper, I\+Correlation\+Id\+Helper correlation\+Id\+Helper, I\+Logger logger, \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IHashAlgorithmFactory}{I\+Hash\+Algorithm\+Factory}} hash\+Algorithm\+Factory, bool is\+A\+Publisher)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b548165ac5b1e3d0312af5c62e3c6cd_a2b548165ac5b1e3d0312af5c62e3c6cd}{Azure\+Event\+Hub$<$\+T\+Authentication\+Token$>$}} \end{DoxyCompactList}\item 
+override string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a9855633b53ed1f67863ef9dffad0812c_a9855633b53ed1f67863ef9dffad0812c}{Get\+Connection\+String}} ()
+\begin{DoxyCompactList}\small\item\em Gets the connection string for the bus from \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_aaf9469d220fb23cb0521fa76b25ab228_aaf9469d220fb23cb0521fa76b25ab228}{Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Configuration\+Manager}} \end{DoxyCompactList}\item 
+override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af823e573f3acc3fa9949969499309db1_af823e573f3acc3fa9949969499309db1}{Set\+Connection\+Strings}} ()
+\begin{DoxyCompactList}\small\item\em Calls \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_a8a1be9145b0a92c0037ef1b8b4cc79d9_a8a1be9145b0a92c0037ef1b8b4cc79d9}{Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Set\+Connection\+Strings}} and then sets the required storage connection string. \end{DoxyCompactList}\item 
+override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3747fb9fcb3de2a72c8a6d7bbd92db95_a3747fb9fcb3de2a72c8a6d7bbd92db95}{Instantiate\+Publishing}} ()
+\begin{DoxyCompactList}\small\item\em Instantiate publishing on this bus by calling \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2da39ab1b2bc5fe995b6bd1fea461852_a2da39ab1b2bc5fe995b6bd1fea461852}{Check\+Private\+Hub\+Exists}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aee7b4360172cf49fb2e885a3a525aa66_aee7b4360172cf49fb2e885a3a525aa66}{Check\+Public\+Hub\+Exists}} then calling Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Start\+Settings\+Checking \end{DoxyCompactList}\item 
+override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aa725781eddb65bdfe456a4fecb36fb6b_aa725781eddb65bdfe456a4fecb36fb6b}{Instantiate\+Receiving}} ()
+\begin{DoxyCompactList}\small\item\em Instantiate receiving on this bus by calling \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2da39ab1b2bc5fe995b6bd1fea461852_a2da39ab1b2bc5fe995b6bd1fea461852}{Check\+Private\+Hub\+Exists}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aee7b4360172cf49fb2e885a3a525aa66_aee7b4360172cf49fb2e885a3a525aa66}{Check\+Public\+Hub\+Exists}} then Instantiate\+Receiving for private and public topics, then calling Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Start\+Settings\+Checking \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2da39ab1b2bc5fe995b6bd1fea461852_a2da39ab1b2bc5fe995b6bd1fea461852}{Check\+Private\+Hub\+Exists}} (Manager manager)
+\begin{DoxyCompactList}\small\item\em Checks if the private hub and consumer group name exists as per \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac6802047e00a92ea4b0ae6b69ef7310a_ac6802047e00a92ea4b0ae6b69ef7310a}{Private\+Event\+Hub\+Name}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a0c091d0cb19dda3e8bfc20f0e7d30af3_a0c091d0cb19dda3e8bfc20f0e7d30af3}{Private\+Event\+Hub\+Consumer\+Group\+Name}}. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aee7b4360172cf49fb2e885a3a525aa66_aee7b4360172cf49fb2e885a3a525aa66}{Check\+Public\+Hub\+Exists}} (Manager manager)
+\begin{DoxyCompactList}\small\item\em Checks if the public hub and consumer group name exists as per \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a6012f2290f9397929e9d6d5419963482_a6012f2290f9397929e9d6d5419963482}{Public\+Event\+Hub\+Name}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a505c495eb73e4f888431d408e0b0d8ab_a505c495eb73e4f888431d408e0b0d8ab}{Public\+Event\+Hub\+Consumer\+Group\+Name}}. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8fe4e3967bbeaa288c893a1d224b2268_a8fe4e3967bbeaa288c893a1d224b2268}{Check\+Hub\+Exists}} (Manager manager, string hub\+Name, string consumer\+Group\+Names)
+\begin{DoxyCompactList}\small\item\em Checks if a event hub by the provided {\itshape hub\+Name}  exists and Checks if a consumer group by the provided {\itshape consumer\+Group\+Names}  exists. \end{DoxyCompactList}\item 
+override bool \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_afe8d6f93f97ab5658b81903af555632c_afe8d6f93f97ab5658b81903af555632c}{Validate\+Settings\+Have\+Changed}} ()
+\begin{DoxyCompactList}\small\item\em Checks Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Validate\+Settings\+Have\+Changed and that \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12_a2b102538e8b72f9990578fa3bcbe4c12}{Storage\+Connection\+String}} have changed. \end{DoxyCompactList}\item 
+override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a779ce1115cf00dfaf072056a6ad8f9fe_a779ce1115cf00dfaf072056a6ad8f9fe}{Trigger\+Settings\+Checking}} ()
+\begin{DoxyCompactList}\small\item\em Triggers settings checking on \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5f64ce36efaee0f676816c803620d05e_a5f64ce36efaee0f676816c803620d05e}{Event\+Hub\+Publisher}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}}, then calls \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aa725781eddb65bdfe456a4fecb36fb6b_aa725781eddb65bdfe456a4fecb36fb6b}{Instantiate\+Receiving}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3747fb9fcb3de2a72c8a6d7bbd92db95_a3747fb9fcb3de2a72c8a6d7bbd92db95}{Instantiate\+Publishing}}. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_afbea0e107f3d4e8f8d4f2215ff2f7787_afbea0e107f3d4e8f8d4f2215ff2f7787}{Register\+Receiver\+Message\+Handler}} (Action$<$ Partition\+Context, Event\+Data $>$ receiver\+Message\+Handler, Event\+Processor\+Options receiver\+Message\+Handler\+Options=null)
+\begin{DoxyCompactList}\small\item\em Registers the provided {\itshape receiver\+Message\+Handler}  with the provided {\itshape receiver\+Message\+Handler\+Options} . \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5924517b1e88c09e3c0c1aec9c737a8d_a5924517b1e88c09e3c0c1aec9c737a8d}{Store\+Receiver\+Message\+Handler}} (Action$<$ Partition\+Context, Event\+Data $>$ receiver\+Message\+Handler, Event\+Processor\+Options receiver\+Message\+Handler\+Options=null)
+\begin{DoxyCompactList}\small\item\em Stores the provided {\itshape receiver\+Message\+Handler}  and {\itshape receiver\+Message\+Handler\+Options} . \end{DoxyCompactList}\item 
+override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af2efc497815828b6fe0b4d6621bc8b41_af2efc497815828b6fe0b4d6621bc8b41}{Apply\+Receiver\+Message\+Handler}} ()
+\begin{DoxyCompactList}\small\item\em Applies the stored Receiver\+Message\+Handler and Receiver\+Message\+Handler\+Options to the \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}}. \end{DoxyCompactList}\item 
+virtual Event\+Data \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8302c7e2f88a666862b3d9fd4531b1f2_a8302c7e2f88a666862b3d9fd4531b1f2}{Create\+Brokered\+Message$<$ T\+Message $>$}} (Func$<$ T\+Message, string $>$ serialiser\+Function, Type message\+Type, T\+Message message)
+\begin{DoxyCompactList}\small\item\em Create Event\+Data with additional properties to aid routing and tracing \end{DoxyCompactList}\item 
+virtual I\+Dictionary$<$ string, string $>$ \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a913284b0c4d40aa59c20c277b45429e5_a913284b0c4d40aa59c20c277b45429e5}{Extract\+Telemetry\+Properties}} (Event\+Data message, string base\+Communication\+Type)
+\begin{DoxyCompactList}\small\item\em Extract any telemetry properties from the provided {\itshape message} . \end{DoxyCompactList}\item 
+virtual string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac22def26cc02c95c6337be7d87854192_ac22def26cc02c95c6337be7d87854192}{Extract\+Signature}} (Event\+Data event\+Data)
+\begin{DoxyCompactList}\small\item\em Extract the signature from the provided {\itshape event\+Data} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a523df6f08c43b3ca013c08555098f4ad_a523df6f08c43b3ca013c08555098f4ad}{Default\+Private\+Event\+Hub\+Consumer\+Group\+Name}} = \char`\"{}\$Default\char`\"{}
+\begin{DoxyCompactList}\small\item\em The default name of the consumer group in the private event hub if no I\+Configuration\+Manager value is set. \end{DoxyCompactList}\item 
+const string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a71191dfe0cccbbc59c37cadf051a5cdd_a71191dfe0cccbbc59c37cadf051a5cdd}{Default\+Public\+Event\+Hub\+Consumer\+Group\+Name}} = \char`\"{}\$Default\char`\"{}
+\begin{DoxyCompactList}\small\item\em The default name of the consumer group in the public event hub if no I\+Configuration\+Manager value is set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Event\+Hub\+Client \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5f64ce36efaee0f676816c803620d05e_a5f64ce36efaee0f676816c803620d05e}{Event\+Hub\+Publisher}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets the publicEvent\+Hub\+Client. \end{DoxyCompactList}\item 
+Event\+Processor\+Host \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets the publicEvent\+Processor\+Host. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac6802047e00a92ea4b0ae6b69ef7310a_ac6802047e00a92ea4b0ae6b69ef7310a}{Private\+Event\+Hub\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The name of the private event hub. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a6012f2290f9397929e9d6d5419963482_a6012f2290f9397929e9d6d5419963482}{Public\+Event\+Hub\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The name of the public event hub. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a0c091d0cb19dda3e8bfc20f0e7d30af3_a0c091d0cb19dda3e8bfc20f0e7d30af3}{Private\+Event\+Hub\+Consumer\+Group\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The name of the consumer group in the private event hub. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a505c495eb73e4f888431d408e0b0d8ab_a505c495eb73e4f888431d408e0b0d8ab}{Public\+Event\+Hub\+Consumer\+Group\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The name of the consumer group in the public event hub. \end{DoxyCompactList}\item 
+abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad77526406b246313591e11b90e1a67d5_ad77526406b246313591e11b90e1a67d5}{Event\+Hub\+Connection\+String\+Name\+Configuration\+Key}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The configuration key for the event hub connection string as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad400a17bf61c218e6330cd6500458801_ad400a17bf61c218e6330cd6500458801}{Event\+Hub\+Storage\+Connection\+String\+Name\+Configuration\+Key}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The configuration key for the event hub storage connection string as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7dcae4b6bcae81e87b935892e6687382_a7dcae4b6bcae81e87b935892e6687382}{Signing\+Token\+Configuration\+Key}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The configuration key for the signing token as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a286a7ddc6becff4d549434d2abe82ed1_a286a7ddc6becff4d549434d2abe82ed1}{Private\+Event\+Hub\+Name\+Configuration\+Key}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The configuration key for the name of the private event hub as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3ef1f56ad3de3bf8337f68e73627fab2_a3ef1f56ad3de3bf8337f68e73627fab2}{Public\+Event\+Hub\+Name\+Configuration\+Key}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The configuration key for the name of the public event hub as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad2095d284821cff883fef5a2a5aec90e_ad2095d284821cff883fef5a2a5aec90e}{Private\+Event\+Hub\+Consumer\+Group\+Name\+Configuration\+Key}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The configuration key for the name of the consumer group name of the private event hub as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a36b035065fd3fc38ac136adc59742d34_a36b035065fd3fc38ac136adc59742d34}{Public\+Event\+Hub\+Consumer\+Group\+Name\+Configuration\+Key}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The configuration key for the name of the consumer group name of the public event hub as used by I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8912bae90f45042ed41ff7a7632c178f_a8912bae90f45042ed41ff7a7632c178f}{Default\+Private\+Event\+Hub\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The default name of the private event hub if no I\+Configuration\+Manager value is set. \end{DoxyCompactList}\item 
+abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a11645c85a3c749ca664480867c6fae3c_a11645c85a3c749ca664480867c6fae3c}{Default\+Public\+Event\+Hub\+Name}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The default name of the public event hub if no I\+Configuration\+Manager value is set. \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12_a2b102538e8b72f9990578fa3bcbe4c12}{Storage\+Connection\+String}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The event hub storage connection string. \end{DoxyCompactList}\item 
+Action$<$ Partition\+Context, Event\+Data $>$ \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8c9faa7096d72a45803e6e63a1b3cf30_a8c9faa7096d72a45803e6e63a1b3cf30}{Receiver\+Message\+Handler}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The \mbox{\hyperlink{}{handler}} used for Event\+Processor\+Host.\+Register\+Event\+Processor\+Factory\+Async(\+I\+Event\+Processor\+Factory) on \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}}. \end{DoxyCompactList}\item 
+Event\+Processor\+Options \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad3a0c2f32d5771fb1f4420fc33c75968_ad3a0c2f32d5771fb1f4420fc33c75968}{Receiver\+Message\+Handler\+Options}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The Event\+Processor\+Options used for Event\+Processor\+Host.\+Register\+Event\+Processor\+Factory\+Async(\+I\+Event\+Processor\+Factory) on \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}}. \end{DoxyCompactList}\item 
+I\+Telemetry\+Helper \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a4cf19edac088c5ea74408398b3dfd4a2_a4cf19edac088c5ea74408398b3dfd4a2}{Telemetry\+Helper}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets the I\+Telemetry\+Helper. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IHashAlgorithmFactory}{I\+Hash\+Algorithm\+Factory}} \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a001a89909f92a45909cb95c2c0acf9fa_a001a89909f92a45909cb95c2c0acf9fa}{Signer}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The I\+Hash\+Algorithm\+Factory to use to sign messages. \end{DoxyCompactList}\item 
+I\+List$<$ string $>$ \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad25a0f517a33a99e4ae645bf14c3f7d9_ad25a0f517a33a99e4ae645bf14c3f7d9}{Exclusion\+Namespaces}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A list of namespaces to exclude when trying to automatically determine the container. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+An \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_a1046ff74282fd178f43e28420433d2a9_a1046ff74282fd178f43e28420433d2a9}{Azure\+Bus$<$\+T\+Authentication\+Token$>$}} that uses \mbox{\hyperlink{namespaceCqrs_1_1Azure}{Azure}} Service Event Hubs. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of the authentication token.\\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b548165ac5b1e3d0312af5c62e3c6cd_a2b548165ac5b1e3d0312af5c62e3c6cd}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b548165ac5b1e3d0312af5c62e3c6cd_a2b548165ac5b1e3d0312af5c62e3c6cd}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!AzureEventHub@{AzureEventHub}}
+\index{AzureEventHub@{AzureEventHub}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{AzureEventHub()}{AzureEventHub()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Azure\+Event\+Hub}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}}]{configuration\+Manager,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser}{I\+Message\+Serialiser}}$<$ T\+Authentication\+Token $>$}]{message\+Serialiser,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}}$<$ T\+Authentication\+Token $>$}]{authentication\+Token\+Helper,  }\item[{I\+Correlation\+Id\+Helper}]{correlation\+Id\+Helper,  }\item[{I\+Logger}]{logger,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IHashAlgorithmFactory}{I\+Hash\+Algorithm\+Factory}}}]{hash\+Algorithm\+Factory,  }\item[{bool}]{is\+A\+Publisher }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b548165ac5b1e3d0312af5c62e3c6cd_a2b548165ac5b1e3d0312af5c62e3c6cd}{Azure\+Event\+Hub$<$\+T\+Authentication\+Token$>$}} 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af2efc497815828b6fe0b4d6621bc8b41_af2efc497815828b6fe0b4d6621bc8b41}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af2efc497815828b6fe0b4d6621bc8b41_af2efc497815828b6fe0b4d6621bc8b41}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!ApplyReceiverMessageHandler@{ApplyReceiverMessageHandler}}
+\index{ApplyReceiverMessageHandler@{ApplyReceiverMessageHandler}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ApplyReceiverMessageHandler()}{ApplyReceiverMessageHandler()}}
+{\footnotesize\ttfamily override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Apply\+Receiver\+Message\+Handler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Applies the stored Receiver\+Message\+Handler and Receiver\+Message\+Handler\+Options to the \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8fe4e3967bbeaa288c893a1d224b2268_a8fe4e3967bbeaa288c893a1d224b2268}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8fe4e3967bbeaa288c893a1d224b2268_a8fe4e3967bbeaa288c893a1d224b2268}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!CheckHubExists@{CheckHubExists}}
+\index{CheckHubExists@{CheckHubExists}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CheckHubExists()}{CheckHubExists()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Check\+Hub\+Exists (\begin{DoxyParamCaption}\item[{Manager}]{manager,  }\item[{string}]{hub\+Name,  }\item[{string}]{consumer\+Group\+Names }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Checks if a event hub by the provided {\itshape hub\+Name}  exists and Checks if a consumer group by the provided {\itshape consumer\+Group\+Names}  exists. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2da39ab1b2bc5fe995b6bd1fea461852_a2da39ab1b2bc5fe995b6bd1fea461852}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2da39ab1b2bc5fe995b6bd1fea461852_a2da39ab1b2bc5fe995b6bd1fea461852}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!CheckPrivateHubExists@{CheckPrivateHubExists}}
+\index{CheckPrivateHubExists@{CheckPrivateHubExists}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CheckPrivateHubExists()}{CheckPrivateHubExists()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Check\+Private\+Hub\+Exists (\begin{DoxyParamCaption}\item[{Manager}]{manager }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Checks if the private hub and consumer group name exists as per \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac6802047e00a92ea4b0ae6b69ef7310a_ac6802047e00a92ea4b0ae6b69ef7310a}{Private\+Event\+Hub\+Name}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a0c091d0cb19dda3e8bfc20f0e7d30af3_a0c091d0cb19dda3e8bfc20f0e7d30af3}{Private\+Event\+Hub\+Consumer\+Group\+Name}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em manager} & The Manager.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aee7b4360172cf49fb2e885a3a525aa66_aee7b4360172cf49fb2e885a3a525aa66}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aee7b4360172cf49fb2e885a3a525aa66_aee7b4360172cf49fb2e885a3a525aa66}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!CheckPublicHubExists@{CheckPublicHubExists}}
+\index{CheckPublicHubExists@{CheckPublicHubExists}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CheckPublicHubExists()}{CheckPublicHubExists()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Check\+Public\+Hub\+Exists (\begin{DoxyParamCaption}\item[{Manager}]{manager }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Checks if the public hub and consumer group name exists as per \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a6012f2290f9397929e9d6d5419963482_a6012f2290f9397929e9d6d5419963482}{Public\+Event\+Hub\+Name}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a505c495eb73e4f888431d408e0b0d8ab_a505c495eb73e4f888431d408e0b0d8ab}{Public\+Event\+Hub\+Consumer\+Group\+Name}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em manager} & The Manager.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8302c7e2f88a666862b3d9fd4531b1f2_a8302c7e2f88a666862b3d9fd4531b1f2}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8302c7e2f88a666862b3d9fd4531b1f2_a8302c7e2f88a666862b3d9fd4531b1f2}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!CreateBrokeredMessage$<$ TMessage $>$@{CreateBrokeredMessage$<$ TMessage $>$}}
+\index{CreateBrokeredMessage$<$ TMessage $>$@{CreateBrokeredMessage$<$ TMessage $>$}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CreateBrokeredMessage$<$ TMessage $>$()}{CreateBrokeredMessage< TMessage >()}}
+{\footnotesize\ttfamily virtual Event\+Data \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Create\+Brokered\+Message$<$ T\+Message $>$ (\begin{DoxyParamCaption}\item[{Func$<$ T\+Message, string $>$}]{serialiser\+Function,  }\item[{Type}]{message\+Type,  }\item[{T\+Message}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Create Event\+Data with additional properties to aid routing and tracing 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac22def26cc02c95c6337be7d87854192_ac22def26cc02c95c6337be7d87854192}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac22def26cc02c95c6337be7d87854192_ac22def26cc02c95c6337be7d87854192}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!ExtractSignature@{ExtractSignature}}
+\index{ExtractSignature@{ExtractSignature}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ExtractSignature()}{ExtractSignature()}}
+{\footnotesize\ttfamily virtual string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Extract\+Signature (\begin{DoxyParamCaption}\item[{Event\+Data}]{event\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Extract the signature from the provided {\itshape event\+Data} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a913284b0c4d40aa59c20c277b45429e5_a913284b0c4d40aa59c20c277b45429e5}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a913284b0c4d40aa59c20c277b45429e5_a913284b0c4d40aa59c20c277b45429e5}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!ExtractTelemetryProperties@{ExtractTelemetryProperties}}
+\index{ExtractTelemetryProperties@{ExtractTelemetryProperties}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ExtractTelemetryProperties()}{ExtractTelemetryProperties()}}
+{\footnotesize\ttfamily virtual I\+Dictionary$<$string, string$>$ \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Extract\+Telemetry\+Properties (\begin{DoxyParamCaption}\item[{Event\+Data}]{message,  }\item[{string}]{base\+Communication\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Extract any telemetry properties from the provided {\itshape message} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a9855633b53ed1f67863ef9dffad0812c_a9855633b53ed1f67863ef9dffad0812c}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a9855633b53ed1f67863ef9dffad0812c_a9855633b53ed1f67863ef9dffad0812c}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!GetConnectionString@{GetConnectionString}}
+\index{GetConnectionString@{GetConnectionString}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetConnectionString()}{GetConnectionString()}}
+{\footnotesize\ttfamily override string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Get\+Connection\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Gets the connection string for the bus from \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_aaf9469d220fb23cb0521fa76b25ab228_aaf9469d220fb23cb0521fa76b25ab228}{Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Configuration\+Manager}} 
+
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_a514e371d5ce093678365af31e6c274e3_a514e371d5ce093678365af31e6c274e3}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3747fb9fcb3de2a72c8a6d7bbd92db95_a3747fb9fcb3de2a72c8a6d7bbd92db95}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3747fb9fcb3de2a72c8a6d7bbd92db95_a3747fb9fcb3de2a72c8a6d7bbd92db95}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!InstantiatePublishing@{InstantiatePublishing}}
+\index{InstantiatePublishing@{InstantiatePublishing}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{InstantiatePublishing()}{InstantiatePublishing()}}
+{\footnotesize\ttfamily override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Instantiate\+Publishing (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Instantiate publishing on this bus by calling \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2da39ab1b2bc5fe995b6bd1fea461852_a2da39ab1b2bc5fe995b6bd1fea461852}{Check\+Private\+Hub\+Exists}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aee7b4360172cf49fb2e885a3a525aa66_aee7b4360172cf49fb2e885a3a525aa66}{Check\+Public\+Hub\+Exists}} then calling Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Start\+Settings\+Checking 
+
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_a0bacaa4619921333da4a27371c1d6d0a_a0bacaa4619921333da4a27371c1d6d0a}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aa725781eddb65bdfe456a4fecb36fb6b_aa725781eddb65bdfe456a4fecb36fb6b}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aa725781eddb65bdfe456a4fecb36fb6b_aa725781eddb65bdfe456a4fecb36fb6b}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!InstantiateReceiving@{InstantiateReceiving}}
+\index{InstantiateReceiving@{InstantiateReceiving}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{InstantiateReceiving()}{InstantiateReceiving()}}
+{\footnotesize\ttfamily override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Instantiate\+Receiving (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Instantiate receiving on this bus by calling \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2da39ab1b2bc5fe995b6bd1fea461852_a2da39ab1b2bc5fe995b6bd1fea461852}{Check\+Private\+Hub\+Exists}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aee7b4360172cf49fb2e885a3a525aa66_aee7b4360172cf49fb2e885a3a525aa66}{Check\+Public\+Hub\+Exists}} then Instantiate\+Receiving for private and public topics, then calling Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Start\+Settings\+Checking 
+
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_ac9f66dd531dcde49be72ba8f2cb28e9b_ac9f66dd531dcde49be72ba8f2cb28e9b}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_afbea0e107f3d4e8f8d4f2215ff2f7787_afbea0e107f3d4e8f8d4f2215ff2f7787}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_afbea0e107f3d4e8f8d4f2215ff2f7787_afbea0e107f3d4e8f8d4f2215ff2f7787}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!RegisterReceiverMessageHandler@{RegisterReceiverMessageHandler}}
+\index{RegisterReceiverMessageHandler@{RegisterReceiverMessageHandler}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{RegisterReceiverMessageHandler()}{RegisterReceiverMessageHandler()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Register\+Receiver\+Message\+Handler (\begin{DoxyParamCaption}\item[{Action$<$ Partition\+Context, Event\+Data $>$}]{receiver\+Message\+Handler,  }\item[{Event\+Processor\+Options}]{receiver\+Message\+Handler\+Options = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Registers the provided {\itshape receiver\+Message\+Handler}  with the provided {\itshape receiver\+Message\+Handler\+Options} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af823e573f3acc3fa9949969499309db1_af823e573f3acc3fa9949969499309db1}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_af823e573f3acc3fa9949969499309db1_af823e573f3acc3fa9949969499309db1}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!SetConnectionStrings@{SetConnectionStrings}}
+\index{SetConnectionStrings@{SetConnectionStrings}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{SetConnectionStrings()}{SetConnectionStrings()}}
+{\footnotesize\ttfamily override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Set\+Connection\+Strings (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Calls \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_a8a1be9145b0a92c0037ef1b8b4cc79d9_a8a1be9145b0a92c0037ef1b8b4cc79d9}{Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Set\+Connection\+Strings}} and then sets the required storage connection string. 
+
+
+
+Reimplemented from \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureBus_a8a1be9145b0a92c0037ef1b8b4cc79d9_a8a1be9145b0a92c0037ef1b8b4cc79d9}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Bus$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5924517b1e88c09e3c0c1aec9c737a8d_a5924517b1e88c09e3c0c1aec9c737a8d}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5924517b1e88c09e3c0c1aec9c737a8d_a5924517b1e88c09e3c0c1aec9c737a8d}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!StoreReceiverMessageHandler@{StoreReceiverMessageHandler}}
+\index{StoreReceiverMessageHandler@{StoreReceiverMessageHandler}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{StoreReceiverMessageHandler()}{StoreReceiverMessageHandler()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Store\+Receiver\+Message\+Handler (\begin{DoxyParamCaption}\item[{Action$<$ Partition\+Context, Event\+Data $>$}]{receiver\+Message\+Handler,  }\item[{Event\+Processor\+Options}]{receiver\+Message\+Handler\+Options = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Stores the provided {\itshape receiver\+Message\+Handler}  and {\itshape receiver\+Message\+Handler\+Options} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a779ce1115cf00dfaf072056a6ad8f9fe_a779ce1115cf00dfaf072056a6ad8f9fe}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a779ce1115cf00dfaf072056a6ad8f9fe_a779ce1115cf00dfaf072056a6ad8f9fe}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!TriggerSettingsChecking@{TriggerSettingsChecking}}
+\index{TriggerSettingsChecking@{TriggerSettingsChecking}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{TriggerSettingsChecking()}{TriggerSettingsChecking()}}
+{\footnotesize\ttfamily override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Trigger\+Settings\+Checking (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Triggers settings checking on \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5f64ce36efaee0f676816c803620d05e_a5f64ce36efaee0f676816c803620d05e}{Event\+Hub\+Publisher}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}}, then calls \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_aa725781eddb65bdfe456a4fecb36fb6b_aa725781eddb65bdfe456a4fecb36fb6b}{Instantiate\+Receiving}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3747fb9fcb3de2a72c8a6d7bbd92db95_a3747fb9fcb3de2a72c8a6d7bbd92db95}{Instantiate\+Publishing}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_afe8d6f93f97ab5658b81903af555632c_afe8d6f93f97ab5658b81903af555632c}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_afe8d6f93f97ab5658b81903af555632c_afe8d6f93f97ab5658b81903af555632c}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!ValidateSettingsHaveChanged@{ValidateSettingsHaveChanged}}
+\index{ValidateSettingsHaveChanged@{ValidateSettingsHaveChanged}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ValidateSettingsHaveChanged()}{ValidateSettingsHaveChanged()}}
+{\footnotesize\ttfamily override bool \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Validate\+Settings\+Have\+Changed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Checks Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Validate\+Settings\+Have\+Changed and that \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12_a2b102538e8b72f9990578fa3bcbe4c12}{Storage\+Connection\+String}} have changed. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a523df6f08c43b3ca013c08555098f4ad_a523df6f08c43b3ca013c08555098f4ad}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a523df6f08c43b3ca013c08555098f4ad_a523df6f08c43b3ca013c08555098f4ad}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!DefaultPrivateEventHubConsumerGroupName@{DefaultPrivateEventHubConsumerGroupName}}
+\index{DefaultPrivateEventHubConsumerGroupName@{DefaultPrivateEventHubConsumerGroupName}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{DefaultPrivateEventHubConsumerGroupName}{DefaultPrivateEventHubConsumerGroupName}}
+{\footnotesize\ttfamily const string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Default\+Private\+Event\+Hub\+Consumer\+Group\+Name = \char`\"{}\$Default\char`\"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+The default name of the consumer group in the private event hub if no I\+Configuration\+Manager value is set. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a71191dfe0cccbbc59c37cadf051a5cdd_a71191dfe0cccbbc59c37cadf051a5cdd}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a71191dfe0cccbbc59c37cadf051a5cdd_a71191dfe0cccbbc59c37cadf051a5cdd}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!DefaultPublicEventHubConsumerGroupName@{DefaultPublicEventHubConsumerGroupName}}
+\index{DefaultPublicEventHubConsumerGroupName@{DefaultPublicEventHubConsumerGroupName}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{DefaultPublicEventHubConsumerGroupName}{DefaultPublicEventHubConsumerGroupName}}
+{\footnotesize\ttfamily const string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Default\+Public\+Event\+Hub\+Consumer\+Group\+Name = \char`\"{}\$Default\char`\"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+
+
+The default name of the consumer group in the public event hub if no I\+Configuration\+Manager value is set. 
+
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8912bae90f45042ed41ff7a7632c178f_a8912bae90f45042ed41ff7a7632c178f}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8912bae90f45042ed41ff7a7632c178f_a8912bae90f45042ed41ff7a7632c178f}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!DefaultPrivateEventHubName@{DefaultPrivateEventHubName}}
+\index{DefaultPrivateEventHubName@{DefaultPrivateEventHubName}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{DefaultPrivateEventHubName}{DefaultPrivateEventHubName}}
+{\footnotesize\ttfamily abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Default\+Private\+Event\+Hub\+Name\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The default name of the private event hub if no I\+Configuration\+Manager value is set. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a11645c85a3c749ca664480867c6fae3c_a11645c85a3c749ca664480867c6fae3c}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a11645c85a3c749ca664480867c6fae3c_a11645c85a3c749ca664480867c6fae3c}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!DefaultPublicEventHubName@{DefaultPublicEventHubName}}
+\index{DefaultPublicEventHubName@{DefaultPublicEventHubName}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{DefaultPublicEventHubName}{DefaultPublicEventHubName}}
+{\footnotesize\ttfamily abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Default\+Public\+Event\+Hub\+Name\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The default name of the public event hub if no I\+Configuration\+Manager value is set. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad77526406b246313591e11b90e1a67d5_ad77526406b246313591e11b90e1a67d5}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad77526406b246313591e11b90e1a67d5_ad77526406b246313591e11b90e1a67d5}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!EventHubConnectionStringNameConfigurationKey@{EventHubConnectionStringNameConfigurationKey}}
+\index{EventHubConnectionStringNameConfigurationKey@{EventHubConnectionStringNameConfigurationKey}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{EventHubConnectionStringNameConfigurationKey}{EventHubConnectionStringNameConfigurationKey}}
+{\footnotesize\ttfamily abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Event\+Hub\+Connection\+String\+Name\+Configuration\+Key\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The configuration key for the event hub connection string as used by I\+Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5f64ce36efaee0f676816c803620d05e_a5f64ce36efaee0f676816c803620d05e}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a5f64ce36efaee0f676816c803620d05e_a5f64ce36efaee0f676816c803620d05e}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!EventHubPublisher@{EventHubPublisher}}
+\index{EventHubPublisher@{EventHubPublisher}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{EventHubPublisher}{EventHubPublisher}}
+{\footnotesize\ttfamily Event\+Hub\+Client \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Event\+Hub\+Publisher\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets the publicEvent\+Hub\+Client. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!EventHubReceiver@{EventHubReceiver}}
+\index{EventHubReceiver@{EventHubReceiver}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{EventHubReceiver}{EventHubReceiver}}
+{\footnotesize\ttfamily Event\+Processor\+Host \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Event\+Hub\+Receiver\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets the publicEvent\+Processor\+Host. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad400a17bf61c218e6330cd6500458801_ad400a17bf61c218e6330cd6500458801}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad400a17bf61c218e6330cd6500458801_ad400a17bf61c218e6330cd6500458801}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!EventHubStorageConnectionStringNameConfigurationKey@{EventHubStorageConnectionStringNameConfigurationKey}}
+\index{EventHubStorageConnectionStringNameConfigurationKey@{EventHubStorageConnectionStringNameConfigurationKey}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{EventHubStorageConnectionStringNameConfigurationKey}{EventHubStorageConnectionStringNameConfigurationKey}}
+{\footnotesize\ttfamily abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Event\+Hub\+Storage\+Connection\+String\+Name\+Configuration\+Key\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The configuration key for the event hub storage connection string as used by I\+Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad25a0f517a33a99e4ae645bf14c3f7d9_ad25a0f517a33a99e4ae645bf14c3f7d9}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad25a0f517a33a99e4ae645bf14c3f7d9_ad25a0f517a33a99e4ae645bf14c3f7d9}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!ExclusionNamespaces@{ExclusionNamespaces}}
+\index{ExclusionNamespaces@{ExclusionNamespaces}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ExclusionNamespaces}{ExclusionNamespaces}}
+{\footnotesize\ttfamily I\+List$<$string$>$ \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Exclusion\+Namespaces\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+A list of namespaces to exclude when trying to automatically determine the container. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a0c091d0cb19dda3e8bfc20f0e7d30af3_a0c091d0cb19dda3e8bfc20f0e7d30af3}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a0c091d0cb19dda3e8bfc20f0e7d30af3_a0c091d0cb19dda3e8bfc20f0e7d30af3}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!PrivateEventHubConsumerGroupName@{PrivateEventHubConsumerGroupName}}
+\index{PrivateEventHubConsumerGroupName@{PrivateEventHubConsumerGroupName}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PrivateEventHubConsumerGroupName}{PrivateEventHubConsumerGroupName}}
+{\footnotesize\ttfamily string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Private\+Event\+Hub\+Consumer\+Group\+Name\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The name of the consumer group in the private event hub. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad2095d284821cff883fef5a2a5aec90e_ad2095d284821cff883fef5a2a5aec90e}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad2095d284821cff883fef5a2a5aec90e_ad2095d284821cff883fef5a2a5aec90e}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!PrivateEventHubConsumerGroupNameConfigurationKey@{PrivateEventHubConsumerGroupNameConfigurationKey}}
+\index{PrivateEventHubConsumerGroupNameConfigurationKey@{PrivateEventHubConsumerGroupNameConfigurationKey}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PrivateEventHubConsumerGroupNameConfigurationKey}{PrivateEventHubConsumerGroupNameConfigurationKey}}
+{\footnotesize\ttfamily abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Private\+Event\+Hub\+Consumer\+Group\+Name\+Configuration\+Key\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The configuration key for the name of the consumer group name of the private event hub as used by I\+Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac6802047e00a92ea4b0ae6b69ef7310a_ac6802047e00a92ea4b0ae6b69ef7310a}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ac6802047e00a92ea4b0ae6b69ef7310a_ac6802047e00a92ea4b0ae6b69ef7310a}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!PrivateEventHubName@{PrivateEventHubName}}
+\index{PrivateEventHubName@{PrivateEventHubName}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PrivateEventHubName}{PrivateEventHubName}}
+{\footnotesize\ttfamily string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Private\+Event\+Hub\+Name\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+The name of the private event hub. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a286a7ddc6becff4d549434d2abe82ed1_a286a7ddc6becff4d549434d2abe82ed1}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a286a7ddc6becff4d549434d2abe82ed1_a286a7ddc6becff4d549434d2abe82ed1}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!PrivateEventHubNameConfigurationKey@{PrivateEventHubNameConfigurationKey}}
+\index{PrivateEventHubNameConfigurationKey@{PrivateEventHubNameConfigurationKey}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PrivateEventHubNameConfigurationKey}{PrivateEventHubNameConfigurationKey}}
+{\footnotesize\ttfamily abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Private\+Event\+Hub\+Name\+Configuration\+Key\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The configuration key for the name of the private event hub as used by I\+Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a505c495eb73e4f888431d408e0b0d8ab_a505c495eb73e4f888431d408e0b0d8ab}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a505c495eb73e4f888431d408e0b0d8ab_a505c495eb73e4f888431d408e0b0d8ab}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!PublicEventHubConsumerGroupName@{PublicEventHubConsumerGroupName}}
+\index{PublicEventHubConsumerGroupName@{PublicEventHubConsumerGroupName}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PublicEventHubConsumerGroupName}{PublicEventHubConsumerGroupName}}
+{\footnotesize\ttfamily string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Public\+Event\+Hub\+Consumer\+Group\+Name\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The name of the consumer group in the public event hub. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a36b035065fd3fc38ac136adc59742d34_a36b035065fd3fc38ac136adc59742d34}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a36b035065fd3fc38ac136adc59742d34_a36b035065fd3fc38ac136adc59742d34}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!PublicEventHubConsumerGroupNameConfigurationKey@{PublicEventHubConsumerGroupNameConfigurationKey}}
+\index{PublicEventHubConsumerGroupNameConfigurationKey@{PublicEventHubConsumerGroupNameConfigurationKey}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PublicEventHubConsumerGroupNameConfigurationKey}{PublicEventHubConsumerGroupNameConfigurationKey}}
+{\footnotesize\ttfamily abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Public\+Event\+Hub\+Consumer\+Group\+Name\+Configuration\+Key\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The configuration key for the name of the consumer group name of the public event hub as used by I\+Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a6012f2290f9397929e9d6d5419963482_a6012f2290f9397929e9d6d5419963482}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a6012f2290f9397929e9d6d5419963482_a6012f2290f9397929e9d6d5419963482}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!PublicEventHubName@{PublicEventHubName}}
+\index{PublicEventHubName@{PublicEventHubName}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PublicEventHubName}{PublicEventHubName}}
+{\footnotesize\ttfamily string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Public\+Event\+Hub\+Name\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The name of the public event hub. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3ef1f56ad3de3bf8337f68e73627fab2_a3ef1f56ad3de3bf8337f68e73627fab2}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a3ef1f56ad3de3bf8337f68e73627fab2_a3ef1f56ad3de3bf8337f68e73627fab2}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!PublicEventHubNameConfigurationKey@{PublicEventHubNameConfigurationKey}}
+\index{PublicEventHubNameConfigurationKey@{PublicEventHubNameConfigurationKey}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PublicEventHubNameConfigurationKey}{PublicEventHubNameConfigurationKey}}
+{\footnotesize\ttfamily abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Public\+Event\+Hub\+Name\+Configuration\+Key\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The configuration key for the name of the public event hub as used by I\+Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8c9faa7096d72a45803e6e63a1b3cf30_a8c9faa7096d72a45803e6e63a1b3cf30}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a8c9faa7096d72a45803e6e63a1b3cf30_a8c9faa7096d72a45803e6e63a1b3cf30}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!ReceiverMessageHandler@{ReceiverMessageHandler}}
+\index{ReceiverMessageHandler@{ReceiverMessageHandler}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ReceiverMessageHandler}{ReceiverMessageHandler}}
+{\footnotesize\ttfamily Action$<$Partition\+Context, Event\+Data$>$ \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Receiver\+Message\+Handler\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The \mbox{\hyperlink{}{handler}} used for Event\+Processor\+Host.\+Register\+Event\+Processor\+Factory\+Async(\+I\+Event\+Processor\+Factory) on \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad3a0c2f32d5771fb1f4420fc33c75968_ad3a0c2f32d5771fb1f4420fc33c75968}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_ad3a0c2f32d5771fb1f4420fc33c75968_ad3a0c2f32d5771fb1f4420fc33c75968}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!ReceiverMessageHandlerOptions@{ReceiverMessageHandlerOptions}}
+\index{ReceiverMessageHandlerOptions@{ReceiverMessageHandlerOptions}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ReceiverMessageHandlerOptions}{ReceiverMessageHandlerOptions}}
+{\footnotesize\ttfamily Event\+Processor\+Options \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Receiver\+Message\+Handler\+Options\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The Event\+Processor\+Options used for Event\+Processor\+Host.\+Register\+Event\+Processor\+Factory\+Async(\+I\+Event\+Processor\+Factory) on \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a1b12b47dbb9b9afe2014477a2e457c35_a1b12b47dbb9b9afe2014477a2e457c35}{Event\+Hub\+Receiver}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a001a89909f92a45909cb95c2c0acf9fa_a001a89909f92a45909cb95c2c0acf9fa}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a001a89909f92a45909cb95c2c0acf9fa_a001a89909f92a45909cb95c2c0acf9fa}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!Signer@{Signer}}
+\index{Signer@{Signer}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Signer}{Signer}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IHashAlgorithmFactory}{I\+Hash\+Algorithm\+Factory}} \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Signer\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The I\+Hash\+Algorithm\+Factory to use to sign messages. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7dcae4b6bcae81e87b935892e6687382_a7dcae4b6bcae81e87b935892e6687382}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a7dcae4b6bcae81e87b935892e6687382_a7dcae4b6bcae81e87b935892e6687382}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!SigningTokenConfigurationKey@{SigningTokenConfigurationKey}}
+\index{SigningTokenConfigurationKey@{SigningTokenConfigurationKey}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{SigningTokenConfigurationKey}{SigningTokenConfigurationKey}}
+{\footnotesize\ttfamily abstract string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Signing\+Token\+Configuration\+Key\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The configuration key for the signing token as used by I\+Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12_a2b102538e8b72f9990578fa3bcbe4c12}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a2b102538e8b72f9990578fa3bcbe4c12_a2b102538e8b72f9990578fa3bcbe4c12}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!StorageConnectionString@{StorageConnectionString}}
+\index{StorageConnectionString@{StorageConnectionString}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{StorageConnectionString}{StorageConnectionString}}
+{\footnotesize\ttfamily string \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Storage\+Connection\+String\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The event hub storage connection string. 
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a4cf19edac088c5ea74408398b3dfd4a2_a4cf19edac088c5ea74408398b3dfd4a2}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub_a4cf19edac088c5ea74408398b3dfd4a2_a4cf19edac088c5ea74408398b3dfd4a2}} 
+\index{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}!TelemetryHelper@{TelemetryHelper}}
+\index{TelemetryHelper@{TelemetryHelper}!Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureEventHub$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{TelemetryHelper}{TelemetryHelper}}
+{\footnotesize\ttfamily I\+Telemetry\+Helper \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureEventHub}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Event\+Hub}}$<$ T\+Authentication\+Token $>$.Telemetry\+Helper\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+Gets the I\+Telemetry\+Helper. 
+

@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Services/BasicServiceParameterResolver.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Services</a> - BasicServiceParameterResolver.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : //     Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">      11 </span>            : using System.Xml;
+<span class="lineNum">      12 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      13 </span>            : 
+<span class="lineNum">      14 </span>            : namespace Cqrs.Services
+<span class="lineNum">      15 </span>            : {
+<span class="lineNum">      16 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :         /// A &lt;see cref=&quot;DataContractResolver&quot;/&gt; for use via WCF that ensures basic support for 
+<span class="lineNum">      18 </span>            :         /// &lt;see cref=&quot;ServiceResponse&quot;/&gt;, &lt;see cref=&quot;ServiceRequest{TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      19 </span>            :         /// and anything &lt;see cref=&quot;TokenResolver&quot;/&gt; and &lt;see cref=&quot;EventDataResolver&quot;/&gt; support.
+<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      21 </span>            :         /// &lt;typeparam name=&quot;TServiceParameter&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the service to include in the &lt;see cref=&quot;ServiceNamespace&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">      22 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      23 </span>            :         public abstract class BasicServiceParameterResolver&lt;TServiceParameter, TAuthenticationToken&gt; : DataContractResolver, IServiceParameterResolver
+<span class="lineNum">      24 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;BasicServiceParameterResolver{TServiceParameter,TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 protected BasicServiceParameterResolver(ISingleSignOnTokenResolver tokenResolver, IEventDataResolver eventDataResolver)</span>
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         TokenResolver = tokenResolver;
+<span class="lineNum">      31 </span>            :                         EventDataResolver = eventDataResolver;
+<span class="lineNum">      32 </span>            :                         ServiceNamespace = string.Format(&quot;https://getcqrs.net/{0}&quot;, typeof(TServiceParameter).FullName);
+<span class="lineNum">      33 </span>            :                 }
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      36 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;BasicServiceParameterResolver{TServiceParameter,TAuthenticationToken}&quot;/&gt;
+<span class="lineNum">      37 </span>            :                 /// defaulting &lt;see cref=&quot;TokenResolver&quot;/&gt; to &lt;see cref=&quot;BasicTokenResolver&quot;/&gt;.
+<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      39 </span><span class="lineCov">          1 :                 protected BasicServiceParameterResolver(IEventDataResolver eventDataResolver)</span>
+<span class="lineNum">      40 </span>            :                 {
+<span class="lineNum">      41 </span>            :                         TokenResolver = new BasicTokenResolver();
+<span class="lineNum">      42 </span>            :                         EventDataResolver = eventDataResolver;
+<span class="lineNum">      43 </span>            :                         ServiceNamespace = string.Format(&quot;https://getcqrs.net/{0}&quot;, typeof(TServiceParameter).FullName);
+<span class="lineNum">      44 </span>            :                 }
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      47 </span>            :                 /// The &lt;see cref=&quot;IServiceParameterResolver&quot;/&gt; that has information about resolving authentication tokens such as &lt;typeparamref name=&quot;TAuthenticationToken&quot;/&gt;.
+<span class="lineNum">      48 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      49 </span>            :                 protected IServiceParameterResolver TokenResolver { get; private set; }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      52 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IEventDataResolver&quot;/&gt;.
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span>            :                 protected IEventDataResolver EventDataResolver { get; private set; }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      57 </span>            :                 /// The Service Name included in all &lt;see cref=&quot;Type&quot;/&gt; resolution information.
+<span class="lineNum">      58 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      59 </span>            :                 protected string ServiceNamespace { get; private set; }
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      62 </span>            :                 /// Maps a data contract type to an xsi:type name and namespace during serialization.
+<span class="lineNum">      63 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      64 </span>            :                 /// &lt;param name=&quot;dataContractType&quot;&gt;The type to map.&lt;/param&gt;
+<span class="lineNum">      65 </span>            :                 /// &lt;param name=&quot;declaredType&quot;&gt;The type declared in the data contract.&lt;/param&gt;
+<span class="lineNum">      66 </span>            :                 /// &lt;param name=&quot;knownTypeResolver&quot;&gt;The known type resolver.&lt;/param&gt;
+<span class="lineNum">      67 </span>            :                 /// &lt;param name=&quot;typeName&quot;&gt;The xsi:type name.&lt;/param&gt;
+<span class="lineNum">      68 </span>            :                 /// &lt;param name=&quot;typeNamespace&quot;&gt;The xsi:type namespace.&lt;/param&gt;
+<span class="lineNum">      69 </span>            :                 /// &lt;returns&gt;true if mapping succeeded; otherwise, false.&lt;/returns&gt;
+<span class="lineNum">      70 </span><span class="lineCov">          1 :                 public override bool TryResolveType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, out XmlDictionaryString typeName, out XmlDictionaryString typeNamespace)</span>
+<span class="lineNum">      71 </span>            :                 {
+<span class="lineNum">      72 </span>            :                         if (dataContractType == typeof(ServiceResponse))
+<span class="lineNum">      73 </span>            :                         {
+<span class="lineNum">      74 </span>            :                                 XmlDictionary dictionary = new XmlDictionary();
+<span class="lineNum">      75 </span>            :                                 typeName = dictionary.Add(&quot;ServiceResponse&quot;);
+<span class="lineNum">      76 </span>            :                                 typeNamespace = dictionary.Add(ServiceNamespace);
+<span class="lineNum">      77 </span>            :                                 return true;
+<span class="lineNum">      78 </span>            :                         }
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                         if (dataContractType == typeof(ServiceRequest&lt;TAuthenticationToken&gt;))
+<span class="lineNum">      81 </span>            :                         {
+<span class="lineNum">      82 </span>            :                                 XmlDictionary dictionary = new XmlDictionary();
+<span class="lineNum">      83 </span>            :                                 typeName = dictionary.Add(&quot;ServiceRequest&quot;);
+<span class="lineNum">      84 </span>            :                                 typeNamespace = dictionary.Add(ServiceNamespace);
+<span class="lineNum">      85 </span>            :                                 return true;
+<span class="lineNum">      86 </span>            :                         }
+<span class="lineNum">      87 </span>            : 
+<span class="lineNum">      88 </span>            :                         bool result = TokenResolver.TryResolveType(dataContractType, declaredType, knownTypeResolver, out typeName, out typeNamespace);
+<span class="lineNum">      89 </span>            :                         if (result)
+<span class="lineNum">      90 </span>            :                                 return true;
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :                         result = EventDataResolver.TryResolveType(dataContractType, declaredType, knownTypeResolver, out typeName, out typeNamespace);
+<span class="lineNum">      93 </span>            :                         if (result)
+<span class="lineNum">      94 </span>            :                                 return true;
+<span class="lineNum">      95 </span>            : 
+<span class="lineNum">      96 </span>            :                         result = TryResolveUnResolvedType(dataContractType, declaredType, knownTypeResolver, ref typeName, ref typeNamespace);
+<span class="lineNum">      97 </span>            :                         if (result)
+<span class="lineNum">      98 </span>            :                                 return true;
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                         // Defer to the known type resolver
+<span class="lineNum">     101 </span>            :                         return knownTypeResolver.TryResolveType(dataContractType, declaredType, null, out typeName, out typeNamespace);
+<span class="lineNum">     102 </span>            :                 }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     105 </span>            :                 /// Try to resolve an types &lt;see cref=&quot;TryResolveType&quot;/&gt; fails to.
+<span class="lineNum">     106 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     107 </span>            :                 /// &lt;param name=&quot;dataContractType&quot;&gt;The type to map.&lt;/param&gt;
+<span class="lineNum">     108 </span>            :                 /// &lt;param name=&quot;declaredType&quot;&gt;The type declared in the data contract.&lt;/param&gt;
+<span class="lineNum">     109 </span>            :                 /// &lt;param name=&quot;knownTypeResolver&quot;&gt;The known type resolver.&lt;/param&gt;
+<span class="lineNum">     110 </span>            :                 /// &lt;param name=&quot;typeName&quot;&gt;The xsi:type name.&lt;/param&gt;
+<span class="lineNum">     111 </span>            :                 /// &lt;param name=&quot;typeNamespace&quot;&gt;The xsi:type namespace.&lt;/param&gt;
+<span class="lineNum">     112 </span>            :                 /// &lt;returns&gt;true if mapping succeeded; otherwise, false.&lt;/returns&gt;
+<span class="lineNum">     113 </span><span class="lineCov">          1 :                 protected abstract bool TryResolveUnResolvedType(Type dataContractType, Type declaredType, DataContractResolver knownTypeResolver, ref XmlDictionaryString typeName, ref XmlDictionaryString typeNamespace);</span>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     116 </span>            :                 /// Maps the specified xsi:type name and namespace to a data contract type during deserialization.
+<span class="lineNum">     117 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     118 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     119 </span>            :                 /// The type the xsi:type name and namespace is mapped to. 
+<span class="lineNum">     120 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     121 </span>            :                 /// &lt;param name=&quot;typeName&quot;&gt;The xsi:type name to map.&lt;/param&gt;
+<span class="lineNum">     122 </span>            :                 /// &lt;param name=&quot;typeNamespace&quot;&gt;The xsi:type namespace to map.&lt;/param&gt;
+<span class="lineNum">     123 </span>            :                 /// &lt;param name=&quot;declaredType&quot;&gt;The type declared in the data contract.&lt;/param&gt;
+<span class="lineNum">     124 </span>            :                 /// &lt;param name=&quot;knownTypeResolver&quot;&gt;The known type resolver.&lt;/param&gt;
+<span class="lineNum">     125 </span><span class="lineCov">          1 :                 public override Type ResolveName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver)</span>
+<span class="lineNum">     126 </span>            :                 {
+<span class="lineNum">     127 </span>            :                         if (typeNamespace == ServiceNamespace)
+<span class="lineNum">     128 </span>            :                         {
+<span class="lineNum">     129 </span>            :                                 if (typeName == &quot;ServiceResponse&quot;)
+<span class="lineNum">     130 </span>            :                                 {
+<span class="lineNum">     131 </span>            :                                         return typeof(ServiceResponse);
+<span class="lineNum">     132 </span>            :                                 }
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            :                                 if (typeName == &quot;ServiceRequest&quot;)
+<span class="lineNum">     135 </span>            :                                 {
+<span class="lineNum">     136 </span>            :                                         return typeof(ServiceRequest&lt;TAuthenticationToken&gt;);
+<span class="lineNum">     137 </span>            :                                 }
+<span class="lineNum">     138 </span>            :                         }
+<span class="lineNum">     139 </span>            : 
+<span class="lineNum">     140 </span>            :                         Type result = TokenResolver.ResolveName(typeName, typeNamespace, declaredType, knownTypeResolver);
+<span class="lineNum">     141 </span>            :                         if (result != null)
+<span class="lineNum">     142 </span>            :                                 return result;
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :                         result = EventDataResolver.ResolveName(typeName, typeNamespace, declaredType, knownTypeResolver);
+<span class="lineNum">     145 </span>            :                         if (result != null)
+<span class="lineNum">     146 </span>            :                                 return result;
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            :                         result = ResolveUnResolvedName(typeName, typeNamespace, declaredType, knownTypeResolver);
+<span class="lineNum">     149 </span>            :                         if (result != null)
+<span class="lineNum">     150 </span>            :                                 return result;
+<span class="lineNum">     151 </span>            : 
+<span class="lineNum">     152 </span>            :                         // Defer to the known type resolver
+<span class="lineNum">     153 </span>            :                         return knownTypeResolver.ResolveName(typeName, typeNamespace, declaredType, null);
+<span class="lineNum">     154 </span>            :                 }
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     157 </span>            :                 /// Try to resolve an types &lt;see cref=&quot;ResolveName&quot;/&gt; fails to.
+<span class="lineNum">     158 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     159 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     160 </span>            :                 /// The type the xsi:type name and namespace is mapped to. 
+<span class="lineNum">     161 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     162 </span>            :                 /// &lt;param name=&quot;typeName&quot;&gt;The xsi:type name to map.&lt;/param&gt;
+<span class="lineNum">     163 </span>            :                 /// &lt;param name=&quot;typeNamespace&quot;&gt;The xsi:type namespace to map.&lt;/param&gt;
+<span class="lineNum">     164 </span>            :                 /// &lt;param name=&quot;declaredType&quot;&gt;The type declared in the data contract.&lt;/param&gt;
+<span class="lineNum">     165 </span>            :                 /// &lt;param name=&quot;knownTypeResolver&quot;&gt;The known type resolver.&lt;/param&gt;
+<span class="lineNum">     166 </span><span class="lineCov">          1 :                 protected abstract Type ResolveUnResolvedName(string typeName, string typeNamespace, Type declaredType, DataContractResolver knownTypeResolver);</span>
+<span class="lineNum">     167 </span>            :         }
+<span class="lineNum">     168 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

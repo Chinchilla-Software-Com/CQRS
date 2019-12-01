@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Events/SqlEventStore.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Events</a> - SqlEventStore.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntry">11</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : #if NET40
+<span class="lineNum">      12 </span>            : using System.Data.Entity;
+<span class="lineNum">      13 </span>            : using System.Data.Entity.Infrastructure;
+<span class="lineNum">      14 </span>            : #else
+<span class="lineNum">      15 </span>            : using Microsoft.EntityFrameworkCore;
+<span class="lineNum">      16 </span>            : #endif
+<span class="lineNum">      17 </span>            : using System.Linq;
+<span class="lineNum">      18 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      19 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      20 </span>            : using Cqrs.Domain;
+<span class="lineNum">      21 </span>            : using Cqrs.Messages;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : namespace Cqrs.Events
+<span class="lineNum">      24 </span>            : {
+<span class="lineNum">      25 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :         /// A simplified SqlServer based &lt;see cref=&quot;EventStore{TAuthenticationToken}&quot;/&gt; that uses LinqToSql and follows a rigid schema.
+<span class="lineNum">      27 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      28 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      29 </span>            :         public class LinqToSqlEventStore&lt;TAuthenticationToken&gt;
+<span class="lineNum">      30 </span>            :                 : EventStore&lt;TAuthenticationToken&gt; 
+<span class="lineNum">      31 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      32 </span>            :                 internal const string SqlEventStoreConnectionNameApplicationKey = @&quot;Cqrs.SqlEventStore.ConnectionStringName&quot;;
+<span class="lineNum">      33 </span>            : 
+<span class="lineNum">      34 </span>            :                 internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @&quot;Cqrs.SqlEventStore.GetByCorrelationId.CommandTimeout&quot;;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 internal const string SqlEventStoreTableNameApplicationKeyPattern = @&quot;Cqrs.SqlEventStore.CustomTableNames.{0}&quot;;
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      44 </span>            :                 /// Instantiate a new instance of the &lt;see cref=&quot;LinqToSqlEventStore{TAuthenticationToken}&quot;/&gt; class.
+<span class="lineNum">      45 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      46 </span><span class="lineCov">          1 :                 public LinqToSqlEventStore(IEventBuilder&lt;TAuthenticationToken&gt; eventBuilder, IEventDeserialiser&lt;TAuthenticationToken&gt; eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)</span>
+<span class="lineNum">      47 </span>            :                         : base(eventBuilder, eventDeserialiser, logger)
+<span class="lineNum">      48 </span>            :                 {
+<span class="lineNum">      49 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      50 </span>            :                 }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            : #region Overrides of EventStore&lt;TAuthenticationToken&gt;
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      55 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt;.
+<span class="lineNum">      56 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      57 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">      58 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      59 </span>            :                 /// &lt;param name=&quot;useLastEventOnly&quot;&gt;Loads only the last event&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      60 </span>            :                 /// &lt;param name=&quot;fromVersion&quot;&gt;Load events starting from this version&lt;/param&gt;
+<span class="lineNum">      61 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)</span>
+<span class="lineNum">      62 </span>            :                 {
+<span class="lineNum">      63 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                         using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+<span class="lineNum">      66 </span>            :                         {
+<span class="lineNum">      67 </span>            :                                 IEnumerable&lt;EventData&gt; query = GetEventStoreTable(dbDataContext)
+<span class="lineNum">      68 </span>            :                                         .AsQueryable()
+<span class="lineNum">      69 </span>            :                                         .Where(eventData =&gt; eventData.AggregateId == streamName &amp;&amp; eventData.Version &gt; fromVersion)
+<span class="lineNum">      70 </span>            :                                         .OrderByDescending(eventData =&gt; eventData.Version);
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :                                 if (useLastEventOnly)
+<span class="lineNum">      73 </span>            :                                         query = query.AsQueryable().Take(1);
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span>            :                                 return query
+<span class="lineNum">      76 </span>            :                                         .Select(EventDeserialiser.Deserialise)
+<span class="lineNum">      77 </span>            :                                         .ToList();
+<span class="lineNum">      78 </span>            :                         }
+<span class="lineNum">      79 </span>            :                 }
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      82 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;version&quot;/&gt;.
+<span class="lineNum">      83 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      84 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">      85 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      86 </span>            :                 /// &lt;param name=&quot;version&quot;&gt;Load events up-to and including from this version&lt;/param&gt;
+<span class="lineNum">      87 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToVersion(Type aggregateRootType, Guid aggregateId, int version)</span>
+<span class="lineNum">      88 </span>            :                 {
+<span class="lineNum">      89 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+<span class="lineNum">      90 </span>            : 
+<span class="lineNum">      91 </span>            :                         using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+<span class="lineNum">      92 </span>            :                         {
+<span class="lineNum">      93 </span>            :                                 IEnumerable&lt;EventData&gt; query = GetEventStoreTable(dbDataContext)
+<span class="lineNum">      94 </span>            :                                         .AsQueryable()
+<span class="lineNum">      95 </span>            :                                         .Where(eventData =&gt; eventData.AggregateId == streamName &amp;&amp; eventData.Version &lt;= version)
+<span class="lineNum">      96 </span>            :                                         .OrderByDescending(eventData =&gt; eventData.Version);
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                                 return query
+<span class="lineNum">      99 </span>            :                                         .Select(EventDeserialiser.Deserialise)
+<span class="lineNum">     100 </span>            :                                         .ToList();
+<span class="lineNum">     101 </span>            :                         }
+<span class="lineNum">     102 </span>            :                 }
+<span class="lineNum">     103 </span>            : 
+<span class="lineNum">     104 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     105 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; up to and including the provided &lt;paramref name=&quot;versionedDate&quot;/&gt;.
+<span class="lineNum">     106 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     107 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">     108 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     109 </span>            :                 /// &lt;param name=&quot;versionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     110 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)</span>
+<span class="lineNum">     111 </span>            :                 {
+<span class="lineNum">     112 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span>            :                         using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+<span class="lineNum">     115 </span>            :                         {
+<span class="lineNum">     116 </span>            :                                 IEnumerable&lt;EventData&gt; query = GetEventStoreTable(dbDataContext)
+<span class="lineNum">     117 </span>            :                                         .AsQueryable()
+<span class="lineNum">     118 </span>            :                                         .Where(eventData =&gt; eventData.AggregateId == streamName &amp;&amp; eventData.Timestamp &lt;= versionedDate)
+<span class="lineNum">     119 </span>            :                                         .OrderByDescending(eventData =&gt; eventData.Version);
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :                                 return query
+<span class="lineNum">     122 </span>            :                                         .Select(EventDeserialiser.Deserialise)
+<span class="lineNum">     123 </span>            :                                         .ToList();
+<span class="lineNum">     124 </span>            :                         }
+<span class="lineNum">     125 </span>            :                 }
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     128 </span>            :                 /// Gets a collection of &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; for the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; of type &lt;paramref name=&quot;aggregateRootType&quot;/&gt; with the ID matching the provided &lt;paramref name=&quot;aggregateId&quot;/&gt; from and including the provided &lt;paramref name=&quot;fromVersionedDate&quot;/&gt; up to and including the provided &lt;paramref name=&quot;toVersionedDate&quot;/&gt;.
+<span class="lineNum">     129 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     130 </span>            :                 /// &lt;param name=&quot;aggregateRootType&quot;&gt; &lt;see cref=&quot;Type&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt; the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; was raised in.&lt;/param&gt;
+<span class="lineNum">     131 </span>            :                 /// &lt;param name=&quot;aggregateId&quot;&gt;The &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}.Id&quot;/&gt; of the &lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     132 </span>            :                 /// &lt;param name=&quot;fromVersionedDate&quot;&gt;Load events from and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     133 </span>            :                 /// &lt;param name=&quot;toVersionedDate&quot;&gt;Load events up-to and including from this &lt;see cref=&quot;DateTime&quot;/&gt;&lt;/param&gt;
+<span class="lineNum">     134 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;IEvent&lt;TAuthenticationToken&gt;&gt; GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)</span>
+<span class="lineNum">     135 </span>            :                 {
+<span class="lineNum">     136 </span>            :                         string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            :                         using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+<span class="lineNum">     139 </span>            :                         {
+<span class="lineNum">     140 </span>            :                                 IEnumerable&lt;EventData&gt; query = GetEventStoreTable(dbDataContext)
+<span class="lineNum">     141 </span>            :                                         .AsQueryable()
+<span class="lineNum">     142 </span>            :                                         .Where(eventData =&gt; eventData.AggregateId == streamName &amp;&amp; eventData.Timestamp &gt;= fromVersionedDate &amp;&amp; eventData.Timestamp &lt;= toVersionedDate)
+<span class="lineNum">     143 </span>            :                                         .OrderByDescending(eventData =&gt; eventData.Version);
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :                                 return query
+<span class="lineNum">     146 </span>            :                                         .Select(EventDeserialiser.Deserialise)
+<span class="lineNum">     147 </span>            :                                         .ToList();
+<span class="lineNum">     148 </span>            :                         }
+<span class="lineNum">     149 </span>            :                 }
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     152 </span>            :                 /// Get all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances for the given &lt;paramref name=&quot;correlationId&quot;/&gt;.
+<span class="lineNum">     153 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     154 </span>            :                 /// &lt;param name=&quot;correlationId&quot;&gt;The &lt;see cref=&quot;IMessage.CorrelationId&quot;/&gt; of the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; instances to retrieve.&lt;/param&gt;
+<span class="lineNum">     155 </span><span class="lineCov">          1 :                 public override IEnumerable&lt;EventData&gt; Get(Guid correlationId)</span>
+<span class="lineNum">     156 </span>            :                 {
+<span class="lineNum">     157 </span>            :                         using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext())
+<span class="lineNum">     158 </span>            :                         {
+<span class="lineNum">     159 </span>            :                                 string commandTimeoutValue;
+<span class="lineNum">     160 </span>            :                                 int commandTimeout;
+<span class="lineNum">     161 </span>            :                                 bool found = ConfigurationManager.TryGetSetting(SqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
+<span class="lineNum">     162 </span>            :                                 if (found &amp;&amp; int.TryParse(commandTimeoutValue, out commandTimeout))
+<span class="lineNum">     163 </span>            :                                 {
+<span class="lineNum">     164 </span>            : #if NET40
+<span class="lineNum">     165 </span>            :                                         // Get the ObjectContext related to this DbContext
+<span class="lineNum">     166 </span>            :                                         var objectContext = (dbDataContext as IObjectContextAdapter).ObjectContext;
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span>            :                                         // Sets the command timeout for all the commands
+<span class="lineNum">     169 </span>            :                                         objectContext.CommandTimeout = commandTimeout;
+<span class="lineNum">     170 </span>            : #else
+<span class="lineNum">     171 </span>            :                                         dbDataContext.Database.SetCommandTimeout(commandTimeout);
+<span class="lineNum">     172 </span>            : #endif
+<span class="lineNum">     173 </span>            :                                 }
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span>            :                                 IEnumerable&lt;EventData&gt; query = GetEventStoreTable(dbDataContext)
+<span class="lineNum">     176 </span>            :                                         .AsQueryable()
+<span class="lineNum">     177 </span>            :                                         .Where(eventData =&gt; eventData.CorrelationId == correlationId)
+<span class="lineNum">     178 </span>            :                                         .OrderBy(eventData =&gt; eventData.Timestamp);
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span>            :                                 return query.ToList();
+<span class="lineNum">     181 </span>            :                         }
+<span class="lineNum">     182 </span>            :                 }
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     185 </span>            :                 /// Persist the provided &lt;paramref name=&quot;eventData&quot;/&gt; into SQL Server.
+<span class="lineNum">     186 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     187 </span>            :                 /// &lt;param name=&quot;eventData&quot;&gt;The &lt;see cref=&quot;EventData&quot;/&gt; to persist.&lt;/param&gt;
+<span class="lineNum">     188 </span><span class="lineCov">          1 :                 protected override void PersistEvent(EventData eventData)</span>
+<span class="lineNum">     189 </span>            :                 {
+<span class="lineNum">     190 </span>            :                         using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf(&quot;/&quot;, StringComparison.InvariantCultureIgnoreCase))))
+<span class="lineNum">     191 </span>            :                         {
+<span class="lineNum">     192 </span>            :                                 Add(dbDataContext, eventData);
+<span class="lineNum">     193 </span>            :                         }
+<span class="lineNum">     194 </span>            :                 }
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            : #endregion
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     199 </span>            :                 /// Creates a new &lt;see cref=&quot;DbContext&quot;/&gt; using connection string settings from &lt;see cref=&quot;ConfigurationManager&quot;/&gt;.
+<span class="lineNum">     200 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     201 </span><span class="lineCov">          1 :                 protected virtual SqlEventStoreDataContext CreateDbDataContext(string aggregateRootTypeName = null)</span>
+<span class="lineNum">     202 </span>            :                 {
+<span class="lineNum">     203 </span>            :                         string connectionStringKey = ConfigurationManager.GetConnectionStringBySettingKey(SqlEventStoreConnectionNameApplicationKey, true, true);
+<span class="lineNum">     204 </span>            : 
+<span class="lineNum">     205 </span>            :                         string tableName;
+<span class="lineNum">     206 </span>            :                         if (!string.IsNullOrWhiteSpace(aggregateRootTypeName) &amp;&amp; ConfigurationManager.TryGetSetting(string.Format(SqlEventStoreTableNameApplicationKeyPattern, aggregateRootTypeName), out tableName) &amp;&amp; !string.IsNullOrEmpty(tableName))
+<span class="lineNum">     207 </span>            :                         {
+<span class="lineNum">     208 </span>            :                                 bool autoname;
+<span class="lineNum">     209 </span>            :                                 if (bool.TryParse(tableName, out autoname))
+<span class="lineNum">     210 </span>            :                                 {
+<span class="lineNum">     211 </span>            :                                         if (autoname)
+<span class="lineNum">     212 </span>            :                                                 return SqlEventStoreDataContext.New(aggregateRootTypeName.Replace(&quot;.&quot;, &quot;_&quot;), connectionStringKey);
+<span class="lineNum">     213 </span>            :                                 }
+<span class="lineNum">     214 </span>            :                                 else
+<span class="lineNum">     215 </span>            :                                         return SqlEventStoreDataContext.New(tableName, connectionStringKey);
+<span class="lineNum">     216 </span>            :                         }
+<span class="lineNum">     217 </span>            : 
+<span class="lineNum">     218 </span>            :                         return new SqlEventStoreDataContext(connectionStringKey);
+<span class="lineNum">     219 </span>            :                 }
+<span class="lineNum">     220 </span>            : 
+<span class="lineNum">     221 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     222 </span>            :                 /// Gets the &lt;see cref=&quot;DbSet{TEntity}&quot;/&gt; of &lt;see cref=&quot;EventData&quot;/&gt;.
+<span class="lineNum">     223 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     224 </span>            :                 /// &lt;param name=&quot;dbDataContext&quot;&gt;The &lt;see cref=&quot;SqlEventStoreDataContext&quot;/&gt; to use.&lt;/param&gt;
+<span class="lineNum">     225 </span><span class="lineCov">          1 :                 protected virtual DbSet&lt;EventData&gt; GetEventStoreTable(SqlEventStoreDataContext dbDataContext)</span>
+<span class="lineNum">     226 </span>            :                 {
+<span class="lineNum">     227 </span>            :                         // Get a typed table to run queries.
+<span class="lineNum">     228 </span>            :                         return dbDataContext.Set&lt;EventData&gt;();
+<span class="lineNum">     229 </span>            :                 }
+<span class="lineNum">     230 </span>            : 
+<span class="lineNum">     231 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     232 </span>            :                 /// Persist the provided &lt;paramref name=&quot;data&quot;/&gt; into SQL Server using the provided &lt;paramref name=&quot;dbDataContext&quot;/&gt;.
+<span class="lineNum">     233 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     234 </span><span class="lineCov">          1 :                 protected virtual void Add(SqlEventStoreDataContext dbDataContext, EventData data)</span>
+<span class="lineNum">     235 </span>            :                 {
+<span class="lineNum">     236 </span>            :                         Logger.LogDebug(&quot;Adding data to the SQL eventstore database&quot;, &quot;SqlEventStore\\Add&quot;);
+<span class="lineNum">     237 </span>            :                         try
+<span class="lineNum">     238 </span>            :                         {
+<span class="lineNum">     239 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     240 </span>            :                                 GetEventStoreTable(dbDataContext).Add(data);
+<span class="lineNum">     241 </span>            :                                 dbDataContext.SaveChanges();
+<span class="lineNum">     242 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     243 </span>            :                                 Logger.LogDebug(string.Format(&quot;Adding data in the SQL eventstore database took {0}.&quot;, end - start), &quot;SqlEventStore\\Add&quot;);
+<span class="lineNum">     244 </span>            :                         }
+<span class="lineNum">     245 </span>            :                         catch (Exception exception)
+<span class="lineNum">     246 </span>            :                         {
+<span class="lineNum">     247 </span>            :                                 Logger.LogError(&quot;There was an issue persisting data to the SQL event store.&quot;, exception: exception);
+<span class="lineNum">     248 </span>            :                                 throw;
+<span class="lineNum">     249 </span>            :                         }
+<span class="lineNum">     250 </span>            :                         finally
+<span class="lineNum">     251 </span>            :                         {
+<span class="lineNum">     252 </span>            :                                 Logger.LogDebug(&quot;Adding data to the SQL eventstore database... Done&quot;, &quot;SqlEventStore\\Add&quot;);
+<span class="lineNum">     253 </span>            :                         }
+<span class="lineNum">     254 </span>            :                 }
+<span class="lineNum">     255 </span>            :         }
+<span class="lineNum">     256 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

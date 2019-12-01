@@ -1,0 +1,567 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/DataStores/SqlDataStore.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/DataStores</a> - SqlDataStore.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections;
+<span class="lineNum">      11 </span>            : using System.Collections.Generic;
+<span class="lineNum">      12 </span>            : #if NET40
+<span class="lineNum">      13 </span>            : using System.Data.Entity;
+<span class="lineNum">      14 </span>            : using System.Data.Entity.Infrastructure;
+<span class="lineNum">      15 </span>            : #else
+<span class="lineNum">      16 </span>            : using Microsoft.EntityFrameworkCore;
+<span class="lineNum">      17 </span>            : #endif
+<span class="lineNum">      18 </span>            : using System.Linq;
+<span class="lineNum">      19 </span>            : using System.Linq.Expressions;
+<span class="lineNum">      20 </span>            : using System.Transactions;
+<span class="lineNum">      21 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      22 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      23 </span>            : using Cqrs.Entities;
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : namespace Cqrs.DataStores
+<span class="lineNum">      26 </span>            : {
+<span class="lineNum">      27 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      28 </span>            :         /// A &lt;see cref=&quot;IDataStore{TData}&quot;/&gt; using simplified SQL.
+<span class="lineNum">      29 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      30 </span>            :         public class SqlDataStore&lt;TData&gt; : IDataStore&lt;TData&gt;
+<span class="lineNum">      31 </span>            :                 where TData : Entity
+<span class="lineNum">      32 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      33 </span>            :                 internal const string SqlDataStoreConnectionNameApplicationKey = @&quot;Cqrs.SqlDataStore.ConnectionStringName&quot;;
+<span class="lineNum">      34 </span>            : 
+<span class="lineNum">      35 </span>            :                 internal const string SqlReadableDataStoreConnectionStringKey = &quot;Cqrs.SqlDataStore.Read.ConnectionStringName&quot;;
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 internal const string SqlWritableDataStoreConnectionStringKey = &quot;Cqrs.SqlDataStore.Write.ConnectionStringName&quot;;
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            :                 /// &lt;summary /&gt;
+<span class="lineNum">      40 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      43 </span>            :                 /// Instantiates a new instance of the &lt;see cref=&quot;SqlDataStore{TData}&quot;/&gt; class
+<span class="lineNum">      44 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      45 </span><span class="lineCov">          1 :                 public SqlDataStore(IConfigurationManager configurationManager, ILogger logger)</span>
+<span class="lineNum">      46 </span>            :                 {
+<span class="lineNum">      47 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      48 </span>            :                         Logger = logger;
+<span class="lineNum">      49 </span>            :                         // ReSharper disable DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">      50 </span>            :                         DbDataContext = CreateDbDataContext();
+<span class="lineNum">      51 </span>            :                         WriteableConnectionStrings = GetWriteableConnectionStrings();
+<span class="lineNum">      52 </span>            :                         // ReSharper restore DoNotCallOverridableMethodsInConstructor
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                         // Get a typed table to run queries.
+<span class="lineNum">      55 </span>            :                         Table = DbDataContext.Set&lt;TData&gt;();
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      59 </span>            :                 /// Gets or sets the DataContext.
+<span class="lineNum">      60 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      61 </span>            :                 protected DbContext DbDataContext { get; private set; }
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// Gets or sets the list of writeable connection strings for data mirroring
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span>            :                 protected IEnumerable&lt;string&gt; WriteableConnectionStrings { get; private set; }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      69 </span>            :                 /// Gets or sets the list of writeable DataContexts for data mirroring
+<span class="lineNum">      70 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      71 </span>            :                 private IList&lt;DbContext&gt; _writeableConnections;
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      74 </span>            :                 /// Gets or sets the list of writeable DataContexts for data mirroring
+<span class="lineNum">      75 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      76 </span>            :                 protected IEnumerable&lt;DbContext&gt; WriteableConnections
+<span class="lineNum">      77 </span>            :                 {
+<span class="lineNum">      78 </span>            :                         get
+<span class="lineNum">      79 </span>            :                         {
+<span class="lineNum">      80 </span>            :                                 if (_writeableConnections == null)
+<span class="lineNum">      81 </span>            :                                 {
+<span class="lineNum">      82 </span>            :                                         _writeableConnections = new List&lt;DbContext&gt;();
+<span class="lineNum">      83 </span>            :                                         foreach (string writeableConnectionString in WriteableConnectionStrings)
+<span class="lineNum">      84 </span>            :                                                 _writeableConnections.Add(new SqlDbContext(writeableConnectionString));
+<span class="lineNum">      85 </span>            :                                 }
+<span class="lineNum">      86 </span>            :                                 return _writeableConnections;
+<span class="lineNum">      87 </span>            :                         }
+<span class="lineNum">      88 </span>            :                 }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      91 </span>            :                 /// Gets or sets the readable Table
+<span class="lineNum">      92 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      93 </span>            :                 protected DbSet&lt;TData&gt; Table { get; private set; }
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      96 </span>            :                 /// Gets or sets the Logger
+<span class="lineNum">      97 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      98 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     101 </span>            :                 /// Locate the connection settings and create a &lt;see cref=&quot;DbContext&quot;/&gt;.
+<span class="lineNum">     102 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     103 </span><span class="lineCov">          1 :                 protected virtual DbContext CreateDbDataContext()</span>
+<span class="lineNum">     104 </span>            :                 {
+<span class="lineNum">     105 </span>            :                         string connectionStringKey;
+<span class="lineNum">     106 </span>            :                         string applicationKey;
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :                         // Try read/write connection values first
+<span class="lineNum">     109 </span>            :                         if (!ConfigurationManager.TryGetSetting(SqlReadableDataStoreConnectionStringKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
+<span class="lineNum">     110 </span>            :                         {
+<span class="lineNum">     111 </span>            :                                 // Try single connection value
+<span class="lineNum">     112 </span>            :                                 if (!ConfigurationManager.TryGetSetting(SqlDataStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
+<span class="lineNum">     113 </span>            :                                         throw new NullReferenceException(string.Format(&quot;No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.&quot;, SqlDataStoreConnectionNameApplicationKey));
+<span class="lineNum">     114 </span>            :                         }
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :                         try
+<span class="lineNum">     117 </span>            :                         {
+<span class="lineNum">     118 </span>            :                                 connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
+<span class="lineNum">     119 </span>            :                         }
+<span class="lineNum">     120 </span>            :                         catch (NullReferenceException exception)
+<span class="lineNum">     121 </span>            :                         {
+<span class="lineNum">     122 </span>            :                                 throw new NullReferenceException(string.Format(&quot;No connection string setting named '{0}' was found in the configuration file with the SQL Data Store connection string.&quot;, applicationKey), exception);
+<span class="lineNum">     123 </span>            :                         }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :                         return new SqlDbContext(connectionStringKey);
+<span class="lineNum">     126 </span>            :                 }
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     129 </span>            :                 /// Locate the connection settings for persisting data.
+<span class="lineNum">     130 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     131 </span><span class="lineCov">          1 :                 protected virtual IEnumerable&lt;string&gt; GetWriteableConnectionStrings()</span>
+<span class="lineNum">     132 </span>            :                 {
+<span class="lineNum">     133 </span>            :                         Logger.LogDebug(&quot;Getting SQL data store writeable connection strings&quot;, &quot;SqlDataStore\\GetWritableConnectionStrings&quot;);
+<span class="lineNum">     134 </span>            : 
+<span class="lineNum">     135 </span>            :                         string connectionStringKey;
+<span class="lineNum">     136 </span>            :                         string applicationKey;
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            :                         // Try read/write connection values first
+<span class="lineNum">     139 </span>            :                         if (!ConfigurationManager.TryGetSetting(SqlWritableDataStoreConnectionStringKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
+<span class="lineNum">     140 </span>            :                         {
+<span class="lineNum">     141 </span>            :                                 Logger.LogDebug(string.Format(&quot;No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.&quot;, SqlWritableDataStoreConnectionStringKey), &quot;SqlDataStore\\GetWriteableConnectionStrings&quot;);
+<span class="lineNum">     142 </span>            :                                 // Try single connection value
+<span class="lineNum">     143 </span>            :                                 if (!ConfigurationManager.TryGetSetting(SqlDataStoreConnectionNameApplicationKey, out applicationKey) || string.IsNullOrEmpty(applicationKey))
+<span class="lineNum">     144 </span>            :                                 {
+<span class="lineNum">     145 </span>            :                                         throw new NullReferenceException(string.Format(&quot;No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.&quot;, SqlDataStoreConnectionNameApplicationKey));
+<span class="lineNum">     146 </span>            :                                 }
+<span class="lineNum">     147 </span>            :                         }
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span>            :                         try
+<span class="lineNum">     150 </span>            :                         {
+<span class="lineNum">     151 </span>            :                                 var collection = new List&lt;string&gt;();
+<span class="lineNum">     152 </span>            :                                 string rootApplicationKey = applicationKey;
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span>            :                                 int writeIndex = 1;
+<span class="lineNum">     155 </span>            :                                 while (!string.IsNullOrWhiteSpace(applicationKey))
+<span class="lineNum">     156 </span>            :                                 {
+<span class="lineNum">     157 </span>            :                                         try
+<span class="lineNum">     158 </span>            :                                         {
+<span class="lineNum">     159 </span>            :                                                 connectionStringKey = System.Configuration.ConfigurationManager.ConnectionStrings[applicationKey].ConnectionString;
+<span class="lineNum">     160 </span>            :                                                 collection.Add(connectionStringKey);
+<span class="lineNum">     161 </span>            :                                         }
+<span class="lineNum">     162 </span>            :                                         catch (NullReferenceException exception)
+<span class="lineNum">     163 </span>            :                                         {
+<span class="lineNum">     164 </span>            :                                                 throw new NullReferenceException(string.Format(&quot;No connection string setting named '{0}' was found in the configuration file with a SQL connection string.&quot;, applicationKey), exception);
+<span class="lineNum">     165 </span>            :                                         }
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span>            :                                         if (!ConfigurationManager.TryGetSetting(string.Format(&quot;{0}.{1}&quot;, rootApplicationKey, writeIndex), out applicationKey))
+<span class="lineNum">     168 </span>            :                                                 applicationKey = null;
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            :                                         writeIndex++;
+<span class="lineNum">     171 </span>            :                                 }
+<span class="lineNum">     172 </span>            : 
+<span class="lineNum">     173 </span>            :                                 if (!collection.Any())
+<span class="lineNum">     174 </span>            :                                         throw new NullReferenceException();
+<span class="lineNum">     175 </span>            : 
+<span class="lineNum">     176 </span>            :                                 return collection;
+<span class="lineNum">     177 </span>            :                         }
+<span class="lineNum">     178 </span>            :                         catch (NullReferenceException exception)
+<span class="lineNum">     179 </span>            :                         {
+<span class="lineNum">     180 </span>            :                                 throw new NullReferenceException(string.Format(&quot;No application setting named '{0}' was found in the configuration file with a SQL connection string.&quot;, SqlWritableDataStoreConnectionStringKey), exception);
+<span class="lineNum">     181 </span>            :                         }
+<span class="lineNum">     182 </span>            :                         finally
+<span class="lineNum">     183 </span>            :                         {
+<span class="lineNum">     184 </span>            :                                 Logger.LogDebug(&quot;Getting SQL writeable connection string... Done&quot;, &quot;SqlDataStore\\GetWriteableConnectionStrings&quot;);
+<span class="lineNum">     185 </span>            :                         }
+<span class="lineNum">     186 </span>            :                 }
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span>            :                 #region Implementation of IEnumerable
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     191 </span>            :                 /// Returns an enumerator that iterates through the collection.
+<span class="lineNum">     192 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     193 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     194 </span>            :                 /// A &lt;see cref=&quot;T:System.Collections.Generic.IEnumerator`1&quot;/&gt; that can be used to iterate through the collection.
+<span class="lineNum">     195 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     196 </span><span class="lineCov">          1 :                 public IEnumerator&lt;TData&gt; GetEnumerator()</span>
+<span class="lineNum">     197 </span>            :                 {
+<span class="lineNum">     198 </span>            :                         return Table.AsQueryable().GetEnumerator();
+<span class="lineNum">     199 </span>            :                 }
+<span class="lineNum">     200 </span>            : 
+<span class="lineNum">     201 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     202 </span>            :                 /// Returns an enumerator that iterates through a collection.
+<span class="lineNum">     203 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     204 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     205 </span>            :                 /// An &lt;see cref=&quot;T:System.Collections.IEnumerator&quot;/&gt; object that can be used to iterate through the collection.
+<span class="lineNum">     206 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     207 </span>            :                 IEnumerator IEnumerable.GetEnumerator()
+<span class="lineNum">     208 </span>            :                 {
+<span class="lineNum">     209 </span>            :                         return GetEnumerator();
+<span class="lineNum">     210 </span>            :                 }
+<span class="lineNum">     211 </span>            : 
+<span class="lineNum">     212 </span>            :                 #endregion
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span>            :                 #region Implementation of IQueryable
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     217 </span>            :                 /// Gets the expression tree that is associated with the instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
+<span class="lineNum">     218 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     219 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     220 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.Expressions.Expression&quot;/&gt; that is associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt;.
+<span class="lineNum">     221 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     222 </span>            :                 public Expression Expression
+<span class="lineNum">     223 </span>            :                 {
+<span class="lineNum">     224 </span>            :                         get { return Table.AsQueryable().Expression; }
+<span class="lineNum">     225 </span>            :                 }
+<span class="lineNum">     226 </span>            : 
+<span class="lineNum">     227 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     228 </span>            :                 /// Gets the type of the element(s) that are returned when the expression tree associated with this instance of &lt;see cref=&quot;T:System.Linq.IQueryable&quot;/&gt; is executed.
+<span class="lineNum">     229 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     230 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     231 </span>            :                 /// A &lt;see cref=&quot;T:System.Type&quot;/&gt; that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
+<span class="lineNum">     232 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     233 </span>            :                 public Type ElementType
+<span class="lineNum">     234 </span>            :                 {
+<span class="lineNum">     235 </span>            :                         get { return Table.AsQueryable().ElementType; }
+<span class="lineNum">     236 </span>            :                 }
+<span class="lineNum">     237 </span>            : 
+<span class="lineNum">     238 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     239 </span>            :                 /// Gets the query provider that is associated with this data source.
+<span class="lineNum">     240 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     241 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     242 </span>            :                 /// The &lt;see cref=&quot;T:System.Linq.IQueryProvider&quot;/&gt; that is associated with this data source.
+<span class="lineNum">     243 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     244 </span>            :                 public IQueryProvider Provider
+<span class="lineNum">     245 </span>            :                 {
+<span class="lineNum">     246 </span>            :                         get { return Table.AsQueryable().Provider; }
+<span class="lineNum">     247 </span>            :                 }
+<span class="lineNum">     248 </span>            : 
+<span class="lineNum">     249 </span>            :                 #endregion
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span>            :                 #region Implementation of IDisposable
+<span class="lineNum">     252 </span>            :                 #pragma warning disable CA1063 // Implement IDisposable Correctly
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     255 </span>            :                 /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+<span class="lineNum">     256 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     257 </span><span class="lineCov">          1 :                 public virtual void Dispose()</span>
+<span class="lineNum">     258 </span>            :                 {
+<span class="lineNum">     259 </span>            :                         // Dispose of unmanaged resources.
+<span class="lineNum">     260 </span>            :                         Dispose(true);
+<span class="lineNum">     261 </span>            :                         // Suppress finalization.
+<span class="lineNum">     262 </span>            :                         GC.SuppressFinalize(this);
+<span class="lineNum">     263 </span>            :                 }
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     266 </span>            :                 /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+<span class="lineNum">     267 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     268 </span><span class="lineCov">          1 :                 public virtual void Dispose(bool disposing)</span>
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            :                 {
+<span class="lineNum">     271 </span>            :                         if (disposing)
+<span class="lineNum">     272 </span>            :                         {
+<span class="lineNum">     273 </span>            :                                 Table = null;
+<span class="lineNum">     274 </span>            :                                 DbDataContext.Dispose();
+<span class="lineNum">     275 </span>            :                                 DbDataContext = null;
+<span class="lineNum">     276 </span>            :                         }
+<span class="lineNum">     277 </span>            :                 }
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span>            :                 #pragma warning restore CA1063 // Implement IDisposable Correctly
+<span class="lineNum">     280 </span>            :                 #endregion
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            :                 #region Implementation of IDataStore&lt;TData&gt;
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     285 </span>            :                 /// Add the provided &lt;paramref name=&quot;data&quot;/&gt; to the data store and persist the change.
+<span class="lineNum">     286 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     287 </span><span class="lineCov">          1 :                 public virtual void Add(TData data)</span>
+<span class="lineNum">     288 </span>            :                 {
+<span class="lineNum">     289 </span>            :                         Logger.LogDebug(&quot;Adding data to the SQL database&quot;, &quot;SqlDataStore\\Add&quot;);
+<span class="lineNum">     290 </span>            :                         try
+<span class="lineNum">     291 </span>            :                         {
+<span class="lineNum">     292 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     293 </span>            :                                 using (var transaction = new TransactionScope())
+<span class="lineNum">     294 </span>            :                                 {
+<span class="lineNum">     295 </span>            :                                         foreach (DbContext writeableConnection in WriteableConnections)
+<span class="lineNum">     296 </span>            :                                         {
+<span class="lineNum">     297 </span>            :                                                 DbSet&lt;TData&gt; table = Table;
+<span class="lineNum">     298 </span>            :                                                 // This optimises for single connection handling
+<span class="lineNum">     299 </span>            :                                                 if (writeableConnection != DbDataContext)
+<span class="lineNum">     300 </span>            :                                                         table = writeableConnection.Set&lt;TData&gt;();
+<span class="lineNum">     301 </span>            :                                                 table.Add(data);
+<span class="lineNum">     302 </span>            :                                                 writeableConnection.SaveChanges();
+<span class="lineNum">     303 </span>            :                                         }
+<span class="lineNum">     304 </span>            :                                         transaction.Complete();
+<span class="lineNum">     305 </span>            :                                 }
+<span class="lineNum">     306 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     307 </span>            :                                 Logger.LogDebug(string.Format(&quot;Adding data in the SQL database took {0}.&quot;, end - start), &quot;SqlDataStore\\Add&quot;);
+<span class="lineNum">     308 </span>            :                         }
+<span class="lineNum">     309 </span>            :                         finally
+<span class="lineNum">     310 </span>            :                         {
+<span class="lineNum">     311 </span>            :                                 Logger.LogDebug(&quot;Adding data to the SQL database... Done&quot;, &quot;SqlDataStore\\Add&quot;);
+<span class="lineNum">     312 </span>            :                         }
+<span class="lineNum">     313 </span>            :                 }
+<span class="lineNum">     314 </span>            : 
+<span class="lineNum">     315 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     316 </span>            :                 /// Add the provided &lt;paramref name=&quot;data&quot;/&gt; to the data store and persist the change.
+<span class="lineNum">     317 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     318 </span><span class="lineCov">          1 :                 public virtual void Add(IEnumerable&lt;TData&gt; data)</span>
+<span class="lineNum">     319 </span>            :                 {
+<span class="lineNum">     320 </span>            :                         Logger.LogDebug(&quot;Adding data collection to the SQL database&quot;, &quot;SqlDataStore\\Add\\Collection&quot;);
+<span class="lineNum">     321 </span>            :                         try
+<span class="lineNum">     322 </span>            :                         {
+<span class="lineNum">     323 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     324 </span>            :                                 // Multiple enumeration optimisation
+<span class="lineNum">     325 </span>            :                                 data = data.ToList();
+<span class="lineNum">     326 </span>            :                                 using (var transaction = new TransactionScope())
+<span class="lineNum">     327 </span>            :                                 {
+<span class="lineNum">     328 </span>            :                                         foreach (DbContext writeableConnection in WriteableConnections)
+<span class="lineNum">     329 </span>            :                                         {
+<span class="lineNum">     330 </span>            :                                                 DbSet&lt;TData&gt; table = Table;
+<span class="lineNum">     331 </span>            :                                                 // This optimises for single connection handling
+<span class="lineNum">     332 </span>            :                                                 if (writeableConnection != DbDataContext)
+<span class="lineNum">     333 </span>            :                                                         table = writeableConnection.Set&lt;TData&gt;();
+<span class="lineNum">     334 </span>            :                                                 table.AddRange(data);
+<span class="lineNum">     335 </span>            :                                                 writeableConnection.SaveChanges();
+<span class="lineNum">     336 </span>            :                                         }
+<span class="lineNum">     337 </span>            :                                         transaction.Complete();
+<span class="lineNum">     338 </span>            :                                 }
+<span class="lineNum">     339 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     340 </span>            :                                 Logger.LogDebug(string.Format(&quot;Adding data in the SQL database took {0}.&quot;, end - start), &quot;SqlDataStore\\Add\\Collection&quot;);
+<span class="lineNum">     341 </span>            :                         }
+<span class="lineNum">     342 </span>            :                         finally
+<span class="lineNum">     343 </span>            :                         {
+<span class="lineNum">     344 </span>            :                                 Logger.LogDebug(&quot;Adding data collection to the SQL database... Done&quot;, &quot;SqlDataStore\\Add\\Collection&quot;);
+<span class="lineNum">     345 </span>            :                         }
+<span class="lineNum">     346 </span>            :                 }
+<span class="lineNum">     347 </span>            : 
+<span class="lineNum">     348 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     349 </span>            :                 /// Will mark the &lt;paramref name=&quot;data&quot;/&gt; as logically (or soft) deleted by setting &lt;see cref=&quot;Entity.IsDeleted&quot;/&gt; to true in the data store and persist the change.
+<span class="lineNum">     350 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     351 </span><span class="lineCov">          1 :                 public virtual void Remove(TData data)</span>
+<span class="lineNum">     352 </span>            :                 {
+<span class="lineNum">     353 </span>            :                         Logger.LogDebug(&quot;Removing data from the Sql database&quot;, &quot;SqlDataStore\\Remove&quot;);
+<span class="lineNum">     354 </span>            :                         try
+<span class="lineNum">     355 </span>            :                         {
+<span class="lineNum">     356 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     357 </span>            :                                 data.IsDeleted = true;
+<span class="lineNum">     358 </span>            :                                 Update(data);
+<span class="lineNum">     359 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     360 </span>            :                                 Logger.LogDebug(string.Format(&quot;Removing data from the Sql database took {0}.&quot;, end - start), &quot;SqlDataStore\\Remove&quot;);
+<span class="lineNum">     361 </span>            :                         }
+<span class="lineNum">     362 </span>            :                         finally
+<span class="lineNum">     363 </span>            :                         {
+<span class="lineNum">     364 </span>            :                                 Logger.LogDebug(&quot;Removing data from the Sql database... Done&quot;, &quot;SqlDataStore\\Remove&quot;);
+<span class="lineNum">     365 </span>            :                         }
+<span class="lineNum">     366 </span>            :                 }
+<span class="lineNum">     367 </span>            : 
+<span class="lineNum">     368 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     369 </span>            :                 /// Remove the provided &lt;paramref name=&quot;data&quot;/&gt; (normally by &lt;see cref=&quot;IEntity.Rsn&quot;/&gt;) from the data store and persist the change.
+<span class="lineNum">     370 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     371 </span><span class="lineCov">          1 :                 public void Destroy(TData data)</span>
+<span class="lineNum">     372 </span>            :                 {
+<span class="lineNum">     373 </span>            :                         Logger.LogDebug(&quot;Removing data from the SQL database&quot;, &quot;SqlDataStore\\Destroy&quot;);
+<span class="lineNum">     374 </span>            :                         try
+<span class="lineNum">     375 </span>            :                         {
+<span class="lineNum">     376 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     377 </span>            :                                 using (var transaction = new TransactionScope())
+<span class="lineNum">     378 </span>            :                                 {
+<span class="lineNum">     379 </span>            :                                         foreach (DbContext writeableConnection in WriteableConnections)
+<span class="lineNum">     380 </span>            :                                         {
+<span class="lineNum">     381 </span>            :                                                 DbSet&lt;TData&gt; table = Table;
+<span class="lineNum">     382 </span>            :                                                 // This optimises for single connection handling
+<span class="lineNum">     383 </span>            :                                                 if (writeableConnection != DbDataContext)
+<span class="lineNum">     384 </span>            :                                                         table = writeableConnection.Set&lt;TData&gt;();
+<span class="lineNum">     385 </span>            :                                                 table.Remove(data);
+<span class="lineNum">     386 </span>            :                                                 writeableConnection.SaveChanges();
+<span class="lineNum">     387 </span>            :                                         }
+<span class="lineNum">     388 </span>            :                                         transaction.Complete();
+<span class="lineNum">     389 </span>            :                                 }
+<span class="lineNum">     390 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     391 </span>            :                                 Logger.LogDebug(string.Format(&quot;Removing data from the SQL database took {0}.&quot;, end - start), &quot;SqlDataStore\\Destroy&quot;);
+<span class="lineNum">     392 </span>            :                         }
+<span class="lineNum">     393 </span>            :                         finally
+<span class="lineNum">     394 </span>            :                         {
+<span class="lineNum">     395 </span>            :                                 Logger.LogDebug(&quot;Removing data from the SQL database... Done&quot;, &quot;SqlDataStore\\Destroy&quot;);
+<span class="lineNum">     396 </span>            :                         }
+<span class="lineNum">     397 </span>            :                 }
+<span class="lineNum">     398 </span>            : 
+<span class="lineNum">     399 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     400 </span>            :                 /// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+<span class="lineNum">     401 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     402 </span><span class="lineCov">          1 :                 public virtual void RemoveAll()</span>
+<span class="lineNum">     403 </span>            :                 {
+<span class="lineNum">     404 </span>            :                         Logger.LogDebug(&quot;Removing all from the SQL database&quot;, &quot;SqlDataStore\\RemoveAll&quot;);
+<span class="lineNum">     405 </span>            :                         try
+<span class="lineNum">     406 </span>            :                         {
+<span class="lineNum">     407 </span>            :                                 using (var transaction = new TransactionScope())
+<span class="lineNum">     408 </span>            :                                 {
+<span class="lineNum">     409 </span>            :                                         foreach (DbContext writeableConnection in WriteableConnections)
+<span class="lineNum">     410 </span>            :                                         {
+<span class="lineNum">     411 </span>            :                                                 DbSet&lt;TData&gt; table = Table;
+<span class="lineNum">     412 </span>            :                                                 // This optimises for single connection handling
+<span class="lineNum">     413 </span>            :                                                 if (writeableConnection != DbDataContext)
+<span class="lineNum">     414 </span>            :                                                         table = writeableConnection.Set&lt;TData&gt;();
+<span class="lineNum">     415 </span>            :                                                 table.Truncate();
+<span class="lineNum">     416 </span>            :                                                 writeableConnection.SaveChanges();
+<span class="lineNum">     417 </span>            :                                         }
+<span class="lineNum">     418 </span>            :                                         transaction.Complete();
+<span class="lineNum">     419 </span>            :                                 }
+<span class="lineNum">     420 </span>            :                         }
+<span class="lineNum">     421 </span>            :                         finally
+<span class="lineNum">     422 </span>            :                         {
+<span class="lineNum">     423 </span>            :                                 Logger.LogDebug(&quot;Removing all from the SQL database... Done&quot;, &quot;SqlDataStore\\RemoveAll&quot;);
+<span class="lineNum">     424 </span>            :                         }
+<span class="lineNum">     425 </span>            :                 }
+<span class="lineNum">     426 </span>            : 
+<span class="lineNum">     427 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     428 </span>            :                 /// Update the provided &lt;paramref name=&quot;data&quot;/&gt; in the data store and persist the change.
+<span class="lineNum">     429 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     430 </span><span class="lineCov">          1 :                 public virtual void Update(TData data)</span>
+<span class="lineNum">     431 </span>            :                 {
+<span class="lineNum">     432 </span>            :                         Logger.LogDebug(&quot;Updating data in the SQL database&quot;, &quot;SqlDataStore\\Update&quot;);
+<span class="lineNum">     433 </span>            :                         try
+<span class="lineNum">     434 </span>            :                         {
+<span class="lineNum">     435 </span>            :                                 DateTime start = DateTime.Now;
+<span class="lineNum">     436 </span>            :                                 using (var transaction = new TransactionScope())
+<span class="lineNum">     437 </span>            :                                 {
+<span class="lineNum">     438 </span>            :                                         foreach (DbContext writeableConnection in WriteableConnections)
+<span class="lineNum">     439 </span>            :                                         {
+<span class="lineNum">     440 </span>            :                                                 DbSet&lt;TData&gt; table = Table;
+<span class="lineNum">     441 </span>            :                                                 // This optimises for single connection handling
+<span class="lineNum">     442 </span>            :                                                 if (writeableConnection != DbDataContext)
+<span class="lineNum">     443 </span>            :                                                         table = writeableConnection.Set&lt;TData&gt;();
+<span class="lineNum">     444 </span>            :                                                 table.Attach(data);
+<span class="lineNum">     445 </span>            :                                                 writeableConnection.SaveChanges();
+<span class="lineNum">     446 </span>            :                                         }
+<span class="lineNum">     447 </span>            :                                         transaction.Complete();
+<span class="lineNum">     448 </span>            :                                 }
+<span class="lineNum">     449 </span>            :                                 DateTime end = DateTime.Now;
+<span class="lineNum">     450 </span>            :                                 Logger.LogDebug(string.Format(&quot;Updating data in the SQL database took {0}.&quot;, end - start), &quot;SqlDataStore\\Update&quot;);
+<span class="lineNum">     451 </span>            :                         }
+<span class="lineNum">     452 </span>            :                         finally
+<span class="lineNum">     453 </span>            :                         {
+<span class="lineNum">     454 </span>            :                                 Logger.LogDebug(&quot;Updating data to the SQL database... Done&quot;, &quot;SqlDataStore\\Update&quot;);
+<span class="lineNum">     455 </span>            :                         }
+<span class="lineNum">     456 </span>            :                 }
+<span class="lineNum">     457 </span>            : 
+<span class="lineNum">     458 </span>            : #endregion
+<span class="lineNum">     459 </span>            : 
+<span class="lineNum">     460 </span>            :                 class SqlDbContext : DbContext
+<span class="lineNum">     461 </span>            :                 {
+<span class="lineNum">     462 </span>            : #if NET40
+<span class="lineNum">     463 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     464 </span>            :                         /// Instantiates a new instance of the &lt;see cref=&quot;SqlDbContext&quot;/&gt; class using the given string as the name or connection string for the database to which a connection will be made. See the class remarks for how this is used to create a connection.
+<span class="lineNum">     465 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     466 </span>            :                         /// &lt;param name=&quot;nameOrConnectionString&quot;&gt;Either the database name or a connection string.&lt;/param&gt;
+<span class="lineNum">     467 </span>            :                         public SqlDbContext(string nameOrConnectionString)
+<span class="lineNum">     468 </span>            :                         : base(nameOrConnectionString) { }
+<span class="lineNum">     469 </span>            : #else
+<span class="lineNum">     470 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     471 </span>            :                         /// Instantiates a new instance of the &lt;see cref=&quot;SqlDbContext&quot;/&gt; class using the given string as the name or connection string for the database to which a connection will be made. See the class remarks for how this is used to create a connection.
+<span class="lineNum">     472 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     473 </span>            :                         /// &lt;param name=&quot;nameOrConnectionString&quot;&gt;Either the database name or a connection string.&lt;/param&gt;
+<span class="lineNum">     474 </span><span class="lineCov">          1 :                         public SqlDbContext(string nameOrConnectionString)</span>
+<span class="lineNum">     475 </span>            :                         : base()
+<span class="lineNum">     476 </span>            :                         {
+<span class="lineNum">     477 </span>            :                                 NameOrConnectionString = nameOrConnectionString;
+<span class="lineNum">     478 </span>            :                         }
+<span class="lineNum">     479 </span>            : 
+<span class="lineNum">     480 </span>            :                         private string NameOrConnectionString { get; }
+<span class="lineNum">     481 </span>            : 
+<span class="lineNum">     482 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">     483 </span>            :                         /// Override this method to configure the database (and other options) to be used for this context. This method is called for each instance of the context that is created. The base implementation does nothing.
+<span class="lineNum">     484 </span>            :                         /// In situations where an instance of Microsoft.EntityFrameworkCore.DbContextOptions may or may not have been passed to the constructor, you can use Microsoft.EntityFrameworkCore.DbContextOptionsBuilder.IsConfigured to determine if the options have already been set, and skip some or all of the logic in Microsoft.EntityFrameworkCore.DbContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder).
+<span class="lineNum">     485 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">     486 </span>            :                         /// &lt;param name=&quot;optionsBuilder&quot;&gt;A builder used to create or modify options for this context. Databases (and other extensions) typically define extension methods on this object that allow you to configure the context.&lt;/param&gt;
+<span class="lineNum">     487 </span><span class="lineCov">          1 :                         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)</span>
+<span class="lineNum">     488 </span>            :                         {
+<span class="lineNum">     489 </span>            :                                 optionsBuilder.UseSqlServer(NameOrConnectionString);
+<span class="lineNum">     490 </span>            :                                 base.OnConfiguring(optionsBuilder);
+<span class="lineNum">     491 </span>            :                         }
+<span class="lineNum">     492 </span>            : #endif
+<span class="lineNum">     493 </span>            :                 }
+<span class="lineNum">     494 </span>            :         }
+<span class="lineNum">     495 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

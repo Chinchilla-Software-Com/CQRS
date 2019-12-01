@@ -1,0 +1,5 @@
+var classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1FromStringConverterAdapter =
+[
+    [ "FromStringConverterAdapter", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1FromStringConverterAdapter_a8861572dad983012fbe36488b2b6913a.html#a8861572dad983012fbe36488b2b6913a", null ],
+    [ "ConvertFromString", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1FromStringConverterAdapter_aac70ae2f2845154556163073178d0438.html#aac70ae2f2845154556163073178d0438", null ]
+];

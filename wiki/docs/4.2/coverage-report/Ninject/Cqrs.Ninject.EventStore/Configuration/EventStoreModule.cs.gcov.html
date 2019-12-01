@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Ninject/Cqrs.Ninject.EventStore/Configuration/EventStoreModule.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Ninject/Cqrs.Ninject.EventStore/Configuration</a> - EventStoreModule.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using Cqrs.EventStore;
+<span class="lineNum">       3 </span>            : using Cqrs.Events;
+<span class="lineNum">       4 </span>            : using Ninject.Modules;
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : namespace Cqrs.Ninject.Configuration
+<span class="lineNum">       7 </span>            : {
+<span class="lineNum">       8 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">       9 </span>            :         /// A &lt;see cref=&quot;INinjectModule&quot;/&gt; that wires up &lt;see cref=&quot;EventStore.EventStore{TAuthenticationToken}&quot;/&gt; as the &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      10 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      11 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      12 </span>            :         public class EventStoreModule&lt;TAuthenticationToken&gt; : NinjectModule
+<span class="lineNum">      13 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      14 </span>            :                 #region Overrides of NinjectModule
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      17 </span>            :                 /// Loads the module into the kernel.
+<span class="lineNum">      18 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      19 </span><span class="lineCov">          1 :                 public override void Load()</span>
+<span class="lineNum">      20 </span>            :                 {
+<span class="lineNum">      21 </span>            :                         RegisterFactories();
+<span class="lineNum">      22 </span>            :                         RegisterServices();
+<span class="lineNum">      23 </span>            :                         RegisterCqrsRequirements();
+<span class="lineNum">      24 </span>            :                 }
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 #endregion
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      29 </span>            :                 /// Register the all factories
+<span class="lineNum">      30 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      31 </span><span class="lineCov">          1 :                 public virtual void RegisterFactories()</span>
+<span class="lineNum">      32 </span>            :                 {
+<span class="lineNum">      33 </span>            :                         Bind&lt;EventStore.IEventBuilder&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      34 </span>            :                                 .To&lt;EventFactory&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      35 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      36 </span>            :                         Bind&lt;EventStore.IEventDeserialiser&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      37 </span>            :                                 .To&lt;EventFactory&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      38 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      39 </span>            :                 }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// Register the all services
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span><span class="lineCov">          1 :                 public virtual void RegisterServices()</span>
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                 }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      49 </span>            :                 /// Register the &lt;see cref=&quot;IEventStoreConnectionHelper&quot;/&gt; and &lt;see cref=&quot;IEventStore{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      50 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      51 </span><span class="lineCov">          1 :                 public virtual void RegisterCqrsRequirements()</span>
+<span class="lineNum">      52 </span>            :                 {
+<span class="lineNum">      53 </span>            :                         Bind&lt;IEventStoreConnectionHelper&gt;()
+<span class="lineNum">      54 </span>            :                                 .To&lt;EventStoreConnectionHelper&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      55 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                         Bind&lt;IEventStore&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      58 </span>            :                                 .To&lt;EventStore.EventStore&lt;TAuthenticationToken&gt;&gt;()
+<span class="lineNum">      59 </span>            :                                 .InSingletonScope();
+<span class="lineNum">      60 </span>            :                 }
+<span class="lineNum">      61 </span>            :         }
+<span class="lineNum">      62 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

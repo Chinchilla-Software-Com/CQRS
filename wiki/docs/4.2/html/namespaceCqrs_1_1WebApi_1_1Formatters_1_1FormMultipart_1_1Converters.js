@@ -1,0 +1,6 @@
+var namespaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters =
+[
+    [ "FormDataToObjectConverter", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters_1_1FormDataToObjectConverter.html", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters_1_1FormDataToObjectConverter" ],
+    [ "HttpContentToFormDataConverter", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters_1_1HttpContentToFormDataConverter.html", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters_1_1HttpContentToFormDataConverter" ],
+    [ "ObjectToMultipartDataByteArrayConverter", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters_1_1ObjectToMultipartDataByteArrayConverter.html", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Converters_1_1ObjectToMultipartDataByteArrayConverter" ]
+];

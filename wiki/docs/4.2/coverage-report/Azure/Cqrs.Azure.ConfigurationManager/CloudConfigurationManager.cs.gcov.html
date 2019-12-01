@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.ConfigurationManager/CloudConfigurationManager.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.ConfigurationManager</a> - CloudConfigurationManager.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-02 00:09:48</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#if NETSTANDARD2_0
+<span class="lineNum">       2 </span>            : using Microsoft.Extensions.Configuration;
+<span class="lineNum">       3 </span>            : #endif
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            : namespace Cqrs.Azure.ConfigurationManager
+<span class="lineNum">       6 </span>            : {
+<span class="lineNum">       7 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">       8 </span>            :         /// Provides access to configuration settings from the Azure Portal application settings. If no value is stored there it falls back to reading 
+<span class="lineNum">       9 </span>            :         /// app settings of an app.config or web.config... i.e. &lt;see cref=&quot;System.Configuration.ConfigurationManager.AppSettings&quot;/&gt;
+<span class="lineNum">      10 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      11 </span>            :         public class CloudConfigurationManager : Configuration.ConfigurationManager
+<span class="lineNum">      12 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      13 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">      14 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      15 </span>            :                 /// Instantiate a new instance of a &lt;see cref=&quot;CloudConfigurationManager&quot;/&gt;
+<span class="lineNum">      16 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      17 </span>            :                 public CloudConfigurationManager(IConfiguration configuration)
+<span class="lineNum">      18 </span>            :                 {
+<span class="lineNum">      19 </span>            :                         Configuration = configuration;
+<span class="lineNum">      20 </span>            :                 }
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :                 /// The &lt;see cref=&quot;IConfiguration&quot;/&gt; that can be use to get configuration settings
+<span class="lineNum">      24 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      25 </span>            :                 protected IConfiguration Configuration { get; private set; }
+<span class="lineNum">      26 </span>            : #endif
+<span class="lineNum">      27 </span>            : 
+<span class="lineNum">      28 </span>            :                 #region Implementation of IConfigurationManager
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Read the setting named &lt;paramref name=&quot;key&quot;/&gt;.
+<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      33 </span>            :                 /// &lt;param name=&quot;key&quot;&gt;The key (or name) of the setting to read.&lt;/param&gt;
+<span class="lineNum">      34 </span><span class="lineCov">          1 :                 public override string GetSetting(string key)</span>
+<span class="lineNum">      35 </span>            :                 {
+<span class="lineNum">      36 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">      37 </span>            :                         return Configuration.GetValue&lt;string&gt;(key.Replace(&quot;.&quot;, &quot;:&quot;));
+<span class="lineNum">      38 </span>            : #endif
+<span class="lineNum">      39 </span>            : #if NET472
+<span class="lineNum">      40 </span>            : #if DEBUG
+<span class="lineNum">      41 </span>            :                         return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, true);
+<span class="lineNum">      42 </span>            : #else
+<span class="lineNum">      43 </span>            :                         return Microsoft.Azure.CloudConfigurationManager.GetSetting(key, false);
+<span class="lineNum">      44 </span>            : #endif
+<span class="lineNum">      45 </span>            : #endif
+<span class="lineNum">      46 </span>            :                 }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Read the configuration string named &lt;paramref name=&quot;connectionStringName&quot;/&gt;.
+<span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      52 </span>            :                 /// &lt;param name=&quot;connectionStringName&quot;&gt;The name (or key) of the connection string to read.&lt;/param&gt;
+<span class="lineNum">      53 </span>            :                 public override string GetConnectionString(string connectionStringName)
+<span class="lineNum">      54 </span>            :                 {
+<span class="lineNum">      55 </span>            :                         return Configuration.GetConnectionString(connectionStringName);
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            : #endif
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                 #endregion
+<span class="lineNum">      60 </span>            :         }
+<span class="lineNum">      61 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

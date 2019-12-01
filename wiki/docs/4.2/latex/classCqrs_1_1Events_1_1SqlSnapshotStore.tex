@@ -1,0 +1,124 @@
+\hypertarget{classCqrs_1_1Events_1_1SqlSnapshotStore}{}\doxysection{Cqrs.\+Events.\+Sql\+Snapshot\+Store Class Reference}
+\label{classCqrs_1_1Events_1_1SqlSnapshotStore}\index{Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}}
+
+
+Stores the most recent \mbox{\hyperlink{}{snapshots}} for replay and I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ rehydration on a Snapshot\+Aggregate\+Root$<$\+T\+Authentication\+Token,\+T\+Snapshot$>$ in Sql\+Server that uses Linq\+To\+Sql and follows a rigid schema.  
+
+
+Inheritance diagram for Cqrs.\+Events.\+Sql\+Snapshot\+Store\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classCqrs_1_1Events_1_1SqlSnapshotStore}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCqrs_1_1Events_1_1SqlSnapshotStore_a9910cd3866ca4f226d5258479deefd12_a9910cd3866ca4f226d5258479deefd12}{Sql\+Snapshot\+Store}} (\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} configuration\+Manager, \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser}{I\+Snapshot\+Deserialiser}} event\+Deserialiser, I\+Logger logger, I\+Correlation\+Id\+Helper correlation\+Id\+Helper, \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotBuilder}{I\+Snapshot\+Builder}} snapshot\+Builder)
+\begin{DoxyCompactList}\small\item\em Instantiate a new instance of the \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlSnapshotStore}{Sql\+Snapshot\+Store}} class. \end{DoxyCompactList}\item 
+override void \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlSnapshotStore_ae219c88f6d56fbceef7c738dae824666_ae219c88f6d56fbceef7c738dae824666}{Save}} (\mbox{\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot}} snapshot)
+\begin{DoxyCompactList}\small\item\em Saves the provided {\itshape snapshot}  into storage. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+override \mbox{\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot}} \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlSnapshotStore_a074064fc96d192dd6f68be2bb941bb9f_a074064fc96d192dd6f68be2bb941bb9f}{Get}} (Type aggregate\+Root\+Type, string stream\+Name)
+\begin{DoxyCompactList}\small\item\em Get the latest Snapshot from storage. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}} \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlSnapshotStore_af34af7f01c60ab6989fd69ed94a2b058_af34af7f01c60ab6989fd69ed94a2b058}{Create\+Db\+Data\+Context}} (string aggregate\+Root\+Type\+Name=null)
+\begin{DoxyCompactList}\small\item\em Creates a new Db\+Context using connection string settings from Configuration\+Manager. \end{DoxyCompactList}\item 
+virtual Db\+Set$<$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}} $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlSnapshotStore_a567c34ca0c44d1e6e7b30c06a60b5f33_a567c34ca0c44d1e6e7b30c06a60b5f33}{Get\+Event\+Store\+Snapshot\+Table}} (\mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}} db\+Data\+Context)
+\begin{DoxyCompactList}\small\item\em Gets the Db\+Set$<$\+T\+Entity$>$ of Snapshot. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlSnapshotStore_a4b5c4a21ac1d5cd51ea5f3f748885df1_a4b5c4a21ac1d5cd51ea5f3f748885df1}{Add}} (\mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}} db\+Data\+Context, \mbox{\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot}} snapshot)
+\begin{DoxyCompactList}\small\item\em Persist the provided {\itshape snapshot}  into S\+QL Server using the provided {\itshape db\+Data\+Context} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Stores the most recent \mbox{\hyperlink{}{snapshots}} for replay and I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ rehydration on a Snapshot\+Aggregate\+Root$<$\+T\+Authentication\+Token,\+T\+Snapshot$>$ in Sql\+Server that uses Linq\+To\+Sql and follows a rigid schema. 
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlSnapshotStore_a9910cd3866ca4f226d5258479deefd12_a9910cd3866ca4f226d5258479deefd12}\label{classCqrs_1_1Events_1_1SqlSnapshotStore_a9910cd3866ca4f226d5258479deefd12_a9910cd3866ca4f226d5258479deefd12}} 
+\index{Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}!SqlSnapshotStore@{SqlSnapshotStore}}
+\index{SqlSnapshotStore@{SqlSnapshotStore}!Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}}
+\doxysubsubsection{\texorpdfstring{SqlSnapshotStore()}{SqlSnapshotStore()}}
+{\footnotesize\ttfamily Cqrs.\+Events.\+Sql\+Snapshot\+Store.\+Sql\+Snapshot\+Store (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}}]{configuration\+Manager,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser}{I\+Snapshot\+Deserialiser}}}]{event\+Deserialiser,  }\item[{I\+Logger}]{logger,  }\item[{I\+Correlation\+Id\+Helper}]{correlation\+Id\+Helper,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotBuilder}{I\+Snapshot\+Builder}}}]{snapshot\+Builder }\end{DoxyParamCaption})}
+
+
+
+Instantiate a new instance of the \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlSnapshotStore}{Sql\+Snapshot\+Store}} class. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlSnapshotStore_a4b5c4a21ac1d5cd51ea5f3f748885df1_a4b5c4a21ac1d5cd51ea5f3f748885df1}\label{classCqrs_1_1Events_1_1SqlSnapshotStore_a4b5c4a21ac1d5cd51ea5f3f748885df1_a4b5c4a21ac1d5cd51ea5f3f748885df1}} 
+\index{Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}!Add@{Add}}
+\index{Add@{Add}!Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}}
+\doxysubsubsection{\texorpdfstring{Add()}{Add()}}
+{\footnotesize\ttfamily virtual void Cqrs.\+Events.\+Sql\+Snapshot\+Store.\+Add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}}}]{db\+Data\+Context,  }\item[{\mbox{\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot}}}]{snapshot }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Persist the provided {\itshape snapshot}  into S\+QL Server using the provided {\itshape db\+Data\+Context} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlSnapshotStore_af34af7f01c60ab6989fd69ed94a2b058_af34af7f01c60ab6989fd69ed94a2b058}\label{classCqrs_1_1Events_1_1SqlSnapshotStore_af34af7f01c60ab6989fd69ed94a2b058_af34af7f01c60ab6989fd69ed94a2b058}} 
+\index{Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}!CreateDbDataContext@{CreateDbDataContext}}
+\index{CreateDbDataContext@{CreateDbDataContext}!Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}}
+\doxysubsubsection{\texorpdfstring{CreateDbDataContext()}{CreateDbDataContext()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}} Cqrs.\+Events.\+Sql\+Snapshot\+Store.\+Create\+Db\+Data\+Context (\begin{DoxyParamCaption}\item[{string}]{aggregate\+Root\+Type\+Name = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Creates a new Db\+Context using connection string settings from Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlSnapshotStore_a074064fc96d192dd6f68be2bb941bb9f_a074064fc96d192dd6f68be2bb941bb9f}\label{classCqrs_1_1Events_1_1SqlSnapshotStore_a074064fc96d192dd6f68be2bb941bb9f_a074064fc96d192dd6f68be2bb941bb9f}} 
+\index{Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}!Get@{Get}}
+\index{Get@{Get}!Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}}
+\doxysubsubsection{\texorpdfstring{Get()}{Get()}}
+{\footnotesize\ttfamily override \mbox{\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot}} Cqrs.\+Events.\+Sql\+Snapshot\+Store.\+Get (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{string}]{stream\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Get the latest Snapshot from storage. 
+
+\begin{DoxyReturn}{Returns}
+The most recent Snapshot of
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_ab2ecab1a665c0f2097929d028fe4ac69_ab2ecab1a665c0f2097929d028fe4ac69}{Cqrs.\+Snapshots.\+Snapshot\+Store}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlSnapshotStore_a567c34ca0c44d1e6e7b30c06a60b5f33_a567c34ca0c44d1e6e7b30c06a60b5f33}\label{classCqrs_1_1Events_1_1SqlSnapshotStore_a567c34ca0c44d1e6e7b30c06a60b5f33_a567c34ca0c44d1e6e7b30c06a60b5f33}} 
+\index{Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}!GetEventStoreSnapshotTable@{GetEventStoreSnapshotTable}}
+\index{GetEventStoreSnapshotTable@{GetEventStoreSnapshotTable}!Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}}
+\doxysubsubsection{\texorpdfstring{GetEventStoreSnapshotTable()}{GetEventStoreSnapshotTable()}}
+{\footnotesize\ttfamily virtual Db\+Set$<$\mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}}$>$ Cqrs.\+Events.\+Sql\+Snapshot\+Store.\+Get\+Event\+Store\+Snapshot\+Table (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}}}]{db\+Data\+Context }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Gets the Db\+Set$<$\+T\+Entity$>$ of Snapshot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em db\+Data\+Context} & The Db\+Context to use.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlSnapshotStore_ae219c88f6d56fbceef7c738dae824666_ae219c88f6d56fbceef7c738dae824666}\label{classCqrs_1_1Events_1_1SqlSnapshotStore_ae219c88f6d56fbceef7c738dae824666_ae219c88f6d56fbceef7c738dae824666}} 
+\index{Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}!Save@{Save}}
+\index{Save@{Save}!Cqrs.Events.SqlSnapshotStore@{Cqrs.Events.SqlSnapshotStore}}
+\doxysubsubsection{\texorpdfstring{Save()}{Save()}}
+{\footnotesize\ttfamily override void Cqrs.\+Events.\+Sql\+Snapshot\+Store.\+Save (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot}}}]{snapshot }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Saves the provided {\itshape snapshot}  into storage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em snapshot} & the Snapshot to save and store.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_ae96ea2bb89a0bd7f45544acc37107525_ae96ea2bb89a0bd7f45544acc37107525}{Cqrs.\+Snapshots.\+Snapshot\+Store}}.
+
