@@ -1,0 +1,250 @@
+\hypertarget{classCqrs_1_1Events_1_1SqlEventStore}{}\doxysection{Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$ Class Template Reference}
+\label{classCqrs_1_1Events_1_1SqlEventStore}\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+
+
+A simplified Sql\+Server based \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}{Event\+Store$<$\+T\+Authentication\+Token$>$}} that uses Entity Framework and follows a rigid schema.  
+
+
+Inheritance diagram for Cqrs.\+Events.\+Sql\+Event\+Store$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classCqrs_1_1Events_1_1SqlEventStore}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ab6d65047665e3a0cc351d4e708665ba0_ab6d65047665e3a0cc351d4e708665ba0}{Linq\+To\+Sql\+Event\+Store}} (\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventBuilder}{I\+Event\+Builder}}$<$ T\+Authentication\+Token $>$ event\+Builder, \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}}$<$ T\+Authentication\+Token $>$ event\+Deserialiser, I\+Logger logger, \mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} configuration\+Manager)
+\begin{DoxyCompactList}\small\item\em Instantiate a new instance of the \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ab6d65047665e3a0cc351d4e708665ba0_ab6d65047665e3a0cc351d4e708665ba0}{Linq\+To\+Sql\+Event\+Store$<$\+T\+Authentication\+Token$>$}} class. \end{DoxyCompactList}\item 
+override I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_a7e32a08a015642a5bc1cefa6998e6f11_a7e32a08a015642a5bc1cefa6998e6f11}{Get}} (Type aggregate\+Root\+Type, Guid aggregate\+Id, bool use\+Last\+Event\+Only=false, int from\+Version=-\/1)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
+override I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ae3e2b22dd0afb8aa3e685d12b9cf9f3e_ae3e2b22dd0afb8aa3e685d12b9cf9f3e}{Get\+To\+Version}} (Type aggregate\+Root\+Type, Guid aggregate\+Id, int version)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . \end{DoxyCompactList}\item 
+override I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_a9ae45c68fa8b7ef69a4e1d6ae0e777f3_a9ae45c68fa8b7ef69a4e1d6ae0e777f3}{Get\+To\+Date}} (Type aggregate\+Root\+Type, Guid aggregate\+Id, Date\+Time versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . \end{DoxyCompactList}\item 
+override I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_addd080c095c2a87effa71a0310402f78_addd080c095c2a87effa71a0310402f78}{Get\+Between\+Dates}} (Type aggregate\+Root\+Type, Guid aggregate\+Id, Date\+Time from\+Versioned\+Date, Date\+Time to\+Versioned\+Date)
+\begin{DoxyCompactList}\small\item\em Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . \end{DoxyCompactList}\item 
+override I\+Enumerable$<$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}} $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ac1fb2bdec07cbeec57fb3d985e7a8b31_ac1fb2bdec07cbeec57fb3d985e7a8b31}{Get}} (Guid correlation\+Id)
+\begin{DoxyCompactList}\small\item\em Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+override void \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_a8d67570d50a97050cbce5a29d7a4b9f6_a8d67570d50a97050cbce5a29d7a4b9f6}{Persist\+Event}} (\mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}} event\+Data)
+\begin{DoxyCompactList}\small\item\em Persist the provided {\itshape event\+Data}  into S\+QL Server. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}} \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_a9a9f06e250621918f49d18e1d755d38c_a9a9f06e250621918f49d18e1d755d38c}{Create\+Db\+Data\+Context}} (string aggregate\+Root\+Type\+Name=null)
+\begin{DoxyCompactList}\small\item\em Creates a new Db\+Context using connection string settings from \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ac74de2a6905b38d167bcb23055e19b3d_ac74de2a6905b38d167bcb23055e19b3d}{Configuration\+Manager}}. \end{DoxyCompactList}\item 
+virtual Db\+Set$<$ \mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}} $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_a8dbff5a10cb508cda3317de760034504_a8dbff5a10cb508cda3317de760034504}{Get\+Event\+Store\+Table}} (\mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}} db\+Data\+Context)
+\begin{DoxyCompactList}\small\item\em Gets the Db\+Set$<$\+T\+Entity$>$ of \mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}}. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_a4a01f97bdaf2dbd2518facfb9e5028da_a4a01f97bdaf2dbd2518facfb9e5028da}{Add}} (\mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}} db\+Data\+Context, \mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}} data)
+\begin{DoxyCompactList}\small\item\em Persist the provided {\itshape data}  into S\+QL Server using the provided {\itshape db\+Data\+Context} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ac74de2a6905b38d167bcb23055e19b3d_ac74de2a6905b38d167bcb23055e19b3d}{Configuration\+Manager}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Configuration\+Manager. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+A simplified Sql\+Server based \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_a6346cb2aea4c5b4e740dc6cfb15abab8}{Event\+Store$<$\+T\+Authentication\+Token$>$}} that uses Entity Framework and follows a rigid schema. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of the authentication token.\\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_a4a01f97bdaf2dbd2518facfb9e5028da_a4a01f97bdaf2dbd2518facfb9e5028da}\label{classCqrs_1_1Events_1_1SqlEventStore_a4a01f97bdaf2dbd2518facfb9e5028da_a4a01f97bdaf2dbd2518facfb9e5028da}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!Add@{Add}}
+\index{Add@{Add}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Add()}{Add()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Add (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}}}]{db\+Data\+Context,  }\item[{\mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}}}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Persist the provided {\itshape data}  into S\+QL Server using the provided {\itshape db\+Data\+Context} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_a9a9f06e250621918f49d18e1d755d38c_a9a9f06e250621918f49d18e1d755d38c}\label{classCqrs_1_1Events_1_1SqlEventStore_a9a9f06e250621918f49d18e1d755d38c_a9a9f06e250621918f49d18e1d755d38c}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!CreateDbDataContext@{CreateDbDataContext}}
+\index{CreateDbDataContext@{CreateDbDataContext}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CreateDbDataContext()}{CreateDbDataContext()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}} \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Create\+Db\+Data\+Context (\begin{DoxyParamCaption}\item[{string}]{aggregate\+Root\+Type\+Name = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Creates a new Db\+Context using connection string settings from \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ac74de2a6905b38d167bcb23055e19b3d_ac74de2a6905b38d167bcb23055e19b3d}{Configuration\+Manager}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_ac1fb2bdec07cbeec57fb3d985e7a8b31_ac1fb2bdec07cbeec57fb3d985e7a8b31}\label{classCqrs_1_1Events_1_1SqlEventStore_ac1fb2bdec07cbeec57fb3d985e7a8b31_ac1fb2bdec07cbeec57fb3d985e7a8b31}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!Get@{Get}}
+\index{Get@{Get}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily override I\+Enumerable$<$\mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}}$>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get (\begin{DoxyParamCaption}\item[{Guid}]{correlation\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get all I\+Event$<$\+T\+Authentication\+Token$>$ instances for the given {\itshape correlation\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em correlation\+Id} & The I\+Message.\+Correlation\+Id of the I\+Event$<$\+T\+Authentication\+Token$>$ instances to retrieve.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a0096646f5dff730b0041b9469719c420_a0096646f5dff730b0041b9469719c420}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_a7e32a08a015642a5bc1cefa6998e6f11_a7e32a08a015642a5bc1cefa6998e6f11}\label{classCqrs_1_1Events_1_1SqlEventStore_a7e32a08a015642a5bc1cefa6998e6f11_a7e32a08a015642a5bc1cefa6998e6f11}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!Get@{Get}}
+\index{Get@{Get}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily override I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{bool}]{use\+Last\+Event\+Only = {\ttfamily false},  }\item[{int}]{from\+Version = {\ttfamily -\/1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em use\+Last\+Event\+Only} & Loads only the last eventI\+Event$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Version} & Load events starting from this version\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_aa1d0d399a35c1e3b0759e27202695d8b_aa1d0d399a35c1e3b0759e27202695d8b}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_addd080c095c2a87effa71a0310402f78_addd080c095c2a87effa71a0310402f78}\label{classCqrs_1_1Events_1_1SqlEventStore_addd080c095c2a87effa71a0310402f78_addd080c095c2a87effa71a0310402f78}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!GetBetweenDates@{GetBetweenDates}}
+\index{GetBetweenDates@{GetBetweenDates}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetBetweenDates()}{GetBetweenDates()}}
+{\footnotesize\ttfamily override I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get\+Between\+Dates (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{from\+Versioned\+Date,  }\item[{Date\+Time}]{to\+Versioned\+Date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  from and including the provided {\itshape from\+Versioned\+Date}  up to and including the provided {\itshape to\+Versioned\+Date} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em from\+Versioned\+Date} & Load events from and including from this Date\+Time\\
+\hline
+{\em to\+Versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_add415731fcea6a9367e1031c4608c922_add415731fcea6a9367e1031c4608c922}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_a8dbff5a10cb508cda3317de760034504_a8dbff5a10cb508cda3317de760034504}\label{classCqrs_1_1Events_1_1SqlEventStore_a8dbff5a10cb508cda3317de760034504_a8dbff5a10cb508cda3317de760034504}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!GetEventStoreTable@{GetEventStoreTable}}
+\index{GetEventStoreTable@{GetEventStoreTable}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetEventStoreTable()}{GetEventStoreTable()}}
+{\footnotesize\ttfamily virtual Db\+Set$<$\mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}}$>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get\+Event\+Store\+Table (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}}}]{db\+Data\+Context }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Gets the Db\+Set$<$\+T\+Entity$>$ of \mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em db\+Data\+Context} & The \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStoreDataContext}{Sql\+Event\+Store\+Data\+Context}} to use.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_a9ae45c68fa8b7ef69a4e1d6ae0e777f3_a9ae45c68fa8b7ef69a4e1d6ae0e777f3}\label{classCqrs_1_1Events_1_1SqlEventStore_a9ae45c68fa8b7ef69a4e1d6ae0e777f3_a9ae45c68fa8b7ef69a4e1d6ae0e777f3}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!GetToDate@{GetToDate}}
+\index{GetToDate@{GetToDate}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetToDate()}{GetToDate()}}
+{\footnotesize\ttfamily override I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get\+To\+Date (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{Date\+Time}]{versioned\+Date }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape versioned\+Date} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em versioned\+Date} & Load events up-\/to and including from this Date\+Time\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_acc2cf147ad6420c5359485f04367d5d1_acc2cf147ad6420c5359485f04367d5d1}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_ae3e2b22dd0afb8aa3e685d12b9cf9f3e_ae3e2b22dd0afb8aa3e685d12b9cf9f3e}\label{classCqrs_1_1Events_1_1SqlEventStore_ae3e2b22dd0afb8aa3e685d12b9cf9f3e_ae3e2b22dd0afb8aa3e685d12b9cf9f3e}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!GetToVersion@{GetToVersion}}
+\index{GetToVersion@{GetToVersion}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetToVersion()}{GetToVersion()}}
+{\footnotesize\ttfamily override I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Get\+To\+Version (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id,  }\item[{int}]{version }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Gets a collection of I\+Event$<$\+T\+Authentication\+Token$>$ for the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ of type {\itshape aggregate\+Root\+Type}  with the ID matching the provided {\itshape aggregate\+Id}  up to and including the provided {\itshape version} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ the I\+Event$<$\+T\+Authentication\+Token$>$ was raised in.\\
+\hline
+{\em aggregate\+Id} & The I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\+Id of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em version} & Load events up-\/to and including from this version\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_a2785f85c9d986cdf11ab6054826c195d_a2785f85c9d986cdf11ab6054826c195d}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_ab6d65047665e3a0cc351d4e708665ba0_ab6d65047665e3a0cc351d4e708665ba0}\label{classCqrs_1_1Events_1_1SqlEventStore_ab6d65047665e3a0cc351d4e708665ba0_ab6d65047665e3a0cc351d4e708665ba0}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!LinqToSqlEventStore@{LinqToSqlEventStore}}
+\index{LinqToSqlEventStore@{LinqToSqlEventStore}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{LinqToSqlEventStore()}{LinqToSqlEventStore()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Linq\+To\+Sql\+Event\+Store (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventBuilder}{I\+Event\+Builder}}$<$ T\+Authentication\+Token $>$}]{event\+Builder,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventDeserialiser}{I\+Event\+Deserialiser}}$<$ T\+Authentication\+Token $>$}]{event\+Deserialiser,  }\item[{I\+Logger}]{logger,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}}]{configuration\+Manager }\end{DoxyParamCaption})}
+
+
+
+Instantiate a new instance of the \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore_ab6d65047665e3a0cc351d4e708665ba0_ab6d65047665e3a0cc351d4e708665ba0}{Linq\+To\+Sql\+Event\+Store$<$\+T\+Authentication\+Token$>$}} class. 
+
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_a8d67570d50a97050cbce5a29d7a4b9f6_a8d67570d50a97050cbce5a29d7a4b9f6}\label{classCqrs_1_1Events_1_1SqlEventStore_a8d67570d50a97050cbce5a29d7a4b9f6_a8d67570d50a97050cbce5a29d7a4b9f6}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!PersistEvent@{PersistEvent}}
+\index{PersistEvent@{PersistEvent}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PersistEvent()}{PersistEvent()}}
+{\footnotesize\ttfamily override void \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.Persist\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}}}]{event\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Persist the provided {\itshape event\+Data}  into S\+QL Server. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em event\+Data} & The \mbox{\hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data}} to persist.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore_aedb71ca0ddf21220e323bc60ad7508cd_aedb71ca0ddf21220e323bc60ad7508cd}{Cqrs.\+Events.\+Event\+Store$<$ T\+Authentication\+Token $>$}}.
+
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Events_1_1SqlEventStore_ac74de2a6905b38d167bcb23055e19b3d_ac74de2a6905b38d167bcb23055e19b3d}\label{classCqrs_1_1Events_1_1SqlEventStore_ac74de2a6905b38d167bcb23055e19b3d_ac74de2a6905b38d167bcb23055e19b3d}} 
+\index{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}!ConfigurationManager@{ConfigurationManager}}
+\index{ConfigurationManager@{ConfigurationManager}!Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$@{Cqrs.Events.SqlEventStore$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ConfigurationManager}{ConfigurationManager}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} \mbox{\hyperlink{classCqrs_1_1Events_1_1SqlEventStore}{Cqrs.\+Events.\+Sql\+Event\+Store}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Configuration_1_1ConfigurationManager}{Configuration\+Manager}}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Configuration\+Manager. 
+

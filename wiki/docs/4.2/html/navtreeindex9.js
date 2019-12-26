@@ -1,5 +1,9 @@
 var NAVTREEINDEX9 =
 {
+"classCqrs_1_1Services_1_1BasicServiceParameterResolver_a2815cb9d0647e0b019d3f148a0c8e9cc.html#a2815cb9d0647e0b019d3f148a0c8e9cc":[1,0,0,20,0,3],
+"classCqrs_1_1Services_1_1BasicServiceParameterResolver_a49d548e272010a9047bac9671e5b1f70.html#a49d548e272010a9047bac9671e5b1f70":[1,0,0,20,0,6],
+"classCqrs_1_1Services_1_1BasicServiceParameterResolver_a74e001363a0226b4fbf5d3796e1230a9.html#a74e001363a0226b4fbf5d3796e1230a9":[1,0,0,20,0,1],
+"classCqrs_1_1Services_1_1BasicServiceParameterResolver_a78d53a2ee367086bca9f2d2118746836.html#a78d53a2ee367086bca9f2d2118746836":[1,0,0,20,0,7],
 "classCqrs_1_1Services_1_1BasicServiceParameterResolver_a8c598f2f49a83190c315afc88e5630d5.html#a8c598f2f49a83190c315afc88e5630d5":[1,0,0,20,0,2],
 "classCqrs_1_1Services_1_1BasicServiceParameterResolver_ab1de06b3744da74df0708545666c9f6f.html#ab1de06b3744da74df0708545666c9f6f":[1,0,0,20,0,5],
 "classCqrs_1_1Services_1_1BasicServiceParameterResolver_adbc4b10f8931db30768d7ca84bdb0260.html#adbc4b10f8931db30768d7ca84bdb0260":[1,0,0,20,0,4],
@@ -245,9 +249,5 @@ var NAVTREEINDEX9 =
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings.html":[1,0,0,25,3,0,1,4],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings_a30ddd5af5e27e061ef49c3242a5b0729.html#a30ddd5af5e27e061ef49c3242a5b0729":[1,0,0,25,3,0,1,4,0],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings_a8db49349b200f3aea3fc9642ca1f9fd9.html#a8db49349b200f3aea3fc9642ca1f9fd9":[1,0,0,25,3,0,1,4,2],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings_ada06553a43f83734ecef9d811993d048.html#ada06553a43f83734ecef9d811993d048":[1,0,0,25,3,0,1,4,1],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1BooleanConverterEx.html":[1,0,0,25,3,0,1,1,0],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1BooleanConverterEx_afac51ee1e191c7b27da72d7cf6f25fa7.html#afac51ee1e191c7b27da72d7cf6f25fa7":[1,0,0,25,3,0,1,1,0,0],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1FromStringConverterAdapter.html":[1,0,0,25,3,0,1,1,1],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1FromStringConverterAdapter_a8861572dad983012fbe36488b2b6913a.html#a8861572dad983012fbe36488b2b6913a":[1,0,0,25,3,0,1,1,1,0]
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings_ada06553a43f83734ecef9d811993d048.html#ada06553a43f83734ecef9d811993d048":[1,0,0,25,3,0,1,4,1]
 };

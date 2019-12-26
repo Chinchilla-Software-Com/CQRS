@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2019-12-26 20:13:41</td>
+            <td class="headerValue">2019-12-26 22:00:05</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -119,7 +119,7 @@
 <span class="lineNum">      61 </span>            :                         var results = new List&lt;INinjectModule&gt;
 <span class="lineNum">      62 </span>            :                         {
 <span class="lineNum">      63 </span>            :                                 new TWebHostModule(),
-<span class="lineNum">      64 </span>            :                                 new CqrsModule&lt;TAuthenticationToken, TAuthenticationTokenHelper&gt;(true, true)
+<span class="lineNum">      64 </span>            :                                 new CqrsModule&lt;TAuthenticationToken, TAuthenticationTokenHelper&gt;(new CloudConfigurationManager(WebHostModule.Configuration))
 <span class="lineNum">      65 </span>            :                         };
 <span class="lineNum">      66 </span>            : 
 <span class="lineNum">      67 </span>            :                         results.AddRange(GetCommandBusModules());
@@ -161,18 +161,13 @@
 <span class="lineNum">     103 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     104 </span>            :                 protected virtual IEnumerable&lt;INinjectModule&gt; GetEventStoreModules()
 <span class="lineNum">     105 </span>            :                 {
-<span class="lineNum">     106 </span>            : #if NET472
-<span class="lineNum">     107 </span>            :                         return new List&lt;INinjectModule&gt;
-<span class="lineNum">     108 </span>            :                         {
-<span class="lineNum">     109 </span>            :                                 new SimplifiedSqlModule&lt;TAuthenticationToken&gt;()
-<span class="lineNum">     110 </span>            :                         };
-<span class="lineNum">     111 </span>            : #endif
-<span class="lineNum">     112 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     113 </span>            :                         return Enumerable.Empty&lt;INinjectModule&gt;();
-<span class="lineNum">     114 </span>            : #endif
-<span class="lineNum">     115 </span>            :                 }
-<span class="lineNum">     116 </span>            :         }
-<span class="lineNum">     117 </span>            : }
+<span class="lineNum">     106 </span>            :                         return new List&lt;INinjectModule&gt;
+<span class="lineNum">     107 </span>            :                         {
+<span class="lineNum">     108 </span>            :                                 new SimplifiedSqlModule&lt;TAuthenticationToken&gt;()
+<span class="lineNum">     109 </span>            :                         };
+<span class="lineNum">     110 </span>            :                 }
+<span class="lineNum">     111 </span>            :         }
+<span class="lineNum">     112 </span>            : }
 </pre>
       </td>
     </tr>

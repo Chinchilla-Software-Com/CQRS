@@ -24,7 +24,6 @@ var namespaceCqrs_1_1Events =
     [ "ISagaEvent", "interfaceCqrs_1_1Events_1_1ISagaEvent.html", "interfaceCqrs_1_1Events_1_1ISagaEvent" ],
     [ "ISnapshotBuilder", "interfaceCqrs_1_1Events_1_1ISnapshotBuilder.html", "interfaceCqrs_1_1Events_1_1ISnapshotBuilder" ],
     [ "ISnapshotDeserialiser", "interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser.html", "interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser" ],
-    [ "LinqToSqlEventStore", "classCqrs_1_1Events_1_1LinqToSqlEventStore.html", "classCqrs_1_1Events_1_1LinqToSqlEventStore" ],
     [ "MemoryCacheEventStore", "classCqrs_1_1Events_1_1MemoryCacheEventStore.html", "classCqrs_1_1Events_1_1MemoryCacheEventStore" ],
     [ "NotifyCallerEventAttribute", "classCqrs_1_1Events_1_1NotifyCallerEventAttribute.html", null ],
     [ "NotifyEveryoneEventAttribute", "classCqrs_1_1Events_1_1NotifyEveryoneEventAttribute.html", null ],
@@ -34,6 +33,7 @@ var namespaceCqrs_1_1Events =
     [ "SagaEvent", "classCqrs_1_1Events_1_1SagaEvent.html", "classCqrs_1_1Events_1_1SagaEvent" ],
     [ "SnapshotBuilder", "classCqrs_1_1Events_1_1SnapshotBuilder.html", "classCqrs_1_1Events_1_1SnapshotBuilder" ],
     [ "SnapshotDeserialiser", "classCqrs_1_1Events_1_1SnapshotDeserialiser.html", "classCqrs_1_1Events_1_1SnapshotDeserialiser" ],
+    [ "SqlEventStore", "classCqrs_1_1Events_1_1SqlEventStore.html", "classCqrs_1_1Events_1_1SqlEventStore" ],
     [ "SqlEventStoreDataContext", "classCqrs_1_1Events_1_1SqlEventStoreDataContext.html", "classCqrs_1_1Events_1_1SqlEventStoreDataContext" ],
     [ "SqlSnapshotStore", "classCqrs_1_1Events_1_1SqlSnapshotStore.html", "classCqrs_1_1Events_1_1SqlSnapshotStore" ]
 ];

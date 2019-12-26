@@ -8,5 +8,6 @@ var namespaceCqrs_1_1Ninject_1_1Configuration =
     [ "MemoryCacheEventStoreModule", "classCqrs_1_1Ninject_1_1Configuration_1_1MemoryCacheEventStoreModule.html", "classCqrs_1_1Ninject_1_1Configuration_1_1MemoryCacheEventStoreModule" ],
     [ "NinjectDependencyResolver", "classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver.html", "classCqrs_1_1Ninject_1_1Configuration_1_1NinjectDependencyResolver" ],
     [ "ResolvableModule", "classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule.html", "classCqrs_1_1Ninject_1_1Configuration_1_1ResolvableModule" ],
-    [ "SimplifiedNinjectStartUp", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp.html", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp" ]
+    [ "SimplifiedNinjectStartUp", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp.html", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedNinjectStartUp" ],
+    [ "SimplifiedSqlModule", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedSqlModule.html", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedSqlModule" ]
 ];

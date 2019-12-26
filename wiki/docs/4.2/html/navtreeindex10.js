@@ -1,5 +1,9 @@
 var NAVTREEINDEX10 =
 {
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1BooleanConverterEx.html":[1,0,0,25,3,0,1,1,0],
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1BooleanConverterEx_afac51ee1e191c7b27da72d7cf6f25fa7.html#afac51ee1e191c7b27da72d7cf6f25fa7":[1,0,0,25,3,0,1,1,0,0],
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1FromStringConverterAdapter.html":[1,0,0,25,3,0,1,1,1],
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1FromStringConverterAdapter_a8861572dad983012fbe36488b2b6913a.html#a8861572dad983012fbe36488b2b6913a":[1,0,0,25,3,0,1,1,1,0],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters_1_1FromStringConverterAdapter_aac70ae2f2845154556163073178d0438.html#aac70ae2f2845154556163073178d0438":[1,0,0,25,3,0,1,1,1,1],
 "classCqrs_1_1WebApi_1_1HelpPageConfig.html":[1,0,0,25,8],
 "classCqrs_1_1WebApi_1_1HelpPageConfig_1_1UserCreatedEvent.html":[1,0,0,25,8,0],
@@ -104,8 +108,8 @@ var NAVTREEINDEX10 =
 "functions_n.html":[1,3,0,14],
 "functions_o.html":[1,3,0,15],
 "functions_p.html":[1,3,0,16],
-"functions_prop.html":[1,3,4],
 "functions_prop.html":[1,3,4,0],
+"functions_prop.html":[1,3,4],
 "functions_prop_a.html":[1,3,4,1],
 "functions_prop_b.html":[1,3,4,2],
 "functions_prop_c.html":[1,3,4,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX10 =
 "interfaceCqrs_1_1Bus_1_1IBusHelper_a29751c186da5e2b042067af6a1be6d5d.html#a29751c186da5e2b042067af6a1be6d5d":[1,0,0,3,3,1],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_a40a395ea6d92a6162c8e584a39284bbc.html#a40a395ea6d92a6162c8e584a39284bbc":[1,0,0,3,3,7],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_a6e3d49a9367f3709d216f02be0277eea.html#a6e3d49a9367f3709d216f02be0277eea":[1,0,0,3,3,2],
-"interfaceCqrs_1_1Bus_1_1IBusHelper_a77ba41738c6796f2800a914d39fc84d6.html#a77ba41738c6796f2800a914d39fc84d6":[1,0,0,3,3,5],
-"interfaceCqrs_1_1Bus_1_1IBusHelper_ac69a1e4722e2839c2c180b9a06a8646c.html#ac69a1e4722e2839c2c180b9a06a8646c":[1,0,0,3,3,0],
-"interfaceCqrs_1_1Bus_1_1IBusHelper_acddf7635d6de08e3b09d552361fe4fda.html#acddf7635d6de08e3b09d552361fe4fda":[1,0,0,3,3,4],
-"interfaceCqrs_1_1Bus_1_1IBusHelper_af73d0d2aa8e98566acb4b2fb13a3e986.html#af73d0d2aa8e98566acb4b2fb13a3e986":[1,0,0,3,3,3],
-"interfaceCqrs_1_1Bus_1_1ICommandHandlerRegistrar.html":[1,0,0,3,4]
+"interfaceCqrs_1_1Bus_1_1IBusHelper_a77ba41738c6796f2800a914d39fc84d6.html#a77ba41738c6796f2800a914d39fc84d6":[1,0,0,3,3,5]
 };
