@@ -366,8 +366,8 @@ var hierarchy =
           [ "Cqrs.Azure.Storage.Events.TableStorageEventStore< TAuthenticationToken >", "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore.html", null ]
         ] ],
         [ "Cqrs.Azure.DocumentDb.Events.AzureDocumentDbEventStore< TAuthenticationToken >", "classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbEventStore.html", null ],
-        [ "Cqrs.Events.LinqToSqlEventStore< TAuthenticationToken >", "classCqrs_1_1Events_1_1LinqToSqlEventStore.html", null ],
         [ "Cqrs.Events.MemoryCacheEventStore< TAuthenticationToken >", "classCqrs_1_1Events_1_1MemoryCacheEventStore.html", null ],
+        [ "Cqrs.Events.SqlEventStore< TAuthenticationToken >", "classCqrs_1_1Events_1_1SqlEventStore.html", null ],
         [ "Cqrs.MongoDB.Events.MongoDbEventStore< TAuthenticationToken >", "classCqrs_1_1MongoDB_1_1Events_1_1MongoDbEventStore.html", null ]
       ] ],
       [ "Cqrs.Events.InProcessEventStore< TAuthenticationToken >", "classCqrs_1_1Events_1_1InProcessEventStore.html", [
@@ -907,7 +907,8 @@ var hierarchy =
         [ "Cqrs.Ninject.Configuration.InProcessEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1InProcessEventStoreModule.html", [
           [ "Cqrs.Ninject.InProcess.EventStore.Configuration.InProcessEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1InProcess_1_1EventStore_1_1Configuration_1_1InProcessEventStoreModule.html", null ]
         ] ],
-        [ "Cqrs.Ninject.Configuration.MemoryCacheEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1MemoryCacheEventStoreModule.html", null ]
+        [ "Cqrs.Ninject.Configuration.MemoryCacheEventStoreModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1MemoryCacheEventStoreModule.html", null ],
+        [ "Cqrs.Ninject.Configuration.SimplifiedSqlModule< TAuthenticationToken >", "classCqrs_1_1Ninject_1_1Configuration_1_1SimplifiedSqlModule.html", null ]
       ] ],
       [ "Cqrs.Ninject.Mongo.Configuration.MongoModule", "classCqrs_1_1Ninject_1_1Mongo_1_1Configuration_1_1MongoModule.html", [
         [ "Cqrs.Ninject.Mongo.Configuration.TestMongoModule", "classCqrs_1_1Ninject_1_1Mongo_1_1Configuration_1_1TestMongoModule.html", null ]

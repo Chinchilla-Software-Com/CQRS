@@ -1,5 +1,9 @@
 var NAVTREEINDEX11 =
 {
+"interfaceCqrs_1_1Bus_1_1IBusHelper_ac69a1e4722e2839c2c180b9a06a8646c.html#ac69a1e4722e2839c2c180b9a06a8646c":[1,0,0,3,3,0],
+"interfaceCqrs_1_1Bus_1_1IBusHelper_acddf7635d6de08e3b09d552361fe4fda.html#acddf7635d6de08e3b09d552361fe4fda":[1,0,0,3,3,4],
+"interfaceCqrs_1_1Bus_1_1IBusHelper_af73d0d2aa8e98566acb4b2fb13a3e986.html#af73d0d2aa8e98566acb4b2fb13a3e986":[1,0,0,3,3,3],
+"interfaceCqrs_1_1Bus_1_1ICommandHandlerRegistrar.html":[1,0,0,3,4],
 "interfaceCqrs_1_1Bus_1_1IEventHandlerRegistrar.html":[1,0,0,3,5],
 "interfaceCqrs_1_1Bus_1_1IEventHandlerRegistrar_a80854abefd17bc58bd94e45266cf141e.html#a80854abefd17bc58bd94e45266cf141e":[1,0,0,3,5,0],
 "interfaceCqrs_1_1Bus_1_1IHandlerRegistrar.html":[1,0,0,3,6],
@@ -245,9 +249,5 @@ var NAVTREEINDEX11 =
 "interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub_a71c025184157d9bfa40b2a0a1f792bc2.html#a71c025184157d9bfa40b2a0a1f792bc2":[1,0,0,25,4,0,1,1],
 "interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub_a7505e55b2bfd5259b3caf90b7a0d974e.html#a7505e55b2bfd5259b3caf90b7a0d974e":[1,0,0,25,4,0,1,0],
 "interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub_a75a957ea5a28ba4c87cc46863d78e4d1.html#a75a957ea5a28ba4c87cc46863d78e4d1":[1,0,0,25,4,0,1,2],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub_afe5b9561d3844b33e63082420666823e.html#afe5b9561d3844b33e63082420666823e":[1,0,0,25,4,0,1,3],
-"namespaceCqrs.html":[1,0,0],
-"namespaceCqrs.html":[0,0,0],
-"namespaceCqrs_1_1Akka.html":[0,0,0,0],
-"namespaceCqrs_1_1Akka.html":[1,0,0,0]
+"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub_afe5b9561d3844b33e63082420666823e.html#afe5b9561d3844b33e63082420666823e":[1,0,0,25,4,0,1,3]
 };
