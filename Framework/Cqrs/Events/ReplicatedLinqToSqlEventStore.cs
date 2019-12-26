@@ -1,4 +1,6 @@
-﻿#region Copyright
+﻿#if NET40
+
+#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
 // // 	Copyright Chinchilla Software Limited. All rights reserved.
@@ -8,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -20,7 +23,7 @@ namespace Cqrs.Events
 	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses LinqToSql and follows a rigid schema that also replicates to multiple connections, but only reads from one connection.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class ReplicatedSqlEventStore<TAuthenticationToken> : SqlEventStore<TAuthenticationToken>
+	public class ReplicatedLinqToSqlEventStore<TAuthenticationToken> : LinqToSqlEventStore<TAuthenticationToken>
 	{
 		/// <summary>
 		/// A collection of connection strings that are used to write to the database.
@@ -30,7 +33,7 @@ namespace Cqrs.Events
 		/// <summary>
 		/// Instantiates and Initialises a new instance of the <see cref="ReplicatedSqlEventStore{TAuthenticationToken}"/> class.
 		/// </summary>
-		public ReplicatedSqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
+		public ReplicatedLinqToSqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
 			: base(eventBuilder, eventDeserialiser, logger, configurationManager)
 		{
 			var writableConnectionStrings = new List<string>();
@@ -84,7 +87,7 @@ namespace Cqrs.Events
 								//Pass the DependentTransaction to the scope, so that work done in the scope becomes part of the transaction passed to the worker thread
 								using (TransactionScope ts = new TransactionScope(subTrx))
 								{
-									using (SqlEventStoreDataContext dbDataContext = new SqlEventStoreDataContext(safeConnectionString))
+									using (DataContext dbDataContext = new DataContext(safeConnectionString))
 										Add(dbDataContext, eventData);
 
 									//Call complete on the transaction scope
@@ -121,3 +124,4 @@ namespace Cqrs.Events
 		}
 	}
 }
+#endif

@@ -43,7 +43,7 @@ namespace Cqrs.Events
 		/// <summary>
 		/// Instantiate a new instance of the <see cref="LinqToSqlEventStore{TAuthenticationToken}"/> class.
 		/// </summary>
-		public LinqToSqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
+		public SqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
 			: base(eventBuilder, eventDeserialiser, logger)
 		{
 			ConfigurationManager = configurationManager;

@@ -61,7 +61,11 @@ namespace Cqrs.Ninject.Azure.Wcf
 			var results = new List<INinjectModule>
 			{
 				new TWebHostModule(),
+#if NETSTANDARD2_0
 				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(new CloudConfigurationManager(WebHostModule.Configuration))
+#else
+				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(new CloudConfigurationManager())
+#endif
 			};
 
 			results.AddRange(GetCommandBusModules());
