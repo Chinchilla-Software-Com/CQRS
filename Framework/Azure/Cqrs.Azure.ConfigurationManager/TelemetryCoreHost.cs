@@ -24,7 +24,7 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// <summary>
 		/// Gets or sets the <see cref="IConfigurationManager"/>. This must be set manually as dependency injection may not be ready in-time.
 		/// </summary>
-		protected static readonly IConfigurationManager _configurationManager = null;
+		protected static IConfigurationManager _configurationManager = null;
 #endif
 #if NET472
 		/// <summary>
@@ -62,7 +62,9 @@ namespace Cqrs.Azure.ConfigurationManager
 		protected override void ConfigureTelemetry()
 		{
 #if NETSTANDARD2_0
-			TelemetryConfiguration config = GetTelemetryConfigurationDelegate() ?? TelemetryConfiguration.CreateDefault();
+			TelemetryConfiguration config = GetTelemetryConfigurationDelegate == null
+				? TelemetryConfiguration.CreateDefault()
+				: GetTelemetryConfigurationDelegate() ?? TelemetryConfiguration.CreateDefault();
 			config.InstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsightsInstrumentationKey");
 #endif
 #if NET472
