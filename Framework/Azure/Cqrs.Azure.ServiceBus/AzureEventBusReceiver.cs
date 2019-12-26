@@ -82,7 +82,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected virtual string FilterKeyConfigurationKey
 		{
-			get { return "Cqrs.Azure.EventBus.TopicName.SubscriptionName.Filter"; }
+			get { return "Cqrs.Azure.EventBus.Topics.Subscriptions.Filter"; }
 		}
 
 		/// <summary>

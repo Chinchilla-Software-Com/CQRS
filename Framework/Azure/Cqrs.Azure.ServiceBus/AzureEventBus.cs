@@ -44,7 +44,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override string PrivateTopicNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.EventBus.PrivateEvent.TopicName"; }
+			get { return "Cqrs.Azure.EventBus.PrivateEvent.Topic.Name"; }
 		}
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override string PublicTopicNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.EventBus.PublicEvent.TopicName"; }
+			get { return "Cqrs.Azure.EventBus.PublicEvent.Topic.Name"; }
 		}
 
 		/// <summary>
@@ -60,7 +60,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override string PrivateTopicSubscriptionNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.EventBus.PrivateEvent.TopicName.SubscriptionName"; }
+			get { return "Cqrs.Azure.EventBus.PrivateEvent.Topic.Subscription.Name"; }
 		}
 
 		/// <summary>
@@ -68,7 +68,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override string PublicTopicSubscriptionNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.EventBus.PublicEvent.TopicName.SubscriptionName"; }
+			get { return "Cqrs.Azure.EventBus.PublicEvent.Topic.Subscription.Name"; }
 		}
 
 		/// <summary>
