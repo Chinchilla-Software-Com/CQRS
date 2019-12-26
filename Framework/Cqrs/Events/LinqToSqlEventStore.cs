@@ -23,7 +23,7 @@ namespace Cqrs.Events
 	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses LinqToSql and follows a rigid schema.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class SqlEventStore<TAuthenticationToken>
+	public class LinqToSqlEventStore<TAuthenticationToken>
 		: EventStore<TAuthenticationToken> 
 	{
 		internal const string SqlEventStoreConnectionNameApplicationKey = @"Cqrs.SqlEventStore.ConnectionStringName";

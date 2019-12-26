@@ -1,6 +1,4 @@
-﻿#if NET40
-
-#region Copyright
+﻿#region Copyright
 // // -----------------------------------------------------------------------
 // // <copyright company="Chinchilla Software Limited">
 // // 	Copyright Chinchilla Software Limited. All rights reserved.
@@ -64,4 +62,3 @@ namespace Cqrs.Ninject.Configuration
 		}
 	}
 }
-#endif

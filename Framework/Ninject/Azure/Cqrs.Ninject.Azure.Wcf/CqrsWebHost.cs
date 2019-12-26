@@ -61,7 +61,7 @@ namespace Cqrs.Ninject.Azure.Wcf
 			var results = new List<INinjectModule>
 			{
 				new TWebHostModule(),
-				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(true, true)
+				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(new CloudConfigurationManager(WebHostModule.Configuration))
 			};
 
 			results.AddRange(GetCommandBusModules());
@@ -103,15 +103,10 @@ namespace Cqrs.Ninject.Azure.Wcf
 		/// </summary>
 		protected virtual IEnumerable<INinjectModule> GetEventStoreModules()
 		{
-#if NET472
 			return new List<INinjectModule>
 			{
 				new SimplifiedSqlModule<TAuthenticationToken>()
 			};
-#endif
-#if NETSTANDARD2_0
-			return Enumerable.Empty<INinjectModule>();
-#endif
 		}
 	}
 }

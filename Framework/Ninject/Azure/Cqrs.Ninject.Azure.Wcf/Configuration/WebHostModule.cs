@@ -39,7 +39,7 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 	{
 #if NETSTANDARD2_0
 		/// <summary>
-		/// Gets or sets the <see cref="IConfigurationManager"/>. This must be set manually as dependency injection may not be ready in-time.
+		/// Gets or sets the <see cref="IConfiguration"/>. This must be set manually as dependency injection may not be ready in-time.
 		/// </summary>
 		public static IConfiguration Configuration { get; set; }
 #endif
@@ -95,33 +95,12 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 		/// </summary>
 		protected virtual void RegisterContextItemCollectionFactory()
 		{
-			var configurationManager = Resolve<IConfigurationManager>();
-			if (!configurationManager.TryGetSetting("Cqrs.SetupForWeb", out bool setupForWeb))
-				setupForWeb = true;
-
-			// We use console state for WebJobs as, even though a webjob runs in an azure website, it's technically loaded via something call the 'WindowsScriptHost', which is not web and IIS based so it's threading model is very different and more console based.
-			if (Kernel.GetBindings(typeof(IContextItemCollectionFactory)).Any())
-				Kernel.Unbind<IContextItemCollectionFactory>();
-			if (Kernel.GetBindings(typeof(IContextItemCollection)).Any())
-				Kernel.Unbind<IContextItemCollection>();
-			if (setupForWeb)
-			{
-				Bind<IContextItemCollectionFactory>()
-					.To<WebContextItemCollectionFactory>()
-					.InSingletonScope();
-				Bind<IContextItemCollection>()
-					.To<WebContextItemCollection>()
-					.InSingletonScope();
-			}
-			else
-			{
-				Bind<IContextItemCollectionFactory>()
-					.To<ContextItemCollectionFactory>()
-					.InSingletonScope();
-				Bind<IContextItemCollection>()
-					.To<Chinchilla.StateManagement.Threaded.ContextItemCollection>()
-					.InSingletonScope();
-			}
+			Bind<IContextItemCollectionFactory>()
+				.To<WebContextItemCollectionFactory>()
+				.InSingletonScope();
+			Bind<IContextItemCollection>()
+				.To<WebContextItemCollection>()
+				.InSingletonScope();
 		}
 
 		/// <summary>

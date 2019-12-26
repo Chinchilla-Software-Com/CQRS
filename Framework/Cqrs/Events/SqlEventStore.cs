@@ -23,10 +23,10 @@ using Cqrs.Messages;
 namespace Cqrs.Events
 {
 	/// <summary>
-	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses LinqToSql and follows a rigid schema.
+	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses Entity Framework and follows a rigid schema.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class LinqToSqlEventStore<TAuthenticationToken>
+	public class SqlEventStore<TAuthenticationToken>
 		: EventStore<TAuthenticationToken> 
 	{
 		internal const string SqlEventStoreConnectionNameApplicationKey = @"Cqrs.SqlEventStore.ConnectionStringName";

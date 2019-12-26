@@ -25,7 +25,7 @@ using Cqrs.Entities;
 namespace Cqrs.DataStores
 {
 	/// <summary>
-	/// A <see cref="IDataStore{TData}"/> using simplified SQL.
+	/// A <see cref="IDataStore{TData}"/> using simplified Entity Framework.
 	/// </summary>
 	public class SqlDataStore<TData> : IDataStore<TData>
 		where TData : Entity
