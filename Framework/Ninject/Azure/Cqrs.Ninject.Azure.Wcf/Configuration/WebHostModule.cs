@@ -24,6 +24,7 @@ using Ninject.Modules;
 #if NET472
 using Ninject.Web.Common;
 using System.Web;
+using Ninject;
 #endif
 #if NETSTANDARD2_0
 using Microsoft.Extensions.Configuration;
