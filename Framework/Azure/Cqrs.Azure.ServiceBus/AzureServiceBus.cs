@@ -421,7 +421,20 @@ namespace Cqrs.Azure.ServiceBus
 			checkTask.Wait(1500);
 			if (!checkTask.Result)
 			{
-				Task<TopicDescription> createTask = manager.CreateTopicAsync(eventTopicDescription);
+				Task<TopicDescription> createTopicTask = manager.CreateTopicAsync(eventTopicDescription);
+				createTopicTask.Wait(1500);
+			}
+
+			checkTask = manager.SubscriptionExistsAsync(topicName, subscriptionName);
+			checkTask.Wait(1500);
+			if (!checkTask.Result)
+			{
+				var subscriptionDescription = new SubscriptionDescription(topicName, subscriptionName)
+				{
+					DefaultMessageTimeToLive = eventTopicDescription.DefaultMessageTimeToLive,
+					EnableBatchedOperations = eventTopicDescription.EnableBatchedOperations,
+				};
+				Task<SubscriptionDescription> createTask = manager.CreateSubscriptionAsync(subscriptionDescription);
 				createTask.Wait(1500);
 			}
 #endif

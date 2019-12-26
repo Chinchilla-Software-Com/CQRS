@@ -232,6 +232,11 @@ namespace Cqrs.Azure.ServiceBus
 #endif
 					}
 				}
+				catch (AggregateException ex)
+				{
+					if (!(ex.InnerException is MessagingEntityNotFoundException))
+						throw;
+				}
 				catch (MessagingEntityNotFoundException)
 				{
 				}
