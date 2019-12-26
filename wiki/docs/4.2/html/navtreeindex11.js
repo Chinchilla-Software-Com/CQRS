@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"interfaceCqrs_1_1Bus_1_1IBusHelper_a0fa31155c7a303474ca65b170eee05b9.html#a0fa31155c7a303474ca65b170eee05b9":[1,0,0,3,3,6],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_a29751c186da5e2b042067af6a1be6d5d.html#a29751c186da5e2b042067af6a1be6d5d":[1,0,0,3,3,1],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_a40a395ea6d92a6162c8e584a39284bbc.html#a40a395ea6d92a6162c8e584a39284bbc":[1,0,0,3,3,7],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_a6e3d49a9367f3709d216f02be0277eea.html#a6e3d49a9367f3709d216f02be0277eea":[1,0,0,3,3,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a6a50d35b8df69bb6d5fa9d31902c8ace.html#a6a50d35b8df69bb6d5fa9d31902c8ace":[1,0,0,25,4,0,0,1],
 "interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a85bd03a0bf9c2083822c4b67691f4297.html#a85bd03a0bf9c2083822c4b67691f4297":[1,0,0,25,4,0,0,3],
 "interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a88cb05c6807058bfe2bff48427a45ad2.html#a88cb05c6807058bfe2bff48427a45ad2":[1,0,0,25,4,0,0,2],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_ada48332e18931747c81997f8350f4066.html#ada48332e18931747c81997f8350f4066":[1,0,0,25,4,0,0,0],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub.html":[1,0,0,25,4,0,1]
+"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_ada48332e18931747c81997f8350f4066.html#ada48332e18931747c81997f8350f4066":[1,0,0,25,4,0,0,0]
 };

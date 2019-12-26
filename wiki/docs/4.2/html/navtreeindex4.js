@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer_af509f62b1369a6642e9f13beeb1aaf8f.html#af509f62b1369a6642e9f13beeb1aaf8f":[1,0,0,2,5,1,0,0,1],
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer_af5ed87f6a4d32ff3581a6d2ae107dcd1.html#af5ed87f6a4d32ff3581a6d2ae107dcd1":[1,0,0,2,5,1,0,0,0],
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a089514182da7a70f35f9237c521c49f0.html#a089514182da7a70f35f9237c521c49f0":[1,0,0,2,5,1,0,3],
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_a1b436bbb111b14b85ee6ba7f90fb1a35.html#a1b436bbb111b14b85ee6ba7f90fb1a35":[1,0,0,2,5,1,0,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "classCqrs_1_1Domain_1_1AggregateRepository_a64d82c57bbe49a11bd5cf20c5b86ce19.html#a64d82c57bbe49a11bd5cf20c5b86ce19":[1,0,0,8,2,1],
 "classCqrs_1_1Domain_1_1AggregateRepository_a758d2fd5c0cf30bc038a996800421fd0.html#a758d2fd5c0cf30bc038a996800421fd0":[1,0,0,8,2,15],
 "classCqrs_1_1Domain_1_1AggregateRepository_a99c8546ada9058c0488727b01c626528.html#a99c8546ada9058c0488727b01c626528":[1,0,0,8,2,16],
-"classCqrs_1_1Domain_1_1AggregateRepository_a9c2ffdf87ba242cf0c540f4b0d020777.html#a9c2ffdf87ba242cf0c540f4b0d020777":[1,0,0,8,2,13],
-"classCqrs_1_1Domain_1_1AggregateRepository_aa2b4511ff6327febc4bfa07567ba4385.html#aa2b4511ff6327febc4bfa07567ba4385":[1,0,0,8,2,10]
+"classCqrs_1_1Domain_1_1AggregateRepository_a9c2ffdf87ba242cf0c540f4b0d020777.html#a9c2ffdf87ba242cf0c540f4b0d020777":[1,0,0,8,2,13]
 };

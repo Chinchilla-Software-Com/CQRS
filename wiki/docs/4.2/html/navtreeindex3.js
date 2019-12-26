@@ -194,9 +194,10 @@ var NAVTREEINDEX3 =
 "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_afd2996c47ea248fd1b70ad8077dcd215.html#afd2996c47ea248fd1b70ad8077dcd215":[1,0,0,2,4,13,34],
 "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_afd7c5f3b9caa1ce88bcd8be049bbf099.html#afd7c5f3b9caa1ce88bcd8be049bbf099":[1,0,0,2,4,13,38],
 "classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser.html":[1,0,0,2,4,16],
-"classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser_a5650683271dec423489b016da15d8d3d.html#a5650683271dec423489b016da15d8d3d":[1,0,0,2,4,16,4],
-"classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser_a71ebae2d4d6352b19b49bd0115b99fcf.html#a71ebae2d4d6352b19b49bd0115b99fcf":[1,0,0,2,4,16,5],
-"classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser_a72ab8d3bd734eeb4ae80d3dcd36fa7e7.html#a72ab8d3bd734eeb4ae80d3dcd36fa7e7":[1,0,0,2,4,16,3],
+"classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser_a2c3389dddb9c4e3c15cf6afb61a40320.html#a2c3389dddb9c4e3c15cf6afb61a40320":[1,0,0,2,4,16,3],
+"classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser_a5650683271dec423489b016da15d8d3d.html#a5650683271dec423489b016da15d8d3d":[1,0,0,2,4,16,5],
+"classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser_a71ebae2d4d6352b19b49bd0115b99fcf.html#a71ebae2d4d6352b19b49bd0115b99fcf":[1,0,0,2,4,16,6],
+"classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser_a72ab8d3bd734eeb4ae80d3dcd36fa7e7.html#a72ab8d3bd734eeb4ae80d3dcd36fa7e7":[1,0,0,2,4,16,4],
 "classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser_a9207c867f358e352eee5d3727fe620e4.html#a9207c867f358e352eee5d3727fe620e4":[1,0,0,2,4,16,1],
 "classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser_aca8f19355749092a6ad7b5085dc7f057.html#aca8f19355749092a6ad7b5085dc7f057":[1,0,0,2,4,16,2],
 "classCqrs_1_1Azure_1_1ServiceBus_1_1MessageSerialiser_af08efd7ea85a4fefd54df34dd9481f95.html#af08efd7ea85a4fefd54df34dd9481f95":[1,0,0,2,4,16,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_ae9aeb3daf2648a03db25f2a3ddfd87ee.html#ae9aeb3daf2648a03db25f2a3ddfd87ee":[1,0,0,2,5,0,0,5],
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore.html":[1,0,0,2,5,1,0],
 "classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer.html":[1,0,0,2,5,1,0,0],
-"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer_a1da892250407e9d6e184c27f45f24cff.html#a1da892250407e9d6e184c27f45f24cff":[1,0,0,2,5,1,0,0,2],
-"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer_af509f62b1369a6642e9f13beeb1aaf8f.html#af509f62b1369a6642e9f13beeb1aaf8f":[1,0,0,2,5,1,0,0,1]
+"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer_a1da892250407e9d6e184c27f45f24cff.html#a1da892250407e9d6e184c27f45f24cff":[1,0,0,2,5,1,0,0,2]
 };

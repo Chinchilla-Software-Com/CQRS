@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"classCqrs_1_1Repositories_1_1Repository_ab95fc66b24e8359a1e2f48a3ca2f14c1.html#ab95fc66b24e8359a1e2f48a3ca2f14c1":[1,0,0,19,3,3],
 "classCqrs_1_1Repositories_1_1Repository_ac9d88baa6afcea85553fd233ba406e48.html#ac9d88baa6afcea85553fd233ba406e48":[1,0,0,19,3,4],
 "classCqrs_1_1Repositories_1_1Repository_ae15cee6394a223564ad2ead65cd30189.html#ae15cee6394a223564ad2ead65cd30189":[1,0,0,19,3,11],
 "classCqrs_1_1Services_1_1BasicServiceParameterResolver.html":[1,0,0,20,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a232c53d2c78cab6b419a37306d64c74b.html#a232c53d2c78cab6b419a37306d64c74b":[1,0,0,25,3,0,1,0,0,2],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a5cdd85325e839d1238b0384fba15f595.html#a5cdd85325e839d1238b0384fba15f595":[1,0,0,25,3,0,1,0,0,4],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a72fcac7560a05dfebbff772a4216a5d8.html#a72fcac7560a05dfebbff772a4216a5d8":[1,0,0,25,3,0,1,0,0,6],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a8e3cd3f8d5e7b3d2b24b67b2ce3e69df.html#a8e3cd3f8d5e7b3d2b24b67b2ce3e69df":[1,0,0,25,3,0,1,0,0,3],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_ab54b4f24cc7ee7eacddbb9900a832ca3.html#ab54b4f24cc7ee7eacddbb9900a832ca3":[1,0,0,25,3,0,1,0,0,5]
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a8e3cd3f8d5e7b3d2b24b67b2ce3e69df.html#a8e3cd3f8d5e7b3d2b24b67b2ce3e69df":[1,0,0,25,3,0,1,0,0,3]
 };

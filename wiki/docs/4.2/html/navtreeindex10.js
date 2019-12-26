@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_ab54b4f24cc7ee7eacddbb9900a832ca3.html#ab54b4f24cc7ee7eacddbb9900a832ca3":[1,0,0,25,3,0,1,0,0,5],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings.html":[1,0,0,25,3,0,1,4],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings_a30ddd5af5e27e061ef49c3242a5b0729.html#a30ddd5af5e27e061ef49c3242a5b0729":[1,0,0,25,3,0,1,4,0],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings_a8db49349b200f3aea3fc9642ca1f9fd9.html#a8db49349b200f3aea3fc9642ca1f9fd9":[1,0,0,25,3,0,1,4,2],
@@ -112,8 +113,8 @@ var NAVTREEINDEX10 =
 "functions_n.html":[1,3,0,14],
 "functions_o.html":[1,3,0,15],
 "functions_p.html":[1,3,0,16],
-"functions_prop.html":[1,3,4,0],
 "functions_prop.html":[1,3,4],
+"functions_prop.html":[1,3,4,0],
 "functions_prop_a.html":[1,3,4,1],
 "functions_prop_b.html":[1,3,4,2],
 "functions_prop_c.html":[1,3,4,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_ab65c6e4a8c2a660ceb2236ee11fd33f6.html#ab65c6e4a8c2a660ceb2236ee11fd33f6":[1,0,0,2,4,15,1],
 "interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_aed98f32ea5f28ee29dad3b3d8bad0d65.html#aed98f32ea5f28ee29dad3b3d8bad0d65":[1,0,0,2,4,15,0],
 "interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_af6e1bca15164a08308969794b089c31b.html#af6e1bca15164a08308969794b089c31b":[1,0,0,2,4,15,3],
-"interfaceCqrs_1_1Bus_1_1IBusHelper.html":[1,0,0,3,3],
-"interfaceCqrs_1_1Bus_1_1IBusHelper_a0fa31155c7a303474ca65b170eee05b9.html#a0fa31155c7a303474ca65b170eee05b9":[1,0,0,3,3,6]
+"interfaceCqrs_1_1Bus_1_1IBusHelper.html":[1,0,0,3,3]
 };
