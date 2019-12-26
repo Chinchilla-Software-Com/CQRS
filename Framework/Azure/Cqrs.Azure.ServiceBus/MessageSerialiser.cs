@@ -7,9 +7,7 @@
 #endregion
 
 using System;
-#if NET452
 using System.Reflection;
-#endif
 using Cqrs.Commands;
 using Cqrs.Events;
 using Newtonsoft.Json;
@@ -31,11 +29,12 @@ namespace Cqrs.Azure.ServiceBus
 		{
 #if NET452
 			RedirectAssembly("System.Private.CoreLib", "mscorlib");
+#else
+			RedirectAssembly("mscorlib", "System.Private.CoreLib");
 #endif
 			DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
 		}
 
-#if NET452
 		/// <summary>
 		/// Redirect an assembly resolution, used heavily for polumorphic serialisation and deserialisation such as between .NET Core and the .NET Framework
 		/// </summary>
@@ -72,8 +71,6 @@ namespace Cqrs.Azure.ServiceBus
 
 			AppDomain.CurrentDomain.AssemblyResolve += handler;
 		}
-#endif
-
 
 		/// <summary>
 		/// Serialise the provided <paramref name="event"/>.
