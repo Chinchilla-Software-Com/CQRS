@@ -1,5 +1,9 @@
 var NAVTREEINDEX9 =
 {
+"classCqrs_1_1Repositories_1_1Repository_ac9d88baa6afcea85553fd233ba406e48.html#ac9d88baa6afcea85553fd233ba406e48":[1,0,0,19,3,4],
+"classCqrs_1_1Repositories_1_1Repository_ae15cee6394a223564ad2ead65cd30189.html#ae15cee6394a223564ad2ead65cd30189":[1,0,0,19,3,11],
+"classCqrs_1_1Services_1_1BasicServiceParameterResolver.html":[1,0,0,20,0],
+"classCqrs_1_1Services_1_1BasicServiceParameterResolver_a0ed208048d0f925dfa1e14fb73d82f0b.html#a0ed208048d0f925dfa1e14fb73d82f0b":[1,0,0,20,0,8],
 "classCqrs_1_1Services_1_1BasicServiceParameterResolver_a2815cb9d0647e0b019d3f148a0c8e9cc.html#a2815cb9d0647e0b019d3f148a0c8e9cc":[1,0,0,20,0,3],
 "classCqrs_1_1Services_1_1BasicServiceParameterResolver_a49d548e272010a9047bac9671e5b1f70.html#a49d548e272010a9047bac9671e5b1f70":[1,0,0,20,0,6],
 "classCqrs_1_1Services_1_1BasicServiceParameterResolver_a74e001363a0226b4fbf5d3796e1230a9.html#a74e001363a0226b4fbf5d3796e1230a9":[1,0,0,20,0,1],
@@ -245,9 +249,5 @@ var NAVTREEINDEX9 =
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a5cdd85325e839d1238b0384fba15f595.html#a5cdd85325e839d1238b0384fba15f595":[1,0,0,25,3,0,1,0,0,4],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a72fcac7560a05dfebbff772a4216a5d8.html#a72fcac7560a05dfebbff772a4216a5d8":[1,0,0,25,3,0,1,0,0,6],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a8e3cd3f8d5e7b3d2b24b67b2ce3e69df.html#a8e3cd3f8d5e7b3d2b24b67b2ce3e69df":[1,0,0,25,3,0,1,0,0,3],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_ab54b4f24cc7ee7eacddbb9900a832ca3.html#ab54b4f24cc7ee7eacddbb9900a832ca3":[1,0,0,25,3,0,1,0,0,5],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings.html":[1,0,0,25,3,0,1,4],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings_a30ddd5af5e27e061ef49c3242a5b0729.html#a30ddd5af5e27e061ef49c3242a5b0729":[1,0,0,25,3,0,1,4,0],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings_a8db49349b200f3aea3fc9642ca1f9fd9.html#a8db49349b200f3aea3fc9642ca1f9fd9":[1,0,0,25,3,0,1,4,2],
-"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings_ada06553a43f83734ecef9d811993d048.html#ada06553a43f83734ecef9d811993d048":[1,0,0,25,3,0,1,4,1]
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_ab54b4f24cc7ee7eacddbb9900a832ca3.html#ab54b4f24cc7ee7eacddbb9900a832ca3":[1,0,0,25,3,0,1,0,0,5]
 };

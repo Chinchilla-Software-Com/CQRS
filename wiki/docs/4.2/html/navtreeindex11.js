@@ -1,5 +1,9 @@
 var NAVTREEINDEX11 =
 {
+"interfaceCqrs_1_1Bus_1_1IBusHelper_a29751c186da5e2b042067af6a1be6d5d.html#a29751c186da5e2b042067af6a1be6d5d":[1,0,0,3,3,1],
+"interfaceCqrs_1_1Bus_1_1IBusHelper_a40a395ea6d92a6162c8e584a39284bbc.html#a40a395ea6d92a6162c8e584a39284bbc":[1,0,0,3,3,7],
+"interfaceCqrs_1_1Bus_1_1IBusHelper_a6e3d49a9367f3709d216f02be0277eea.html#a6e3d49a9367f3709d216f02be0277eea":[1,0,0,3,3,2],
+"interfaceCqrs_1_1Bus_1_1IBusHelper_a77ba41738c6796f2800a914d39fc84d6.html#a77ba41738c6796f2800a914d39fc84d6":[1,0,0,3,3,5],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_ac69a1e4722e2839c2c180b9a06a8646c.html#ac69a1e4722e2839c2c180b9a06a8646c":[1,0,0,3,3,0],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_acddf7635d6de08e3b09d552361fe4fda.html#acddf7635d6de08e3b09d552361fe4fda":[1,0,0,3,3,4],
 "interfaceCqrs_1_1Bus_1_1IBusHelper_af73d0d2aa8e98566acb4b2fb13a3e986.html#af73d0d2aa8e98566acb4b2fb13a3e986":[1,0,0,3,3,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX11 =
 "interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a85bd03a0bf9c2083822c4b67691f4297.html#a85bd03a0bf9c2083822c4b67691f4297":[1,0,0,25,4,0,0,3],
 "interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a88cb05c6807058bfe2bff48427a45ad2.html#a88cb05c6807058bfe2bff48427a45ad2":[1,0,0,25,4,0,0,2],
 "interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_ada48332e18931747c81997f8350f4066.html#ada48332e18931747c81997f8350f4066":[1,0,0,25,4,0,0,0],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub.html":[1,0,0,25,4,0,1],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub_a71c025184157d9bfa40b2a0a1f792bc2.html#a71c025184157d9bfa40b2a0a1f792bc2":[1,0,0,25,4,0,1,1],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub_a7505e55b2bfd5259b3caf90b7a0d974e.html#a7505e55b2bfd5259b3caf90b7a0d974e":[1,0,0,25,4,0,1,0],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub_a75a957ea5a28ba4c87cc46863d78e4d1.html#a75a957ea5a28ba4c87cc46863d78e4d1":[1,0,0,25,4,0,1,2],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub_afe5b9561d3844b33e63082420666823e.html#afe5b9561d3844b33e63082420666823e":[1,0,0,25,4,0,1,3]
+"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1ISingleSignOnTokenNotificationHub.html":[1,0,0,25,4,0,1]
 };

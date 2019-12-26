@@ -30,6 +30,7 @@ var namespaceCqrs_1_1Events =
     [ "NotifyEveryoneExceptCallerEventAttribute", "classCqrs_1_1Events_1_1NotifyEveryoneExceptCallerEventAttribute.html", null ],
     [ "PrivateEventAttribute", "classCqrs_1_1Events_1_1PrivateEventAttribute.html", null ],
     [ "PublicEventAttribute", "classCqrs_1_1Events_1_1PublicEventAttribute.html", null ],
+    [ "ReplicatedSqlEventStore", "classCqrs_1_1Events_1_1ReplicatedSqlEventStore.html", "classCqrs_1_1Events_1_1ReplicatedSqlEventStore" ],
     [ "SagaEvent", "classCqrs_1_1Events_1_1SagaEvent.html", "classCqrs_1_1Events_1_1SagaEvent" ],
     [ "SnapshotBuilder", "classCqrs_1_1Events_1_1SnapshotBuilder.html", "classCqrs_1_1Events_1_1SnapshotBuilder" ],
     [ "SnapshotDeserialiser", "classCqrs_1_1Events_1_1SnapshotDeserialiser.html", "classCqrs_1_1Events_1_1SnapshotDeserialiser" ],
