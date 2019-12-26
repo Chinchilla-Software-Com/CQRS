@@ -6,24 +6,25 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
+using System.Linq;
 using Chinchilla.Logging;
 using Chinchilla.Logging.Azure.ApplicationInsights;
 using Chinchilla.Logging.Azure.Configuration;
 using Chinchilla.Logging.Configuration;
 using Chinchilla.StateManagement;
+using Chinchilla.StateManagement.Threaded;
+using Chinchilla.StateManagement.Web;
+using Cqrs.Authentication;
 using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Configuration;
-using Ninject;
+using Cqrs.Ninject.Configuration;
+using Cqrs.Services;
 using Ninject.Modules;
 #if NET472
 using Ninject.Web.Common;
 using System.Web;
 #endif
-using System;
-using Chinchilla.StateManagement.Web;
-using Cqrs.Authentication;
-using Cqrs.Ninject.Configuration;
-using Cqrs.Services;
 #if NETSTANDARD2_0
 using Microsoft.Extensions.Configuration;
 #endif
@@ -93,10 +94,33 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 		/// </summary>
 		protected virtual void RegisterContextItemCollectionFactory()
 		{
-			// We use console state as, even though a webjob runs in an azure website, it's technically loaded via something call the 'WindowsScriptHost', which is not web and IIS based so it's threading model is very different and more console based.
-			Bind<IContextItemCollectionFactory>()
-				.To<WebContextItemCollectionFactory>()
-				.InSingletonScope();
+			var configurationManager = Resolve<IConfigurationManager>();
+			if (!configurationManager.TryGetSetting("Cqrs.SetupForWeb", out bool setupForWeb))
+				setupForWeb = true;
+
+			// We use console state for WebJobs as, even though a webjob runs in an azure website, it's technically loaded via something call the 'WindowsScriptHost', which is not web and IIS based so it's threading model is very different and more console based.
+			if (Kernel.GetBindings(typeof(IContextItemCollectionFactory)).Any())
+				Kernel.Unbind<IContextItemCollectionFactory>();
+			if (Kernel.GetBindings(typeof(IContextItemCollection)).Any())
+				Kernel.Unbind<IContextItemCollection>();
+			if (setupForWeb)
+			{
+				Bind<IContextItemCollectionFactory>()
+					.To<WebContextItemCollectionFactory>()
+					.InSingletonScope();
+				Bind<IContextItemCollection>()
+					.To<WebContextItemCollection>()
+					.InSingletonScope();
+			}
+			else
+			{
+				Bind<IContextItemCollectionFactory>()
+					.To<ContextItemCollectionFactory>()
+					.InSingletonScope();
+				Bind<IContextItemCollection>()
+					.To<Chinchilla.StateManagement.Threaded.ContextItemCollection>()
+					.InSingletonScope();
+			}
 		}
 
 		/// <summary>
