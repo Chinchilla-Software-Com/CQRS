@@ -5,6 +5,7 @@ using Microsoft.ServiceBus.Messaging;
 using Microsoft.Azure.ServiceBus;
 using System.Runtime.Serialization;
 using System.IO;
+using System.Text;
 #endif
 
 namespace Cqrs.Azure.ServiceBus
@@ -44,8 +45,15 @@ namespace Cqrs.Azure.ServiceBus
 		private static DataContractSerializer Serialiser = new DataContractSerializer(typeof(string));
 		public static string GetBodyAsString(this Message message)
 		{
-			using (var stream = new MemoryStream(message.Body))
-				return (string)Serialiser.ReadObject(stream);
+			try
+			{
+				return Encoding.UTF8.GetString(message.Body, 0, message.Body.Length);
+			}
+			catch
+			{
+				using (var stream = new MemoryStream(message.Body))
+					return (string)Serialiser.ReadObject(stream);
+			}
 		}
 #endif
 	}
