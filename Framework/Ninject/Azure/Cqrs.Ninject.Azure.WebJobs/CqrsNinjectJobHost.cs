@@ -83,7 +83,7 @@ namespace Cqrs.Ninject.Azure.WebJobs
 #if NETSTANDARD2_0
 			string environment = null;
 			// I set this to false ... just because.
-			environment = _configurationManager.GetSetting("Cqrs.Azure.WebJobs.Environment");
+			environment = _configurationManager?.GetSetting("Cqrs.Azure.WebJobs.Environment");
 
 			var builder = new HostBuilder();
 			if (!string.IsNullOrWhiteSpace(environment))
