@@ -44,7 +44,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override string PrivateTopicNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.CommandBus.PrivateEvent.TopicName"; }
+			get { return "Cqrs.Azure.CommandBus.PrivateCommand.Topic.Name"; }
 		}
 
 		/// <summary>
@@ -52,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override string PublicTopicNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.CommandBus.PublicEvent.TopicName"; }
+			get { return "Cqrs.Azure.CommandBus.PublicCommand.Topic.Name"; }
 		}
 
 		/// <summary>
@@ -60,7 +60,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override string PrivateTopicSubscriptionNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.CommandBus.PrivateEvent.TopicName.SubscriptionName"; }
+			get { return "Cqrs.Azure.CommandBus.PrivateCommand.Topic.Subscription.Name"; }
 		}
 
 		/// <summary>
@@ -68,7 +68,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override string PublicTopicSubscriptionNameConfigurationKey
 		{
-			get { return "Cqrs.Azure.CommandBus.PublicEvent.TopicName.SubscriptionName"; }
+			get { return "Cqrs.Azure.CommandBus.PublicCommand.Topic.Subscription.Name"; }
 		}
 
 		/// <summary>
@@ -94,7 +94,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override string ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey
 		{
-			get { return "Cqrs.Azure.EventBus.ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete"; }
+			get { return "Cqrs.Azure.CommandBus.ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete"; }
 		}
 
 		#endregion
