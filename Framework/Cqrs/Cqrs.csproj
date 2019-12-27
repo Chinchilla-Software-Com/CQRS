@@ -74,7 +74,7 @@
 		</None>
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+	<ItemGroup>
 		<None Include="tools\EventStoreTable-SqlServer.sql">
 			<Pack>True</Pack>
 			<PackagePath>tools\</PackagePath>
@@ -105,18 +105,22 @@
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+		<!--
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		-->
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+		<!--
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		-->
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' OR  '$(TargetFramework)' == 'netcoreapp3.0' ">

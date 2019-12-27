@@ -6,6 +6,7 @@ using Microsoft.Azure.ServiceBus;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Text;
+using System.Xml;
 #endif
 
 namespace Cqrs.Azure.ServiceBus
@@ -42,17 +43,15 @@ namespace Cqrs.Azure.ServiceBus
 			return message.UserProperties.TryGetValue(key, out value);
 		}
 
-		private static DataContractSerializer Serialiser = new DataContractSerializer(typeof(string));
+		private static DataContractBinarySerializer Serialiser = new DataContractBinarySerializer(typeof(string));
 		public static string GetBodyAsString(this Message message)
 		{
-			try
+			using (var stream = new MemoryStream(message.Body.Length))
 			{
-				return Encoding.UTF8.GetString(message.Body, 0, message.Body.Length);
-			}
-			catch
-			{
-				using (var stream = new MemoryStream(message.Body))
-					return (string)Serialiser.ReadObject(stream);
+				stream.Write(message.Body, 0, message.Body.Length);
+				stream.Flush();
+				stream.Position = 0;
+				return (string)Serialiser.ReadObject(stream);
 			}
 		}
 #endif

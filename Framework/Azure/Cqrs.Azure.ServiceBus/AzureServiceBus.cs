@@ -859,7 +859,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 #if NETSTANDARD2_0
-		DataContractSerializer brokeredMessageSerialiser = new DataContractSerializer(typeof(string));
+		DataContractBinarySerializer brokeredMessageSerialiser = new DataContractBinarySerializer(typeof(string));
 #endif
 		/// <summary>
 		/// Create a <see cref="BrokeredMessage"/> with additional properties to aid routing and tracing
@@ -874,9 +874,9 @@ namespace Cqrs.Azure.ServiceBus
 			byte[] messageBodyData;
 			using (var stream = new MemoryStream())
 			{
-				XmlDictionaryWriter binaryDictionaryWriter = XmlDictionaryWriter.CreateBinaryWriter(stream);
-				brokeredMessageSerialiser.WriteObject(binaryDictionaryWriter, messageBody);
-				binaryDictionaryWriter.Flush();
+				brokeredMessageSerialiser.WriteObject(stream, messageBody);
+				stream.Flush();
+				stream.Position = 0;
 				messageBodyData = stream.ToArray();
 			}
 
@@ -888,6 +888,11 @@ namespace Cqrs.Azure.ServiceBus
 			brokeredMessage.AddUserProperty("CorrelationId", brokeredMessage.CorrelationId);
 			brokeredMessage.AddUserProperty("Type", messageType.FullName);
 			brokeredMessage.AddUserProperty("Source", string.Format("{0}/{1}/{2}/{3}", Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
+#if NET452
+			brokeredMessage.AddUserProperty("Framework", ".NET Framework");
+#else
+			brokeredMessage.AddUserProperty("Framework", ".NET Core");
+#endif
 
 			// see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security</remarks>
 			string configurationKey = string.Format("{0}.SigningToken", messageType.FullName);
