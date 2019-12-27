@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2019-12-27 10:50:51</td>
+            <td class="headerValue">2019-12-27 17:59:58</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -477,7 +477,7 @@
 <span class="lineNum">     419 </span>            :                                 if (!ConfigurationManager.TryGetSetting(SigningTokenConfigurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
 <span class="lineNum">     420 </span>            :                                         signingToken = Guid.Empty.ToString(&quot;N&quot;);
 <span class="lineNum">     421 </span>            :                         if (!string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     422 </span>            :                                 using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, signingToken, messageBody))))
+<span class="lineNum">     422 </span>            :                                 using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($&quot;{signingToken}{messageBody}&quot;)))
 <span class="lineNum">     423 </span>            :                                         brokeredMessage.Properties.Add(&quot;Signature&quot;, Convert.ToBase64String(signer.ComputeHash(hashStream)));
 <span class="lineNum">     424 </span>            : 
 <span class="lineNum">     425 </span>            :                         try

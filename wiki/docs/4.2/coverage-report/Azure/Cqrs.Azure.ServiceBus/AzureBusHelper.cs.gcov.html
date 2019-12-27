@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2019-12-27 10:50:51</td>
+            <td class="headerValue">2019-12-27 17:59:58</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -659,13 +659,13 @@
 <span class="lineNum">     601 </span>            :                                 string signingToken;
 <span class="lineNum">     602 </span>            :                                 HashAlgorithm signer = Signer.Create();
 <span class="lineNum">     603 </span>            :                                 if (ConfigurationManager.TryGetSetting(configurationKey, out signingToken) &amp;&amp; !string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     604 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, signingToken, messageBody))))
+<span class="lineNum">     604 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($&quot;{signingToken}{messageBody}&quot;)))
 <span class="lineNum">     605 </span>            :                                                 messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
 <span class="lineNum">     606 </span>            :                                 if (!messageIsValid &amp;&amp; ConfigurationManager.TryGetSetting(signingTokenConfigurationKey, out signingToken) &amp;&amp; !string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     607 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, signingToken, messageBody))))
+<span class="lineNum">     607 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($&quot;{signingToken}{messageBody}&quot;)))
 <span class="lineNum">     608 </span>            :                                                 messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
 <span class="lineNum">     609 </span>            :                                 if (!messageIsValid)
-<span class="lineNum">     610 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat(&quot;{0}{1}&quot;, Guid.Empty.ToString(&quot;N&quot;), messageBody))))
+<span class="lineNum">     610 </span>            :                                         using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($&quot;{Guid.Empty:N}{messageBody}&quot;)))
 <span class="lineNum">     611 </span>            :                                                 messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
 <span class="lineNum">     612 </span>            :                                 if (!messageIsValid)
 <span class="lineNum">     613 </span>            :                                         throw new UnAuthorisedMessageReceivedException(typeName, messageId, identifyMessage);
