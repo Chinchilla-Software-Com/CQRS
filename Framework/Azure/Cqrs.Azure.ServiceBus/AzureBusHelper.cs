@@ -601,13 +601,13 @@ namespace Cqrs.Azure.ServiceBus
 				string signingToken;
 				HashAlgorithm signer = Signer.Create();
 				if (ConfigurationManager.TryGetSetting(configurationKey, out signingToken) && !string.IsNullOrWhiteSpace(signingToken))
-					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
+					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($"{signingToken}{messageBody}")))
 						messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
 				if (!messageIsValid && ConfigurationManager.TryGetSetting(signingTokenConfigurationKey, out signingToken) && !string.IsNullOrWhiteSpace(signingToken))
-					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
+					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($"{signingToken}{messageBody}")))
 						messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
 				if (!messageIsValid)
-					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", Guid.Empty.ToString("N"), messageBody))))
+					using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($"{Guid.Empty:N}{messageBody}")))
 						messageIsValid = signature == Convert.ToBase64String(signer.ComputeHash(hashStream));
 				if (!messageIsValid)
 					throw new UnAuthorisedMessageReceivedException(typeName, messageId, identifyMessage);

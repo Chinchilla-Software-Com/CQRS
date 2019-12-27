@@ -897,7 +897,7 @@ namespace Cqrs.Azure.ServiceBus
 				if (!ConfigurationManager.TryGetSetting(SigningTokenConfigurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
 					signingToken = Guid.Empty.ToString("N");
 			if (!string.IsNullOrWhiteSpace(signingToken))
-				using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes(string.Concat("{0}{1}", signingToken, messageBody))))
+				using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($"{signingToken}{messageBody}")))
 					brokeredMessage.AddUserProperty("Signature", Convert.ToBase64String(signer.ComputeHash(hashStream)));
 
 			try
