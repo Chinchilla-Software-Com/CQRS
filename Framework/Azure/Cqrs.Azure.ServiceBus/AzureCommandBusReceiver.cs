@@ -336,18 +336,74 @@ namespace Cqrs.Azure.ServiceBus
 			var brokeredMessageRenewCancellationTokenSource = new CancellationTokenSource();
 			try
 			{
-				Logger.LogDebug(string.Format("A command message arrived with the id '{0}'.", message.MessageId));
-				string messageBody = message.GetBodyAsString();
+				try
+				{
+					Logger.LogDebug(string.Format("A command message arrived with the id '{0}'.", message.MessageId));
+					string messageBody = message.GetBodyAsString();
 
-				ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(messageBody, ReceiveCommand,
-					string.Format("id '{0}'", message.MessageId),
-					ExtractSignature(message),
-					SigningTokenConfigurationKey,
-					() =>
+					ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(messageBody, ReceiveCommand,
+						string.Format("id '{0}'", message.MessageId),
+						ExtractSignature(message),
+						SigningTokenConfigurationKey,
+						() =>
+						{
+							wasSuccessfull = null;
+							telemetryName = string.Format("Cqrs/Handle/Command/Skipped/{0}", message.MessageId);
+							responseCode = "204";
+							// Remove message from queue
+							try
+							{
+#if NET452
+								message.Complete();
+#endif
+#if NETSTANDARD2_0
+								client.CompleteAsync(message.SystemProperties.LockToken).Wait(1500);
+#endif
+							}
+							catch (AggregateException aggregateException)
+							{
+								if (aggregateException.InnerException is MessageLockLostException)
+									throw new MessageLockLostException(string.Format("The lock supplied for the skipped command message '{0}' is invalid.", message.MessageId), aggregateException.InnerException);
+								else
+									throw;
+							}
+							catch (MessageLockLostException exception)
+							{
+								throw new MessageLockLostException(string.Format("The lock supplied for the skipped command message '{0}' is invalid.", message.MessageId), exception);
+							}
+							Logger.LogDebug(string.Format("A command message arrived with the id '{0}' but processing was skipped due to event settings.", message.MessageId));
+							TelemetryHelper.TrackEvent("Cqrs/Handle/Command/Skipped", telemetryProperties);
+						},
+						() =>
+						{
+#if NET452
+							AzureBusHelper.RefreshLock(brokeredMessageRenewCancellationTokenSource, message, "command");
+#endif
+#if NETSTANDARD2_0
+							AzureBusHelper.RefreshLock(client, brokeredMessageRenewCancellationTokenSource, message, "command");
+#endif
+						}
+					);
+
+					if (wasSuccessfull != null)
 					{
-						wasSuccessfull = null;
-						telemetryName = string.Format("Cqrs/Handle/Command/Skipped/{0}", message.MessageId);
-						responseCode = "204";
+						if (command != null)
+						{
+							telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+							authenticationToken = command.AuthenticationToken as ISingleSignOnToken;
+							if (AuthenticationTokenIsGuid)
+								guidAuthenticationToken = command.AuthenticationToken as Guid?;
+							if (AuthenticationTokenIsString)
+								stringAuthenticationToken = command.AuthenticationToken as string;
+							if (AuthenticationTokenIsInt)
+								intAuthenticationToken = command.AuthenticationToken as int?;
+
+							var telemeteredMessage = command as ITelemeteredMessage;
+							if (telemeteredMessage != null)
+								telemetryName = telemeteredMessage.TelemetryName;
+
+							telemetryName = string.Format("Cqrs/Handle/Command/{0}", telemetryName);
+						}
 						// Remove message from queue
 						try
 						{
@@ -358,59 +414,24 @@ namespace Cqrs.Azure.ServiceBus
 							client.CompleteAsync(message.SystemProperties.LockToken).Wait(1500);
 #endif
 						}
+						catch (AggregateException aggregateException)
+						{
+							if (aggregateException.InnerException is MessageLockLostException)
+								throw new MessageLockLostException(string.Format("The lock supplied for command '{0}' of type {1} is invalid.", command.Id, command.GetType().Name), aggregateException.InnerException);
+							else
+								throw;
+						}
 						catch (MessageLockLostException exception)
 						{
-							throw new MessageLockLostException(string.Format("The lock supplied for the skipped command message '{0}' is invalid.", message.MessageId), exception);
+							throw new MessageLockLostException(string.Format("The lock supplied for command '{0}' of type {1} is invalid.", command.Id, command.GetType().Name), exception);
 						}
-						Logger.LogDebug(string.Format("A command message arrived with the id '{0}' but processing was skipped due to event settings.", message.MessageId));
-						TelemetryHelper.TrackEvent("Cqrs/Handle/Command/Skipped", telemetryProperties);
-					},
-					() =>
-					{
-#if NET452
-						AzureBusHelper.RefreshLock(brokeredMessageRenewCancellationTokenSource, message, "command");
-#endif
-#if NETSTANDARD2_0
-						AzureBusHelper.RefreshLock(client, brokeredMessageRenewCancellationTokenSource, message, "command");
-#endif
 					}
-				);
-
-				if (wasSuccessfull != null)
-				{
-					if (command != null)
-					{
-						telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
-						authenticationToken = command.AuthenticationToken as ISingleSignOnToken;
-						if (AuthenticationTokenIsGuid)
-							guidAuthenticationToken = command.AuthenticationToken as Guid?;
-						if (AuthenticationTokenIsString)
-							stringAuthenticationToken = command.AuthenticationToken as string;
-						if (AuthenticationTokenIsInt)
-							intAuthenticationToken = command.AuthenticationToken as int?;
-
-						var telemeteredMessage = command as ITelemeteredMessage;
-						if (telemeteredMessage != null)
-							telemetryName = telemeteredMessage.TelemetryName;
-
-						telemetryName = string.Format("Cqrs/Handle/Command/{0}", telemetryName);
-					}
-					// Remove message from queue
-					try
-					{
-#if NET452
-						message.Complete();
-#endif
-#if NETSTANDARD2_0
-						client.CompleteAsync(message.SystemProperties.LockToken).Wait(1500);
-#endif
-					}
-					catch (MessageLockLostException exception)
-					{
-						throw new MessageLockLostException(string.Format("The lock supplied for command '{0}' of type {1} is invalid.", command.Id, command.GetType().Name), exception);
-					}
+					Logger.LogDebug(string.Format("A command message arrived and was processed with the id '{0}'.", message.MessageId));
 				}
-				Logger.LogDebug(string.Format("A command message arrived and was processed with the id '{0}'.", message.MessageId));
+				catch (AggregateException aggregateException)
+				{
+					throw aggregateException.InnerException;
+				}
 			}
 			catch (MessageLockLostException exception)
 			{
