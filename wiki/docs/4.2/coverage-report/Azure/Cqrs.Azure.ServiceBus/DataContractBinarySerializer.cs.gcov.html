@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.ServiceBus/DataContractBinarySerializer.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.ServiceBus</a> - DataContractBinarySerializer.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">9</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-12-27 21:57:28</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿using System;
+<span class="lineNum">       2 </span>            : using System.IO;
+<span class="lineNum">       3 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">       4 </span>            : using System.Xml;
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : namespace Cqrs.Azure.ServiceBus
+<span class="lineNum">       7 </span>            : {
+<span class="lineNum">       8 </span>            :     internal sealed class DataContractBinarySerializer : XmlObjectSerializer
+<span class="lineNum">       9 </span>            :     {
+<span class="lineNum">      10 </span>            :         private readonly DataContractSerializer dataContractSerializer;
+<span class="lineNum">      11 </span>            : 
+<span class="lineNum">      12 </span><span class="lineNoCov">          0 :         public DataContractBinarySerializer(Type type)</span>
+<span class="lineNum">      13 </span>            :         {
+<span class="lineNum">      14 </span>            :             this.dataContractSerializer = new DataContractSerializer(type);
+<span class="lineNum">      15 </span>            :         }
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span><span class="lineNoCov">          0 :         public override object ReadObject(Stream stream)</span>
+<span class="lineNum">      18 </span>            :         {
+<span class="lineNum">      19 </span>            :             if (stream == null)
+<span class="lineNum">      20 </span>            :                 throw new ArgumentNullException(nameof(stream));
+<span class="lineNum">      21 </span>            :             return ReadObject(XmlDictionaryReader.CreateBinaryReader(stream, XmlDictionaryReaderQuotas.Max));
+<span class="lineNum">      22 </span>            :         }
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span><span class="lineNoCov">          0 :         public override void WriteObject(Stream stream, object graph)</span>
+<span class="lineNum">      25 </span>            :         {
+<span class="lineNum">      26 </span>            :             if (stream == null)
+<span class="lineNum">      27 </span>            :                 throw new ArgumentNullException(nameof(stream));
+<span class="lineNum">      28 </span>            :             XmlDictionaryWriter binaryWriter = XmlDictionaryWriter.CreateBinaryWriter(stream, (IXmlDictionary)null, (XmlBinaryWriterSession)null, false);
+<span class="lineNum">      29 </span>            :             WriteObject(binaryWriter, graph);
+<span class="lineNum">      30 </span>            :             binaryWriter.Flush();
+<span class="lineNum">      31 </span>            :         }
+<span class="lineNum">      32 </span>            : 
+<span class="lineNum">      33 </span><span class="lineNoCov">          0 :         public override void WriteObject(XmlDictionaryWriter writer, object graph)</span>
+<span class="lineNum">      34 </span>            :         {
+<span class="lineNum">      35 </span>            :             if (writer == null)
+<span class="lineNum">      36 </span>            :                 throw new ArgumentNullException(nameof(writer));
+<span class="lineNum">      37 </span>            :             dataContractSerializer.WriteObject(writer, graph);
+<span class="lineNum">      38 </span>            :         }
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :         public override bool IsStartObject(XmlDictionaryReader reader)</span>
+<span class="lineNum">      41 </span>            :         {
+<span class="lineNum">      42 </span>            :             return dataContractSerializer.IsStartObject(reader);
+<span class="lineNum">      43 </span>            :         }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :         public override object ReadObject(XmlDictionaryReader reader, bool verifyObjectName)</span>
+<span class="lineNum">      46 </span>            :         {
+<span class="lineNum">      47 </span>            :             return dataContractSerializer.ReadObject(reader, verifyObjectName);
+<span class="lineNum">      48 </span>            :         }
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span><span class="lineNoCov">          0 :         public override void WriteEndObject(XmlDictionaryWriter writer)</span>
+<span class="lineNum">      51 </span>            :         {
+<span class="lineNum">      52 </span>            :             dataContractSerializer.WriteEndObject(writer);
+<span class="lineNum">      53 </span>            :         }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :         public override void WriteObjectContent(XmlDictionaryWriter writer, object graph)</span>
+<span class="lineNum">      56 </span>            :         {
+<span class="lineNum">      57 </span>            :             dataContractSerializer.WriteObjectContent(writer, graph);
+<span class="lineNum">      58 </span>            :         }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineNoCov">          0 :         public override void WriteStartObject(XmlDictionaryWriter writer, object graph)</span>
+<span class="lineNum">      61 </span>            :         {
+<span class="lineNum">      62 </span>            :             dataContractSerializer.WriteStartObject(writer, graph);
+<span class="lineNum">      63 </span>            :         }
+<span class="lineNum">      64 </span>            :     }
+<span class="lineNum">      65 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
