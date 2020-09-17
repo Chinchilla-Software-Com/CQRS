@@ -458,6 +458,25 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
+		/// First runs <see cref="AzureBus{TAuthenticationToken}.ValidateSettingsHaveChanged"/> then checks
+		/// <see cref="PublicTopicName"/>, <see cref="PublicTopicSubscriptionName"/>,
+		/// <see cref="PrivateTopicName"/> or <see cref="PrivateTopicSubscriptionName"/> have changed.
+		/// </summary>
+		/// <returns></returns>
+		protected override bool ValidateSettingsHaveChanged()
+		{
+			if (base.ValidateSettingsHaveChanged())
+				return true;
+			return PublicTopicName != (ConfigurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName)
+				||
+			PublicTopicSubscriptionName != (ConfigurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName)
+				||
+			PrivateTopicName != (ConfigurationManager.GetSetting(PrivateTopicNameConfigurationKey) ?? DefaultPrivateTopicName)
+				||
+			PrivateTopicSubscriptionName != (ConfigurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName);
+		}
+
+		/// <summary>
 		/// Triggers settings checking on both public and private publishers and receivers,
 		/// then calls <see cref="InstantiatePublishing"/> if <see cref="PublicServiceBusPublisher"/> is not null.
 		/// </summary>

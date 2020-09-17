@@ -42,6 +42,7 @@ public class CqrsWebJobProgram : CqrsNinjectJobHost<Guid, DefaultAuthenticationT
 	{
 		CoreHost = this;
 		StartHost();
+		Logger.LogInfo("Application Stopped.");
 	}
 
 	/// <summary>
