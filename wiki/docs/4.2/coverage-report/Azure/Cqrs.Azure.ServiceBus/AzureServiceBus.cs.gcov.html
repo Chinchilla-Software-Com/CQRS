@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2019-12-28 10:18:57</td>
+            <td class="headerValue">2020-09-17 14:55:22</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -218,7 +218,7 @@
 <span class="lineNum">     160 </span>            :                 /// &lt;summary&gt;
 <span class="lineNum">     161 </span>            :                 /// The &lt;see cref=&quot;Action{TBrokeredMessage}&quot;&gt;handler&lt;/see&gt; used for &lt;see cref=&quot;IMessageReceiver.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage}, OnMessageOptions)&quot;/&gt; on each receiver.
 <span class="lineNum">     162 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     163 </span>            :                 protected Action&lt;BrokeredMessage&gt; ReceiverMessageHandler { get; set; }
+<span class="lineNum">     163 </span>            :                 protected Action&lt;IMessageReceiver, BrokeredMessage&gt; ReceiverMessageHandler { get; set; }
 <span class="lineNum">     164 </span>            : #endif
 <span class="lineNum">     165 </span>            : #if NETSTANDARD2_0
 <span class="lineNum">     166 </span>            :                 /// &lt;summary&gt;
@@ -592,7 +592,7 @@
 <span class="lineNum">     534 </span>            :                 /// Registers the provided &lt;paramref name=&quot;receiverMessageHandler&quot;/&gt; with the provided &lt;paramref name=&quot;receiverMessageHandlerOptions&quot;/&gt;.
 <span class="lineNum">     535 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     536 </span>            : #if NET452
-<span class="lineNum">     537 </span>            :                 protected virtual void RegisterReceiverMessageHandler(Action&lt;BrokeredMessage&gt; receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
+<span class="lineNum">     537 </span>            :                 protected virtual void RegisterReceiverMessageHandler(Action&lt;IMessageReceiver, BrokeredMessage&gt; receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
 <span class="lineNum">     538 </span>            : #endif
 <span class="lineNum">     539 </span>            : #if NETSTANDARD2_0
 <span class="lineNum">     540 </span>            :                 protected virtual void RegisterReceiverMessageHandler(Action&lt;IMessageReceiver, BrokeredMessage&gt; receiverMessageHandler, MessageHandlerOptions receiverMessageHandlerOptions)
@@ -607,7 +607,7 @@
 <span class="lineNum">     549 </span>            :                 /// Stores the provided &lt;paramref name=&quot;receiverMessageHandler&quot;/&gt; and &lt;paramref name=&quot;receiverMessageHandlerOptions&quot;/&gt;.
 <span class="lineNum">     550 </span>            :                 /// &lt;/summary&gt;
 <span class="lineNum">     551 </span>            : #if NET452
-<span class="lineNum">     552 </span>            :                 protected virtual void StoreReceiverMessageHandler(Action&lt;BrokeredMessage&gt; receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
+<span class="lineNum">     552 </span>            :                 protected virtual void StoreReceiverMessageHandler(Action&lt;IMessageReceiver, BrokeredMessage&gt; receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
 <span class="lineNum">     553 </span>            : #endif
 <span class="lineNum">     554 </span>            : #if NETSTANDARD2_0
 <span class="lineNum">     555 </span>            :                 protected virtual void StoreReceiverMessageHandler(Action&lt;IMessageReceiver, BrokeredMessage&gt; receiverMessageHandler, MessageHandlerOptions receiverMessageHandlerOptions)
@@ -632,7 +632,7 @@
 <span class="lineNum">     574 </span>            :                                                 message =&gt;
 <span class="lineNum">     575 </span>            :                                                 {
 <span class="lineNum">     576 </span>            :                                                         BusHelper.SetWasPrivateBusUsed(true);
-<span class="lineNum">     577 </span>            :                                                         ReceiverMessageHandler(message);
+<span class="lineNum">     577 </span>            :                                                         ReceiverMessageHandler(serviceBusReceiver, message);
 <span class="lineNum">     578 </span>            :                                                 },
 <span class="lineNum">     579 </span>            :                                                 ReceiverMessageHandlerOptions
 <span class="lineNum">     580 </span>            :                                         );
@@ -661,7 +661,7 @@
 <span class="lineNum">     603 </span>            :                                                         message =&gt;
 <span class="lineNum">     604 </span>            :                                                         {
 <span class="lineNum">     605 </span>            :                                                                 BusHelper.SetWasPrivateBusUsed(false);
-<span class="lineNum">     606 </span>            :                                                                 ReceiverMessageHandler(message);
+<span class="lineNum">     606 </span>            :                                                                 ReceiverMessageHandler(serviceBusReceiver, message);
 <span class="lineNum">     607 </span>            :                                                         },
 <span class="lineNum">     608 </span>            :                                                         ReceiverMessageHandlerOptions
 <span class="lineNum">     609 </span>            :                                                 );
@@ -722,7 +722,7 @@
 <span class="lineNum">     664 </span>            :                                 Logger.LogDebug(string.Format(&quot;A dead-letter message of type {0} arrived with the id '{1}' but left in the queue due to settings.&quot;, deadLetterMessage.GetType().FullName, deadLetterBrokeredMessage.MessageId));
 <span class="lineNum">     665 </span>            :                         };
 <span class="lineNum">     666 </span>            : #if NET452
-<span class="lineNum">     667 </span>            :                         Action &lt;BrokeredMessage&gt; removeDeadlLetterFromQueue = (deadLetterBrokeredMessage) =&gt;
+<span class="lineNum">     667 </span>            :                         Action&lt;BrokeredMessage&gt; removeDeadlLetterFromQueue = (deadLetterBrokeredMessage) =&gt;
 <span class="lineNum">     668 </span>            : #endif
 <span class="lineNum">     669 </span>            : #if NETSTANDARD2_0
 <span class="lineNum">     670 </span>            :                         Action&lt;IMessageReceiver, BrokeredMessage&gt; removeDeadlLetterFromQueue = (client, deadLetterBrokeredMessage) =&gt;
@@ -787,248 +787,260 @@
 <span class="lineNum">     729 </span>            :                                                         {
 <span class="lineNum">     730 </span>            :                                                                 AzureBusHelper.ReceiveEvent
 <span class="lineNum">     731 </span>            :                                                                 (
-<span class="lineNum">     732 </span>            :                                                                         messageBody,
-<span class="lineNum">     733 </span>            :                                                                         @event =&gt;
-<span class="lineNum">     734 </span>            :                                                                         {
-<span class="lineNum">     735 </span>            :                                                                                 bool isRequired = BusHelper.IsEventRequired(@event.GetType());
-<span class="lineNum">     736 </span>            :                                                                                 if (!isRequired)
-<span class="lineNum">     737 </span>            :                                                                                 {
-<span class="lineNum">     738 </span>            : #if NET452
-<span class="lineNum">     739 </span>            :                                                                                         removeDeadlLetterFromQueue(message);
-<span class="lineNum">     740 </span>            : #endif
-<span class="lineNum">     741 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     742 </span>            :                                                                                         removeDeadlLetterFromQueue(client, message);
-<span class="lineNum">     743 </span>            : #endif
-<span class="lineNum">     744 </span>            :                                                                                 }
-<span class="lineNum">     745 </span>            :                                                                                 else
-<span class="lineNum">     746 </span>            :                                                                                 {
-<span class="lineNum">     747 </span>            : #if NET452
-<span class="lineNum">     748 </span>            :                                                                                         leaveDeadlLetterInQueue(message, @event);
+<span class="lineNum">     732 </span>            : #if NET452
+<span class="lineNum">     733 </span>            :                                                                         null,
+<span class="lineNum">     734 </span>            : #endif
+<span class="lineNum">     735 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     736 </span>            :                                                                         client,
+<span class="lineNum">     737 </span>            : #endif
+<span class="lineNum">     738 </span>            :                                                                         messageBody,
+<span class="lineNum">     739 </span>            :                                                                         @event =&gt;
+<span class="lineNum">     740 </span>            :                                                                         {
+<span class="lineNum">     741 </span>            :                                                                                 bool isRequired = BusHelper.IsEventRequired(@event.GetType());
+<span class="lineNum">     742 </span>            :                                                                                 if (!isRequired)
+<span class="lineNum">     743 </span>            :                                                                                 {
+<span class="lineNum">     744 </span>            : #if NET452
+<span class="lineNum">     745 </span>            :                                                                                         removeDeadlLetterFromQueue(message);
+<span class="lineNum">     746 </span>            : #endif
+<span class="lineNum">     747 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     748 </span>            :                                                                                         removeDeadlLetterFromQueue(client, message);
 <span class="lineNum">     749 </span>            : #endif
-<span class="lineNum">     750 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     751 </span>            :                                                                                         leaveDeadlLetterInQueue(client, message, @event);
-<span class="lineNum">     752 </span>            : #endif
-<span class="lineNum">     753 </span>            :                                                                                 }
-<span class="lineNum">     754 </span>            :                                                                                 return true;
-<span class="lineNum">     755 </span>            :                                                                         },
-<span class="lineNum">     756 </span>            :                                                                         string.Format(&quot;id '{0}'&quot;, brokeredMessage.MessageId),
-<span class="lineNum">     757 </span>            :                                                                         ExtractSignature(message),
-<span class="lineNum">     758 </span>            :                                                                         SigningTokenConfigurationKey,
-<span class="lineNum">     759 </span>            :                                                                         () =&gt;
-<span class="lineNum">     760 </span>            :                                                                         {
-<span class="lineNum">     761 </span>            : #if NET452
-<span class="lineNum">     762 </span>            :                                                                                 removeDeadlLetterFromQueue(message);
-<span class="lineNum">     763 </span>            : #endif
-<span class="lineNum">     764 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     765 </span>            :                                                                                 removeDeadlLetterFromQueue(client, message);
-<span class="lineNum">     766 </span>            : #endif
-<span class="lineNum">     767 </span>            :                                                                         },
-<span class="lineNum">     768 </span>            :                                                                         () =&gt; { }
-<span class="lineNum">     769 </span>            :                                                                 );
-<span class="lineNum">     770 </span>            :                                                         }
-<span class="lineNum">     771 </span>            :                                                         catch
-<span class="lineNum">     772 </span>            :                                                         {
-<span class="lineNum">     773 </span>            :                                                                 AzureBusHelper.ReceiveCommand
-<span class="lineNum">     774 </span>            :                                                                 (
-<span class="lineNum">     775 </span>            :                                                                         messageBody,
-<span class="lineNum">     776 </span>            :                                                                         command =&gt;
-<span class="lineNum">     777 </span>            :                                                                         {
-<span class="lineNum">     778 </span>            :                                                                                 bool isRequired = BusHelper.IsEventRequired(command.GetType());
-<span class="lineNum">     779 </span>            :                                                                                 if (!isRequired)
-<span class="lineNum">     780 </span>            :                                                                                 {
+<span class="lineNum">     750 </span>            :                                                                                 }
+<span class="lineNum">     751 </span>            :                                                                                 else
+<span class="lineNum">     752 </span>            :                                                                                 {
+<span class="lineNum">     753 </span>            : #if NET452
+<span class="lineNum">     754 </span>            :                                                                                         leaveDeadlLetterInQueue(message, @event);
+<span class="lineNum">     755 </span>            : #endif
+<span class="lineNum">     756 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     757 </span>            :                                                                                         leaveDeadlLetterInQueue(client, message, @event);
+<span class="lineNum">     758 </span>            : #endif
+<span class="lineNum">     759 </span>            :                                                                                 }
+<span class="lineNum">     760 </span>            :                                                                                 return true;
+<span class="lineNum">     761 </span>            :                                                                         },
+<span class="lineNum">     762 </span>            :                                                                         string.Format(&quot;id '{0}'&quot;, brokeredMessage.MessageId),
+<span class="lineNum">     763 </span>            :                                                                         ExtractSignature(message),
+<span class="lineNum">     764 </span>            :                                                                         SigningTokenConfigurationKey,
+<span class="lineNum">     765 </span>            :                                                                         () =&gt;
+<span class="lineNum">     766 </span>            :                                                                         {
+<span class="lineNum">     767 </span>            : #if NET452
+<span class="lineNum">     768 </span>            :                                                                                 removeDeadlLetterFromQueue(message);
+<span class="lineNum">     769 </span>            : #endif
+<span class="lineNum">     770 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     771 </span>            :                                                                                 removeDeadlLetterFromQueue(client, message);
+<span class="lineNum">     772 </span>            : #endif
+<span class="lineNum">     773 </span>            :                                                                         },
+<span class="lineNum">     774 </span>            :                                                                         () =&gt; { }
+<span class="lineNum">     775 </span>            :                                                                 );
+<span class="lineNum">     776 </span>            :                                                         }
+<span class="lineNum">     777 </span>            :                                                         catch
+<span class="lineNum">     778 </span>            :                                                         {
+<span class="lineNum">     779 </span>            :                                                                 AzureBusHelper.ReceiveCommand
+<span class="lineNum">     780 </span>            :                                                                 (
 <span class="lineNum">     781 </span>            : #if NET452
-<span class="lineNum">     782 </span>            :                                                                                         removeDeadlLetterFromQueue(message);
+<span class="lineNum">     782 </span>            :                                                                         null,
 <span class="lineNum">     783 </span>            : #endif
 <span class="lineNum">     784 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     785 </span>            :                                                                                         removeDeadlLetterFromQueue(client, message);
+<span class="lineNum">     785 </span>            :                                                                         client,
 <span class="lineNum">     786 </span>            : #endif
-<span class="lineNum">     787 </span>            :                                                                                 }
-<span class="lineNum">     788 </span>            :                                                                                 else
-<span class="lineNum">     789 </span>            :                                                                                 {
-<span class="lineNum">     790 </span>            : #if NET452
-<span class="lineNum">     791 </span>            :                                                                                         leaveDeadlLetterInQueue(message, command);
-<span class="lineNum">     792 </span>            : #endif
-<span class="lineNum">     793 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     794 </span>            :                                                                                         leaveDeadlLetterInQueue(client, message, command);
+<span class="lineNum">     787 </span>            :                                                                         messageBody,
+<span class="lineNum">     788 </span>            :                                                                         command =&gt;
+<span class="lineNum">     789 </span>            :                                                                         {
+<span class="lineNum">     790 </span>            :                                                                                 bool isRequired = BusHelper.IsEventRequired(command.GetType());
+<span class="lineNum">     791 </span>            :                                                                                 if (!isRequired)
+<span class="lineNum">     792 </span>            :                                                                                 {
+<span class="lineNum">     793 </span>            : #if NET452
+<span class="lineNum">     794 </span>            :                                                                                         removeDeadlLetterFromQueue(message);
 <span class="lineNum">     795 </span>            : #endif
-<span class="lineNum">     796 </span>            :                                                                                 }
-<span class="lineNum">     797 </span>            :                                                                                 return true;
-<span class="lineNum">     798 </span>            :                                                                         },
-<span class="lineNum">     799 </span>            :                                                                         string.Format(&quot;id '{0}'&quot;, brokeredMessage.MessageId),
-<span class="lineNum">     800 </span>            :                                                                         ExtractSignature(message),
-<span class="lineNum">     801 </span>            :                                                                         SigningTokenConfigurationKey,
-<span class="lineNum">     802 </span>            :                                                                         () =&gt;
-<span class="lineNum">     803 </span>            :                                                                         {
-<span class="lineNum">     804 </span>            : #if NET452
-<span class="lineNum">     805 </span>            :                                                                                 removeDeadlLetterFromQueue(message);
-<span class="lineNum">     806 </span>            : #endif
-<span class="lineNum">     807 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     808 </span>            :                                                                                 removeDeadlLetterFromQueue(client, message);
-<span class="lineNum">     809 </span>            : #endif
+<span class="lineNum">     796 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     797 </span>            :                                                                                         removeDeadlLetterFromQueue(client, message);
+<span class="lineNum">     798 </span>            : #endif
+<span class="lineNum">     799 </span>            :                                                                                 }
+<span class="lineNum">     800 </span>            :                                                                                 else
+<span class="lineNum">     801 </span>            :                                                                                 {
+<span class="lineNum">     802 </span>            : #if NET452
+<span class="lineNum">     803 </span>            :                                                                                         leaveDeadlLetterInQueue(message, command);
+<span class="lineNum">     804 </span>            : #endif
+<span class="lineNum">     805 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     806 </span>            :                                                                                         leaveDeadlLetterInQueue(client, message, command);
+<span class="lineNum">     807 </span>            : #endif
+<span class="lineNum">     808 </span>            :                                                                                 }
+<span class="lineNum">     809 </span>            :                                                                                 return true;
 <span class="lineNum">     810 </span>            :                                                                         },
-<span class="lineNum">     811 </span>            :                                                                         () =&gt; { }
-<span class="lineNum">     812 </span>            :                                                                 );
-<span class="lineNum">     813 </span>            :                                                         }
-<span class="lineNum">     814 </span>            :                                                 }
-<span class="lineNum">     815 </span>            :                                                 catch (Exception exception)
-<span class="lineNum">     816 </span>            :                                                 {
-<span class="lineNum">     817 </span>            :                                                         TelemetryHelper.TrackException(exception, null, telemetryProperties);
-<span class="lineNum">     818 </span>            :                                                         // Indicates a problem, unlock message in queue
-<span class="lineNum">     819 </span>            :                                                         Logger.LogError(string.Format(&quot;A dead-letter message arrived with the id '{0}' but failed to be process.&quot;, brokeredMessage.MessageId), exception: exception);
-<span class="lineNum">     820 </span>            :                                                         try
-<span class="lineNum">     821 </span>            :                                                         {
-<span class="lineNum">     822 </span>            : #if NET452
-<span class="lineNum">     823 </span>            :                                                                 brokeredMessage.Abandon();
-<span class="lineNum">     824 </span>            : #endif
-<span class="lineNum">     825 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     826 </span>            :                                                                 client.AbandonAsync(brokeredMessage.SystemProperties.LockToken).Wait(1500);
-<span class="lineNum">     827 </span>            : #endif
-<span class="lineNum">     828 </span>            :                                                         }
-<span class="lineNum">     829 </span>            :                                                         catch (MessageLockLostException)
-<span class="lineNum">     830 </span>            :                                                         {
-<span class="lineNum">     831 </span>            :                                                                 lockIssues++;
-<span class="lineNum">     832 </span>            :                                                                 Logger.LogWarning(string.Format(&quot;The lock supplied for abandon for the skipped dead-letter message '{0}' is invalid.&quot;, brokeredMessage.MessageId));
-<span class="lineNum">     833 </span>            :                                                         }
-<span class="lineNum">     834 </span>            :                                                 }
-<span class="lineNum">     835 </span>            :                                         }
-<span class="lineNum">     836 </span>            : #if NET452
-<span class="lineNum">     837 </span>            :                                         client.Close();
-<span class="lineNum">     838 </span>            : #endif
-<span class="lineNum">     839 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     840 </span>            :                                         client.CloseAsync().Wait(1500);
-<span class="lineNum">     841 </span>            : #endif
-<span class="lineNum">     842 </span>            : 
-<span class="lineNum">     843 </span>            :                                         if (loop++ % 5 == 0)
-<span class="lineNum">     844 </span>            :                                         {
-<span class="lineNum">     845 </span>            :                                                 loop = 0;
-<span class="lineNum">     846 </span>            :                                                 Thread.Yield();
+<span class="lineNum">     811 </span>            :                                                                         string.Format(&quot;id '{0}'&quot;, brokeredMessage.MessageId),
+<span class="lineNum">     812 </span>            :                                                                         ExtractSignature(message),
+<span class="lineNum">     813 </span>            :                                                                         SigningTokenConfigurationKey,
+<span class="lineNum">     814 </span>            :                                                                         () =&gt;
+<span class="lineNum">     815 </span>            :                                                                         {
+<span class="lineNum">     816 </span>            : #if NET452
+<span class="lineNum">     817 </span>            :                                                                                 removeDeadlLetterFromQueue(message);
+<span class="lineNum">     818 </span>            : #endif
+<span class="lineNum">     819 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     820 </span>            :                                                                                 removeDeadlLetterFromQueue(client, message);
+<span class="lineNum">     821 </span>            : #endif
+<span class="lineNum">     822 </span>            :                                                                         },
+<span class="lineNum">     823 </span>            :                                                                         () =&gt; { }
+<span class="lineNum">     824 </span>            :                                                                 );
+<span class="lineNum">     825 </span>            :                                                         }
+<span class="lineNum">     826 </span>            :                                                 }
+<span class="lineNum">     827 </span>            :                                                 catch (Exception exception)
+<span class="lineNum">     828 </span>            :                                                 {
+<span class="lineNum">     829 </span>            :                                                         TelemetryHelper.TrackException(exception, null, telemetryProperties);
+<span class="lineNum">     830 </span>            :                                                         // Indicates a problem, unlock message in queue
+<span class="lineNum">     831 </span>            :                                                         Logger.LogError(string.Format(&quot;A dead-letter message arrived with the id '{0}' but failed to be process.&quot;, brokeredMessage.MessageId), exception: exception);
+<span class="lineNum">     832 </span>            :                                                         try
+<span class="lineNum">     833 </span>            :                                                         {
+<span class="lineNum">     834 </span>            : #if NET452
+<span class="lineNum">     835 </span>            :                                                                 brokeredMessage.Abandon();
+<span class="lineNum">     836 </span>            : #endif
+<span class="lineNum">     837 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     838 </span>            :                                                                 client.AbandonAsync(brokeredMessage.SystemProperties.LockToken).Wait(1500);
+<span class="lineNum">     839 </span>            : #endif
+<span class="lineNum">     840 </span>            :                                                         }
+<span class="lineNum">     841 </span>            :                                                         catch (MessageLockLostException)
+<span class="lineNum">     842 </span>            :                                                         {
+<span class="lineNum">     843 </span>            :                                                                 lockIssues++;
+<span class="lineNum">     844 </span>            :                                                                 Logger.LogWarning(string.Format(&quot;The lock supplied for abandon for the skipped dead-letter message '{0}' is invalid.&quot;, brokeredMessage.MessageId));
+<span class="lineNum">     845 </span>            :                                                         }
+<span class="lineNum">     846 </span>            :                                                 }
 <span class="lineNum">     847 </span>            :                                         }
-<span class="lineNum">     848 </span>            :                                         else
-<span class="lineNum">     849 </span>            :                                                 Thread.Sleep(500);
-<span class="lineNum">     850 </span>            :                                 }
-<span class="lineNum">     851 </span>            :                                 try
-<span class="lineNum">     852 </span>            :                                 {
-<span class="lineNum">     853 </span>            :                                         brokeredMessageRenewCancellationTokenSource.Dispose();
-<span class="lineNum">     854 </span>            :                                 }
-<span class="lineNum">     855 </span>            :                                 catch (ObjectDisposedException) { }
-<span class="lineNum">     856 </span>            :                         }, brokeredMessageRenewCancellationTokenSource.Token);
-<span class="lineNum">     857 </span>            : 
-<span class="lineNum">     858 </span>            :                         return brokeredMessageRenewCancellationTokenSource;
-<span class="lineNum">     859 </span>            :                 }
-<span class="lineNum">     860 </span>            : 
-<span class="lineNum">     861 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     862 </span>            :                 DataContractBinarySerializer brokeredMessageSerialiser = new DataContractBinarySerializer(typeof(string));
-<span class="lineNum">     863 </span>            : #endif
-<span class="lineNum">     864 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     865 </span>            :                 /// Create a &lt;see cref=&quot;BrokeredMessage&quot;/&gt; with additional properties to aid routing and tracing
-<span class="lineNum">     866 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     867 </span><span class="lineCov">          1 :                 protected virtual BrokeredMessage CreateBrokeredMessage&lt;TMessage&gt;(Func&lt;TMessage, string&gt; serialiserFunction, Type messageType, TMessage message)</span>
-<span class="lineNum">     868 </span>            :                 {
-<span class="lineNum">     869 </span>            :                         string messageBody = serialiserFunction(message);
-<span class="lineNum">     870 </span>            : #if NET452
-<span class="lineNum">     871 </span>            :                         var brokeredMessage = new BrokeredMessage(messageBody)
-<span class="lineNum">     872 </span>            : #endif
+<span class="lineNum">     848 </span>            : #if NET452
+<span class="lineNum">     849 </span>            :                                         client.Close();
+<span class="lineNum">     850 </span>            : #endif
+<span class="lineNum">     851 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     852 </span>            :                                         client.CloseAsync().Wait(1500);
+<span class="lineNum">     853 </span>            : #endif
+<span class="lineNum">     854 </span>            : 
+<span class="lineNum">     855 </span>            :                                         if (loop++ % 5 == 0)
+<span class="lineNum">     856 </span>            :                                         {
+<span class="lineNum">     857 </span>            :                                                 loop = 0;
+<span class="lineNum">     858 </span>            :                                                 Thread.Yield();
+<span class="lineNum">     859 </span>            :                                         }
+<span class="lineNum">     860 </span>            :                                         else
+<span class="lineNum">     861 </span>            :                                                 Thread.Sleep(500);
+<span class="lineNum">     862 </span>            :                                 }
+<span class="lineNum">     863 </span>            :                                 try
+<span class="lineNum">     864 </span>            :                                 {
+<span class="lineNum">     865 </span>            :                                         brokeredMessageRenewCancellationTokenSource.Dispose();
+<span class="lineNum">     866 </span>            :                                 }
+<span class="lineNum">     867 </span>            :                                 catch (ObjectDisposedException) { }
+<span class="lineNum">     868 </span>            :                         }, brokeredMessageRenewCancellationTokenSource.Token);
+<span class="lineNum">     869 </span>            : 
+<span class="lineNum">     870 </span>            :                         return brokeredMessageRenewCancellationTokenSource;
+<span class="lineNum">     871 </span>            :                 }
+<span class="lineNum">     872 </span>            : 
 <span class="lineNum">     873 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">     874 </span>            :                         byte[] messageBodyData;
-<span class="lineNum">     875 </span>            :                         using (var stream = new MemoryStream())
-<span class="lineNum">     876 </span>            :                         {
-<span class="lineNum">     877 </span>            :                                 brokeredMessageSerialiser.WriteObject(stream, messageBody);
-<span class="lineNum">     878 </span>            :                                 stream.Flush();
-<span class="lineNum">     879 </span>            :                                 stream.Position = 0;
-<span class="lineNum">     880 </span>            :                                 messageBodyData = stream.ToArray();
-<span class="lineNum">     881 </span>            :                         }
-<span class="lineNum">     882 </span>            : 
-<span class="lineNum">     883 </span>            :                         var brokeredMessage = new BrokeredMessage(messageBodyData)
+<span class="lineNum">     874 </span>            :                 DataContractBinarySerializer brokeredMessageSerialiser = new DataContractBinarySerializer(typeof(string));
+<span class="lineNum">     875 </span>            : #endif
+<span class="lineNum">     876 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     877 </span>            :                 /// Create a &lt;see cref=&quot;BrokeredMessage&quot;/&gt; with additional properties to aid routing and tracing
+<span class="lineNum">     878 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     879 </span><span class="lineCov">          1 :                 protected virtual BrokeredMessage CreateBrokeredMessage&lt;TMessage&gt;(Func&lt;TMessage, string&gt; serialiserFunction, Type messageType, TMessage message)</span>
+<span class="lineNum">     880 </span>            :                 {
+<span class="lineNum">     881 </span>            :                         string messageBody = serialiserFunction(message);
+<span class="lineNum">     882 </span>            : #if NET452
+<span class="lineNum">     883 </span>            :                         var brokeredMessage = new BrokeredMessage(messageBody)
 <span class="lineNum">     884 </span>            : #endif
-<span class="lineNum">     885 </span>            :                         {
-<span class="lineNum">     886 </span>            :                                 CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
-<span class="lineNum">     887 </span>            :                         };
-<span class="lineNum">     888 </span>            :                         brokeredMessage.AddUserProperty(&quot;CorrelationId&quot;, brokeredMessage.CorrelationId);
-<span class="lineNum">     889 </span>            :                         brokeredMessage.AddUserProperty(&quot;Type&quot;, messageType.FullName);
-<span class="lineNum">     890 </span>            :                         brokeredMessage.AddUserProperty(&quot;Source&quot;, string.Format(&quot;{0}/{1}/{2}/{3}&quot;, Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
-<span class="lineNum">     891 </span>            : #if NET452
-<span class="lineNum">     892 </span>            :                         brokeredMessage.AddUserProperty(&quot;Framework&quot;, &quot;.NET Framework&quot;);
-<span class="lineNum">     893 </span>            : #else
-<span class="lineNum">     894 </span>            :                         brokeredMessage.AddUserProperty(&quot;Framework&quot;, &quot;.NET Core&quot;);
-<span class="lineNum">     895 </span>            : #endif
-<span class="lineNum">     896 </span>            : 
-<span class="lineNum">     897 </span>            :                         // see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security&lt;/remarks&gt;
-<span class="lineNum">     898 </span>            :                         string configurationKey = string.Format(&quot;{0}.SigningToken&quot;, messageType.FullName);
-<span class="lineNum">     899 </span>            :                         string signingToken;
-<span class="lineNum">     900 </span>            :                         HashAlgorithm signer = Signer.Create();
-<span class="lineNum">     901 </span>            :                         if (!ConfigurationManager.TryGetSetting(configurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     902 </span>            :                                 if (!ConfigurationManager.TryGetSetting(SigningTokenConfigurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     903 </span>            :                                         signingToken = Guid.Empty.ToString(&quot;N&quot;);
-<span class="lineNum">     904 </span>            :                         if (!string.IsNullOrWhiteSpace(signingToken))
-<span class="lineNum">     905 </span>            :                                 using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($&quot;{signingToken}{messageBody}&quot;)))
-<span class="lineNum">     906 </span>            :                                         brokeredMessage.AddUserProperty(&quot;Signature&quot;, Convert.ToBase64String(signer.ComputeHash(hashStream)));
-<span class="lineNum">     907 </span>            : 
-<span class="lineNum">     908 </span>            :                         try
-<span class="lineNum">     909 </span>            :                         {
-<span class="lineNum">     910 </span>            :                                 var stackTrace = new StackTrace();
-<span class="lineNum">     911 </span>            :                                 StackFrame[] stackFrames = stackTrace.GetFrames();
-<span class="lineNum">     912 </span>            :                                 if (stackFrames != null)
-<span class="lineNum">     913 </span>            :                                 {
-<span class="lineNum">     914 </span>            :                                         foreach (StackFrame frame in stackFrames)
-<span class="lineNum">     915 </span>            :                                         {
-<span class="lineNum">     916 </span>            :                                                 MethodBase method = frame.GetMethod();
-<span class="lineNum">     917 </span>            :                                                 if (method.ReflectedType == null)
-<span class="lineNum">     918 </span>            :                                                         continue;
+<span class="lineNum">     885 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">     886 </span>            :                         byte[] messageBodyData;
+<span class="lineNum">     887 </span>            :                         using (var stream = new MemoryStream())
+<span class="lineNum">     888 </span>            :                         {
+<span class="lineNum">     889 </span>            :                                 brokeredMessageSerialiser.WriteObject(stream, messageBody);
+<span class="lineNum">     890 </span>            :                                 stream.Flush();
+<span class="lineNum">     891 </span>            :                                 stream.Position = 0;
+<span class="lineNum">     892 </span>            :                                 messageBodyData = stream.ToArray();
+<span class="lineNum">     893 </span>            :                         }
+<span class="lineNum">     894 </span>            : 
+<span class="lineNum">     895 </span>            :                         var brokeredMessage = new BrokeredMessage(messageBodyData)
+<span class="lineNum">     896 </span>            : #endif
+<span class="lineNum">     897 </span>            :                         {
+<span class="lineNum">     898 </span>            :                                 CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString(&quot;N&quot;)
+<span class="lineNum">     899 </span>            :                         };
+<span class="lineNum">     900 </span>            :                         brokeredMessage.AddUserProperty(&quot;CorrelationId&quot;, brokeredMessage.CorrelationId);
+<span class="lineNum">     901 </span>            :                         brokeredMessage.AddUserProperty(&quot;Type&quot;, messageType.FullName);
+<span class="lineNum">     902 </span>            :                         brokeredMessage.AddUserProperty(&quot;Source&quot;, string.Format(&quot;{0}/{1}/{2}/{3}&quot;, Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
+<span class="lineNum">     903 </span>            : #if NET452
+<span class="lineNum">     904 </span>            :                         brokeredMessage.AddUserProperty(&quot;Framework&quot;, &quot;.NET Framework&quot;);
+<span class="lineNum">     905 </span>            : #else
+<span class="lineNum">     906 </span>            :                         brokeredMessage.AddUserProperty(&quot;Framework&quot;, &quot;.NET Core&quot;);
+<span class="lineNum">     907 </span>            : #endif
+<span class="lineNum">     908 </span>            : 
+<span class="lineNum">     909 </span>            :                         // see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security&lt;/remarks&gt;
+<span class="lineNum">     910 </span>            :                         string configurationKey = string.Format(&quot;{0}.SigningToken&quot;, messageType.FullName);
+<span class="lineNum">     911 </span>            :                         string signingToken;
+<span class="lineNum">     912 </span>            :                         HashAlgorithm signer = Signer.Create();
+<span class="lineNum">     913 </span>            :                         if (!ConfigurationManager.TryGetSetting(configurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     914 </span>            :                                 if (!ConfigurationManager.TryGetSetting(SigningTokenConfigurationKey, out signingToken) || string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     915 </span>            :                                         signingToken = Guid.Empty.ToString(&quot;N&quot;);
+<span class="lineNum">     916 </span>            :                         if (!string.IsNullOrWhiteSpace(signingToken))
+<span class="lineNum">     917 </span>            :                                 using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($&quot;{signingToken}{messageBody}&quot;)))
+<span class="lineNum">     918 </span>            :                                         brokeredMessage.AddUserProperty(&quot;Signature&quot;, Convert.ToBase64String(signer.ComputeHash(hashStream)));
 <span class="lineNum">     919 </span>            : 
-<span class="lineNum">     920 </span>            :                                                 try
-<span class="lineNum">     921 </span>            :                                                 {
-<span class="lineNum">     922 </span>            :                                                         if (ExclusionNamespaces.All(@namespace =&gt; !method.ReflectedType.FullName.StartsWith(@namespace)))
-<span class="lineNum">     923 </span>            :                                                         {
-<span class="lineNum">     924 </span>            :                                                                 brokeredMessage.AddUserProperty(&quot;Source-Method&quot;, string.Format(&quot;{0}.{1}&quot;, method.ReflectedType.FullName, method.Name));
-<span class="lineNum">     925 </span>            :                                                                 break;
-<span class="lineNum">     926 </span>            :                                                         }
-<span class="lineNum">     927 </span>            :                                                 }
-<span class="lineNum">     928 </span>            :                                                 catch
-<span class="lineNum">     929 </span>            :                                                 {
-<span class="lineNum">     930 </span>            :                                                         // Just move on
-<span class="lineNum">     931 </span>            :                                                 }
-<span class="lineNum">     932 </span>            :                                         }
-<span class="lineNum">     933 </span>            :                                 }
-<span class="lineNum">     934 </span>            :                         }
-<span class="lineNum">     935 </span>            :                         catch
-<span class="lineNum">     936 </span>            :                         {
-<span class="lineNum">     937 </span>            :                                 // Just move on
-<span class="lineNum">     938 </span>            :                         }
-<span class="lineNum">     939 </span>            : 
-<span class="lineNum">     940 </span>            :                         return brokeredMessage;
-<span class="lineNum">     941 </span>            :                 }
-<span class="lineNum">     942 </span>            : 
-<span class="lineNum">     943 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     944 </span>            :                 /// Extract any telemetry properties from the provided &lt;paramref name=&quot;message&quot;/&gt;.
-<span class="lineNum">     945 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     946 </span><span class="lineCov">          1 :                 protected virtual IDictionary&lt;string, string&gt; ExtractTelemetryProperties(BrokeredMessage message, string baseCommunicationType)</span>
-<span class="lineNum">     947 </span>            :                 {
-<span class="lineNum">     948 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, baseCommunicationType } };
-<span class="lineNum">     949 </span>            :                         object value;
-<span class="lineNum">     950 </span>            :                         if (message.TryGetUserPropertyValue(&quot;Type&quot;, out value))
-<span class="lineNum">     951 </span>            :                                 telemetryProperties.Add(&quot;MessageType&quot;, value.ToString());
-<span class="lineNum">     952 </span>            :                         if (message.TryGetUserPropertyValue(&quot;Source&quot;, out value))
-<span class="lineNum">     953 </span>            :                                 telemetryProperties.Add(&quot;MessageSource&quot;, value.ToString());
-<span class="lineNum">     954 </span>            :                         if (message.TryGetUserPropertyValue(&quot;Source-Method&quot;, out value))
-<span class="lineNum">     955 </span>            :                                 telemetryProperties.Add(&quot;MessageSourceMethod&quot;, value.ToString());
-<span class="lineNum">     956 </span>            :                         if (message.TryGetUserPropertyValue(&quot;CorrelationId&quot;, out value) &amp;&amp; !telemetryProperties.ContainsKey(&quot;CorrelationId&quot;))
-<span class="lineNum">     957 </span>            :                                 telemetryProperties.Add(&quot;CorrelationId&quot;, value.ToString());
-<span class="lineNum">     958 </span>            : 
-<span class="lineNum">     959 </span>            :                         return telemetryProperties;
-<span class="lineNum">     960 </span>            :                 }
-<span class="lineNum">     961 </span>            : 
-<span class="lineNum">     962 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     963 </span>            :                 /// Extract the signature from the provided &lt;paramref name=&quot;message&quot;/&gt;.
-<span class="lineNum">     964 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     965 </span><span class="lineCov">          1 :                 protected virtual string ExtractSignature(BrokeredMessage message)</span>
-<span class="lineNum">     966 </span>            :                 {
-<span class="lineNum">     967 </span>            :                         object value;
-<span class="lineNum">     968 </span>            :                         if (message.TryGetUserPropertyValue(&quot;Signature&quot;, out value))
-<span class="lineNum">     969 </span>            :                                 return value.ToString();
-<span class="lineNum">     970 </span>            :                         return null;
-<span class="lineNum">     971 </span>            :                 }
-<span class="lineNum">     972 </span>            :         }
-<span class="lineNum">     973 </span>            : }
+<span class="lineNum">     920 </span>            :                         try
+<span class="lineNum">     921 </span>            :                         {
+<span class="lineNum">     922 </span>            :                                 var stackTrace = new StackTrace();
+<span class="lineNum">     923 </span>            :                                 StackFrame[] stackFrames = stackTrace.GetFrames();
+<span class="lineNum">     924 </span>            :                                 if (stackFrames != null)
+<span class="lineNum">     925 </span>            :                                 {
+<span class="lineNum">     926 </span>            :                                         foreach (StackFrame frame in stackFrames)
+<span class="lineNum">     927 </span>            :                                         {
+<span class="lineNum">     928 </span>            :                                                 MethodBase method = frame.GetMethod();
+<span class="lineNum">     929 </span>            :                                                 if (method.ReflectedType == null)
+<span class="lineNum">     930 </span>            :                                                         continue;
+<span class="lineNum">     931 </span>            : 
+<span class="lineNum">     932 </span>            :                                                 try
+<span class="lineNum">     933 </span>            :                                                 {
+<span class="lineNum">     934 </span>            :                                                         if (ExclusionNamespaces.All(@namespace =&gt; !method.ReflectedType.FullName.StartsWith(@namespace)))
+<span class="lineNum">     935 </span>            :                                                         {
+<span class="lineNum">     936 </span>            :                                                                 brokeredMessage.AddUserProperty(&quot;Source-Method&quot;, string.Format(&quot;{0}.{1}&quot;, method.ReflectedType.FullName, method.Name));
+<span class="lineNum">     937 </span>            :                                                                 break;
+<span class="lineNum">     938 </span>            :                                                         }
+<span class="lineNum">     939 </span>            :                                                 }
+<span class="lineNum">     940 </span>            :                                                 catch
+<span class="lineNum">     941 </span>            :                                                 {
+<span class="lineNum">     942 </span>            :                                                         // Just move on
+<span class="lineNum">     943 </span>            :                                                 }
+<span class="lineNum">     944 </span>            :                                         }
+<span class="lineNum">     945 </span>            :                                 }
+<span class="lineNum">     946 </span>            :                         }
+<span class="lineNum">     947 </span>            :                         catch
+<span class="lineNum">     948 </span>            :                         {
+<span class="lineNum">     949 </span>            :                                 // Just move on
+<span class="lineNum">     950 </span>            :                         }
+<span class="lineNum">     951 </span>            : 
+<span class="lineNum">     952 </span>            :                         return brokeredMessage;
+<span class="lineNum">     953 </span>            :                 }
+<span class="lineNum">     954 </span>            : 
+<span class="lineNum">     955 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     956 </span>            :                 /// Extract any telemetry properties from the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">     957 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     958 </span><span class="lineCov">          1 :                 protected virtual IDictionary&lt;string, string&gt; ExtractTelemetryProperties(BrokeredMessage message, string baseCommunicationType)</span>
+<span class="lineNum">     959 </span>            :                 {
+<span class="lineNum">     960 </span>            :                         IDictionary&lt;string, string&gt; telemetryProperties = new Dictionary&lt;string, string&gt; { { &quot;Type&quot;, baseCommunicationType } };
+<span class="lineNum">     961 </span>            :                         object value;
+<span class="lineNum">     962 </span>            :                         if (message.TryGetUserPropertyValue(&quot;Type&quot;, out value))
+<span class="lineNum">     963 </span>            :                                 telemetryProperties.Add(&quot;MessageType&quot;, value.ToString());
+<span class="lineNum">     964 </span>            :                         if (message.TryGetUserPropertyValue(&quot;Source&quot;, out value))
+<span class="lineNum">     965 </span>            :                                 telemetryProperties.Add(&quot;MessageSource&quot;, value.ToString());
+<span class="lineNum">     966 </span>            :                         if (message.TryGetUserPropertyValue(&quot;Source-Method&quot;, out value))
+<span class="lineNum">     967 </span>            :                                 telemetryProperties.Add(&quot;MessageSourceMethod&quot;, value.ToString());
+<span class="lineNum">     968 </span>            :                         if (message.TryGetUserPropertyValue(&quot;CorrelationId&quot;, out value) &amp;&amp; !telemetryProperties.ContainsKey(&quot;CorrelationId&quot;))
+<span class="lineNum">     969 </span>            :                                 telemetryProperties.Add(&quot;CorrelationId&quot;, value.ToString());
+<span class="lineNum">     970 </span>            : 
+<span class="lineNum">     971 </span>            :                         return telemetryProperties;
+<span class="lineNum">     972 </span>            :                 }
+<span class="lineNum">     973 </span>            : 
+<span class="lineNum">     974 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     975 </span>            :                 /// Extract the signature from the provided &lt;paramref name=&quot;message&quot;/&gt;.
+<span class="lineNum">     976 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     977 </span><span class="lineCov">          1 :                 protected virtual string ExtractSignature(BrokeredMessage message)</span>
+<span class="lineNum">     978 </span>            :                 {
+<span class="lineNum">     979 </span>            :                         object value;
+<span class="lineNum">     980 </span>            :                         if (message.TryGetUserPropertyValue(&quot;Signature&quot;, out value))
+<span class="lineNum">     981 </span>            :                                 return value.ToString();
+<span class="lineNum">     982 </span>            :                         return null;
+<span class="lineNum">     983 </span>            :                 }
+<span class="lineNum">     984 </span>            :         }
+<span class="lineNum">     985 </span>            : }
 </pre>
       </td>
     </tr>
