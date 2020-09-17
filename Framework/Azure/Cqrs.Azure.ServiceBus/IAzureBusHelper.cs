@@ -16,6 +16,7 @@ using Cqrs.Events;
 using Cqrs.Messages;
 #if NET452
 using Microsoft.ServiceBus.Messaging;
+using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
 #if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus.Core;
@@ -48,9 +49,11 @@ namespace Cqrs.Azure.ServiceBus
 		bool PrepareAndValidateCommand<TCommand>(TCommand command, string framework)
 			where TCommand : ICommand<TAuthenticationToken>;
 
+#if NET452
 		/// <summary>
 		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveCommandHandler"/>.
 		/// </summary>
+		/// <param name="serviceBusReceiver">The channel the message was received on.</param>
 		/// <param name="messageBody">A serialised <see cref="IMessage"/>.</param>
 		/// <param name="receiveCommandHandler">The handler method that will process the <see cref="ICommand{TAuthenticationToken}"/>.</param>
 		/// <param name="messageId">The network id of the <see cref="IMessage"/>.</param>
@@ -59,7 +62,29 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="ICommand{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="ICommand{TAuthenticationToken}"/> that was processed.</returns>
-		ICommand<TAuthenticationToken> ReceiveCommand(string messageBody, Func<ICommand<TAuthenticationToken>, bool?> receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null);
+#endif
+#if NETSTANDARD2_0
+		/// <summary>
+		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveCommandHandler"/>.
+		/// </summary>
+		/// <param name="client">The channel the message was received on.</param>
+		/// <param name="messageBody">A serialised <see cref="IMessage"/>.</param>
+		/// <param name="receiveCommandHandler">The handler method that will process the <see cref="ICommand{TAuthenticationToken}"/>.</param>
+		/// <param name="messageId">The network id of the <see cref="IMessage"/>.</param>
+		/// <param name="signature">The signature of the <see cref="IMessage"/>.</param>
+		/// <param name="signingTokenConfigurationKey">The configuration key for the signing token as used by <see cref="IConfigurationManager"/>.</param>
+		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="ICommand{TAuthenticationToken}"/> is being skipped.</param>
+		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
+		/// <returns>The <see cref="ICommand{TAuthenticationToken}"/> that was processed.</returns>
+#endif
+		ICommand<TAuthenticationToken> ReceiveCommand(
+#if NET452
+			IMessageReceiver serviceBusReceiver
+#endif
+#if NETSTANDARD2_0
+			IMessageReceiver client
+#endif
+			, string messageBody, Func<ICommand<TAuthenticationToken>, bool?> receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null);
 
 		/// <summary>
 		/// The default command handler that
@@ -95,9 +120,11 @@ namespace Cqrs.Azure.ServiceBus
 		bool PrepareAndValidateEvent<TEvent>(TEvent @event, string framework)
 			where TEvent : IEvent<TAuthenticationToken>;
 
+#if NET452
 		/// <summary>
 		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveEventHandler"/>.
 		/// </summary>
+		/// <param name="serviceBusReceiver">The channel the message was received on.</param>
 		/// <param name="messageBody">A serialised <see cref="IMessage"/>.</param>
 		/// <param name="receiveEventHandler">The handler method that will process the <see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="messageId">The network id of the <see cref="IMessage"/>.</param>
@@ -106,7 +133,29 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="IEvent{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
-		IEvent<TAuthenticationToken> ReceiveEvent(string messageBody, Func<IEvent<TAuthenticationToken>, bool?> receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null);
+#endif
+#if NETSTANDARD2_0
+		/// <summary>
+		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveEventHandler"/>.
+		/// </summary>
+		/// <param name="serviceBusReceiver">The channel the message was received on.</param>
+		/// <param name="messageBody">A serialised <see cref="IMessage"/>.</param>
+		/// <param name="receiveEventHandler">The handler method that will process the <see cref="IEvent{TAuthenticationToken}"/>.</param>
+		/// <param name="messageId">The network id of the <see cref="IMessage"/>.</param>
+		/// <param name="signature">The signature of the <see cref="IMessage"/>.</param>
+		/// <param name="signingTokenConfigurationKey">The configuration key for the signing token as used by <see cref="IConfigurationManager"/>.</param>
+		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="IEvent{TAuthenticationToken}"/> is being skipped.</param>
+		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
+		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
+#endif
+		IEvent<TAuthenticationToken> ReceiveEvent(
+#if NET452
+			IMessageReceiver serviceBusReceiver
+#endif
+#if NETSTANDARD2_0
+			IMessageReceiver client
+#endif
+			, string messageBody, Func<IEvent<TAuthenticationToken>, bool?> receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null);
 
 		/// <summary>
 		/// Refreshes the network lock.

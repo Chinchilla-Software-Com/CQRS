@@ -314,7 +314,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Receives a <see cref="BrokeredMessage"/> from the command bus.
 		/// </summary>
 #if NET452
-		protected virtual void ReceiveCommand(BrokeredMessage message)
+		protected virtual void ReceiveCommand(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
 #endif
 #if NETSTANDARD2_0
 		protected virtual void ReceiveCommand(IMessageReceiver client, BrokeredMessage message)
@@ -341,7 +341,14 @@ namespace Cqrs.Azure.ServiceBus
 					Logger.LogDebug(string.Format("A command message arrived with the id '{0}'.", message.MessageId));
 					string messageBody = message.GetBodyAsString();
 
-					ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(messageBody, ReceiveCommand,
+					ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(
+#if NET452
+						serviceBusReceiver
+#endif
+#if NETSTANDARD2_0
+						client
+#endif
+						, messageBody, ReceiveCommand,
 						string.Format("id '{0}'", message.MessageId),
 						ExtractSignature(message),
 						SigningTokenConfigurationKey,

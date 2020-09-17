@@ -160,7 +160,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// The <see cref="Action{TBrokeredMessage}">handler</see> used for <see cref="IMessageReceiver.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage}, OnMessageOptions)"/> on each receiver.
 		/// </summary>
-		protected Action<BrokeredMessage> ReceiverMessageHandler { get; set; }
+		protected Action<IMessageReceiver, BrokeredMessage> ReceiverMessageHandler { get; set; }
 #endif
 #if NETSTANDARD2_0
 		/// <summary>
@@ -534,7 +534,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Registers the provided <paramref name="receiverMessageHandler"/> with the provided <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
 #if NET452
-		protected virtual void RegisterReceiverMessageHandler(Action<BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
+		protected virtual void RegisterReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
 #endif
 #if NETSTANDARD2_0
 		protected virtual void RegisterReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, MessageHandlerOptions receiverMessageHandlerOptions)
@@ -549,7 +549,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Stores the provided <paramref name="receiverMessageHandler"/> and <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
 #if NET452
-		protected virtual void StoreReceiverMessageHandler(Action<BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
+		protected virtual void StoreReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
 #endif
 #if NETSTANDARD2_0
 		protected virtual void StoreReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, MessageHandlerOptions receiverMessageHandlerOptions)
@@ -574,7 +574,7 @@ namespace Cqrs.Azure.ServiceBus
 						message =>
 						{
 							BusHelper.SetWasPrivateBusUsed(true);
-							ReceiverMessageHandler(message);
+							ReceiverMessageHandler(serviceBusReceiver, message);
 						},
 						ReceiverMessageHandlerOptions
 					);
@@ -603,7 +603,7 @@ namespace Cqrs.Azure.ServiceBus
 							message =>
 							{
 								BusHelper.SetWasPrivateBusUsed(false);
-								ReceiverMessageHandler(message);
+								ReceiverMessageHandler(serviceBusReceiver, message);
 							},
 							ReceiverMessageHandlerOptions
 						);
@@ -664,7 +664,7 @@ namespace Cqrs.Azure.ServiceBus
 				Logger.LogDebug(string.Format("A dead-letter message of type {0} arrived with the id '{1}' but left in the queue due to settings.", deadLetterMessage.GetType().FullName, deadLetterBrokeredMessage.MessageId));
 			};
 #if NET452
-			Action <BrokeredMessage> removeDeadlLetterFromQueue = (deadLetterBrokeredMessage) =>
+			Action<BrokeredMessage> removeDeadlLetterFromQueue = (deadLetterBrokeredMessage) =>
 #endif
 #if NETSTANDARD2_0
 			Action<IMessageReceiver, BrokeredMessage> removeDeadlLetterFromQueue = (client, deadLetterBrokeredMessage) =>
@@ -729,6 +729,12 @@ namespace Cqrs.Azure.ServiceBus
 							{
 								AzureBusHelper.ReceiveEvent
 								(
+#if NET452
+									null,
+#endif
+#if NETSTANDARD2_0
+									client,
+#endif
 									messageBody,
 									@event =>
 									{
@@ -772,6 +778,12 @@ namespace Cqrs.Azure.ServiceBus
 							{
 								AzureBusHelper.ReceiveCommand
 								(
+#if NET452
+									null,
+#endif
+#if NETSTANDARD2_0
+									client,
+#endif
 									messageBody,
 									command =>
 									{

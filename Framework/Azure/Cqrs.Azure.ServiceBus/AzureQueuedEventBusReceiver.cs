@@ -17,6 +17,7 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 #if NET452
 using Microsoft.ServiceBus.Messaging;
+using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
 #if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
@@ -57,7 +58,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Receives a <see cref="BrokeredMessage"/> from the event bus, identifies a key and queues it accordingly.
 		/// </summary>
 #if NET452
-		protected override void ReceiveEvent(BrokeredMessage message)
+		protected override void ReceiveEvent(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
 #endif
 #if NETSTANDARD2_0
 		protected override void ReceiveEvent(IMessageReceiver client, BrokeredMessage message)
@@ -70,7 +71,13 @@ namespace Cqrs.Azure.ServiceBus
 				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
 
 				CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-				Logger.LogInfo(string.Format("An event message arrived with the id '{0}' was of type {1}.", message.MessageId, @event.GetType().FullName));
+#if NET452
+				string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
+#endif
+#if NETSTANDARD2_0
+				string topicPath = client == null ? "UNKNOWN" : client.Path;
+#endif
+				Logger.LogInfo($"An event message arrived from topic {topicPath} with the {message.MessageId} was of type {@event.GetType().FullName}.");
 
 				Type eventType = @event.GetType();
 

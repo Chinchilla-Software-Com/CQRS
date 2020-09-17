@@ -130,7 +130,7 @@ namespace Cqrs.Azure.ServiceBus
 					string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
 #endif
 
-					ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(messageBody, ReceiveCommand,
+					ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(null, messageBody, ReceiveCommand,
 #if NET452
 					string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset),
 #endif

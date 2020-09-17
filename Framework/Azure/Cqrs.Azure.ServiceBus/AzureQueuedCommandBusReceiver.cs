@@ -17,6 +17,7 @@ using Cqrs.Commands;
 using Cqrs.Configuration;
 #if NET452
 using Microsoft.ServiceBus.Messaging;
+using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
 #if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
@@ -57,7 +58,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Receives a <see cref="BrokeredMessage"/> from the command bus, identifies a key and queues it accordingly.
 		/// </summary>
 #if NET452
-		protected override void ReceiveCommand(BrokeredMessage message)
+		protected virtual void ReceiveCommand(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
 #endif
 #if NETSTANDARD2_0
 		protected override void ReceiveCommand(IMessageReceiver client, BrokeredMessage message)
@@ -70,7 +71,13 @@ namespace Cqrs.Azure.ServiceBus
 				ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(messageBody);
 
 				CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
-				Logger.LogInfo(string.Format("A command message arrived with the id '{0}' was of type {1}.", message.MessageId, command.GetType().FullName));
+#if NET452
+				string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
+#endif
+#if NETSTANDARD2_0
+			string topicPath = client == null ? "UNKNOWN" : client.Path;
+#endif
+				Logger.LogInfo($"A command message arrived from topic {topicPath} with the {message.MessageId} was of type {command.GetType().FullName}.");
 
 				Type commandType = command.GetType();
 

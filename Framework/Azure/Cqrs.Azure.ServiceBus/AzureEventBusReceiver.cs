@@ -323,7 +323,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Receives a <see cref="BrokeredMessage"/> from the event bus.
 		/// </summary>
 #if NET452
-		protected virtual void ReceiveEvent(BrokeredMessage message)
+		protected virtual void ReceiveEvent(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
 #endif
 #if NETSTANDARD2_0
 		protected virtual void ReceiveEvent(IMessageReceiver client, BrokeredMessage message)
@@ -350,7 +350,14 @@ namespace Cqrs.Azure.ServiceBus
 					Logger.LogDebug(string.Format("An event message arrived with the id '{0}'.", message.MessageId));
 					string messageBody = message.GetBodyAsString();
 
-					IEvent<TAuthenticationToken> @event = AzureBusHelper.ReceiveEvent(messageBody, ReceiveEvent,
+					IEvent<TAuthenticationToken> @event = AzureBusHelper.ReceiveEvent(
+#if NET452
+						serviceBusReceiver
+#endif
+#if NETSTANDARD2_0
+						client
+#endif
+						, messageBody, ReceiveEvent,
 						string.Format("id '{0}'", message.MessageId),
 						ExtractSignature(message),
 						SigningTokenConfigurationKey,
