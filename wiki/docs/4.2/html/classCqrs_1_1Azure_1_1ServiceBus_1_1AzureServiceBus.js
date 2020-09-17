@@ -15,6 +15,7 @@ var classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus =
     [ "InstantiateReceiving", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a857b7ac22335476713c601fb1ce649c8.html#a857b7ac22335476713c601fb1ce649c8", null ],
     [ "TriggerSettingsChecking", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ae4b736019e332a81eb08d3696f8b6e7e.html#ae4b736019e332a81eb08d3696f8b6e7e", null ],
     [ "TriggerSettingsChecking", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a26e66a663cabca99160b7f7c650bbfaa.html#a26e66a663cabca99160b7f7c650bbfaa", null ],
+    [ "ValidateSettingsHaveChanged", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a8079b8da45644ce8235ea20e6f337955.html#a8079b8da45644ce8235ea20e6f337955", null ],
     [ "DefaultPrivateTopicSubscriptionName", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_adbfdf69ded51320d81fce8e652af9b88.html#adbfdf69ded51320d81fce8e652af9b88", null ],
     [ "DefaultPublicTopicSubscriptionName", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a278db23f67223fbb25455038c7fa1ebf.html#a278db23f67223fbb25455038c7fa1ebf", null ],
     [ "AzureBusHelper", "classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a7c537c53265bf01d550982c04579493e.html#a7c537c53265bf01d550982c04579493e", null ],

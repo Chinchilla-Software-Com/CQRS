@@ -30,6 +30,8 @@ virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBu
 \begin{DoxyCompactList}\small\item\em Checks if the public topic and subscription name exists as per \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ac6f4fbafebcde04a8493462b688e0abe_ac6f4fbafebcde04a8493462b688e0abe}{Public\+Topic\+Name}} and \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_adab1b2f0dc9f199d5f0aa60d57ba71c8_adab1b2f0dc9f199d5f0aa60d57ba71c8}{Public\+Topic\+Subscription\+Name}}. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ab7f636dd2b5009f1a58a530c47f2536a_ab7f636dd2b5009f1a58a530c47f2536a}{Check\+Topic\+Exists}} (Manager manager, string topic\+Name, string subscription\+Name)
 \begin{DoxyCompactList}\small\item\em Checks if a topic by the provided {\itshape topic\+Name}  exists and Checks if a subscription name by the provided {\itshape subscription\+Name}  exists. \end{DoxyCompactList}\item 
+override bool \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a8079b8da45644ce8235ea20e6f337955_a8079b8da45644ce8235ea20e6f337955}{Validate\+Settings\+Have\+Changed}} ()
+\begin{DoxyCompactList}\small\item\em First runs Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Validate\+Settings\+Have\+Changed then checks \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ac6f4fbafebcde04a8493462b688e0abe_ac6f4fbafebcde04a8493462b688e0abe}{Public\+Topic\+Name}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_adab1b2f0dc9f199d5f0aa60d57ba71c8_adab1b2f0dc9f199d5f0aa60d57ba71c8}{Public\+Topic\+Subscription\+Name}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a7af8ebcdd25672ff2252085637904f82_a7af8ebcdd25672ff2252085637904f82}{Private\+Topic\+Name}} or \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a22498d51bba26c801b3b553fb451a6ae_a22498d51bba26c801b3b553fb451a6ae}{Private\+Topic\+Subscription\+Name}} have changed. \end{DoxyCompactList}\item 
 override void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ae4b736019e332a81eb08d3696f8b6e7e_ae4b736019e332a81eb08d3696f8b6e7e}{Trigger\+Settings\+Checking}} ()
 \begin{DoxyCompactList}\small\item\em Triggers settings checking on both public and private publishers and receivers, then calls \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a5c286d29b0bbfe3770f3407efda57036_a5c286d29b0bbfe3770f3407efda57036}{Instantiate\+Publishing}} if \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a17195f3c8e05ec37dfac37a8e9e1b089_a17195f3c8e05ec37dfac37a8e9e1b089}{Public\+Service\+Bus\+Publisher}} is not null. \end{DoxyCompactList}\item 
 virtual void \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a26e66a663cabca99160b7f7c650bbfaa_a26e66a663cabca99160b7f7c650bbfaa}{Trigger\+Settings\+Checking}} (Topic\+Client service\+Bus\+Publisher, I\+Dictionary$<$ int, I\+Message\+Receiver $>$ service\+Bus\+Receivers)
@@ -302,6 +304,19 @@ Triggers settings checking on both public and private publishers and receivers, 
 
 Triggers settings checking on the provided {\itshape service\+Bus\+Publisher}  and {\itshape service\+Bus\+Receivers} , then calls \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ad49a2d063279ec98443e7f1d69178cfa_ad49a2d063279ec98443e7f1d69178cfa}{Instantiate\+Receiving()}}. 
 
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a8079b8da45644ce8235ea20e6f337955_a8079b8da45644ce8235ea20e6f337955}\label{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a8079b8da45644ce8235ea20e6f337955_a8079b8da45644ce8235ea20e6f337955}} 
+\index{Cqrs.Azure.ServiceBus.AzureServiceBus$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureServiceBus$<$ TAuthenticationToken $>$}!ValidateSettingsHaveChanged@{ValidateSettingsHaveChanged}}
+\index{ValidateSettingsHaveChanged@{ValidateSettingsHaveChanged}!Cqrs.Azure.ServiceBus.AzureServiceBus$<$ TAuthenticationToken $>$@{Cqrs.Azure.ServiceBus.AzureServiceBus$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ValidateSettingsHaveChanged()}{ValidateSettingsHaveChanged()}}
+{\footnotesize\ttfamily override bool \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus}{Cqrs.\+Azure.\+Service\+Bus.\+Azure\+Service\+Bus}}$<$ T\+Authentication\+Token $>$.Validate\+Settings\+Have\+Changed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+First runs Azure\+Bus$<$\+T\+Authentication\+Token$>$.\+Validate\+Settings\+Have\+Changed then checks \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_ac6f4fbafebcde04a8493462b688e0abe_ac6f4fbafebcde04a8493462b688e0abe}{Public\+Topic\+Name}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_adab1b2f0dc9f199d5f0aa60d57ba71c8_adab1b2f0dc9f199d5f0aa60d57ba71c8}{Public\+Topic\+Subscription\+Name}}, \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a7af8ebcdd25672ff2252085637904f82_a7af8ebcdd25672ff2252085637904f82}{Private\+Topic\+Name}} or \mbox{\hyperlink{classCqrs_1_1Azure_1_1ServiceBus_1_1AzureServiceBus_a22498d51bba26c801b3b553fb451a6ae_a22498d51bba26c801b3b553fb451a6ae}{Private\+Topic\+Subscription\+Name}} have changed. 
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
 
 
 \doxysubsection{Member Data Documentation}

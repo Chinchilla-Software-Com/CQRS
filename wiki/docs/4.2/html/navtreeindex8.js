@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusPublisherModule_a3c51f895ace091c8b80e579ab28e594f.html#a3c51f895ace091c8b80e579ab28e594f":[1,0,0,18,1,2,0,0,0,2],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusPublisherModule_ac75c033daa1aab2c6d657a54c99895d1.html#ac75c033daa1aab2c6d657a54c99895d1":[1,0,0,18,1,2,0,0,0,1],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule.html":[1,0,0,18,1,2,0,0,1],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusReceiverModule_a02ed26e1f091dc077449dbd3c76305f7.html#a02ed26e1f091dc077449dbd3c76305f7":[1,0,0,18,1,2,0,0,1,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "classCqrs_1_1Repositories_1_1Repository_a6b6b50d476a351fc7fbd194cb8fa44d0.html#a6b6b50d476a351fc7fbd194cb8fa44d0":[1,0,0,19,3,5],
 "classCqrs_1_1Repositories_1_1Repository_a6ed69cb5542164d9de81b0fa8a549d3e.html#a6ed69cb5542164d9de81b0fa8a549d3e":[1,0,0,19,3,6],
 "classCqrs_1_1Repositories_1_1Repository_a893276506e64034992d2c29d5ef11100.html#a893276506e64034992d2c29d5ef11100":[1,0,0,19,3,10],
-"classCqrs_1_1Repositories_1_1Repository_aae263dc1dda61f89c011be6d578620bd.html#aae263dc1dda61f89c011be6d578620bd":[1,0,0,19,3,13],
-"classCqrs_1_1Repositories_1_1Repository_ab1136a454f981848d49e0d0a2f4b6a2f.html#ab1136a454f981848d49e0d0a2f4b6a2f":[1,0,0,19,3,8]
+"classCqrs_1_1Repositories_1_1Repository_aae263dc1dda61f89c011be6d578620bd.html#aae263dc1dda61f89c011be6d578620bd":[1,0,0,19,3,13]
 };
