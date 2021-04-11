@@ -23,7 +23,7 @@ using Microsoft.Azure.WebJobs;
 ///		public static void Run(ExecutionContext context)
 ///		{
 ///			IConfigurationRoot config = new ConfigurationBuilder().Build();
-///			CqrsWebHost.SetConfigurationManager(config);
+///			CqrsFunction.SetExecutionPath(context, config);
 ///			new CqrsFunction().Run();
 ///			
 ///			// your function code
@@ -38,13 +38,22 @@ public class CqrsFunction : CqrsWebHost<Guid, DefaultAuthenticationTokenHelper>
 	/// </summary>
 	public CqrsFunction(params Type[] commandOrEventTypes)
 	{
-		if (HasSetExecutionPath)
+		if (!HasSetExecutionPath)
 			throw new InvalidOperationException("Call SetExecutionPath first.");
 		HandlerTypes = commandOrEventTypes;
 	}
 
-	public static void SetExecutionPath(ExecutionContext context)
+	public static void SetExecutionPath
+	(
+		ExecutionContext context
+#if NETSTANDARD2_0
+		, Microsoft.Extensions.Configuration.IConfigurationRoot config
+#endif
+	)
 	{
+#if NETSTANDARD2_0
+		SetConfigurationManager(config);
+#endif
 		ConfigurationExtensions.GetExecutionPath = () => Path.Combine(context.FunctionDirectory, "/../bin");
 		HasSetExecutionPath = true;
 	}
