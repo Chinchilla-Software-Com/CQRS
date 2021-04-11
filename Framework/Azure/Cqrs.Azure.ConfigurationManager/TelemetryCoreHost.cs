@@ -12,6 +12,9 @@ using Cqrs.Configuration;
 using Cqrs.Hosts;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
+#if NETSTANDARD2_0
+using Microsoft.Extensions.Configuration;
+#endif
 
 namespace Cqrs.Azure.ConfigurationManager
 {
@@ -25,6 +28,11 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// Gets or sets the <see cref="IConfigurationManager"/>. This must be set manually as dependency injection may not be ready in-time.
 		/// </summary>
 		protected static IConfigurationManager _configurationManager = null;
+
+		public static void SetConfigurationManager(IConfigurationRoot configuration)
+		{
+			_configurationManager = new CloudConfigurationManager(configuration);
+		}
 #endif
 #if NET472
 		/// <summary>

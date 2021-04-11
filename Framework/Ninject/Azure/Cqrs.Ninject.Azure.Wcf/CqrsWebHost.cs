@@ -9,6 +9,7 @@
 using System.Collections.Generic;
 #if NETSTANDARD2_0
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 #endif
 using Cqrs.Authentication;
 using Cqrs.Azure.ConfigurationManager;
@@ -38,7 +39,16 @@ namespace Cqrs.Ninject.Azure.Wcf
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 		where TWebHostModule : WebHostModule, new ()
 	{
-#region Overrides of CoreHost
+
+#if NETSTANDARD2_0
+		public static new void SetConfigurationManager(IConfigurationRoot configuration)
+		{
+			WebHostModule.Configuration = configuration;
+			_configurationManager = new CloudConfigurationManager(WebHostModule.Configuration);
+		}
+#endif
+
+		#region Overrides of CoreHost
 
 		/// <summary>
 		/// Configure the <see cref="DependencyResolver"/>.
@@ -81,11 +91,15 @@ namespace Cqrs.Ninject.Azure.Wcf
 		/// </summary>
 		protected virtual IEnumerable<INinjectModule> GetCommandBusModules()
 		{
-			return new List<INinjectModule>
-			{
-				new AzureCommandBusReceiverModule<TAuthenticationToken>(),
-				new AzureCommandBusPublisherModule<TAuthenticationToken>()
-			};
+			var list = new List<INinjectModule> { new AzureCommandBusPublisherModule<TAuthenticationToken>() };
+			bool setting;
+
+			if (!ConfigurationManager.TryGetSetting("Cqrs.Hosts.EnableCommandReceiving", out setting))
+				setting = true;
+			if (setting)
+				list.Add(new AzureCommandBusReceiverModule<TAuthenticationToken>());
+
+			return list;
 		}
 
 		/// <summary>
@@ -95,11 +109,15 @@ namespace Cqrs.Ninject.Azure.Wcf
 		/// </summary>
 		protected virtual IEnumerable<INinjectModule> GetEventBusModules()
 		{
-			return new List<INinjectModule>
-			{
-				new AzureEventBusReceiverModule<TAuthenticationToken>(),
-				new AzureEventBusPublisherModule<TAuthenticationToken>()
-			};
+			var list = new List<INinjectModule> { new AzureEventBusPublisherModule<TAuthenticationToken>() };
+			bool setting;
+
+			if (!ConfigurationManager.TryGetSetting("Cqrs.Hosts.EnableEventReceiving", out setting))
+				setting = true;
+			if (setting)
+				list.Add(new AzureEventBusReceiverModule<TAuthenticationToken>());
+
+			return list;
 		}
 
 		/// <summary>
