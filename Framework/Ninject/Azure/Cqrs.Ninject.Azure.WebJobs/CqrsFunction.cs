@@ -11,7 +11,9 @@ using Cqrs.Authentication;
 using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Ninject.Azure.Wcf;
 using Cqrs.Ninject.Azure.Wcf.Configuration;
+#if NETSTANDARD2_0
 using Microsoft.Extensions.Configuration;
+#endif
 
 /// <summary>
 /// Sample Function.
@@ -23,7 +25,7 @@ using Microsoft.Extensions.Configuration;
 ///		public static void Run(ExecutionContext context)
 ///		{
 ///			IConfigurationRoot config = new ConfigurationBuilder().Build();
-///			CqrsFunction.SetConfigurationManager(config);
+///			CqrsWebHost.SetConfigurationManager(config);
 ///			new CqrsFunction().Run();
 ///			
 ///			// your function code
@@ -38,11 +40,5 @@ public class CqrsFunction : CqrsWebHost<Guid, DefaultAuthenticationTokenHelper>
 	public CqrsFunction(params Type[] commandOrEventTypes)
 	{
 		HandlerTypes = commandOrEventTypes;
-	}
-
-	public static void SetConfigurationManager(IConfigurationRoot configuration)
-	{
-		WebHostModule.Configuration = configuration;
-		_configurationManager = new CloudConfigurationManager(WebHostModule.Configuration);
 	}
 }
