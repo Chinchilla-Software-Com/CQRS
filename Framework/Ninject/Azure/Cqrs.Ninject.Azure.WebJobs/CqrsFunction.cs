@@ -7,13 +7,11 @@
 #endregion
 
 using System;
+using System.IO;
 using Cqrs.Authentication;
-using Cqrs.Azure.ConfigurationManager;
+using Cqrs.Configuration;
 using Cqrs.Ninject.Azure.Wcf;
-using Cqrs.Ninject.Azure.Wcf.Configuration;
-#if NETSTANDARD2_0
-using Microsoft.Extensions.Configuration;
-#endif
+using Microsoft.Azure.WebJobs;
 
 /// <summary>
 /// Sample Function.
@@ -34,11 +32,20 @@ using Microsoft.Extensions.Configuration;
 /// </example>
 public class CqrsFunction : CqrsWebHost<Guid, DefaultAuthenticationTokenHelper>
 {
+	protected static bool HasSetExecutionPath { private set; get; }
 	/// <summary>
 	/// Instantiate a new instance of <see cref="CqrsWebJobProgram"/>
 	/// </summary>
 	public CqrsFunction(params Type[] commandOrEventTypes)
 	{
+		if (HasSetExecutionPath)
+			throw new InvalidOperationException("Call SetExecutionPath first.");
 		HandlerTypes = commandOrEventTypes;
+	}
+
+	public static void SetExecutionPath(ExecutionContext context)
+	{
+		ConfigurationExtensions.GetExecutionPath = () => Path.Combine(context.FunctionDirectory, "/../bin");
+		HasSetExecutionPath = true;
 	}
 }
