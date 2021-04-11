@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache.html":[1,0,0,2,2,10],
+"classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a00ea55a85c74b84cfc5f2007e3bc9be3.html#a00ea55a85c74b84cfc5f2007e3bc9be3":[1,0,0,2,2,10,5],
 "classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a069d9161ed5649cc3e65cda641d5173d.html#a069d9161ed5649cc3e65cda641d5173d":[1,0,0,2,2,10,3],
 "classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a0986cecb40fc143751abb4605f507975.html#a0986cecb40fc143751abb4605f507975":[1,0,0,2,2,10,6],
 "classCqrs_1_1Azure_1_1DocumentDb_1_1ThreadedAzureDocumentDbConnectionCache_a0cf4a79ec6bcc1021182f95ddc27edea.html#a0cf4a79ec6bcc1021182f95ddc27edea":[1,0,0,2,2,10,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX3 =
 "classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_a79043a9d497f4027cf87e5ff78fe6098.html#a79043a9d497f4027cf87e5ff78fe6098":[1,0,0,2,5,0,0,2],
 "classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_a9afab2cca66ca4453b2ab56916578c7d.html#a9afab2cca66ca4453b2ab56916578c7d":[1,0,0,2,5,0,0,6],
 "classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_abf8e295af6e0925f1c9c3550b931a4a8.html#abf8e295af6e0925f1c9c3550b931a4a8":[1,0,0,2,5,0,0,1],
-"classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_ae9aeb3daf2648a03db25f2a3ddfd87ee.html#ae9aeb3daf2648a03db25f2a3ddfd87ee":[1,0,0,2,5,0,0,5],
-"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore.html":[1,0,0,2,5,1,0],
-"classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageEventStore_1_1RawTableStorageEventStorer.html":[1,0,0,2,5,1,0,0]
+"classCqrs_1_1Azure_1_1Storage_1_1DataStores_1_1TableStorageDataStore_ae9aeb3daf2648a03db25f2a3ddfd87ee.html#ae9aeb3daf2648a03db25f2a3ddfd87ee":[1,0,0,2,5,0,0,5]
 };

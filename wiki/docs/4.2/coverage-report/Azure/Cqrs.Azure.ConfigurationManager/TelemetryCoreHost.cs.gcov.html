@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2020-10-09 10:16:06</td>
+            <td class="headerValue">2021-04-11 20:43:13</td>
             <td></td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -70,122 +70,130 @@
 <span class="lineNum">      12 </span>            : using Cqrs.Hosts;
 <span class="lineNum">      13 </span>            : using Microsoft.ApplicationInsights;
 <span class="lineNum">      14 </span>            : using Microsoft.ApplicationInsights.Extensibility;
-<span class="lineNum">      15 </span>            : 
-<span class="lineNum">      16 </span>            : namespace Cqrs.Azure.ConfigurationManager
-<span class="lineNum">      17 </span>            : {
-<span class="lineNum">      18 </span>            :         /// &lt;summary&gt;
-<span class="lineNum">      19 </span>            :         /// Configure and start command and event handlers in a host with telemetry
-<span class="lineNum">      20 </span>            :         /// &lt;/summary&gt;
-<span class="lineNum">      21 </span>            :         public abstract class TelemetryCoreHost&lt;TAuthenticationToken&gt; : CoreHost&lt;TAuthenticationToken&gt;
-<span class="lineNum">      22 </span><span class="lineCov">          1 :         {</span>
-<span class="lineNum">      23 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">      24 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      25 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;. This must be set manually as dependency injection may not be ready in-time.
-<span class="lineNum">      26 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      27 </span>            :                 protected static IConfigurationManager _configurationManager = null;
-<span class="lineNum">      28 </span>            : #endif
-<span class="lineNum">      29 </span>            : #if NET472
-<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      31 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
-<span class="lineNum">      32 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      33 </span>            :                 protected static readonly IConfigurationManager _configurationManager = new CloudConfigurationManager();
-<span class="lineNum">      34 </span>            : #endif
-<span class="lineNum">      35 </span>            : 
-<span class="lineNum">      36 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      37 </span>            :                 /// The &lt;see cref=&quot;IConfigurationManager&quot;/&gt; that can be use before the &lt;see cref=&quot;DependencyResolver.Current&quot;/&gt; is set.
-<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      39 </span>            :                 protected override IConfigurationManager ConfigurationManager
-<span class="lineNum">      40 </span>            :                 {
-<span class="lineNum">      41 </span>            :                         get { return _configurationManager; }
-<span class="lineNum">      42 </span>            :                 }
+<span class="lineNum">      15 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">      16 </span>            : using Microsoft.Extensions.Configuration;
+<span class="lineNum">      17 </span>            : #endif
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : namespace Cqrs.Azure.ConfigurationManager
+<span class="lineNum">      20 </span>            : {
+<span class="lineNum">      21 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :         /// Configure and start command and event handlers in a host with telemetry
+<span class="lineNum">      23 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :         public abstract class TelemetryCoreHost&lt;TAuthenticationToken&gt; : CoreHost&lt;TAuthenticationToken&gt;
+<span class="lineNum">      25 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      26 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">      27 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      28 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;. This must be set manually as dependency injection may not be ready in-time.
+<span class="lineNum">      29 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      30 </span>            :                 protected static IConfigurationManager _configurationManager = null;
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                 public static void SetConfigurationManager(IConfigurationRoot configuration)
+<span class="lineNum">      33 </span>            :                 {
+<span class="lineNum">      34 </span>            :                         _configurationManager = new CloudConfigurationManager(configuration);
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : #endif
+<span class="lineNum">      37 </span>            : #if NET472
+<span class="lineNum">      38 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      39 </span>            :                 /// Gets or sets the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      40 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      41 </span>            :                 protected static readonly IConfigurationManager _configurationManager = new CloudConfigurationManager();
+<span class="lineNum">      42 </span>            : #endif
 <span class="lineNum">      43 </span>            : 
 <span class="lineNum">      44 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      45 </span>            :                 /// Gets or sets the &lt;see cref=&quot;TelemetryClient&quot;/&gt;.
+<span class="lineNum">      45 </span>            :                 /// The &lt;see cref=&quot;IConfigurationManager&quot;/&gt; that can be use before the &lt;see cref=&quot;DependencyResolver.Current&quot;/&gt; is set.
 <span class="lineNum">      46 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      47 </span>            :                 public TelemetryClient TelemetryClient { get; private set; }
-<span class="lineNum">      48 </span>            : 
-<span class="lineNum">      49 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">      50 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      51 </span>            :                 /// The delegate used internally to get the current &lt;see cref=&quot;TelemetryConfiguration&quot;/&gt;.
-<span class="lineNum">      52 </span>            :                 /// &lt;see cref=&quot;TelemetryConfiguration.CreateDefault&quot;/&gt; will be used if this is not set.
-<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      54 </span>            :                 public static Func&lt;TelemetryConfiguration&gt; GetTelemetryConfigurationDelegate { get; set; }
-<span class="lineNum">      55 </span>            : #endif
+<span class="lineNum">      47 </span>            :                 protected override IConfigurationManager ConfigurationManager
+<span class="lineNum">      48 </span>            :                 {
+<span class="lineNum">      49 </span>            :                         get { return _configurationManager; }
+<span class="lineNum">      50 </span>            :                 }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      53 </span>            :                 /// Gets or sets the &lt;see cref=&quot;TelemetryClient&quot;/&gt;.
+<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      55 </span>            :                 public TelemetryClient TelemetryClient { get; private set; }
 <span class="lineNum">      56 </span>            : 
-<span class="lineNum">      57 </span>            :                 #region Overrides of CoreHost&lt;TAuthenticationToken&gt;
-<span class="lineNum">      58 </span>            : 
-<span class="lineNum">      59 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      60 </span>            :                 /// When overridden, allows you to configure Telemetry
+<span class="lineNum">      57 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">      58 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      59 </span>            :                 /// The delegate used internally to get the current &lt;see cref=&quot;TelemetryConfiguration&quot;/&gt;.
+<span class="lineNum">      60 </span>            :                 /// &lt;see cref=&quot;TelemetryConfiguration.CreateDefault&quot;/&gt; will be used if this is not set.
 <span class="lineNum">      61 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      62 </span><span class="lineCov">          1 :                 protected override void ConfigureTelemetry()</span>
-<span class="lineNum">      63 </span>            :                 {
-<span class="lineNum">      64 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">      65 </span>            :                         TelemetryConfiguration config = GetTelemetryConfigurationDelegate == null
-<span class="lineNum">      66 </span>            :                                 ? TelemetryConfiguration.CreateDefault()
-<span class="lineNum">      67 </span>            :                                 : GetTelemetryConfigurationDelegate() ?? TelemetryConfiguration.CreateDefault();
-<span class="lineNum">      68 </span>            :                         config.InstrumentationKey = ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.ApplicationInsightsInstrumentationKey&quot;);
-<span class="lineNum">      69 </span>            : #endif
-<span class="lineNum">      70 </span>            : #if NET472
-<span class="lineNum">      71 </span>            :                         TelemetryConfiguration.Active.InstrumentationKey = ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.ApplicationInsightsInstrumentationKey&quot;);
-<span class="lineNum">      72 </span>            : #endif
-<span class="lineNum">      73 </span>            :                         bool enabledApplicationInsightsDeveloperMode;
-<span class="lineNum">      74 </span>            :                         if (!bool.TryParse(ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.EnabledApplicationInsightsDeveloperMode&quot;), out enabledApplicationInsightsDeveloperMode))
-<span class="lineNum">      75 </span>            :                                 enabledApplicationInsightsDeveloperMode = false;
-<span class="lineNum">      76 </span>            : #if NETSTANDARD2_0
-<span class="lineNum">      77 </span>            :                         config.TelemetryChannel.DeveloperMode = enabledApplicationInsightsDeveloperMode;
-<span class="lineNum">      78 </span>            :                         TelemetryClient = new TelemetryClient (config);
-<span class="lineNum">      79 </span>            : #endif
-<span class="lineNum">      80 </span>            : #if NET472
-<span class="lineNum">      81 </span>            :                         TelemetryConfiguration.Active.TelemetryChannel.DeveloperMode = enabledApplicationInsightsDeveloperMode;
-<span class="lineNum">      82 </span>            :                         TelemetryClient = new TelemetryClient {InstrumentationKey = ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.ApplicationInsightsInstrumentationKey&quot;) };
-<span class="lineNum">      83 </span>            : #endif
-<span class="lineNum">      84 </span>            : 
-<span class="lineNum">      85 </span>            :                         TelemetryClient.TrackEvent(string.Format(&quot;{0}/Instantiating&quot;, TelemetryName));
-<span class="lineNum">      86 </span>            :                         TelemetryClient.Flush();
-<span class="lineNum">      87 </span>            :                 }
-<span class="lineNum">      88 </span>            : 
-<span class="lineNum">      89 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">      90 </span>            :                 /// Calls &lt;see cref=&quot;Prepare&quot;/&gt;, &lt;paramref name=&quot;handlerRegistation&quot;/&gt; and then &lt;see cref=&quot;Start&quot;/&gt;
-<span class="lineNum">      91 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">      92 </span><span class="lineCov">          1 :                 public override void Run(Action handlerRegistation = null)</span>
-<span class="lineNum">      93 </span>            :                 {
-<span class="lineNum">      94 </span>            :                         base.Run(handlerRegistation);
-<span class="lineNum">      95 </span>            :                         TelemetryClient.TrackEvent(string.Format(&quot;{0}/Ran&quot;, TelemetryName));
-<span class="lineNum">      96 </span>            :                         TelemetryClient.Flush();
-<span class="lineNum">      97 </span>            :                 }
-<span class="lineNum">      98 </span>            : 
-<span class="lineNum">      99 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     100 </span>            :                 /// Sets the &lt;see cref=&quot;System.Net.ServicePointManager.SecurityProtocol&quot;/&gt; to
-<span class="lineNum">     101 </span>            :                 /// &lt;see cref=&quot;System.Net.SecurityProtocolType.Tls12&quot;/&gt; | &lt;see cref=&quot;System.Net.SecurityProtocolType.Tls11&quot;/&gt; | &lt;see cref=&quot;System.Net.SecurityProtocolType.Tls&quot;/&gt;.
-<span class="lineNum">     102 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     103 </span><span class="lineCov">          1 :                 protected override void PrepareSecurityProtocol()</span>
-<span class="lineNum">     104 </span>            :                 {
-<span class="lineNum">     105 </span>            :                         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-<span class="lineNum">     106 </span>            :                 }
-<span class="lineNum">     107 </span>            : 
-<span class="lineNum">     108 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     109 </span>            :                 /// Prepare the host before registering handlers and starting the host.
+<span class="lineNum">      62 </span>            :                 public static Func&lt;TelemetryConfiguration&gt; GetTelemetryConfigurationDelegate { get; set; }
+<span class="lineNum">      63 </span>            : #endif
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                 #region Overrides of CoreHost&lt;TAuthenticationToken&gt;
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      68 </span>            :                 /// When overridden, allows you to configure Telemetry
+<span class="lineNum">      69 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      70 </span><span class="lineCov">          1 :                 protected override void ConfigureTelemetry()</span>
+<span class="lineNum">      71 </span>            :                 {
+<span class="lineNum">      72 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">      73 </span>            :                         TelemetryConfiguration config = GetTelemetryConfigurationDelegate == null
+<span class="lineNum">      74 </span>            :                                 ? TelemetryConfiguration.CreateDefault()
+<span class="lineNum">      75 </span>            :                                 : GetTelemetryConfigurationDelegate() ?? TelemetryConfiguration.CreateDefault();
+<span class="lineNum">      76 </span>            :                         config.InstrumentationKey = ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.ApplicationInsightsInstrumentationKey&quot;);
+<span class="lineNum">      77 </span>            : #endif
+<span class="lineNum">      78 </span>            : #if NET472
+<span class="lineNum">      79 </span>            :                         TelemetryConfiguration.Active.InstrumentationKey = ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.ApplicationInsightsInstrumentationKey&quot;);
+<span class="lineNum">      80 </span>            : #endif
+<span class="lineNum">      81 </span>            :                         bool enabledApplicationInsightsDeveloperMode;
+<span class="lineNum">      82 </span>            :                         if (!bool.TryParse(ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.EnabledApplicationInsightsDeveloperMode&quot;), out enabledApplicationInsightsDeveloperMode))
+<span class="lineNum">      83 </span>            :                                 enabledApplicationInsightsDeveloperMode = false;
+<span class="lineNum">      84 </span>            : #if NETSTANDARD2_0
+<span class="lineNum">      85 </span>            :                         config.TelemetryChannel.DeveloperMode = enabledApplicationInsightsDeveloperMode;
+<span class="lineNum">      86 </span>            :                         TelemetryClient = new TelemetryClient (config);
+<span class="lineNum">      87 </span>            : #endif
+<span class="lineNum">      88 </span>            : #if NET472
+<span class="lineNum">      89 </span>            :                         TelemetryConfiguration.Active.TelemetryChannel.DeveloperMode = enabledApplicationInsightsDeveloperMode;
+<span class="lineNum">      90 </span>            :                         TelemetryClient = new TelemetryClient {InstrumentationKey = ConfigurationManager.GetSetting(&quot;Cqrs.Hosts.ApplicationInsightsInstrumentationKey&quot;) };
+<span class="lineNum">      91 </span>            : #endif
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                         TelemetryClient.TrackEvent(string.Format(&quot;{0}/Instantiating&quot;, TelemetryName));
+<span class="lineNum">      94 </span>            :                         TelemetryClient.Flush();
+<span class="lineNum">      95 </span>            :                 }
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      98 </span>            :                 /// Calls &lt;see cref=&quot;Prepare&quot;/&gt;, &lt;paramref name=&quot;handlerRegistation&quot;/&gt; and then &lt;see cref=&quot;Start&quot;/&gt;
+<span class="lineNum">      99 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     100 </span><span class="lineCov">          1 :                 public override void Run(Action handlerRegistation = null)</span>
+<span class="lineNum">     101 </span>            :                 {
+<span class="lineNum">     102 </span>            :                         base.Run(handlerRegistation);
+<span class="lineNum">     103 </span>            :                         TelemetryClient.TrackEvent(string.Format(&quot;{0}/Ran&quot;, TelemetryName));
+<span class="lineNum">     104 </span>            :                         TelemetryClient.Flush();
+<span class="lineNum">     105 </span>            :                 }
+<span class="lineNum">     106 </span>            : 
+<span class="lineNum">     107 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     108 </span>            :                 /// Sets the &lt;see cref=&quot;System.Net.ServicePointManager.SecurityProtocol&quot;/&gt; to
+<span class="lineNum">     109 </span>            :                 /// &lt;see cref=&quot;System.Net.SecurityProtocolType.Tls12&quot;/&gt; | &lt;see cref=&quot;System.Net.SecurityProtocolType.Tls11&quot;/&gt; | &lt;see cref=&quot;System.Net.SecurityProtocolType.Tls&quot;/&gt;.
 <span class="lineNum">     110 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     111 </span><span class="lineCov">          1 :                 protected override void Prepare()</span>
+<span class="lineNum">     111 </span><span class="lineCov">          1 :                 protected override void PrepareSecurityProtocol()</span>
 <span class="lineNum">     112 </span>            :                 {
-<span class="lineNum">     113 </span>            :                         base.Prepare();
-<span class="lineNum">     114 </span>            : 
-<span class="lineNum">     115 </span>            :                         TelemetryClient.TrackEvent(string.Format(&quot;{0}/Prepared&quot;, TelemetryName));
-<span class="lineNum">     116 </span>            :                 }
-<span class="lineNum">     117 </span>            : 
-<span class="lineNum">     118 </span>            :                 /// &lt;summary&gt;
-<span class="lineNum">     119 </span>            :                 /// Start the host post preparing and registering handlers.
-<span class="lineNum">     120 </span>            :                 /// &lt;/summary&gt;
-<span class="lineNum">     121 </span><span class="lineCov">          1 :                 protected override void Start()</span>
-<span class="lineNum">     122 </span>            :                 {
-<span class="lineNum">     123 </span>            :                         base.Start();
-<span class="lineNum">     124 </span>            : 
-<span class="lineNum">     125 </span>            :                         TelemetryClient.TrackEvent(string.Format(&quot;{0}/Started&quot;, TelemetryName));
-<span class="lineNum">     126 </span>            :                 }
-<span class="lineNum">     127 </span>            : 
-<span class="lineNum">     128 </span>            :                 #endregion
-<span class="lineNum">     129 </span>            :         }
-<span class="lineNum">     130 </span>            : }
+<span class="lineNum">     113 </span>            :                         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+<span class="lineNum">     114 </span>            :                 }
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     117 </span>            :                 /// Prepare the host before registering handlers and starting the host.
+<span class="lineNum">     118 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     119 </span><span class="lineCov">          1 :                 protected override void Prepare()</span>
+<span class="lineNum">     120 </span>            :                 {
+<span class="lineNum">     121 </span>            :                         base.Prepare();
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :                         TelemetryClient.TrackEvent(string.Format(&quot;{0}/Prepared&quot;, TelemetryName));
+<span class="lineNum">     124 </span>            :                 }
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     127 </span>            :                 /// Start the host post preparing and registering handlers.
+<span class="lineNum">     128 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     129 </span><span class="lineCov">          1 :                 protected override void Start()</span>
+<span class="lineNum">     130 </span>            :                 {
+<span class="lineNum">     131 </span>            :                         base.Start();
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :                         TelemetryClient.TrackEvent(string.Format(&quot;{0}/Started&quot;, TelemetryName));
+<span class="lineNum">     134 </span>            :                 }
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :                 #endregion
+<span class="lineNum">     137 </span>            :         }
+<span class="lineNum">     138 </span>            : }
 </pre>
       </td>
     </tr>

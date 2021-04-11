@@ -1,10 +1,12 @@
 var NAVTREEINDEX0 =
 {
 "annotated.html":[1,0],
-"classCqrsWebJobProgram.html":[1,0,3],
-"classCqrsWebJobProgram_a2602ec293cadb25dbca9d63be1956818.html#a2602ec293cadb25dbca9d63be1956818":[1,0,3,1],
-"classCqrsWebJobProgram_a6a4f817351105cb5482ebb7a30c34ebf.html#a6a4f817351105cb5482ebb7a30c34ebf":[1,0,3,2],
-"classCqrsWebJobProgram_aef553539b5ec25d0cdb061fd9895c851.html#aef553539b5ec25d0cdb061fd9895c851":[1,0,3,0],
+"classCqrsFunction.html":[1,0,3],
+"classCqrsFunction_aed7b98ccef40bd4b1e7da73f165dbd15.html#aed7b98ccef40bd4b1e7da73f165dbd15":[1,0,3,0],
+"classCqrsWebJobProgram.html":[1,0,4],
+"classCqrsWebJobProgram_a2602ec293cadb25dbca9d63be1956818.html#a2602ec293cadb25dbca9d63be1956818":[1,0,4,1],
+"classCqrsWebJobProgram_a6a4f817351105cb5482ebb7a30c34ebf.html#a6a4f817351105cb5482ebb7a30c34ebf":[1,0,4,2],
+"classCqrsWebJobProgram_aef553539b5ec25d0cdb061fd9895c851.html#aef553539b5ec25d0cdb061fd9895c851":[1,0,4,0],
 "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBus.html":[1,0,0,0,0,0],
 "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy.html":[1,0,0,0,0,1],
 "classCqrs_1_1Akka_1_1Commands_1_1AkkaCommandBusProxy_1_1BusActor.html":[1,0,0,0,0,1,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand_a9e691733ed2512c198da8ad934bd79cb.html#a9e691733ed2512c198da8ad934bd79cb":[1,0,0,0,5,0,1,4,2],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand_acd3a75723758c361da638f40fab6d574.html#acd3a75723758c361da638f40fab6d574":[1,0,0,0,5,0,1,4,0],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand_ae04217f6bfc19727e462f0077b990b34.html#ae04217f6bfc19727e462f0077b990b34":[1,0,0,0,5,0,1,4,4],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded.html":[1,0,0,0,5,0,2,1],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a025b7df73452f8e22337eabc4d11fab9.html#a025b7df73452f8e22337eabc4d11fab9":[1,0,0,0,5,0,2,1,0],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded_a08eef17f722c411bea6ad6adb871ddfb.html#a08eef17f722c411bea6ad6adb871ddfb":[1,0,0,0,5,0,2,1,6]
+"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded.html":[1,0,0,0,5,0,2,1]
 };

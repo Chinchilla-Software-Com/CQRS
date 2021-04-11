@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2020-10-09 10:16:06</td>
+            <td class="headerValue">2021-04-11 20:43:13</td>
             <td></td>
           </tr>
           <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -167,7 +167,7 @@
 <span class="lineNum">     109 </span><span class="lineCov">          1 :                 protected virtual void RegisterBasicSerives()</span>
 <span class="lineNum">     110 </span>            :                 {
 <span class="lineNum">     111 </span>            :                         string authenticationType;
-<span class="lineNum">     112 </span>            :                         if (!Resolve&lt;IConfigurationManager&gt;().TryGetSetting(&quot;Cqrs.AuthenticationTokenType&quot;, out authenticationType))
+<span class="lineNum">     112 </span>            :                         if (!Resolve&lt;IConfigurationManager&gt;().TryGetSetting(&quot;Cqrs.AuthenticationTokenType&quot;, out authenticationType) || string.IsNullOrWhiteSpace(authenticationType))
 <span class="lineNum">     113 </span>            :                                 authenticationType = &quot;Guid&quot;;
 <span class="lineNum">     114 </span>            : 
 <span class="lineNum">     115 </span>            :                         if (authenticationType.ToLowerInvariant() == &quot;int&quot; || authenticationType.ToLowerInvariant() == &quot;integer&quot;)

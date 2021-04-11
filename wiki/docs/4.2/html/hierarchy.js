@@ -616,6 +616,9 @@ var hierarchy =
     [ "Cqrs.Ninject.Azure.WebJobs.CqrsNinjectJobHost< Guid, DefaultAuthenticationTokenHelper >", "classCqrs_1_1Ninject_1_1Azure_1_1WebJobs_1_1CqrsNinjectJobHost.html", [
       [ "CqrsWebJobProgram", "classCqrsWebJobProgram.html", null ]
     ] ],
+    [ "Cqrs.Ninject.Azure.Wcf.CqrsWebHost< Guid, DefaultAuthenticationTokenHelper >", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html", [
+      [ "CqrsFunction", "classCqrsFunction.html", null ]
+    ] ],
     [ "Cqrs.Ninject.Azure.Wcf.CqrsWebHost< TAuthenticationToken, TAuthenticationTokenHelper, WebHostModule >", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html", [
       [ "Cqrs.Ninject.Azure.Wcf.CqrsWebHost< TAuthenticationToken, TAuthenticationTokenHelper, TWebHostModule >", "classCqrs_1_1Ninject_1_1Azure_1_1Wcf_1_1CqrsWebHost.html", null ]
     ] ],
