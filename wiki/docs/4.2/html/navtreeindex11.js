@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser.html":[1,0,0,2,4,15],
+"interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_a7454ac36eca3dd37d0c596e0406b4c81.html#a7454ac36eca3dd37d0c596e0406b4c81":[1,0,0,2,4,15,2],
+"interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_ab65c6e4a8c2a660ceb2236ee11fd33f6.html#ab65c6e4a8c2a660ceb2236ee11fd33f6":[1,0,0,2,4,15,1],
 "interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_aed98f32ea5f28ee29dad3b3d8bad0d65.html#aed98f32ea5f28ee29dad3b3d8bad0d65":[1,0,0,2,4,15,0],
 "interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_af6e1bca15164a08308969794b089c31b.html#af6e1bca15164a08308969794b089c31b":[1,0,0,2,4,15,3],
 "interfaceCqrs_1_1Bus_1_1IBusHelper.html":[1,0,0,3,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "interfaceCqrs_1_1Sql_1_1DataStores_1_1IExpressionTreeConverter_ae5904ce74f9184703c51b58840770172.html#ae5904ce74f9184703c51b58840770172":[1,0,0,22,0,2,1],
 "interfaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1IFormDataConverterLogger.html":[1,0,0,25,3,0,1,0,1],
 "interfaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1IFormDataConverterLogger_a0067054a5f882d2687e8fd9f9ae38e9b.html#a0067054a5f882d2687e8fd9f9ae38e9b":[1,0,0,25,3,0,1,0,1,2],
-"interfaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1IFormDataConverterLogger_a53cf31f01e5ceb5efcc8ed3d874c319a.html#a53cf31f01e5ceb5efcc8ed3d874c319a":[1,0,0,25,3,0,1,0,1,0],
-"interfaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1IFormDataConverterLogger_a7da0b7749a50f6fed2cb5ab0d8efef2a.html#a7da0b7749a50f6fed2cb5ab0d8efef2a":[1,0,0,25,3,0,1,0,1,1],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub.html":[1,0,0,25,4,0,0],
-"interfaceCqrs_1_1WebApi_1_1SignalR_1_1Hubs_1_1INotificationHub_a6a50d35b8df69bb6d5fa9d31902c8ace.html#a6a50d35b8df69bb6d5fa9d31902c8ace":[1,0,0,25,4,0,0,1]
+"interfaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1IFormDataConverterLogger_a53cf31f01e5ceb5efcc8ed3d874c319a.html#a53cf31f01e5ceb5efcc8ed3d874c319a":[1,0,0,25,3,0,1,0,1,0]
 };

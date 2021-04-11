@@ -1,5 +1,8 @@
 var NAVTREEINDEX10 =
 {
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_1_1LogItem_a300199a6b543a7a53b81b18aeb10652b.html#a300199a6b543a7a53b81b18aeb10652b":[1,0,0,25,3,0,1,0,0,1,0],
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_1_1LogItem_ae02eb8b73e2614a9f24eb87bfaa6c23f.html#ae02eb8b73e2614a9f24eb87bfaa6c23f":[1,0,0,25,3,0,1,0,0,1,1],
+"classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a232c53d2c78cab6b419a37306d64c74b.html#a232c53d2c78cab6b419a37306d64c74b":[1,0,0,25,3,0,1,0,0,2],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a5cdd85325e839d1238b0384fba15f595.html#a5cdd85325e839d1238b0384fba15f595":[1,0,0,25,3,0,1,0,0,4],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a72fcac7560a05dfebbff772a4216a5d8.html#a72fcac7560a05dfebbff772a4216a5d8":[1,0,0,25,3,0,1,0,0,6],
 "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger_a8e3cd3f8d5e7b3d2b24b67b2ce3e69df.html#a8e3cd3f8d5e7b3d2b24b67b2ce3e69df":[1,0,0,25,3,0,1,0,0,3],
@@ -83,8 +86,8 @@ var NAVTREEINDEX10 =
 "functions_e.html":[1,3,0,5],
 "functions_enum.html":[1,3,3],
 "functions_f.html":[1,3,0,6],
-"functions_func.html":[1,3,1,0],
 "functions_func.html":[1,3,1],
+"functions_func.html":[1,3,1,0],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -116,8 +119,8 @@ var NAVTREEINDEX10 =
 "functions_n.html":[1,3,0,14],
 "functions_o.html":[1,3,0,15],
 "functions_p.html":[1,3,0,16],
-"functions_prop.html":[1,3,4,0],
 "functions_prop.html":[1,3,4],
+"functions_prop.html":[1,3,4,0],
 "functions_prop_a.html":[1,3,4,1],
 "functions_prop_b.html":[1,3,4,2],
 "functions_prop_c.html":[1,3,4,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX10 =
 "interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_ac5cbeb6e8bbdb1a98501f0b746c12abd.html#ac5cbeb6e8bbdb1a98501f0b746c12abd":[1,0,0,2,4,14,3],
 "interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_ad25c4130a4357504cfccba49999493c7.html#ad25c4130a4357504cfccba49999493c7":[1,0,0,2,4,14,4],
 "interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_ad519bd5656e162ab4fefb552b8eb9e58.html#ad519bd5656e162ab4fefb552b8eb9e58":[1,0,0,2,4,14,0],
-"interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_aef39e7d297ccaa36b02ccc3012dc5906.html#aef39e7d297ccaa36b02ccc3012dc5906":[1,0,0,2,4,14,8],
-"interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser.html":[1,0,0,2,4,15],
-"interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_a7454ac36eca3dd37d0c596e0406b4c81.html#a7454ac36eca3dd37d0c596e0406b4c81":[1,0,0,2,4,15,2],
-"interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IMessageSerialiser_ab65c6e4a8c2a660ceb2236ee11fd33f6.html#ab65c6e4a8c2a660ceb2236ee11fd33f6":[1,0,0,2,4,15,1]
+"interfaceCqrs_1_1Azure_1_1ServiceBus_1_1IAzureBusHelper_aef39e7d297ccaa36b02ccc3012dc5906.html#aef39e7d297ccaa36b02ccc3012dc5906":[1,0,0,2,4,14,8]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX8 =
 {
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory_ad55763a7e19193cfecf2abca3759f2c6.html#ad55763a7e19193cfecf2abca3759f2c6":[1,0,0,18,1,1,2,0,0],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory_ae0da37bd91333ad782058d32d4de2594.html#ae0da37bd91333ad782058d32d4de2594":[1,0,0,18,1,1,2,0,3],
+"classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Factories_1_1TestAzureDocumentDbDataStoreConnectionStringFactory_aeac8ecfdbb2d1d7f18105f2e535c51fe.html#aeac8ecfdbb2d1d7f18105f2e535c51fe":[1,0,0,18,1,1,2,0,2],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusPublisherModule.html":[1,0,0,18,1,2,0,0,0],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusPublisherModule_a35b41457bda992d0401b1c597ad31114.html#a35b41457bda992d0401b1c597ad31114":[1,0,0,18,1,2,0,0,0,0],
 "classCqrs_1_1Ninject_1_1Azure_1_1ServiceBus_1_1CommandBus_1_1Configuration_1_1AzureCommandBusPublisherModule_a3c51f895ace091c8b80e579ab28e594f.html#a3c51f895ace091c8b80e579ab28e594f":[1,0,0,18,1,2,0,0,0,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX8 =
 "classCqrs_1_1Repositories_1_1Repository_a2f4009847fa03a897c6698fd5a92d89f.html#a2f4009847fa03a897c6698fd5a92d89f":[1,0,0,19,3,0],
 "classCqrs_1_1Repositories_1_1Repository_a4447451b7dbcfcd68dfa3fa65a41f357.html#a4447451b7dbcfcd68dfa3fa65a41f357":[1,0,0,19,3,12],
 "classCqrs_1_1Repositories_1_1Repository_a444e9dfe4710be90940dbb6dec9d856f.html#a444e9dfe4710be90940dbb6dec9d856f":[1,0,0,19,3,7],
-"classCqrs_1_1Repositories_1_1Repository_a4f83093a92d8141cdc2b908bbbd97f32.html#a4f83093a92d8141cdc2b908bbbd97f32":[1,0,0,19,3,9],
-"classCqrs_1_1Repositories_1_1Repository_a5d5d78262533aa2ab32eddbab83869bd.html#a5d5d78262533aa2ab32eddbab83869bd":[1,0,0,19,3,2],
-"classCqrs_1_1Repositories_1_1Repository_a6b6b50d476a351fc7fbd194cb8fa44d0.html#a6b6b50d476a351fc7fbd194cb8fa44d0":[1,0,0,19,3,5],
-"classCqrs_1_1Repositories_1_1Repository_a6ed69cb5542164d9de81b0fa8a549d3e.html#a6ed69cb5542164d9de81b0fa8a549d3e":[1,0,0,19,3,6]
+"classCqrs_1_1Repositories_1_1Repository_a4f83093a92d8141cdc2b908bbbd97f32.html#a4f83093a92d8141cdc2b908bbbd97f32":[1,0,0,19,3,9]
 };
