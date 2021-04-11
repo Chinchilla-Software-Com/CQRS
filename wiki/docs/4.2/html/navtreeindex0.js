@@ -2,6 +2,8 @@ var NAVTREEINDEX0 =
 {
 "annotated.html":[1,0],
 "classCqrsFunction.html":[1,0,3],
+"classCqrsFunction_a2995e88aa2ecef6e6c2743dc251f37c7.html#a2995e88aa2ecef6e6c2743dc251f37c7":[1,0,3,2],
+"classCqrsFunction_a9153af6511e092000ad88bde77435954.html#a9153af6511e092000ad88bde77435954":[1,0,3,1],
 "classCqrsFunction_aed7b98ccef40bd4b1e7da73f165dbd15.html#aed7b98ccef40bd4b1e7da73f165dbd15":[1,0,3,0],
 "classCqrsWebJobProgram.html":[1,0,4],
 "classCqrsWebJobProgram_a2602ec293cadb25dbca9d63be1956818.html#a2602ec293cadb25dbca9d63be1956818":[1,0,4,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand_a5f954bf75f49918ab48c3a09df50111f.html#a5f954bf75f49918ab48c3a09df50111f":[1,0,0,0,5,0,1,4,5],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand_a8074ae409596c6e5d46e363adbfb9354.html#a8074ae409596c6e5d46e363adbfb9354":[1,0,0,0,5,0,1,4,3],
 "classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand_a9e691733ed2512c198da8ad934bd79cb.html#a9e691733ed2512c198da8ad934bd79cb":[1,0,0,0,5,0,1,4,2],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand_acd3a75723758c361da638f40fab6d574.html#acd3a75723758c361da638f40fab6d574":[1,0,0,0,5,0,1,4,0],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand_ae04217f6bfc19727e462f0077b990b34.html#ae04217f6bfc19727e462f0077b990b34":[1,0,0,0,5,0,1,4,4],
-"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Events_1_1ConversationEnded.html":[1,0,0,0,5,0,2,1]
+"classCqrs_1_1Akka_1_1Tests_1_1Unit_1_1Commands_1_1UpdateCompletedConversationReportCommand_acd3a75723758c361da638f40fab6d574.html#acd3a75723758c361da638f40fab6d574":[1,0,0,0,5,0,1,4,0]
 };

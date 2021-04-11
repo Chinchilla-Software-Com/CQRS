@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_a78f9987855e2c4c370c624b0edb97f4d.html#a78f9987855e2c4c370c624b0edb97f4d":[1,0,0,2,0,1,7,3],
+"classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_a7bb0a4b42242b523df90611e8c28a4e6.html#a7bb0a4b42242b523df90611e8c28a4e6":[1,0,0,2,0,1,7,7],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_a7bfe58a97886ad7832d5640b626c1ee5.html#a7bfe58a97886ad7832d5640b626c1ee5":[1,0,0,2,0,1,7,5],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_add2ff350d26fed88d8c18737d3895663.html#add2ff350d26fed88d8c18737d3895663":[1,0,0,2,0,1,7,4],
 "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory_adf49df18fd687cf39ee1c389c338e364.html#adf49df18fd687cf39ee1c389c338e364":[1,0,0,2,0,1,7,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1Authentication_1_1AzureSingleSignOnToken_a72467ad344da70ee03355d03f9a3f25e.html#a72467ad344da70ee03355d03f9a3f25e":[1,0,0,2,2,4,0,0,2],
 "classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1Authentication_1_1AzureSingleSignOnToken_ad8db4fad59b85056e4e37c9e29226425.html#ad8db4fad59b85056e4e37c9e29226425":[1,0,0,2,2,4,0,0,3],
 "classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository.html":[1,0,0,2,2,4,1],
-"classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_a0cd5703c46fde3eeefcb02b1d0113640.html#a0cd5703c46fde3eeefcb02b1d0113640":[1,0,0,2,2,4,1,0],
-"classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_a22c58163e101a6cb80f891bed6114380.html#a22c58163e101a6cb80f891bed6114380":[1,0,0,2,2,4,1,2],
-"classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_ac9ceeed80a02ced9a45b3443cd1f453f.html#ac9ceeed80a02ced9a45b3443cd1f453f":[1,0,0,2,2,4,1,1]
+"classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1AzureRepository_a0cd5703c46fde3eeefcb02b1d0113640.html#a0cd5703c46fde3eeefcb02b1d0113640":[1,0,0,2,2,4,1,0]
 };
