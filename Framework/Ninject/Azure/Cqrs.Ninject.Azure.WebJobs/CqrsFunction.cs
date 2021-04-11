@@ -54,7 +54,7 @@ public class CqrsFunction : CqrsWebHost<Guid, DefaultAuthenticationTokenHelper>
 #if NETSTANDARD2_0
 		SetConfigurationManager(config);
 #endif
-		ConfigurationExtensions.GetExecutionPath = () => Path.Combine(context.FunctionDirectory, "/../bin");
+		ConfigurationExtensions.GetExecutionPath = () => Path.Combine(context.FunctionDirectory, "..", "bin");
 		HasSetExecutionPath = true;
 	}
 }
