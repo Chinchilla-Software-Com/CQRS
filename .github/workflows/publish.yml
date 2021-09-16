@@ -34,23 +34,39 @@ jobs:
       run: dotnet build --configuration Release .\Scheduler\Scheduler.Cqrs.sln
     - name: Pack with dotnet CLI
       run: |
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Cqrs\Cqrs.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.EventHub\Cqrs.Azure.EventHub.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.WebJobs\Cqrs.Azure.WebJobs.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Cqrs.Ninject\Cqrs.Ninject.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.ServiceBus.CommandBus\Cqrs.Ninject.Azure.ServiceBus.CommandBus.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.ServiceBus.EventBus\Cqrs.Ninject.Azure.ServiceBus.EventBus.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.EventHub.CommandBus\Cqrs.Ninject.Azure.EventHub.CommandBus.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.EventHub.EventBus\Cqrs.Ninject.Azure.EventHub.EventBus.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.Wcf\Cqrs.Ninject.Azure.Wcf.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.WebJobs\Cqrs.Ninject.Azure.WebJobs.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore\_EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Scheduler\Cqrs.Scheduler.Commands\Cqrs.Scheduler.Commands.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Scheduler\Cqrs.Scheduler.Events\Cqrs.Scheduler.Events.csproj -p:PackageVersion=${{ env.nuGetVersionNumber }} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Cqrs\Cqrs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.EventHub\Cqrs.Azure.EventHub.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.WebJobs\Cqrs.Azure.WebJobs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Cqrs.Ninject\Cqrs.Ninject.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.ServiceBus.CommandBus\Cqrs.Ninject.Azure.ServiceBus.CommandBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.ServiceBus.EventBus\Cqrs.Ninject.Azure.ServiceBus.EventBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.EventHub.CommandBus\Cqrs.Ninject.Azure.EventHub.CommandBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.EventHub.EventBus\Cqrs.Ninject.Azure.EventHub.EventBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.Wcf\Cqrs.Ninject.Azure.Wcf.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.WebJobs\Cqrs.Ninject.Azure.WebJobs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore\_EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Scheduler\Cqrs.Scheduler.Commands\Cqrs.Scheduler.Commands.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Scheduler\Cqrs.Scheduler.Events\Cqrs.Scheduler.Events.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
     - name: Push with dotnet CLI
       run: |
         .nuget\NuGet.exe source Add -Name "GitHub" -Source "https://nuget.pkg.github.com/cdmdotnet/index.json" -UserName cdmdotnet -Password ${{ secrets.NUGET_PUBLISH_TOKEN }}
         .nuget\NuGet.exe setapikey ${{ secrets.NUGET_PUBLISH_TOKEN }} -Source "https://nuget.pkg.github.com/cdmdotnet/index.json"
         dotnet nuget push Packaged\*.nupkg -k ${{ secrets.NUGET_PUBLISH_TOKEN }} -s https://api.nuget.org/v3/index.json
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Bump version and push tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v5.6
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        custom_tag: releases/${{ env.nuGetVersionNumber }}/${{ env.nuGetFullVersionNumber}}
+    - name: Create a GitHub release
+      uses: ncipollo/release-action@v1
+      with:
+        tag: ${{ steps.tag_version.outputs.new_tag }}
+        name: Release ${{ steps.tag_version.outputs.new_tag }}
+        body: ${{ steps.tag_version.outputs.changelog }}
