@@ -1,0 +1,113 @@
+{
+	"IsEncrypted": false,
+	"Values": {
+		"AzureWebJobsStorage": "UseDevelopmentStorage=true",
+		"FUNCTIONS_WORKER_RUNTIME": "dotnet"
+	},
+	"Chinchilla": {
+		"Logging": {
+			"EnableThreadedLoggingOutput": "true",
+			"EnableThreadedLogging": "true",
+			"UseApplicationInsightTelemetryHelper": "false",
+			"ModuleName": "Cqrs.Scheduler.TriggerScheduler",
+			"Instance": "AU-East",
+			"Environment": "Local",
+			"EnvironmentInstance": "One",
+			"SqlDatabaseTableName": "TriggerLogs"
+		}
+	},
+	"Cqrs": {
+		"AuthenticationTokenType": "Guid",
+		"SetupForSqlLogging": false,
+		"Hosts": {
+			"AppName": "Cqrs.Scheduler.TimeZones",
+			"ApplicationInsightsInstrumentationKey": "ApiKey",
+			"EnableEventReceiving": false,
+			"EnableCommandReceiving": true
+		},
+		"MessageBus": {
+			"BlackListProcessing": "false"
+		},
+		"WebJobs": {
+			"EnabledApplicationInsightsDeveloperMode": false,
+			"DisableWebJobHostControl": true
+		},
+		"Azure": {
+			"CommandBus": {
+				// Endpoint=sb://{Namespace}.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey={Key}
+				"ConnectionString": "Endpoint=sb://cg-prod-scheduler-au-east.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=MFruMYCnOeFmsCEJNwwnSXTTGyTilb91wc3IIIY0O14=",
+				"Publisher": {
+					"UseApplicationInsightTelemetryHelper": true
+				},
+				"Receiver": {
+					"UseApplicationInsightTelemetryHelper": true
+				},
+				"PrivateCommand": {
+					"Topic": {
+						"Name": "Cqrs.Scheduler.Commands-Local.Private",
+						"Subscription": {
+							"Name": "Cqrs.Timezone-Publisher"
+						}
+					}
+				},
+				"PublicCommand": {
+					"Topic": {
+						"Name": "Cqrs.Scheduler.Commands-Local.Public",
+						"Subscription": {
+							"Name": "Cqrs.Timezone-Publisher"
+						}
+					}
+				},
+				"Topics": {
+					"Subscriptions": {
+						"Filter": "Type IN ( 'Cqrs.Scheduler.Commands.PublishTimeZonesCommand' )"
+					}
+				}
+			},
+			"EventBus": {
+				// Endpoint=sb://{Namespace}.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey={Key}
+				"ConnectionString": "Endpoint=sb://cg-prod-scheduler-au-east.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=MFruMYCnOeFmsCEJNwwnSXTTGyTilb91wc3IIIY0O14=",
+				"Publisher": {
+					"UseApplicationInsightTelemetryHelper": true
+				},
+				"Receiver": {
+					"UseApplicationInsightTelemetryHelper": true
+				},
+				"PrivateEvent": {
+					"Topic": {
+						"Name": "Cqrs.Scheduler.Events-Local.Private",
+						"Subscription": {
+							"Name": "Cqrs.Timezone-Publisher"
+						}
+					}
+				},
+				"PublicEvent": {
+					"Topic": {
+						"Name": "Cqrs.Scheduler.Events-Local.Public",
+						"Subscription": {
+							"Name": "Cqrs.Timezone-Publisher"
+						}
+					}
+				}
+			}
+		},
+
+		"Scheduler": {
+			"Commands": {
+				"PublishTimeZonesCommand": {
+					"IsRequired": true
+				}
+			},
+			"FindMidnightTimeZones": true,
+			"FindOnTheHourTimeZones": true, // false
+			"FindQuarterPastTheHourTimeZones": true, // false
+			"FindHalfPastTheHourTimeZones": true, // false
+			"FindQuarterToTheHourTimeZones": true, // false
+			// This will switch to UTC ONLY and not report ALL timezones
+			"OnlyProcessUtcTimezone": false
+		}
+	},
+	"ConnectionStrings": {
+		"Logs": "UseDevelopmentStorage=true"
+	}
+}

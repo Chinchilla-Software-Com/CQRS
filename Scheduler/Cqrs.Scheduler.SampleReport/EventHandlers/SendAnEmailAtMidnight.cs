@@ -1,4 +1,12 @@
-﻿namespace Cqrs.Scheduler.SampleReport.EventHandlers
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+namespace Cqrs.Scheduler.SampleReport.EventHandlers
 {
 	using System;
 	using System.Net.Mail;
