@@ -45,6 +45,16 @@ jobs:
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore\_EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Scheduler\Cqrs.Scheduler.Commands\Cqrs.Scheduler.Commands.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Scheduler\Cqrs.Scheduler.Events\Cqrs.Scheduler.Events.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+
+name: Bump version and push tag
+
+on: [push]
+
+env:
+  nuGetVersionNumber: 4.3
+  nuGetFullVersionNumber: 4.3.${{ github.run_number }}.${{ github.run_id }}
+
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:

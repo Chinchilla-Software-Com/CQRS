@@ -54,11 +54,21 @@ jobs:
         .nuget\NuGet.exe source Add -Name "GitHub" -Source "https://nuget.pkg.github.com/cdmdotnet/index.json" -UserName cdmdotnet -Password ${{ secrets.NUGET_PUBLISH_TOKEN }}
         .nuget\NuGet.exe setapikey ${{ secrets.NUGET_PUBLISH_TOKEN }} -Source "https://nuget.pkg.github.com/cdmdotnet/index.json"
         dotnet nuget push Packaged\*.nupkg -k ${{ secrets.NUGET_PUBLISH_TOKEN }} -s https://api.nuget.org/v3/index.json
+
+name: Bump version and push release
+
+on: [push]
+
+env:
+  nuGetVersionNumber: 4.3
+  nuGetFullVersionNumber: 4.3.${{ github.run_number }}.${{ github.run_id }}
+
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Bump version and push tag
+    - name: Bump version and push release
       id: tag_version
       uses: mathieudutour/github-tag-action@v5.6
       with:
