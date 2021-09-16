@@ -19,3 +19,6 @@ This sample action sends an email advising the recipient as each time-zone reach
 The email address the email gets sent to is configured in the app.config along with the SMTP settings.
 
 When testing or running this locally, always start the Cqrs.Scheduler.SampleReport application first, followed by Cqrs.Scheduler.TimeZones, and finally run the Cqrs.Scheduler.Trigger Azure Function.
+
+NOTE for publishing to Azure
+Make sure you set the WebJobs to continuous as they are self managing.
