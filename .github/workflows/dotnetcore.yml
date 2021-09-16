@@ -2,6 +2,10 @@ name: Build Core Framework
 
 on: [push]
 
+env:
+  nuGetVersionNumber: 4.3
+  nuGetFullVersionNumber: 4.3.${{ github.run_number }}.${{ github.run_id }}
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -26,4 +30,4 @@ jobs:
       run: dotnet build --configuration Release .\Scheduler\Cqrs.Scheduler.sln
     - name: Pack with dotnet CLI
       run: |
-        forfiles /s /m Cqrs*.csproj /c "cmd /c dotnet pack @PATH -c Release -p:Version=4.2 -p:PackageVersion=4.2 --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o ../Packaged"
+        forfiles /s /m Cqrs*.csproj /c "cmd /c dotnet pack @PATH -c Release -p:Version=${{ env.nuGetVersionNumber }} -p:PackageVersion=${{ env.nuGetVersionNumber }} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o ../Packaged"
