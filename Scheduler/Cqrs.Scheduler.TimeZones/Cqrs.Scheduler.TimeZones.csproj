@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net472</TargetFrameworks>
-		<RootNamespace>Cqrs.Scheduler.SampleReport</RootNamespace>
+		<TargetFrameworks>netcoreapp3.1;net472</TargetFrameworks>
+		<RootNamespace>Cqrs.Scheduler.TimeZones</RootNamespace>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<DebugType>full</DebugType>
 		<DebugSymbols>true</DebugSymbols>
@@ -11,8 +11,8 @@
 
 	<PropertyGroup>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<ApplicationIcon>Cqrs.Scheduler.SampleReport.ico</ApplicationIcon>
-		<StartupObject>Cqrs.Scheduler.SampleReport.SampleReportWebJob</StartupObject>
+		<ApplicationIcon>Cqrs.Scheduler.TimeZones.ico</ApplicationIcon>
+		<StartupObject>Cqrs.Scheduler.TimeZones.TimeZoneWebJob</StartupObject>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(TargetFramework)' == 'net472' ">
@@ -66,6 +66,12 @@
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		  <CopyToPublishDirectory>Never</CopyToPublishDirectory>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="CommandHandlers\PublishTimeZonesCommandHandler.partial.cs">
+			<DependentUpon>CommandHandlers\PublishTimeZonesCommandHandler.cs</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 </Project>

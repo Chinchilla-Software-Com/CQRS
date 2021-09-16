@@ -9,20 +9,20 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Cqrs.Events;
+using Cqrs.Commands;
 using Cqrs.Messages;
+using Newtonsoft.Json;
 
-namespace Cqrs.Scheduler.Events
+namespace Cqrs.Scheduler.Commands
 {
-	/// <summary>
-	/// A <see cref="TimeZoneInfo"/> event
-	/// </summary>
 	[DataContract]
-	public class TimeZoneEvent : IEvent<Guid>, ITelemeteredMessage
+	public class PublishTimeZonesCommand : ICommand<Guid>, ITelemeteredMessage
 	{
-		private string _timezoneId;
-
-		private short _localHour;
+		public PublishTimeZonesCommand()
+		{
+			((ICommand<Guid>)this).Id = Guid.NewGuid();
+			SetTelemetryName();
+		}
 
 		#region Implementation of IMessageWithAuthenticationToken<Guid>
 
@@ -30,29 +30,26 @@ namespace Cqrs.Scheduler.Events
 		/// The authentication token of the entity that triggered the event to be raised.
 		/// </summary>
 		[DataMember]
+		[JsonProperty]
 		Guid IMessageWithAuthenticationToken<Guid>.AuthenticationToken { get; set; }
 
 		#endregion
 
-		#region Implementation of IEvent<Guid>
+		#region Implementation of ICommand<Guid>
 
 		/// <summary>
-		/// The identifier of the event itself.
+		/// The identifier of the command itself.
 		/// </summary>
 		[DataMember]
-		Guid IEvent<Guid>.Id { get; set; }
+		[JsonProperty]
+		Guid ICommand<Guid>.Id { get; set; }
 
 		/// <summary>
 		/// The new version number.
 		/// </summary>
 		[DataMember]
-		int IEvent<Guid>.Version { get; set; }
-
-		/// <summary>
-		/// The date and time the event was raised or published.
-		/// </summary>
-		[DataMember]
-		DateTimeOffset IEvent<Guid>.TimeStamp { get; set; }
+		[JsonProperty]
+		int ICommand<Guid>.ExpectedVersion { get; set; }
 
 
 		#endregion
@@ -63,71 +60,31 @@ namespace Cqrs.Scheduler.Events
 		/// An identifier used to group together several <see cref="IMessage"/>. Any <see cref="IMessage"/> with the same <see cref="IMessage.CorrelationId"/> were triggered by the same initiating request.
 		/// </summary>
 		[DataMember]
+		[JsonProperty]
 		Guid IMessage.CorrelationId { get; set; }
 
 		/// <summary>
 		/// The originating framework this message was sent from.
 		/// </summary>
 		[DataMember]
+		[JsonProperty]
 		string IMessage.OriginatingFramework { get; set; }
 
 		/// <summary>
 		/// The frameworks this <see cref="IMessage"/> has been delivered to/sent via already.
 		/// </summary>
 		[DataMember]
+		[JsonProperty]
 		IEnumerable<string> IMessage.Frameworks { get; set; }
 
 		#endregion
-
-		/// <summary>
-		/// The <see cref="TimeZoneInfo.Id"/> of the <see cref="TimeZoneInfo"/> this event is for.
-		/// </summary>
-		[DataMember]
-		public string TimezoneId
-		{
-			get { return _timezoneId; }
-			set
-			{
-				_timezoneId = value;
-				SetTelemetryName();
-			}
-		}
-
-		/// <summary>
-		/// The <see cref="DateTime.Hour"/> at the <see cref="TimeZoneInfo"/> this event is for.
-		/// </summary>
-		[DataMember]
-		public short LocalHour
-		{
-			get { return _localHour; }
-			set
-			{
-				_localHour = value;
-				SetTelemetryName();
-			}
-		}
-
-		/// <summary>
-		/// The original <see cref="DateTimeOffset"/> used to find the <see cref="TimeZoneInfo"/> this event is for.
-		/// </summary>
-		[DataMember]
-		public DateTimeOffset ProcessDate { get; set; }
-
-		/// <summary>
-		/// Instantiate a new instance of <see cref="TimeZoneEvent"/>
-		/// </summary>
-		public TimeZoneEvent()
-		{
-			var @event = (IEvent<Guid>)this;
-			@event.Id = Guid.NewGuid();
-			@event.TimeStamp = DateTimeOffset.UtcNow;
-		}
 
 		#region Implementation of ITelemeteredMessage
 
 		/// <summary>
 		/// Gets or sets the Name of this message.
 		/// </summary>
+		[JsonProperty]
 		string ITelemeteredMessage.TelemetryName { get; set; }
 
 		#endregion
@@ -137,7 +94,7 @@ namespace Cqrs.Scheduler.Events
 		/// </summary>
 		protected virtual void SetTelemetryName()
 		{
-			((ITelemeteredMessage)this).TelemetryName = string.Format("{0}/{1}/{2}", GetType().Name, TimezoneId, LocalHour);
+			((ITelemeteredMessage)this).TelemetryName = string.Format("{0}", GetType().Name);
 		}
 	}
 }

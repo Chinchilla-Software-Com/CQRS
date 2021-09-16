@@ -1,0 +1,51 @@
+{
+	"IsEncrypted": false,
+	"Values": {
+		"AzureWebJobsStorage": "UseDevelopmentStorage=true",
+		"FUNCTIONS_WORKER_RUNTIME": "dotnet"
+	},
+	"Chinchilla": {
+		"Logging": {
+			"EnableThreadedLoggingOutput": "true",
+			"EnableThreadedLogging": "true",
+			"UseApplicationInsightTelemetryHelper": "false",
+			"ModuleName": "Cqrs.Scheduler.TriggerScheduler",
+			"Instance": "AU-East",
+			"Environment": "Local",
+			"EnvironmentInstance": "One",
+			"SqlDatabaseTableName": "TriggerLogs"
+		}
+	},
+	"Cqrs": {
+		"AuthenticationTokenType": "Guid",
+		"SetupForSqlLogging": false,
+		"Hosts": {
+			"AppName": "Cqrs.Scheduler.Trigger",
+			"ApplicationInsightsInstrumentationKey": "ApiKey",
+			"EnableEventReceiving": false,
+			"EnableCommandReceiving": false
+		},
+		"Azure": {
+			"CommandBus": {
+				// Endpoint=sb://{Namespace}.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey={Key}
+				"ConnectionString": "Endpoint=sb://cg-prod-scheduler-au-east.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=MFruMYCnOeFmsCEJNwwnSXTTGyTilb91wc3IIIY0O14=",
+				"Publisher": {
+					"UseApplicationInsightTelemetryHelper": true
+				},
+				"PrivateCommand": {
+					"Topic": {
+						"Name": "Cqrs.Scheduler.Commands-Local.Private"
+					}
+				},
+				"PublicCommand": {
+					"Topic": {
+						"Name": "Cqrs.Scheduler.Commands-Local.Public"
+					}
+				}
+			}
+		}
+	},
+	"ConnectionStrings": {
+		"Logs": "UseDevelopmentStorage=true"
+	}
+}
