@@ -20,8 +20,10 @@ jobs:
         ren NuGet.ex_ NuGet.exe
         cd ..
         .nuget\NuGet.exe restore Cqrs.sln
-    - name: Build with dotnet CLI
+    - name: Build Framework with dotnet CLI
       run: dotnet build --configuration Release .\Cqrs.sln
+    - name: Build Scheduler with dotnet CLI
+      run: dotnet build --configuration Release .\Scheduler\Cqrs.Scheduler.sln
     - name: Pack with dotnet CLI
       run: |
         forfiles /s /m Cqrs*.csproj /c "cmd /c dotnet pack @PATH -c Release -p:Version=4.2 -p:PackageVersion=4.2 --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o ../Packaged"
