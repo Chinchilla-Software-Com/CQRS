@@ -34,7 +34,7 @@ jobs:
       run: dotnet build --configuration Release .\Scheduler\Cqrs.Scheduler.sln
     - name: Pack with dotnet CLI
       run: |
-         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Cqrs\Cqrs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Cqrs\Cqrs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
 
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
