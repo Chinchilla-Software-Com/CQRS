@@ -53,7 +53,7 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 		{
 			RegisterBasicHelpers();
 			RegisterAzureConfigurations();
-			RegisterBasicSerives();
+			RegisterBasicServices();
 			RegisterWebBit();
 		}
 
@@ -106,7 +106,7 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 		/// <summary>
 		/// Registers the basic services required.
 		/// </summary>
-		protected virtual void RegisterBasicSerives()
+		protected virtual void RegisterBasicServices()
 		{
 			string authenticationType;
 			if (!Resolve<IConfigurationManager>().TryGetSetting("Cqrs.AuthenticationTokenType", out authenticationType) || string.IsNullOrWhiteSpace(authenticationType))

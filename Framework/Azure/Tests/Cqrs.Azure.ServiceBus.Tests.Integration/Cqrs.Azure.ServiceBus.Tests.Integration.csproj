@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net472;netcoreapp3.0</TargetFrameworks>
+		<TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
-		<Copyright>Copyright ©  2019</Copyright>
+		<Copyright>Copyright ©  2022</Copyright>
 		<PackageLicenseFile></PackageLicenseFile>
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
@@ -11,12 +11,12 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>netcoreapp3.0;net472</TargetFrameworks>
+		<TargetFrameworks>netcoreapp3.1;net472</TargetFrameworks>
 		<DocumentationFile>Cqrs.Azure.ServiceBus.Tests.Integration.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
@@ -42,8 +42,7 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
-		<ProjectReference Include="..\..\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
 		<PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.0" />
@@ -59,8 +58,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj" />
-	  <ProjectReference Include="..\Cqrs.Azure.ServiceBus.Tests.Unit\Cqrs.Azure.ServiceBus.Tests.Unit.csproj" />
+		<ProjectReference Include="..\..\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
+		<ProjectReference Include="..\..\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj" />
+		<ProjectReference Include="..\Cqrs.Azure.ServiceBus.Tests.Unit\Cqrs.Azure.ServiceBus.Tests.Unit.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
