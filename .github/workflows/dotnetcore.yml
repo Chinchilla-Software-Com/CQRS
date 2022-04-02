@@ -2,6 +2,10 @@ name: Build Core Framework
 
 on: [push]
 
+env:
+  nuGetVersionNumber: 4.3
+  nuGetFullVersionNumber: 4.3.${{ github.run_number }}.${{ github.run_id }}
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -13,15 +17,31 @@ jobs:
     - name: Setup dotnet CLI
       uses: actions/setup-dotnet@v1.7.2
       with:
-        dotnet-version: 3.0.100
+        dotnet-version: 3.1.x
     - name: Prepare Legacy NuGet
       run: |
         cd .\.nuget
         ren NuGet.ex_ NuGet.exe
         cd ..
         .nuget\NuGet.exe restore Cqrs.sln
-    - name: Build with dotnet CLI
+    - name: Build Framework with dotnet CLI
       run: dotnet build --configuration Release .\Cqrs.sln
+    - name: Build Scheduler with dotnet CLI
+      run: dotnet build --configuration Release .\Scheduler\Cqrs.Scheduler.sln
     - name: Pack with dotnet CLI
       run: |
-        forfiles /s /m Cqrs*.csproj /c "cmd /c dotnet pack @PATH -c Release -p:Version=4.2 -p:PackageVersion=4.2 --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o ../Packaged"
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Cqrs\Cqrs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.EventHub\Cqrs.Azure.EventHub.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.WebJobs\Cqrs.Azure.WebJobs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Cqrs.Ninject\Cqrs.Ninject.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.ServiceBus.CommandBus\Cqrs.Ninject.Azure.ServiceBus.CommandBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.ServiceBus.EventBus\Cqrs.Ninject.Azure.ServiceBus.EventBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.EventHub.CommandBus\Cqrs.Ninject.Azure.EventHub.CommandBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.EventHub.EventBus\Cqrs.Ninject.Azure.EventHub.EventBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.Wcf\Cqrs.Ninject.Azure.Wcf.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.WebJobs\Cqrs.Ninject.Azure.WebJobs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore\_EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Scheduler\Cqrs.Scheduler.Commands\Cqrs.Scheduler.Commands.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
+        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Scheduler\Cqrs.Scheduler.Events\Cqrs.Scheduler.Events.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
