@@ -41,6 +41,9 @@ namespace Cqrs.Ninject.Azure.Wcf
 	{
 
 #if NETSTANDARD2_0
+		/// <summary>
+		/// Set the <see cref="IConfigurationRoot"/> on <see cref="WebHostModule.Configuration"/> and prepare a <see cref="CloudConfigurationManager"/>
+		/// </summary>
 		public static new void SetConfigurationManager(IConfigurationRoot configuration)
 		{
 			WebHostModule.Configuration = configuration;

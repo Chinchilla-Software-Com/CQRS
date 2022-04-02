@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Cqrs.Azure.ServiceBus.Tests.Unit;
-using Cqrs.Configuration;
 using Chinchilla.Logging;
 using Chinchilla.Logging.Configuration;
 using Chinchilla.StateManagement.Threaded;
+using Cqrs.Azure.ConfigurationManager;
+using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Bus;
 using Cqrs.Commands;
+using Cqrs.Configuration;
 using Cqrs.Events;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
@@ -18,7 +19,6 @@ using TestContext = System.Object;
 #if NET472
 #else
 using Microsoft.Extensions.Configuration;
-using Cqrs.Azure.ConfigurationManager;
 #endif
 
 namespace Cqrs.Azure.ServiceBus.Tests.Integration
@@ -45,7 +45,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			var @event = new TestEvent{Id = processId};
 			IConfigurationManager configurationManager;
 #if NET472
-			configurationManager = new ConfigurationManager();
+			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
 				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
@@ -86,7 +86,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			var command = new TestCommand { Id = processId };
 			IConfigurationManager configurationManager;
 #if NET472
-			configurationManager = new ConfigurationManager();
+			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
 				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)

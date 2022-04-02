@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net40;netcoreapp3.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net40;netcoreapp3.1</TargetFrameworks>
 		<title>CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -9,7 +9,7 @@
 
 			CQRS.NET has been designed with modularity in mind... see the number of technology packages below you can chose from. Modularity applies to both development concerns like storage as well as operational modularity such as serverless or micro-service deployment, PaaS, VMs or container packaging. Every package and design choice made should be interchangeable with custom code if needed.
 		</Description>
-		<Copyright>Copyright ©  2019</Copyright>
+		<Copyright>Copyright ©  2022</Copyright>
 		<PackageLicenseFile></PackageLicenseFile>
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
@@ -53,6 +53,7 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>Serverless;Microservices;CQRS;CQRS.NET;Pub/Sub;Event-Sourcing</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="Repositories\Visual Studio 2013\**" />
@@ -102,12 +103,12 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net40;netstandard2.0;netcoreapp3.0</TargetFrameworks>
+		<TargetFrameworks>net40;netstandard2.0;netcoreapp3.1</TargetFrameworks>
 		<DocumentationFile>Cqrs.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
 		<!--
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
@@ -127,7 +128,7 @@
 		-->
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' OR  '$(TargetFramework)' == 'netcoreapp3.0' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' OR  '$(TargetFramework)' == 'netcoreapp3.1' ">
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
 		<PackageReference Include="System.ServiceModel.Primitives" Version="4.6.0" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.6.0" />
