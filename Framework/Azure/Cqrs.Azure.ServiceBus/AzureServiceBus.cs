@@ -260,8 +260,8 @@ namespace Cqrs.Azure.ServiceBus
 #if NETSTANDARD2_0
 			var manager = new Manager(ConnectionString);
 #endif
-			CheckPrivateTopicExists(manager);
-			CheckPublicTopicExists(manager);
+			CheckPrivateTopicExists(manager, false);
+			CheckPublicTopicExists(manager, false);
 
 #if NET452
 			PrivateServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PrivateTopicName);
@@ -382,25 +382,27 @@ namespace Cqrs.Azure.ServiceBus
 		/// Checks if the private topic and subscription name exists as per <see cref="PrivateTopicName"/> and <see cref="PrivateTopicSubscriptionName"/>.
 		/// </summary>
 		/// <param name="manager">The <see cref="Manager"/>.</param>
-		protected virtual void CheckPrivateTopicExists(Manager manager)
+		/// <param name="createSubscriptionIfNotExists">Create a subscription if there isn't one</param>
+		protected virtual void CheckPrivateTopicExists(Manager manager, bool createSubscriptionIfNotExists = true)
 		{
-			CheckTopicExists(manager, PrivateTopicName = ConfigurationManager.GetSetting(PrivateTopicNameConfigurationKey) ?? DefaultPrivateTopicName, PrivateTopicSubscriptionName = ConfigurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName);
+			CheckTopicExists(manager, PrivateTopicName = ConfigurationManager.GetSetting(PrivateTopicNameConfigurationKey) ?? DefaultPrivateTopicName, PrivateTopicSubscriptionName = ConfigurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName, createSubscriptionIfNotExists);
 		}
 
 		/// <summary>
 		/// Checks if the public topic and subscription name exists as per <see cref="PublicTopicName"/> and <see cref="PublicTopicSubscriptionName"/>.
 		/// </summary>
 		/// <param name="manager">The <see cref="Manager"/>.</param>
-		protected virtual void CheckPublicTopicExists(Manager manager)
+		/// <param name="createSubscriptionIfNotExists">Create a subscription if there isn't one</param>
+		protected virtual void CheckPublicTopicExists(Manager manager, bool createSubscriptionIfNotExists = true)
 		{
-			CheckTopicExists(manager, PublicTopicName = ConfigurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = ConfigurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName);
+			CheckTopicExists(manager, PublicTopicName = ConfigurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = ConfigurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName, createSubscriptionIfNotExists);
 		}
 
 		/// <summary>
 		/// Checks if a topic by the provided <paramref name="topicName"/> exists and
 		/// Checks if a subscription name by the provided <paramref name="subscriptionName"/> exists.
 		/// </summary>
-		protected virtual void CheckTopicExists(Manager manager, string topicName, string subscriptionName)
+		protected virtual void CheckTopicExists(Manager manager, string topicName, string subscriptionName, bool createSubscriptionIfNotExists = true)
 		{
 			// Configure Queue Settings
 			var eventTopicDescription = new TopicDescription(topicName)
@@ -427,7 +429,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			checkTask = manager.SubscriptionExistsAsync(topicName, subscriptionName);
 			checkTask.Wait(1500);
-			if (!checkTask.Result)
+			if (createSubscriptionIfNotExists && !checkTask.Result)
 			{
 				var subscriptionDescription = new SubscriptionDescription(topicName, subscriptionName)
 				{
@@ -444,7 +446,7 @@ namespace Cqrs.Azure.ServiceBus
 			if (!manager.TopicExists(eventTopicDescription.Path))
 				manager.CreateTopic(eventTopicDescription);
 
-			if (!manager.SubscriptionExists(eventTopicDescription.Path, subscriptionName))
+			if (createSubscriptionIfNotExists && !manager.SubscriptionExists(eventTopicDescription.Path, subscriptionName))
 				manager.CreateSubscription
 				(
 					new SubscriptionDescription(eventTopicDescription.Path, subscriptionName)
