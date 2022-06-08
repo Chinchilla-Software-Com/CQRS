@@ -69,17 +69,25 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// </summary>
 		protected override void ConfigureTelemetry()
 		{
+			string applicationInsightsInstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsights.InstrumentationKey");
+			if (string.IsNullOrWhiteSpace(applicationInsightsInstrumentationKey))
+				applicationInsightsInstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsightsInstrumentationKey");
+
+			string enabledApplicationInsightsDeveloperModeSetting = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsights.EnableDeveloperMode");
+			if (string.IsNullOrWhiteSpace(enabledApplicationInsightsDeveloperModeSetting))
+				enabledApplicationInsightsDeveloperModeSetting = ConfigurationManager.GetSetting("Cqrs.Hosts.EnabledApplicationInsightsDeveloperMode");
+
 #if NETSTANDARD2_0
 			TelemetryConfiguration config = GetTelemetryConfigurationDelegate == null
 				? TelemetryConfiguration.CreateDefault()
 				: GetTelemetryConfigurationDelegate() ?? TelemetryConfiguration.CreateDefault();
-			config.InstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsightsInstrumentationKey");
+			config.InstrumentationKey = applicationInsightsInstrumentationKey;
 #endif
 #if NET472
-			TelemetryConfiguration.Active.InstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsightsInstrumentationKey");
+			TelemetryConfiguration.Active.InstrumentationKey = applicationInsightsInstrumentationKey;
 #endif
 			bool enabledApplicationInsightsDeveloperMode;
-			if (!bool.TryParse(ConfigurationManager.GetSetting("Cqrs.Hosts.EnabledApplicationInsightsDeveloperMode"), out enabledApplicationInsightsDeveloperMode))
+			if (!bool.TryParse(enabledApplicationInsightsDeveloperModeSetting, out enabledApplicationInsightsDeveloperMode))
 				enabledApplicationInsightsDeveloperMode = false;
 #if NETSTANDARD2_0
 			config.TelemetryChannel.DeveloperMode = enabledApplicationInsightsDeveloperMode;
@@ -87,7 +95,11 @@ namespace Cqrs.Azure.ConfigurationManager
 #endif
 #if NET472
 			TelemetryConfiguration.Active.TelemetryChannel.DeveloperMode = enabledApplicationInsightsDeveloperMode;
-			TelemetryClient = new TelemetryClient {InstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsightsInstrumentationKey") };
+			if (ConfigurationManager.TryGetSetting("Cqrs.Hosts.ApplicationInsights.OperationName", out string operationName) && !string.IsNullOrWhiteSpace(operationName))
+				TelemetryConfiguration.Active.TelemetryInitializers.Add(new OperationNameTelemetryInitializer(operationName));
+			if (ConfigurationManager.TryGetSetting("Cqrs.Hosts.ApplicationInsights.CloudRoleName", out string cloudRoleName) && !string.IsNullOrWhiteSpace(cloudRoleName))
+				TelemetryConfiguration.Active.TelemetryInitializers.Add(new CloudRoleNameTelemetryInitializer(cloudRoleName));
+			TelemetryClient = new TelemetryClient {InstrumentationKey = applicationInsightsInstrumentationKey };
 #endif
 
 			TelemetryClient.TrackEvent(string.Format("{0}/Instantiating", TelemetryName));
