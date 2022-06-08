@@ -27,7 +27,8 @@ namespace Cqrs.Ninject.Azure.Wcf
 	/// <summary>
 	/// Execute command and event handlers in a WCF Host using Ninject, defaulting to <see cref="WebHostModule"/> as the module to load.
 	/// </summary>
-	public class CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper> : CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper, WebHostModule>
+	public class CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper>
+		: CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper, WebHostModule>
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 	{
 	}
@@ -35,7 +36,8 @@ namespace Cqrs.Ninject.Azure.Wcf
 	/// <summary>
 	/// Execute command and event handlers in a WCF Host using Ninject
 	/// </summary>
-	public class CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper, TWebHostModule> : TelemetryCoreHost<TAuthenticationToken>
+	public class CqrsWebHost<TAuthenticationToken, TAuthenticationTokenHelper, TWebHostModule>
+		: TelemetryCoreHost<TAuthenticationToken>
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 		where TWebHostModule : WebHostModule, new ()
 	{
@@ -132,6 +134,24 @@ namespace Cqrs.Ninject.Azure.Wcf
 			{
 				new SimplifiedSqlModule<TAuthenticationToken>()
 			};
+		}
+
+		/// <summary>
+		/// Prepare the host before registering handlers and starting the host.
+		/// </summary>
+		protected override void RunStartUp()
+		{
+			base.RunStartUp();
+
+			if (TelemetryClient != null)
+			{
+				var telemetryHelper = NinjectDependencyResolver.Current.Resolve<Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper>();
+				System.Reflection.PropertyInfo property = telemetryHelper
+					.GetType()
+					.GetProperty("TelemetryClient", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Default | System.Reflection.BindingFlags.NonPublic);
+				property.SetValue(telemetryHelper, TelemetryClient);
+			}
+
 		}
 	}
 }

@@ -32,6 +32,9 @@ using Microsoft.Azure.WebJobs;
 /// </example>
 public class CqrsFunction : CqrsWebHost<Guid, DefaultAuthenticationTokenHelper>
 {
+	/// <summary>
+	/// Indicates if the <see cref="SetExecutionPath"/> method has been called.
+	/// </summary>
 	protected static bool HasSetExecutionPath { private set; get; }
 	/// <summary>
 	/// Instantiate a new instance of <see cref="CqrsWebJobProgram"/>
@@ -43,6 +46,9 @@ public class CqrsFunction : CqrsWebHost<Guid, DefaultAuthenticationTokenHelper>
 		HandlerTypes = commandOrEventTypes;
 	}
 
+	/// <summary>
+	/// Sets the execution path
+	/// </summary>
 	public static void SetExecutionPath
 	(
 		ExecutionContext context

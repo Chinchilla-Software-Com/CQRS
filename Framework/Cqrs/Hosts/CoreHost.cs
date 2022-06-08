@@ -124,7 +124,7 @@ namespace Cqrs.Hosts
 			ServicePointManager.UseNagleAlgorithm = false;
 			ServicePointManager.DefaultConnectionLimit = 1000;
 
-			new StartUp(ConfigureDefaultDependencyResolver).Initialise();
+			RunStartUp();
 			EventBus = DependencyResolver.Current.Resolve<IEventReceiver<TAuthenticationToken>>();
 			CommandBus = DependencyResolver.Current.Resolve<ICommandReceiver<TAuthenticationToken>>();
 			Guid correlationId = Guid.NewGuid();
@@ -132,6 +132,14 @@ namespace Cqrs.Hosts
 			CorrelationIdHelper.SetCorrelationId(correlationId);
 
 			Logger = DependencyResolver.Current.Resolve<ILogger>();
+		}
+
+		/// <summary>
+		/// Start the host
+		/// </summary>
+		protected virtual void RunStartUp()
+		{
+			new StartUp(ConfigureDefaultDependencyResolver).Initialise();
 		}
 
 		/// <summary>
