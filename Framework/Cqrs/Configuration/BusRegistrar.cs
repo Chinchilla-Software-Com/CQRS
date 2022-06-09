@@ -228,9 +228,11 @@ namespace Cqrs.Configuration
 			Action<dynamic> handlerDelegate = x =>
 			{
 				Stopwatch stopWatch = Stopwatch.StartNew();
+				var telemetryHelper = DependencyResolver.Resolve<ITelemetryHelper>();
 				string succeeded = "Failed";
 				dynamic handler = DependencyResolver.Resolve(executorType);
-				DependencyResolver.Resolve<ITelemetryHelper>().TrackTrace($"Calling handler '{((object)handler).GetType().FullName}'", 1);
+				string handlerName = ((object)handler).GetType().FullName;
+				telemetryHelper.TrackTrace($"Calling handler '{handlerName}'", 1);
 				try
 				{
 					handler.Handle(x);
@@ -239,12 +241,18 @@ namespace Cqrs.Configuration
 				catch (NotImplementedException exception)
 				{
 					var logger = DependencyResolver.Resolve<ILogger>();
-					logger.LogInfo(string.Format("An event message arrived of the type '{0}' went to a handler of type '{1}' but was not implemented.", x.GetType().FullName, handler.GetType().FullName), exception: exception);
+					logger.LogInfo($"An event message arrived of the type '{x.GetType().FullName}' went to a handler of type '{handlerName}' but was not implemented.", exception: exception);
+					telemetryHelper.TrackTrace($"Handler '{handlerName}' does not implement the handle method for a '{x.GetType().FullName}' message", 1);
+					telemetryHelper.TrackException(exception);
+				}
+				catch(Exception exception)
+				{
+					telemetryHelper.TrackException(exception);
 				}
 				finally
 				{
 					stopWatch.Stop();
-					DependencyResolver.Resolve<ITelemetryHelper>().TrackTrace($"Called handler '{((object)handler).GetType().FullName}' ({succeeded}, Duration={stopWatch.Elapsed.Milliseconds}ms)", 1);
+					telemetryHelper.TrackTrace($"Called handler '{handlerName}' ({succeeded}, Duration={stopWatch.Elapsed.Milliseconds}ms)", 1);
 				}
 			};
 
