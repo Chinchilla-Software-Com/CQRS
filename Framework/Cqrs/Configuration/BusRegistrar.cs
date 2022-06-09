@@ -228,9 +228,9 @@ namespace Cqrs.Configuration
 			Action<dynamic> handlerDelegate = x =>
 			{
 				Stopwatch stopWatch = Stopwatch.StartNew();
-				DependencyResolver.Resolve<ITelemetryHelper>().TrackTrace($"Calling handler '{((object)handler).GetType().FullName}'", 1);
 				string succeeded = "Failed";
 				dynamic handler = DependencyResolver.Resolve(executorType);
+				DependencyResolver.Resolve<ITelemetryHelper>().TrackTrace($"Calling handler '{((object)handler).GetType().FullName}'", 1);
 				try
 				{
 					handler.Handle(x);

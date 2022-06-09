@@ -143,7 +143,7 @@ namespace Cqrs.Ninject.Azure.Wcf
 		{
 			base.RunStartUp();
 
-			if (TelemetryClient != null)
+			if (false && TelemetryClient != null)
 			{
 				var telemetryHelper = NinjectDependencyResolver.Current.Resolve<Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper>();
 				System.Reflection.PropertyInfo property = telemetryHelper
