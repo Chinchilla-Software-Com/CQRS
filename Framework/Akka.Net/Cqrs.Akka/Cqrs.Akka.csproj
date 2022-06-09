@@ -1,135 +1,101 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{60EC45F8-7B46-49F0-B8E9-E7A15FE23850}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cqrs.Akka</RootNamespace>
-    <AssemblyName>Cqrs.Akka</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug\Cqrs.Akka.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\Cqrs.Akka.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Akka">
-      <HintPath>..\..\..\packages\Akka.1.0.4\lib\net45\Akka.dll</HintPath>
-    </Reference>
-    <Reference Include="Chinchilla.Logging, Version=4.5.25, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Chinchilla.Logging.4.5.25\lib\net40\Chinchilla.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Chinchilla.StateManagement, Version=4.2.3.1480542147, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Chinchilla.StateManagement.4.2.3.1480542147\lib\net40\Chinchilla.StateManagement.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Commands\AkkaCommandBusProxy.cs" />
-    <Compile Include="Commands\AkkaCommandBus.cs" />
-    <Compile Include="Commands\IAkkaCommandPublisherProxy.cs" />
-    <Compile Include="Commands\IAkkaCommandPublisher.cs" />
-    <Compile Include="Configuration\AkkaBusRegistrar.cs" />
-    <Compile Include="Configuration\IHandlerResolver.cs" />
-    <Compile Include="Domain\AkkaSagaProxy.cs" />
-    <Compile Include="Domain\AkkaSagaRepository.cs" />
-    <Compile Include="Domain\AkkaSaga.cs" />
-    <Compile Include="Domain\AkkaAggregateRoot.cs" />
-    <Compile Include="Domain\AkkaAggregateRootProxy.cs" />
-    <Compile Include="Domain\AkkaAggregateRepository.cs" />
-    <Compile Include="Domain\Commands\GetAkkaSagaId.cs" />
-    <Compile Include="Domain\Commands\GetAkkaSagaVersion.cs" />
-    <Compile Include="Domain\Commands\GetAkkaAggregateRootVersion.cs" />
-    <Compile Include="Domain\Commands\GetAkkaAggregateRootId.cs" />
-    <Compile Include="Domain\DeadletterMonitor.cs" />
-    <Compile Include="Domain\IAkkaSagaProxy.cs" />
-    <Compile Include="Domain\IAkkaSagaResolver.cs" />
-    <Compile Include="Domain\IAkkaSagaRepository.cs" />
-    <Compile Include="Domain\IAkkaAggregateRootProxy.cs" />
-    <Compile Include="Commands\ConcurrentAkkaCommandSender.cs" />
-    <Compile Include="Domain\IAkkaAggregateRepository.cs" />
-    <Compile Include="Snapshots\AkkaSnapshotAggregateRoot.cs" />
-    <Compile Include="Events\AkkaEventHandler.cs" />
-    <Compile Include="Events\AkkaEventBusProxy.cs" />
-    <Compile Include="Events\AkkaEventBus.cs" />
-    <Compile Include="Domain\IAkkaAggregateResolver.cs" />
-    <Compile Include="Commands\IConcurrentAkkaCommandPublisher.cs" />
-    <Compile Include="Events\IAkkaEventPublisherProxy.cs" />
-    <Compile Include="Events\IAkkaEventPublisher.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Snapshots\AkkaSnapshotRepository.cs" />
-    <Compile Include="Domain\ISnapshotAggregateRepository.cs" />
-    <Compile Include="Snapshots\DefaultSnapshotStrategy.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Cqrs.Akka.nuspec">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config" />
-    <None Include="Tools\install.ps1" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Cqrs\Cqrs.csproj">
-      <Project>{dafd2a8a-d6b0-4433-8ddf-b98460c64ec6}</Project>
-      <Name>Cqrs</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
-  <PropertyGroup>
-    <PreBuildEvent>COPY /Y "$(SolutionDir)Framework\Cqrs\Tools\install.ps1" "$(ProjectDir)Tools\install.ps1"</PreBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+		<title>Akka.Net for CQRS.NET</title>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Description>Use Akka.NET actors in CQRS.NET</Description>
+		<Copyright>Copyright © 2022</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+		<PackageReleaseNotes>
+			Version 2.3
+
+			* Added IEventWithIdentity and ICommandWithIdentity to provide better event and command traceability versus aggregate and saga identification.
+			* Added better command sending abilities into Sagas.
+
+			Version 2.1
+
+			* Added Saga/Process Manager via a new Cqrs.Akka.Domain.AkkaSaga class. This is an event handler with access to the Command Bus for sending command and uses an EventStore for state management.
+
+			Version 2.0
+
+			* Added configurable setting to enable certain events and commands to not be required to be handled by the service bus (useful when you want an instance of the system to just run a subset of all possible events that might be received by a poorly configured bus). Currently only AzureService bus support this.
+			* Added configurable setting to change the default behaviour of the "certain events and commands are required or not" settings into a white-list or black-list
+			* Added SendAndWait to command senders.
+			* Added ability to send a collection of commands and events.
+		</PackageReleaseNotes>
+		<PackageIcon>images\icon.png</PackageIcon>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>Serverless;Microservices;CQRS;CQRS.NET;Pub/Sub;Event-Sourcing;Akka;Actors;Actor</PackageTags>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFrameworks>net45</TargetFrameworks>
+		<DocumentationFile>Cqrs.Akka.xml</DocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="tools\init.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<None Include="tools\install.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\icon.png" Link="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>images\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="tools\install.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Chinchilla.StateManagement" Version="4.2.3.1480542147" />
+	  <PackageReference Include="Chinchilla.Logging" Version="4.5.25" />
+	  <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+	  <PackageReference Include="Akka" Version="1.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Remove="Properties\" />
+	  <Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Cqrs.Akka.xml" />
+	  <None Remove="tools\Create-Log-Table.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="Microsoft.CSharp" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+	</Target>
 </Project>

@@ -22,7 +22,7 @@
 			Version 4.1
 
 			* Switched to .NET Standard 2.0 support from .NET Core 3.0.
-			* Added support for polymorphic serilisation with JSON.NET. Currently supports redirecting System.Private.CoreLib => mscorlib for .NET Core published messages received by .NET Framework receivers.
+			* Added support for polymorphic serilisation with JSON.NET. Currently supports redirecting System.Private.CoreLib =&gt; mscorlib for .NET Core published messages received by .NET Framework receivers.
 
 			Version 4.0
 
@@ -97,4 +97,8 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
 	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+	</Target>
 </Project>

@@ -1,171 +1,43 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{420F0A58-CB69-4517-9251-6F92911C3A61}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cqrs.Tests</RootNamespace>
-    <AssemblyName>Cqrs.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Chinchilla.Logging, Version=4.5.25, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Chinchilla.Logging.4.5.25\lib\net40\Chinchilla.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Chinchilla.StateManagement, Version=4.2.3.1480542147, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Chinchilla.StateManagement.4.2.3.1480542147\lib\net40\Chinchilla.StateManagement.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Web" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Bus\When_publishing_events.cs" />
-    <Compile Include="Cache\When_saving_fails.cs" />
-    <Compile Include="Cache\When_saving_two_aggregates_in_parallel.cs" />
-    <Compile Include="Cache\When_getting_aggregate.cs" />
-    <Compile Include="Cache\When_getting_wrong_events_from_event_store.cs" />
-    <Compile Include="Cache\When_saving_aggregate.cs" />
-    <Compile Include="Cache\When_saving_same_aggregate_in_parallel.cs" />
-    <Compile Include="DataStores\CRUD_operations.cs" />
-    <Compile Include="Domain\Aggregates\When_adding_aggregates_to_repository.cs" />
-    <Compile Include="Domain\Aggregates\When_getting_aggregate_without_contructor.cs" />
-    <Compile Include="Domain\Aggregates\When_saving_events_without_id.cs" />
-    <Compile Include="Domain\Aggregates\When_saving_stale_data.cs" />
-    <Compile Include="Domain\Saga\When_getting_a_saga.cs" />
-    <Compile Include="Substitutes\OrderEntity.cs" />
-    <Compile Include="Substitutes\TestCommandPublisher.cs" />
-    <Compile Include="Substitutes\TestSaga.cs" />
-    <Compile Include="Substitutes\TestSagaUnitOfWork.cs" />
-    <Compile Include="Substitutes\TestSnapshotEventStore.cs" />
-    <Compile Include="Substitutes\TestAggregateCreated.cs" />
-    <Compile Include="Substitutes\TestAggregateNoParameterLessConstructor.cs" />
-    <Compile Include="Substitutes\TestEventStoreWithBugs.cs" />
-    <Compile Include="Substitutes\TestInMemoryEventStore.cs" />
-    <Compile Include="Substitutes\TestInMemorySnapshotStore.cs" />
-    <Compile Include="Snapshots\When_getting_a_snapshot_aggregate_with_no_snapshot.cs" />
-    <Compile Include="Snapshots\When_getting_snapshotable_aggreate.cs" />
-    <Compile Include="Snapshots\When_getting_an_aggregate_with_snapshot.cs" />
-    <Compile Include="Snapshots\When_saving_a_snapshotable_aggregate.cs" />
-    <Compile Include="Snapshots\When_saving_a_snapshotable_aggregate_for_each_change.cs" />
-    <Compile Include="Substitutes\TestEventPublisher.cs" />
-    <Compile Include="Bus\When_sending_command.cs" />
-    <Compile Include="Substitutes\TestEventStore.cs" />
-    <Compile Include="Substitutes\TestHandleRegistrar.cs" />
-    <Compile Include="Substitutes\TestCommands.cs" />
-    <Compile Include="Substitutes\TestAggregateRepository.cs" />
-    <Compile Include="Substitutes\TestDependencyResolver.cs" />
-    <Compile Include="Bus\When_registering_handlers.cs" />
-    <Compile Include="Domain\Aggregates\When_replaying_events.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Domain\Aggregates\When_saving.cs" />
-    <Compile Include="Domain\Aggregates\When_getting_an_aggregate.cs" />
-    <Compile Include="Substitutes\TestAggregate.cs" />
-    <Compile Include="Substitutes\TestEvents.cs" />
-    <Compile Include="Substitutes\TestSnapshotAggregate.cs" />
-    <Compile Include="Substitutes\TestSnapshotStore.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Cqrs\Cqrs.csproj">
-      <Project>{DAFD2A8A-D6B0-4433-8DDF-B98460C64EC6}</Project>
-      <Name>Cqrs</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DataStores\NORTHWND.MDF">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataStores\NORTHWND_log.ldf">
-      <DependentUpon>NORTHWND.MDF</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 4.5</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net40;netstandard2.0</TargetFrameworks>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Copyright>Copyright © 2022</Copyright>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFrameworks>net40</TargetFrameworks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.3.1480542147" />
+		<PackageReference Include="Chinchilla.Logging" Version="4.5.25" />
+		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+		<PackageReference Include="NUnit" Version="2.6.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Remove="Properties\" />
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Cqrs.Tests.xml" />
+		<None Remove="tools\Create-Log-Table.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Cqrs\Cqrs.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System.Data.Linq" />
+	</ItemGroup>
 </Project>
