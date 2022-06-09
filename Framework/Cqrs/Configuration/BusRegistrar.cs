@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Security;
@@ -226,15 +227,24 @@ namespace Cqrs.Configuration
 		{
 			Action<dynamic> handlerDelegate = x =>
 			{
+				Stopwatch stopWatch = Stopwatch.StartNew();
+				DependencyResolver.Resolve<ITelemetryHelper>().TrackTrace($"Calling handler '{((object)handler).GetType().FullName}'", 1);
+				string succeeded = "Failed";
 				dynamic handler = DependencyResolver.Resolve(executorType);
 				try
 				{
 					handler.Handle(x);
+					succeeded = "Succeeded";
 				}
 				catch (NotImplementedException exception)
 				{
 					var logger = DependencyResolver.Resolve<ILogger>();
 					logger.LogInfo(string.Format("An event message arrived of the type '{0}' went to a handler of type '{1}' but was not implemented.", x.GetType().FullName, handler.GetType().FullName), exception: exception);
+				}
+				finally
+				{
+					stopWatch.Stop();
+					DependencyResolver.Resolve<ITelemetryHelper>().TrackTrace($"Called handler '{((object)handler).GetType().FullName}' ({succeeded}, Duration={stopWatch.Elapsed.Milliseconds}ms)", 1);
 				}
 			};
 
