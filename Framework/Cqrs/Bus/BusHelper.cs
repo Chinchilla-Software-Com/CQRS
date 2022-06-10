@@ -110,21 +110,22 @@ namespace Cqrs.Bus
 		/// </summary>
 		protected virtual void StartRefreshCachedChecks()
 		{
-			Task.Factory.StartNewSafely(() =>
+			Action action = () =>
 			{
 				long loop = 0;
 				while (true)
 				{
 					RefreshCachedChecks();
 
-					if (loop++%5 == 0)
+					if (loop++ % 5 == 0)
 						Thread.Yield();
 					else
 						Thread.Sleep(1000);
 					if (loop == long.MaxValue)
 						loop = long.MinValue;
 				}
-			});
+			};
+			Task.Factory.StartNewSafely(action);
 		}
 
 		/// <summary>
