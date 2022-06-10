@@ -325,7 +325,7 @@ namespace Cqrs.Events
 		/// </summary>
 		protected virtual void StartRefreshSlidingExpirationValue()
 		{
-			Task.Factory.StartNewSafely(() =>
+			Action action = () =>
 			{
 				long loop = 0;
 				while (true)
@@ -339,7 +339,8 @@ namespace Cqrs.Events
 					if (loop == long.MaxValue)
 						loop = long.MinValue;
 				}
-			});
+			};
+			Task.Factory.StartNewSafely(action);
 		}
 
 		/// <summary>
