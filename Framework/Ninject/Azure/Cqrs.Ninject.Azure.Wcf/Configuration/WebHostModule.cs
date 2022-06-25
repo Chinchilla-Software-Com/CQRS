@@ -72,12 +72,16 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 					.To<AzureLoggerSettingsConfiguration>()
 					.InSingletonScope();
 			}
-			else if (!loggerSettingsBindings.Any(x => x is AzureLoggerSettingsConfiguration))
+			else
 			{
-				Unbind<ITelemetryHelper>();
-				Bind<ILoggerSettings>()
-					.To<AzureLoggerSettingsConfiguration>()
-					.InSingletonScope();
+				var obj = Resolve<ILoggerSettings>();
+				if (!(obj is AzureLoggerSettingsConfiguration))
+				{
+					Unbind<ILoggerSettings>();
+					Bind<ILoggerSettings>()
+						.To<AzureLoggerSettingsConfiguration>()
+						.InSingletonScope();
+				}
 			}
 
 #if NETSTANDARD2_0
@@ -106,12 +110,16 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 					.To<TelemetryHelper>()
 					.InSingletonScope();
 			}
-			else if (!telemetryHelperBindings.Any(x => x is TelemetryHelper))
+			else
 			{
-				Unbind<ITelemetryHelper>();
-				Bind<ITelemetryHelper>()
-					.To<TelemetryHelper>()
-					.InSingletonScope();
+				var obj = Resolve<ITelemetryHelper>();
+				if (!(obj is TelemetryHelper))
+				{
+					Unbind<ITelemetryHelper>();
+					Bind<ITelemetryHelper>()
+						.To<TelemetryHelper>()
+						.InSingletonScope();
+				}
 			}
 		}
 		/// <summary>
