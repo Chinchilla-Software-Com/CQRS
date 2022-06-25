@@ -6,6 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System.Linq;
 using Chinchilla.StateManagement;
 using Chinchilla.StateManagement.Threaded;
 using Cqrs.Ninject.Azure.Wcf.Configuration;
