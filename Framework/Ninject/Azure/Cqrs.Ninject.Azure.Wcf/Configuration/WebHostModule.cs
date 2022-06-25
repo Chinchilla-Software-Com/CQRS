@@ -68,9 +68,9 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 			bool isLoggerSettingsBound = loggerSettingsBindings.Any();
 			if (!isLoggerSettingsBound)
 			{
-				Bind<ILoggerSettings>()
-					.To<AzureLoggerSettingsConfiguration>()
-					.InSingletonScope();
+			Bind<ILoggerSettings>()
+				.To<AzureLoggerSettingsConfiguration>()
+				.InSingletonScope();
 			}
 			else
 			{
