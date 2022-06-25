@@ -115,12 +115,12 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 				var obj = Resolve<ITelemetryHelper>();
 				if (!(obj is TelemetryHelper))
 				{
-					Unbind<ITelemetryHelper>();
-					Bind<ITelemetryHelper>()
-						.To<TelemetryHelper>()
-						.InSingletonScope();
-				}
+				Unbind<ITelemetryHelper>();
+				Bind<ITelemetryHelper>()
+					.To<TelemetryHelper>()
+					.InSingletonScope();
 			}
+		}
 		}
 		/// <summary>
 		/// Registers the <see cref="IContextItemCollectionFactory"/> required.
