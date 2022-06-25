@@ -86,9 +86,21 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 		{
 			RegisterContextItemCollectionFactory();
 
-			Bind<ITelemetryHelper>()
-				.To<TelemetryHelper>()
-				.InSingletonScope();
+			var telemetryHelperBindings = Kernel.GetBindings(typeof(ITelemetryHelper)).ToList();
+			bool isTelemetryHelperBound = telemetryHelperBindings.Any();
+			if (!isTelemetryHelperBound)
+			{
+				Bind<ITelemetryHelper>()
+					.To<TelemetryHelper>()
+					.InSingletonScope();
+			}
+			else if (!telemetryHelperBindings.Any(x => x is TelemetryHelper))
+			{
+				Unbind<ITelemetryHelper>();
+				Bind<ITelemetryHelper>()
+					.To<TelemetryHelper>()
+					.InSingletonScope();
+			}
 		}
 		/// <summary>
 		/// Registers the <see cref="IContextItemCollectionFactory"/> required.

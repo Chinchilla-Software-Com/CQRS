@@ -37,7 +37,7 @@ namespace Cqrs.Ninject.Configuration
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 	{
 		/// <summary>
-		/// Indicates that web based wire-up is required rather than console, WPF or winforms based wire-up.s
+		/// Indicates that web based wire-up is required rather than console, WPF or winforms based wire-up.
 		/// </summary>
 		protected bool SetupForWeb { get; private set; }
 

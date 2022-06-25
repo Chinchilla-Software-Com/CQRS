@@ -24,6 +24,9 @@ namespace Cqrs.Ninject.Azure.WebJobs.Configuration
 		protected override void RegisterContextItemCollectionFactory()
 		{
 			// We use console state as, even though a webjob runs in an azure website, it's technically loaded via something call the 'WindowsScriptHost', which is not web and IIS based so it's threading model is very different and more console based.
+			bool isContextItemCollectionFactoryBound = Kernel.GetBindings(typeof(IContextItemCollectionFactory)).Any();
+			if (isContextItemCollectionFactoryBound)
+				Unbind<IContextItemCollectionFactory>();
 			Bind<IContextItemCollectionFactory>()
 				.To<ContextItemCollectionFactory>()
 				.InSingletonScope();
