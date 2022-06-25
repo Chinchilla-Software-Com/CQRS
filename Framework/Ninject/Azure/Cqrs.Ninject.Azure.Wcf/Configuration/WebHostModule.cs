@@ -64,9 +64,21 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 		/// </summary>
 		protected virtual void RegisterAzureConfigurations()
 		{
-			Bind<ILoggerSettings>()
-				.To<AzureLoggerSettingsConfiguration>()
-				.InSingletonScope();
+			var loggerSettingsBindings = Kernel.GetBindings(typeof(ILoggerSettings)).ToList();
+			bool isLoggerSettingsBound = loggerSettingsBindings.Any();
+			if (!isLoggerSettingsBound)
+			{
+				Bind<ILoggerSettings>()
+					.To<AzureLoggerSettingsConfiguration>()
+					.InSingletonScope();
+			}
+			else if (!loggerSettingsBindings.Any(x => x is AzureLoggerSettingsConfiguration))
+			{
+				Unbind<ITelemetryHelper>();
+				Bind<ILoggerSettings>()
+					.To<AzureLoggerSettingsConfiguration>()
+					.InSingletonScope();
+			}
 
 #if NETSTANDARD2_0
 			Bind<IConfiguration>()
