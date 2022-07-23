@@ -15,14 +15,13 @@ using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
-#if NET452
-using Microsoft.ServiceBus.Messaging;
-using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
-#endif
 #if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+#else
+using Microsoft.ServiceBus.Messaging;
+using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
 using SpinWait = Cqrs.Infrastructure.SpinWait;
 
@@ -57,11 +56,10 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Receives a <see cref="BrokeredMessage"/> from the event bus, identifies a key and queues it accordingly.
 		/// </summary>
-#if NET452
-		protected override void ReceiveEvent(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
-#endif
 #if NETSTANDARD2_0
 		protected override void ReceiveEvent(IMessageReceiver client, BrokeredMessage message)
+#else
+		protected override void ReceiveEvent(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
 #endif
 		{
 			try
@@ -71,11 +69,10 @@ namespace Cqrs.Azure.ServiceBus
 				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
 
 				CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-#if NET452
-				string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
-#endif
 #if NETSTANDARD2_0
 				string topicPath = client == null ? "UNKNOWN" : client.Path;
+#else
+				string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
 #endif
 				Logger.LogInfo($"An event message arrived from topic {topicPath} with the {message.MessageId} was of type {@event.GetType().FullName}.");
 
@@ -98,11 +95,10 @@ namespace Cqrs.Azure.ServiceBus
 				EnqueueEvent(targetQueueName, @event);
 
 				// remove the original message from the incoming queue
-#if NET452
-				message.Complete();
-#endif
 #if NETSTANDARD2_0
 				client.CompleteAsync(message.SystemProperties.LockToken).Wait(1500);
+#else
+				message.Complete();
 #endif
 
 				Logger.LogDebug(string.Format("An event message arrived and was processed with the id '{0}'.", message.MessageId));
@@ -111,11 +107,10 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("An event message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
-#if NET452
-				message.Abandon();
-#endif
 #if NETSTANDARD2_0
 				client.AbandonAsync(message.SystemProperties.LockToken).Wait(1500);
+#else
+				message.Abandon();
 #endif
 			}
 		}

@@ -16,20 +16,19 @@ using Chinchilla.Logging;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
-#if NET452
-using Microsoft.ServiceBus;
-using Microsoft.ServiceBus.Messaging;
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
-using RetryPolicy = Microsoft.Practices.TransientFaultHandling.RetryPolicy;
-using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
-#endif
 #if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.ServiceBus.Management;
 using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 using RetryPolicy = Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.RetryPolicy;
+#else
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling;
+using RetryPolicy = Microsoft.Practices.TransientFaultHandling.RetryPolicy;
+using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
 
 namespace Cqrs.Azure.ServiceBus
@@ -50,6 +49,11 @@ namespace Cqrs.Azure.ServiceBus
 		/// Gets or sets the connection string to the bus.
 		/// </summary>
 		protected string ConnectionString { get; set; }
+
+		/// <summary>
+		/// Gets or sets the RBAC connection settings for the bus.
+		/// </summary>
+		protected AzureBusRbacSettings RbacConnectionSettings{ get; set; }
 
 		/// <summary>
 		/// Gets or sets the <see cref="IMessageSerialiser{TAuthenticationToken}"/>.
@@ -97,14 +101,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected const int DefaultMaximumConcurrentReceiverProcessesCount = 1;
 
-#if NET452
-		/// <summary>
-		/// The <see cref="OnMessageOptions.MaxConcurrentCalls"/> value.
-		/// </summary>
-#endif
 #if NETSTANDARD2_0
 		/// <summary>
 		/// Used by .NET Framework, but not .Net Core
+		/// </summary>
+#else
+		/// <summary>
+		/// The <see cref="OnMessageOptions.MaxConcurrentCalls"/> value.
 		/// </summary>
 #endif
 		protected int MaximumConcurrentReceiverProcessesCount { get; set; }
@@ -158,6 +161,15 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
+		/// Sets <see cref="RbacConnectionSettings"/> from <see cref="GetRbacConnectionSettings"/>.
+		/// </summary>
+		protected virtual void SetRbacConnectionSettings()
+		{
+			RbacConnectionSettings = GetRbacConnectionSettings();
+			Logger.LogSensitive(string.Format("Connection RBAC settings set to {0}.", RbacConnectionSettings));
+		}
+
+		/// <summary>
 		/// Sets <see cref="NumberOfReceiversCount"/> from <see cref="GetCurrentNumberOfReceiversCount"/>.
 		/// </summary>
 		protected virtual void SetNumberOfReceiversCount()
@@ -179,6 +191,11 @@ namespace Cqrs.Azure.ServiceBus
 		/// Gets the connection string for the bus.
 		/// </summary>
 		protected abstract string GetConnectionString();
+
+		/// <summary>
+		/// Gets the RBAC connection settings for the bus from <see cref="AzureBus{TAuthenticationToken}.ConfigurationManager"/>
+		/// </summary>
+		protected abstract AzureBusRbacSettings GetRbacConnectionSettings();
 
 		/// <summary>
 		/// Returns <see cref="DefaultNumberOfReceiversCount"/>.
@@ -208,14 +225,6 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected abstract void InstantiateReceiving();
 
-#if NET452
-		/// <summary>
-		/// Creates a new instance of <see cref="NamespaceManager"/> with the <see cref="ConnectionString"/>.
-		/// </summary>
-		protected virtual NamespaceManager GetManager()
-		{
-			NamespaceManager manager = NamespaceManager.CreateFromConnectionString(ConnectionString);
-#endif
 #if NETSTANDARD2_0
 		/// <summary>
 		/// Creates a new instance of <see cref="ManagementClient"/> with the <see cref="ConnectionString"/>.
@@ -223,6 +232,13 @@ namespace Cqrs.Azure.ServiceBus
 		protected virtual ManagementClient GetManager()
 		{
 			var manager = new ManagementClient(ConnectionString);
+#else
+		/// <summary>
+		/// Creates a new instance of <see cref="NamespaceManager"/> with the <see cref="ConnectionString"/>.
+		/// </summary>
+		protected virtual NamespaceManager GetManager()
+		{
+			NamespaceManager manager = NamespaceManager.CreateFromConnectionString(ConnectionString);
 #endif
 			return manager;
 		}
@@ -234,11 +250,10 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			get
 			{
-#if NET452
-				RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance<RetryManager>();
-#endif
 #if NETSTANDARD2_0
 				RetryManager retryManager = RetryManager.Instance;
+#else
+				RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance<RetryManager>();
 #endif
 				RetryPolicy retryPolicy = retryManager.GetDefaultAzureServiceBusRetryPolicy();
 				retryPolicy.Retrying += (sender, args) =>
@@ -278,6 +293,8 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			return ConnectionString != GetConnectionString()
 				||
+			RbacConnectionSettings.ToString() != GetRbacConnectionSettings().ToString()
+				||
 			NumberOfReceiversCount != GetCurrentNumberOfReceiversCount()
 				||
 			MaximumConcurrentReceiverProcessesCount != GetCurrentMaximumConcurrentReceiverProcessesCount();
@@ -286,12 +303,14 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Calls 
 		/// <see cref="SetConnectionStrings"/>
+		/// <see cref="SetRbacConnectionSettings"/>
 		/// <see cref="SetNumberOfReceiversCount"/> and 
 		/// <see cref="SetMaximumConcurrentReceiverProcessesCount"/>
 		/// </summary>
 		protected virtual void UpdateSettings()
 		{
 			SetConnectionStrings();
+			SetRbacConnectionSettings();
 			SetNumberOfReceiversCount();
 			SetMaximumConcurrentReceiverProcessesCount();
 		}
@@ -301,14 +320,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected abstract void TriggerSettingsChecking();
 
-#if NET452
-		/// <summary>
-		/// Sets the handler on <see cref="IMessageReceiver.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage})"/>.
-		/// </summary>
-#endif
 #if NETSTANDARD2_0
 		/// <summary>
 		/// Sets the handler on <see cref="IReceiverClient.RegisterMessageHandler(Func{Message, System.Threading.CancellationToken, Task}, MessageHandlerOptions)"/>.
+		/// </summary>
+#else
+		/// <summary>
+		/// Sets the handler on <see cref="IMessageReceiver.OnMessage(System.Action{Microsoft.ServiceBus.Messaging.BrokeredMessage})"/>.
 		/// </summary>
 #endif
 		protected abstract void ApplyReceiverMessageHandler();

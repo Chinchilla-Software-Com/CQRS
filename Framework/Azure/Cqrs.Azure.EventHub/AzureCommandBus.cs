@@ -30,6 +30,38 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
+		/// The configuration key for the message bus connection endpoint as used by <see cref="IConfigurationManager"/>, when using RBAC.
+		/// </summary>
+		protected override string EventHubConnectionEndpointConfigurationKey
+		{
+			get { return "Cqrs.Azure.EventHub.CommandBus.Connection.Endpoint"; }
+		}
+
+		/// <summary>
+		/// The configuration key for the message bus connection Application Id as used by <see cref="IConfigurationManager"/>, when using RBAC.
+		/// </summary>
+		protected override string EventHubConnectionApplicationIdConfigurationKey
+		{
+			get { return "Cqrs.Azure.EventHub.CommandBus.Connection.ApplicationId"; }
+		}
+
+		/// <summary>
+		/// The configuration key for the message bus connection Client Key/Secret as used by <see cref="IConfigurationManager"/>, when using RBAC.
+		/// </summary>
+		protected override string EventHubConnectionClientKeyConfigurationKey
+		{
+			get { return "Cqrs.Azure.EventHub.CommandBus.Connection.ClientKey"; }
+		}
+
+		/// <summary>
+		/// The configuration key for the message bus connection Tenant Id as used by <see cref="IConfigurationManager"/>, when using RBAC.
+		/// </summary>
+		protected override string EventHubConnectionTenantIdConfigurationKey
+		{
+			get { return "Cqrs.Azure.EventHub.CommandBus.Connection.TenantId"; }
+		}
+
+		/// <summary>
 		/// The configuration key for the event hub storage connection string as used by <see cref="IConfigurationManager"/>.
 		/// </summary>
 		protected override string EventHubStorageConnectionStringNameConfigurationKey

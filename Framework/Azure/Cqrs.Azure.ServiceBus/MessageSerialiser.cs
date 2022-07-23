@@ -27,10 +27,10 @@ namespace Cqrs.Azure.ServiceBus
 
 		static MessageSerialiser()
 		{
-#if NET452
-			RedirectAssembly("System.Private.CoreLib", "mscorlib");
-#else
+#if NETSTANDARD2_0
 			RedirectAssembly("mscorlib", "System.Private.CoreLib");
+#else
+			RedirectAssembly("System.Private.CoreLib", "mscorlib");
 #endif
 			DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
 		}
