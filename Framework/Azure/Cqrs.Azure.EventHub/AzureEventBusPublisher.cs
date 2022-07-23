@@ -16,14 +16,14 @@ using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Messages;
-#if NET452
-using Microsoft.ServiceBus.Messaging;
-using EventData = Microsoft.ServiceBus.Messaging.EventData;
-#endif
+
 #if NETSTANDARD2_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 using EventData = Microsoft.Azure.EventHubs.EventData;
+#else
+using Microsoft.ServiceBus.Messaging;
+using EventData = Microsoft.ServiceBus.Messaging.EventData;
 #endif
 
 namespace Cqrs.Azure.ServiceBus
@@ -79,11 +79,10 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, @event.GetType(), @event);
 
-#if NET452
-					EventHubPublisher.Send(brokeredMessage);
-#endif
 #if NETSTANDARD2_0
 					EventHubPublisher.SendAsync(brokeredMessage).Wait();
+#else
+					EventHubPublisher.Send(brokeredMessage);
 #endif
 					wasSuccessfull = true;
 				}
@@ -164,11 +163,10 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					if (brokeredMessages.Any())
 					{
-#if NET452
-						EventHubPublisher.SendBatch(brokeredMessages);
-#endif
 #if NETSTANDARD2_0
 						EventHubPublisher.SendAsync(brokeredMessages).Wait();
+#else
+						EventHubPublisher.SendBatch(brokeredMessages);
 #endif
 					}
 					else

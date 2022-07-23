@@ -9,7 +9,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using Cqrs.Authentication;
 using Cqrs.Commands;
@@ -19,12 +18,12 @@ using Cqrs.Bus;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
 using Cqrs.Messages;
-#if NET452
-using Microsoft.ServiceBus.Messaging;
-#endif
+
 #if NETSTANDARD2_0
 using Microsoft.Azure.ServiceBus;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+#else
+using Microsoft.ServiceBus.Messaging;
 #endif
 
 namespace Cqrs.Azure.ServiceBus
@@ -55,14 +54,20 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			get
 			{
-				string connectionString = string.Format("ConnectionString : {0}", MessageBusConnectionStringConfigurationKey);
+				string connectionString = $"ConnectionString : {MessageBusConnectionStringConfigurationKey}";
 				try
 				{
-					connectionString = string.Concat(connectionString, "=", GetConnectionString());
+					string _value = GetConnectionString();
+					if (!string.IsNullOrWhiteSpace(_value))
+						connectionString = string.Concat(connectionString, "=", _value);
+					else
+					{
+						connectionString = $"ConnectionRBACSettings : ";
+						connectionString = string.Concat(connectionString, "=", GetRbacConnectionSettings());
+					}
 				}
 				catch { /* */ }
-				return string.Format(CultureInfo.InvariantCulture, "{0}, PrivateTopicName : {1}, PrivateTopicSubscriptionName : {2}, PublicTopicName : {3}, PublicTopicSubscriptionName : {4}",
-					connectionString, PrivateTopicName, PrivateTopicSubscriptionName, PublicTopicName, PublicTopicSubscriptionName);
+				return $"{connectionString}, PrivateTopicName : {PrivateTopicName}, PrivateTopicSubscriptionName : {PrivateTopicSubscriptionName}, PublicTopicName : {PublicTopicName}, PublicTopicSubscriptionName : {PublicTopicSubscriptionName}";
 			}
 		}
 
@@ -121,11 +126,10 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NET452
-								PublicServiceBusPublisher.Send(brokeredMessage);
-#endif
 #if NETSTANDARD2_0
 								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#else
+								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
 								break;
 							}
@@ -169,11 +173,10 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NET452
-								PublicServiceBusPublisher.Send(brokeredMessage);
-#endif
 #if NETSTANDARD2_0
 								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#else
+								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
 								break;
 							}
@@ -217,11 +220,10 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NET452
-								PrivateServiceBusPublisher.Send(brokeredMessage);
-#endif
 #if NETSTANDARD2_0
 								PrivateServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#else
+								PrivateServiceBusPublisher.Send(brokeredMessage);
 #endif
 								break;
 							}
@@ -353,11 +355,10 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (publicBrokeredMessages.Any())
 							{
-#if NET452
-								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
-#endif
 #if NETSTANDARD2_0
 								PublicServiceBusPublisher.SendAsync(publicBrokeredMessages).Wait();
+#else
+								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
 #endif
 							}
 							else
@@ -402,11 +403,10 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (privateBrokeredMessages.Any())
 							{
-#if NET452
-								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
-#endif
 #if NETSTANDARD2_0
 								PrivateServiceBusPublisher.SendAsync(privateBrokeredMessages).Wait();
+#else
+								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
 #endif
 							}
 							else
@@ -549,11 +549,10 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						try
 						{
-#if NET452
-							PrivateServiceBusPublisher.Send(brokeredMessage);
-#endif
 #if NETSTANDARD2_0
 							PrivateServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+#else
+							PrivateServiceBusPublisher.Send(brokeredMessage);
 #endif
 							break;
 						}

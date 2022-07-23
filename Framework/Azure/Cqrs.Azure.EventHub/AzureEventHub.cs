@@ -14,22 +14,34 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
+
 using Chinchilla.Logging;
 using Cqrs.Authentication;
+using Cqrs.Bus;
 using Cqrs.Configuration;
-#if NET452
-using Microsoft.ServiceBus;
-using Microsoft.ServiceBus.Messaging;
-using Manager = Microsoft.ServiceBus.NamespaceManager;
-#endif
+
 #if NETSTANDARD2_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 using Manager = Microsoft.Azure.ServiceBus.Management.ManagementClient;
+using TokenProvider = Microsoft.Azure.ServiceBus.Primitives.TokenProvider;
+using AzureActiveDirectoryTokenProvider2 = Microsoft.Azure.ServiceBus.Primitives.AzureActiveDirectoryTokenProvider;
+#else
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
+using Manager = Microsoft.ServiceBus.NamespaceManager;
 #endif
-using System.Text;
-using Cqrs.Bus;
+
+#if NET462
+using AzureActiveDirectoryTokenProvider2 = Microsoft.ServiceBus.AzureActiveDirectoryTokenProvider;
+#endif
+
+#if NET452
+#else
+using Microsoft.Identity.Client;
+#endif
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -74,6 +86,26 @@ namespace Cqrs.Azure.ServiceBus
 		/// The configuration key for the event hub connection string as used by <see cref="IConfigurationManager"/>.
 		/// </summary>
 		protected abstract string EventHubConnectionStringNameConfigurationKey { get; }
+
+		/// <summary>
+		/// The configuration key for the event hub connection endpoint as used by <see cref="IConfigurationManager"/>, when using RBAC.
+		/// </summary>
+		protected abstract string EventHubConnectionEndpointConfigurationKey { get; }
+
+		/// <summary>
+		/// The configuration key for the event hub connection Application Id as used by <see cref="IConfigurationManager"/>, when using RBAC.
+		/// </summary>
+		protected abstract string EventHubConnectionApplicationIdConfigurationKey { get; }
+
+		/// <summary>
+		/// The configuration key for the event hub connection Client Key/Secret as used by <see cref="IConfigurationManager"/>, when using RBAC.
+		/// </summary>
+		protected abstract string EventHubConnectionClientKeyConfigurationKey { get; }
+
+		/// <summary>
+		/// The configuration key for the event hub connection Tenant Id as used by <see cref="IConfigurationManager"/>, when using RBAC.
+		/// </summary>
+		protected abstract string EventHubConnectionTenantIdConfigurationKey { get; }
 
 		/// <summary>
 		/// The configuration key for the event hub storage connection string as used by <see cref="IConfigurationManager"/>.
@@ -155,6 +187,19 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected IList<string> ExclusionNamespaces { get; private set; }
 
+#if NET452
+#else
+		/// <summary>
+		/// Gets an access token from Active Directory when using RBAC based connections.
+		/// </summary>
+		protected AzureActiveDirectoryTokenProvider2.AuthenticationCallback GetActiveDirectoryToken { get; private set; }
+
+		/// <summary>
+		/// Gets an access token from Active Directory when using RBAC based connections.
+		/// </summary>
+		protected AzureActiveDirectoryTokenProvider.AuthenticationCallback GetActiveDirectoryToken2 { get; private set; }
+#endif
+
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureEventHub{TAuthenticationToken}"/>
 		/// </summary>
@@ -164,19 +209,101 @@ namespace Cqrs.Azure.ServiceBus
 			TelemetryHelper = new NullTelemetryHelper();
 			ExclusionNamespaces = new SynchronizedCollection<string> { "Cqrs", "System" };
 			Signer = hashAlgorithmFactory;
+
+			Instantiate();
 		}
 
-#region Overrides of AzureBus<TAuthenticationToken>
+		private void Instantiate()
+		{
+#if NET452
+#else
+			GetActiveDirectoryToken = async (audience, authority, state) =>
+			{
+				string applicationId = ConfigurationManager.GetSetting(EventHubConnectionApplicationIdConfigurationKey);
+				string clientKey = ConfigurationManager.GetSetting(EventHubConnectionClientKeyConfigurationKey);
+
+				IConfidentialClientApplication app = ConfidentialClientApplicationBuilder.Create(applicationId)
+					.WithAuthority(authority)
+					.WithClientSecret(clientKey)
+					.Build();
+
+				var authResult = await app
+					.AcquireTokenForClient(new string[] { "https://servicebus.azure.net/.default" })
+					.ExecuteAsync();
+
+				return authResult.AccessToken;
+			};
+
+			GetActiveDirectoryToken2 = async (audience, authority, state) =>
+			{
+				string applicationId = ConfigurationManager.GetSetting(EventHubConnectionApplicationIdConfigurationKey);
+				string clientKey = ConfigurationManager.GetSetting(EventHubConnectionClientKeyConfigurationKey);
+
+				IConfidentialClientApplication app = ConfidentialClientApplicationBuilder.Create(applicationId)
+					.WithAuthority(authority)
+					.WithClientSecret(clientKey)
+					.Build();
+
+				var authResult = await app
+					.AcquireTokenForClient(new string[] { "https://servicebus.azure.net/.default" })
+					.ExecuteAsync();
+
+				return authResult.AccessToken;
+			};
+#endif
+		}
+
+		#region Overrides of AzureBus<TAuthenticationToken>
 
 		/// <summary>
 		/// Gets the connection string for the bus from <see cref="AzureBus{TAuthenticationToken}.ConfigurationManager"/>
 		/// </summary>
 		protected override string GetConnectionString()
 		{
-			string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey)].ConnectionString;
-			if (string.IsNullOrWhiteSpace(connectionString))
-				throw new ConfigurationErrorsException(string.Format("Configuration is missing required information. Make sure the appSetting '{0}' is defined and a matching connection string with the name that matches the value of the appSetting value '{0}'.", EventHubConnectionStringNameConfigurationKey));
+			string connectionStringKey = ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey);
+			if (string.IsNullOrWhiteSpace(connectionStringKey))
+			{
+				string connectionEndpoint = ConfigurationManager.GetSetting(EventHubConnectionEndpointConfigurationKey);
+				// double check an endpoint isn't provided, if it is, then we're using endpoints, but if not, we'll assume a connection string is prefered as it's easier
+				if (string.IsNullOrWhiteSpace(connectionEndpoint))
+					throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{EventHubConnectionStringNameConfigurationKey}' is defined and has a valid connection string with the name that matches the value of the appSetting value '{EventHubConnectionStringNameConfigurationKey}'.");
+			}
+			string connectionString = ConfigurationManager.GetConnectionStringBySettingKey(connectionStringKey, true);
+
 			return connectionString;
+		}
+
+		/// <summary>
+		/// Gets the RBAC connection settings for the bus from <see cref="AzureBus{TAuthenticationToken}.ConfigurationManager"/>
+		/// </summary>
+		protected override AzureBusRbacSettings GetRbacConnectionSettings()
+		{
+			// double check an endpoint isn't provided, if it is, then we're using endpoints, but if not, we'll assume a connection string is prefered as it's easier
+			bool isUsingConnectionString = !string.IsNullOrWhiteSpace(ConfigurationManager.GetSetting(EventHubConnectionEndpointConfigurationKey));
+
+			string endpoint = ConfigurationManager.GetSetting(EventHubConnectionEndpointConfigurationKey);
+			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(endpoint))
+				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{EventHubConnectionEndpointConfigurationKey}' is defined and has a valid connection endpoint value.");
+
+			string applicationId = ConfigurationManager.GetSetting(EventHubConnectionApplicationIdConfigurationKey);
+			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(applicationId))
+				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{EventHubConnectionApplicationIdConfigurationKey}' is defined and has a valid application id value.");
+
+			string clientKey = ConfigurationManager.GetSetting(EventHubConnectionClientKeyConfigurationKey);
+			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(clientKey))
+				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{EventHubConnectionClientKeyConfigurationKey}' is defined and has a valid client key/secret value.");
+
+			string tenantId = ConfigurationManager.GetSetting(EventHubConnectionTenantIdConfigurationKey);
+			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(tenantId))
+				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{EventHubConnectionTenantIdConfigurationKey}' is defined and has a valid tenant id value.");
+
+			return new AzureBusRbacSettings
+			{
+				Endpoint = endpoint,
+				ApplicationId = applicationId,
+				ClientKey = clientKey,
+				TenantId = tenantId
+			};
 		}
 
 		/// <summary>
@@ -186,10 +313,9 @@ namespace Cqrs.Azure.ServiceBus
 		protected override void SetConnectionStrings()
 		{
 			base.SetConnectionStrings();
-			StorageConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings[ConfigurationManager.GetSetting(EventHubStorageConnectionStringNameConfigurationKey)].ConnectionString;
-			if (string.IsNullOrWhiteSpace(StorageConnectionString))
-				throw new ConfigurationErrorsException(string.Format("Configuration is missing required information. Make sure the appSetting '{0}' is defined and a matching connection string with the name that matches the value of the appSetting value '{0}'.", EventHubStorageConnectionStringNameConfigurationKey));
-			Logger.LogDebug(string.Format("Storage connection string settings set to {0}.", StorageConnectionString));
+			string connectionStringKey = ConfigurationManager.GetSetting(EventHubStorageConnectionStringNameConfigurationKey);
+			StorageConnectionString = ConfigurationManager.GetConnectionStringBySettingKey(connectionStringKey, true);
+			Logger.LogSensitive($"Storage connection string settings set to '{StorageConnectionString}'.");
 		}
 
 #endregion
@@ -202,23 +328,46 @@ namespace Cqrs.Azure.ServiceBus
 		protected override void InstantiatePublishing()
 		{
 #if NET452
-			Manager manager = Manager.CreateFromConnectionString(ConnectionString);
+#else
+			if (GetActiveDirectoryToken == null)
+				Instantiate();
 #endif
+
+			Manager manager;
+			string connectionString = ConnectionString;
+			AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
 #if NETSTANDARD2_0
-			var manager = new Manager(ConnectionString);
+			if (!string.IsNullOrWhiteSpace(connectionString))
+				manager = new Manager(ConnectionString);
+			else
+				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority()));
+#else
+#if NET452
+			manager = Manager.CreateFromConnectionString(ConnectionString);
+#else
+			if (!string.IsNullOrWhiteSpace(connectionString))
+				manager = Manager.CreateFromConnectionString(ConnectionString);
+			else
+				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, new Uri(rbacSettings.Endpoint), rbacSettings.GetDefaultAuthority()));
+#endif
 #endif
 			CheckPrivateHubExists(manager);
 			CheckPublicHubExists(manager);
 
-#if NET452
-			EventHubPublisher = EventHubClient.CreateFromConnectionString(ConnectionString, PublicEventHubName);
-#endif
 #if NETSTANDARD2_0
-			var connectionStringBuilder = new EventHubsConnectionStringBuilder(ConnectionString)
-			{
-				EntityPath = PublicEventHubName
-			};
-			EventHubPublisher = EventHubClient.Create(connectionStringBuilder);
+			if (!string.IsNullOrWhiteSpace(connectionString))
+				EventHubPublisher = EventHubClient.CreateFromConnectionString(connectionString);
+			else
+				EventHubPublisher = EventHubClient.CreateWithAzureActiveDirectory(new Uri(rbacSettings.Endpoint), PublicEventHubName, GetActiveDirectoryToken2, rbacSettings.GetDefaultAuthority());
+#else
+#if NET452
+			EventHubPublisher = EventHubClient.CreateFromConnectionString(connectionString);
+#else
+			if (!string.IsNullOrWhiteSpace(connectionString))
+				EventHubPublisher = EventHubClient.CreateFromConnectionString(connectionString);
+			else
+				EventHubPublisher = EventHubClient.CreateWithAzureActiveDirectory(new Uri(rbacSettings.Endpoint), PublicEventHubName, GetActiveDirectoryToken2, rbacSettings.GetDefaultAuthority());
+#endif
 #endif
 			StartSettingsChecking();
 		}
@@ -232,16 +381,51 @@ namespace Cqrs.Azure.ServiceBus
 		protected override void InstantiateReceiving()
 		{
 #if NET452
-			Manager manager = Manager.CreateFromConnectionString(ConnectionString);
+#else
+			if (GetActiveDirectoryToken == null)
+				Instantiate();
 #endif
+
+			Manager manager;
+			string connectionString = ConnectionString;
+			AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
 #if NETSTANDARD2_0
-			var manager = new Manager(ConnectionString);
+			if (!string.IsNullOrWhiteSpace(connectionString))
+				manager = new Manager(ConnectionString);
+			else
+				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority()));
+#else
+#if NET452
+			manager = Manager.CreateFromConnectionString(ConnectionString);
+#else
+			if (!string.IsNullOrWhiteSpace(connectionString))
+				manager = Manager.CreateFromConnectionString(ConnectionString);
+			else
+				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, new Uri(rbacSettings.Endpoint), rbacSettings.GetDefaultAuthority()));
+#endif
 #endif
 
 			CheckPrivateHubExists(manager);
 			CheckPublicHubExists(manager);
 
+#if NETSTANDARD2_0
+			if (!string.IsNullOrWhiteSpace(connectionString))
+				EventHubReceiver = new EventProcessorHost(PublicEventHubName, PublicEventHubConsumerGroupName, ConnectionString, StorageConnectionString, "Cqrs");
+			else
+				EventHubReceiver = new EventProcessorHost(new Uri(rbacSettings.Endpoint), PublicEventHubName, PublicEventHubConsumerGroupName, Microsoft.Azure.EventHubs.TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken2, rbacSettings.Endpoint, rbacSettings.GetDefaultAuthority()), Microsoft.Azure.Storage.CloudStorageAccount.Parse(StorageConnectionString), "Cqrs");
+#else
+#if NET452
 			EventHubReceiver = new EventProcessorHost(PublicEventHubName, PublicEventHubConsumerGroupName, ConnectionString, StorageConnectionString, "Cqrs");
+#else
+			if (!string.IsNullOrWhiteSpace(connectionString))
+				EventHubReceiver = new EventProcessorHost(PublicEventHubName, PublicEventHubConsumerGroupName, ConnectionString, StorageConnectionString, "Cqrs");
+			else
+			{
+				Func<EventProcessorOptions, MessagingFactory> eventHubClientFactory = (options) => { return MessagingFactory.Create(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, new Uri(rbacSettings.Endpoint), rbacSettings.GetDefaultAuthority())); };
+				EventHubReceiver = new EventProcessorHost(rbacSettings.Endpoint, PublicEventHubName, PublicEventHubConsumerGroupName, eventHubClientFactory, () => { return new Microsoft.WindowsAzure.Storage.Blob.CloudBlobClient(new Uri(StorageConnectionString)); }, "Cqrs");
+			}
+#endif
+#endif
 
 			// If this is also a publisher, then it will the check over there and that will handle this
 			if (EventHubPublisher != null)
@@ -274,21 +458,6 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected virtual void CheckHubExists(Manager manager, string hubName, string consumerGroupNames)
 		{
-#if NET452
-			// Configure Queue Settings
-			var eventHubDescription = new EventHubDescription(hubName)
-			{
-				MessageRetentionInDays = long.MaxValue,
-			};
-
-			// Create the topic if it does not exist already
-			manager.CreateEventHubIfNotExists(eventHubDescription);
-
-			var subscriptionDescription = new SubscriptionDescription(eventHubDescription.Path, consumerGroupNames);
-
-			if (!manager.SubscriptionExists(eventHubDescription.Path, consumerGroupNames))
-				manager.CreateSubscription(subscriptionDescription);
-#endif
 #if NETSTANDARD2_0
 			/*
 			// Configure Queue Settings
@@ -306,6 +475,20 @@ namespace Cqrs.Azure.ServiceBus
 				manager.CreateSubscriptionAsync(subscriptionDescription).Wait(1500);
 			*/
 			Logger.LogWarning($"Checking EventHubs and subscriptions is not currently implemented until the Azure libraries provide management facilities. You will need to check these objects exist manually: EventHub {hubName}, Subscription/Consumer Group {consumerGroupNames}", "AzureEventHub");
+#else
+			// Configure Queue Settings
+			var eventHubDescription = new EventHubDescription(hubName)
+			{
+				MessageRetentionInDays = long.MaxValue,
+			};
+
+			// Create the topic if it does not exist already
+			manager.CreateEventHubIfNotExists(eventHubDescription);
+
+			var subscriptionDescription = new SubscriptionDescription(eventHubDescription.Path, consumerGroupNames);
+
+			if (!manager.SubscriptionExists(eventHubDescription.Path, consumerGroupNames))
+				manager.CreateSubscription(subscriptionDescription);
 #endif
 		}
 
@@ -407,9 +590,9 @@ namespace Cqrs.Azure.ServiceBus
 			string messageBody = serialiserFunction(message);
 			var brokeredMessage = new EventData(Encoding.UTF8.GetBytes(messageBody));
 
-			brokeredMessage.Properties.Add("CorrelationId", CorrelationIdHelper.GetCorrelationId().ToString("N"));
-			brokeredMessage.Properties.Add("Type", messageType.FullName);
-			brokeredMessage.Properties.Add("Source", string.Format("{0}/{1}/{2}/{3}", Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
+			brokeredMessage.AddUserProperty("CorrelationId", CorrelationIdHelper.GetCorrelationId().ToString("N"));
+			brokeredMessage.AddUserProperty("Type", messageType.FullName);
+			brokeredMessage.AddUserProperty("Source", string.Format("{0}/{1}/{2}/{3}", Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
 
 			// see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security</remarks>
 			string configurationKey = string.Format("{0}.SigningToken", messageType.FullName);
@@ -420,7 +603,7 @@ namespace Cqrs.Azure.ServiceBus
 					signingToken = Guid.Empty.ToString("N");
 			if (!string.IsNullOrWhiteSpace(signingToken))
 				using (var hashStream = new MemoryStream(Encoding.UTF8.GetBytes($"{signingToken}{messageBody}")))
-					brokeredMessage.Properties.Add("Signature", Convert.ToBase64String(signer.ComputeHash(hashStream)));
+					brokeredMessage.AddUserProperty("Signature", Convert.ToBase64String(signer.ComputeHash(hashStream)));
 
 			try
 			{
@@ -438,7 +621,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (ExclusionNamespaces.All(@namespace => !method.ReflectedType.FullName.StartsWith(@namespace)))
 							{
-								brokeredMessage.Properties.Add("Source-Method", string.Format("{0}.{1}", method.ReflectedType.FullName, method.Name));
+								brokeredMessage.AddUserProperty("Source-Method", string.Format("{0}.{1}", method.ReflectedType.FullName, method.Name));
 								break;
 							}
 						}
@@ -464,13 +647,13 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", baseCommunicationType } };
 			object value;
-			if (message.Properties.TryGetValue("Type", out value))
+			if (message.TryGetUserPropertyValue("Type", out value))
 				telemetryProperties.Add("MessageType", value.ToString());
-			if (message.Properties.TryGetValue("Source", out value))
+			if (message.TryGetUserPropertyValue("Source", out value))
 				telemetryProperties.Add("MessageSource", value.ToString());
-			if (message.Properties.TryGetValue("Source-Method", out value))
+			if (message.TryGetUserPropertyValue("Source-Method", out value))
 				telemetryProperties.Add("MessageSourceMethod", value.ToString());
-			if (message.Properties.TryGetValue("CorrelationId", out value) && !telemetryProperties.ContainsKey("CorrelationId"))
+			if (message.TryGetUserPropertyValue("CorrelationId", out value) && !telemetryProperties.ContainsKey("CorrelationId"))
 				telemetryProperties.Add("CorrelationId", value.ToString());
 
 			return telemetryProperties;
@@ -482,7 +665,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected virtual string ExtractSignature(EventData eventData)
 		{
 			object value;
-			if (eventData.Properties.TryGetValue("Signature", out value))
+			if (eventData.TryGetUserPropertyValue("Signature", out value))
 				return value.ToString();
 			return null;
 		}

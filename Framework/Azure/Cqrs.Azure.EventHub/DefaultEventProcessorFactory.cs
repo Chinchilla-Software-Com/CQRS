@@ -7,12 +7,12 @@
 #endregion
 
 using System;
-#if NET452
-using Microsoft.ServiceBus.Messaging;
-#endif
+
 #if NETSTANDARD2_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
+#else
+using Microsoft.ServiceBus.Messaging;
 #endif
 
 namespace Cqrs.Azure.ServiceBus
