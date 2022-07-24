@@ -311,7 +311,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected override AzureBusRbacSettings GetRbacConnectionSettings()
 		{
 			// double check an endpoint isn't provided, if it is, then we're using endpoints, but if not, we'll assume a connection string is prefered as it's easier
-			bool isUsingConnectionString = !string.IsNullOrWhiteSpace(ConfigurationManager.GetSetting(MessageBusConnectionEndpointConfigurationKey));
+			bool isUsingConnectionString = !string.IsNullOrWhiteSpace(ConfigurationManager.GetSetting(MessageBusConnectionStringConfigurationKey));
 
 			string endpoint = ConfigurationManager.GetSetting(MessageBusConnectionEndpointConfigurationKey);
 			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(endpoint))
