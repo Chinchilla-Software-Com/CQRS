@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using Microsoft.Identity.Client;
 using NUnit.Framework;
+
 #if NET472
 using Manager = Microsoft.ServiceBus.NamespaceManager;
 using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
@@ -125,13 +127,9 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			Assert.IsNull(testResponse[processId].Item2);
 		}
 
-		/// <summary>
-		/// Tests a test <see cref="ICommand{TAuthenticationToken}"/> can be published via
-		/// <see cref="AzureCommandBusPublisher{TAuthenticationToken}"/> and two <see cref="IEventHandler">event handlers</see>
-		/// Will fire updating test flags.
-		/// </summary>
+		/// <summary />
 		[TestMethod]
-		public void Publish_x_NoExceptions()
+		public void Setup_NoPublishingReceiverOnly_NoExceptions()
 		{
 			// Arrange
 			IDictionary<Guid, Tuple<bool, Exception>> testResponse = new Dictionary<Guid, Tuple<bool, Exception>>();
@@ -235,6 +233,103 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 					options
 				);
 			serviceBusReceiver.CloseAsync().Wait();
+#endif
+		}
+
+		/// <summary />
+		[TestMethod]
+		public void Setup_PublishOnly_NoExceptions()
+		{
+			// Arrange
+			IDictionary<Guid, Tuple<bool, Exception>> testResponse = new Dictionary<Guid, Tuple<bool, Exception>>();
+
+			Guid processId = Guid.NewGuid();
+			testResponse.Add(processId, new Tuple<bool, Exception>(false, null));
+			var command = new TestCommand { Id = processId };
+			IConfigurationManager configurationManager;
+#if NET472
+			configurationManager = new Configuration.ConfigurationManager();
+#else
+			IConfigurationRoot config = new ConfigurationBuilder()
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables()
+				.Build();
+
+			configurationManager = new CloudConfigurationManager(config);
+#endif
+			getTokenConfigurationManager = configurationManager;
+
+			string endpointAddress = configurationManager.GetSetting("Cqrs.Azure.CommandBus.Connection.Endpoint");
+			string applicationId = configurationManager.GetSetting("Cqrs.Azure.CommandBus.Connection.ApplicationId");
+			string clientKey = configurationManager.GetSetting("Cqrs.Azure.CommandBus.Connection.ClientKey");
+			string tentantId = configurationManager.GetSetting("Cqrs.Azure.CommandBus.Connection.TenantId");
+			string authority = $"https://login.windows.net/{tentantId}";
+
+			string topicName = "test.topic";
+			string topicSubscriptionName = "test.tespic.subscription";
+			Manager manager;
+			TopicClient serviceBusPublish;
+			var eventTopicDescription = new TopicDescription(topicName)
+			{
+#if NET472
+				MaxSizeInMegabytes = 5120,
+#else
+				MaxSizeInMB = 5120,
+#endif
+				DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
+				EnablePartitioning = true,
+				EnableBatchedOperations = true,
+			};
+#if NET472
+			manager = new Manager(endpointAddress, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetToken, new Uri(endpointAddress), authority));
+
+			if (!manager.TopicExists(eventTopicDescription.Path))
+				manager.CreateTopic(eventTopicDescription);
+			if (!manager.SubscriptionExists(eventTopicDescription.Path, topicSubscriptionName))
+				manager.CreateSubscription
+				(
+					new SubscriptionDescription(eventTopicDescription.Path, topicSubscriptionName)
+					{
+						DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
+						EnableBatchedOperations = true,
+						EnableDeadLetteringOnFilterEvaluationExceptions = true
+					}
+				);
+
+#else
+			manager = new Manager(endpointAddress, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetToken, authority));
+
+			Task<bool> checkTask = manager.TopicExistsAsync(topicName);
+			checkTask.Wait(1500);
+			if (!checkTask.Result)
+			{
+				Task<TopicDescription> createTopicTask = manager.CreateTopicAsync(eventTopicDescription);
+				createTopicTask.Wait(1500);
+			}
+
+			checkTask = manager.SubscriptionExistsAsync(topicName, topicSubscriptionName);
+			checkTask.Wait(1500);
+			if (!checkTask.Result)
+			{
+				var subscriptionDescription = new SubscriptionDescription(topicName, topicSubscriptionName)
+				{
+					DefaultMessageTimeToLive = eventTopicDescription.DefaultMessageTimeToLive,
+					EnableBatchedOperations = eventTopicDescription.EnableBatchedOperations,
+				};
+				Task<SubscriptionDescription> createTask = manager.CreateSubscriptionAsync(subscriptionDescription);
+				createTask.Wait(1500);
+			}
+#endif
+
+#if NET472
+			// https://github.com/Azure/azure-service-bus/blob/master/samples/DotNet/Microsoft.ServiceBus.Messaging/RoleBasedAccessControl/Program.cs
+			serviceBusPublish = TopicClient.CreateWithAzureActiveDirectory(new Uri(endpointAddress), topicName, GetToken, authority);
+			serviceBusPublish.Send(new BrokeredMessage("Test Message"));
+			serviceBusPublish.Close();
+#else
+			serviceBusPublish = new TopicClient(endpointAddress, topicName, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetToken, authority));
+			serviceBusPublish.SendAsync(new BrokeredMessage(Encoding.UTF8.GetBytes("Test Message"))).Wait();
+			serviceBusPublish.CloseAsync().Wait();
 #endif
 		}
 
