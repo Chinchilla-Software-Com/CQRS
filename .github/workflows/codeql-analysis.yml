@@ -23,7 +23,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     permissions:
       actions: read
       contents: read
@@ -32,6 +32,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        os: [windows-2019]
         language: [ 'csharp' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
@@ -52,21 +53,23 @@ jobs:
         # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-        
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    - name: Setup dotnet CLI
+      uses: actions/setup-dotnet@v1.7.2
+      with:
+        dotnet-version: 3.1.x
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+    - name: Prepare Legacy NuGet
+      run: |
+        cd .\.nuget
+        ren NuGet.ex_ NuGet.exe
+        cd ..
+        .nuget\NuGet.exe restore Cqrs.sln
 
-    #   If the Autobuild fails above, remove it and uncomment the following three lines. 
-    #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
+    - name: Build Framework with dotnet CLI
+      run: dotnet build --configuration Release .\Cqrs.sln
 
-    # - run: |
-    #   echo "Run, Build Application using script"
-    #   ./location_of_script_within_repo/buildscript.sh
+    - name: Build Scheduler with dotnet CLI
+      run: dotnet build --configuration Release .\Scheduler\Cqrs.Scheduler.sln
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
