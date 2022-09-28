@@ -38,7 +38,8 @@ namespace Cqrs.Events
 				PreserveReferencesHandling = PreserveReferencesHandling.All,
 				ReferenceLoopHandling = ReferenceLoopHandling.Error,
 				StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
-				TypeNameHandling = TypeNameHandling.All
+				TypeNameHandling = TypeNameHandling.All,
+				ContractResolver = new EncryptedContractResolver()
 			};
 		}
 	}

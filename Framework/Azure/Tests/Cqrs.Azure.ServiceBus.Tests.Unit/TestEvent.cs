@@ -78,5 +78,12 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public IEnumerable<string> Frameworks { get; set; }
 
 		#endregion
+
+		/// <summary>
+		/// A <see cref="decimal"/> that is sensative and should be encrypted in transit
+		/// </summary>
+		[DataMember]
+		[Encrypted(KeyName = "TestKey")]
+		public decimal SensitiveDecimal { get; set; }
 	}
 }

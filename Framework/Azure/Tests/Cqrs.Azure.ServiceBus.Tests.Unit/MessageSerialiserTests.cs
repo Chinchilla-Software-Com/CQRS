@@ -15,6 +15,7 @@ using TestMethod = NUnit.Framework.TestAttribute;
 using TestInitialize = NUnit.Framework.SetUpAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
 using TestContext = System.Object;
+using System.Text.RegularExpressions;
 
 namespace Cqrs.Azure.ServiceBus.Tests.Unit
 {
@@ -24,7 +25,8 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 	[TestClass]
 	public class MessageSerialiserTests
 	{
-		private const string GoodEventData = "{\"$id\":\"1\",\"$type\":\"Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent, Cqrs.Azure.ServiceBus.Tests.Unit\",\"Id\":\"a3008122-b365-45ef-86ec-865df098b886\"}";
+		private const string GoodEventData = "{\"$id\":\"1\",\"$type\":\"Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent, Cqrs.Azure.ServiceBus.Tests.Unit\",\"Id\":\"a3008122-b365-45ef-86ec-865df098b886\",\"SensitiveDecimal\":\"Ed1c5OdvgV1+JXF9gQB90y3cju0nra+d2beaH1lcMII=\"}";
+		private const string GoodEventDataRegExPattern = "{\"\\$id\":\"1\",\"\\$type\":\"Cqrs\\.Azure\\.ServiceBus\\.Tests\\.Unit\\.TestEvent, Cqrs\\.Azure\\.ServiceBus\\.Tests\\.Unit\",\"Id\":\"a3008122-b365-45ef-86ec-865df098b886\",\"SensitiveDecimal\":\"(\\w|\\+|=|-)+\"}";
 
 		private const string GoodCommandData = "{\"$id\":\"1\",\"$type\":\"Cqrs.Azure.ServiceBus.Tests.Unit.TestCommand, Cqrs.Azure.ServiceBus.Tests.Unit\",\"Id\":\"17c0585b-3b24-4865-9afc-5fa97e36606a\"}";
 
@@ -40,10 +42,10 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 			var eventSerialiser = new MessageSerialiser<Guid>();
 
 			// Act
-			string data = eventSerialiser.SerialiseEvent(new TestEvent { Id = new Guid("a3008122-b365-45ef-86ec-865df098b886") });
+			string data = eventSerialiser.SerialiseEvent(new TestEvent { Id = new Guid("a3008122-b365-45ef-86ec-865df098b886"), SensitiveDecimal = 62.35M });
 
 			// Assert
-			Assert.AreEqual(GoodEventData, data);
+			Assert.IsTrue(new Regex(GoodEventDataRegExPattern).IsMatch(data));
 		}
 
 		/// <summary>
@@ -62,6 +64,8 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 
 			// Assert
 			Assert.AreEqual("Cqrs.Azure.ServiceBus.Tests.Unit.TestEvent", @event.GetType().FullName);
+			Assert.AreEqual(new Guid("a3008122-b365-45ef-86ec-865df098b886"), @event.Id);
+			Assert.AreEqual(62.35M, ((TestEvent)@event).SensitiveDecimal);
 		}
 
 		/// <summary>
