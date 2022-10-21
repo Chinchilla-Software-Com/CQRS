@@ -95,32 +95,32 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Cqrs.Azure.EventHub.xml" />
-	  <None Remove="packages.config" />
+		<None Remove="Cqrs.Azure.EventHub.xml" />
+		<None Remove="packages.config" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Include="..\Cqrs.Azure.ServiceBus\AzureBus.cs" Link="AzureBus.cs" />
-	  <Compile Include="..\Cqrs.Azure.ServiceBus\AzureBusHelper.cs" Link="AzureBusHelper.cs" />
-	  <Compile Include="..\Cqrs.Azure.ServiceBus\AzureBusRbacSettings.cs" Link="AzureBusRbacSettings.cs" />
-	  <Compile Include="..\Cqrs.Azure.ServiceBus\DataContractBinarySerializer.cs" Link="DataContractBinarySerializer.cs" />
-	  <Compile Include="..\Cqrs.Azure.ServiceBus\IAzureBusHelper.cs" Link="IAzureBusHelper.cs" />
-	  <Compile Include="..\Cqrs.Azure.ServiceBus\IMessageSerialiser.cs" Link="IMessageSerialiser.cs" />
-	  <Compile Include="..\Cqrs.Azure.ServiceBus\MessageExtensions.cs" Link="MessageExtensions.cs" />
-	  <Compile Include="..\Cqrs.Azure.ServiceBus\MessageSerialiser.cs" Link="MessageSerialiser.cs" />
+		<Compile Include="..\Cqrs.Azure.ServiceBus\AzureBus.cs" Link="AzureBus.cs" />
+		<Compile Include="..\Cqrs.Azure.ServiceBus\AzureBusHelper.cs" Link="AzureBusHelper.cs" />
+		<Compile Include="..\Cqrs.Azure.ServiceBus\AzureBusRbacSettings.cs" Link="AzureBusRbacSettings.cs" />
+		<Compile Include="..\Cqrs.Azure.ServiceBus\DataContractBinarySerializer.cs" Link="DataContractBinarySerializer.cs" />
+		<Compile Include="..\Cqrs.Azure.ServiceBus\IAzureBusHelper.cs" Link="IAzureBusHelper.cs" />
+		<Compile Include="..\Cqrs.Azure.ServiceBus\IMessageSerialiser.cs" Link="IMessageSerialiser.cs" />
+		<Compile Include="..\Cqrs.Azure.ServiceBus\MessageExtensions.cs" Link="MessageExtensions.cs" />
+		<Compile Include="..\Cqrs.Azure.ServiceBus\MessageSerialiser.cs" Link="MessageSerialiser.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
-	  <PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
-	  <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
+		<PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
+		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
+		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	  <Exec Command="IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
 	</Target>
 </Project>

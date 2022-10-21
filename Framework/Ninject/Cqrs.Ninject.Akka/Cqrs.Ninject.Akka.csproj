@@ -26,11 +26,11 @@
 		<PackageTags>CQRS;CQRS.NET;Pub/Sub;Akka;Actors;Actor;Ninject</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Properties\AssemblyInfo.cs" />
+		<Compile Remove="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Remove="Cqrs.Ninject.Akka.xml" />
-	  <None Remove="Tools\Create-Log-Table.sql" />
+		<None Remove="Cqrs.Ninject.Akka.xml" />
+		<None Remove="Tools\Create-Log-Table.sql" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -68,10 +68,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
-	  <PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
-	  <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-	  <PackageReference Include="Akka.DI.Ninject" Version="1.0.4" />
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
+		<PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
+		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+		<PackageReference Include="Akka.DI.Ninject" Version="1.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -81,16 +81,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Properties\" />
+		<Folder Include="Properties\" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-	  <PackageReference Include="Ninject">
-	    <Version>3.3.4</Version>
-	  </PackageReference>
+		<PackageReference Include="Ninject">
+			<Version>3.3.4</Version>
+		</PackageReference>
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	  <Exec Command="IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
 	</Target>
 </Project>

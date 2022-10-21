@@ -22,11 +22,11 @@
 		<PackageTags>CQRS;CQRS.NET;Ninject;WebAPI</PackageTags>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Properties\AssemblyInfo.cs" />
+		<Compile Remove="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Remove="Cqrs.Ninject.WebApi.xml" />
-	  <None Remove="Tools\Create-Log-Table.sql" />
+		<None Remove="Cqrs.Ninject.WebApi.xml" />
+		<None Remove="Tools\Create-Log-Table.sql" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -71,11 +71,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Properties\" />
+		<Folder Include="Properties\" />
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	  <Exec Command="IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
 	</Target>
 
 	<!--

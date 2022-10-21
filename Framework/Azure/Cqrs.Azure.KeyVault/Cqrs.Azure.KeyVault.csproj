@@ -1,41 +1,30 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
-		<title>Microsoft Azure Azure WebJobs for CQRS.NET</title>
+		<TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+		<title>Microsoft Azure KeyVault for CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
-		<Description>Use Azure Webjobs with CQRS.NET</Description>
+		<Description>Use Azure KeyVault for access to secrets and keys in CQRS.NET</Description>
 		<Copyright>Copyright ©  2022</Copyright>
 		<PackageLicenseFile></PackageLicenseFile>
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
 		<PackageReleaseNotes>
-			Version 4.1.0
+			Version 4.4.1
 
-			* Switched to .NET Standard 2.0 support from .NET Core 3.0.
-
-			Version 4.0.0
-
-			* Added .NET Core 3.0 support.
-			* The .NET Framework uses WebJobs 2.3 and .Net Core uses 3.0
+			* Added the ability to obtain secrets from the Azure KeyVault
 		</PackageReleaseNotes>
 		<PackageIcon>images\icon.png</PackageIcon>
 
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PackageTags>CQRS;CQRS.NET;Pub/Sub;Microservices;Azure;WebJobs</PackageTags>
+		<PackageTags>CQRS;CQRS.NET;Azure;KeyVault</PackageTags>
 	</PropertyGroup>
-
 	<ItemGroup>
-		<None Include="tools\init.ps1">
-			<Pack>True</Pack>
-			<PackagePath>tools\</PackagePath>
-		</None>
-		<None Include="tools\install.ps1">
-			<Pack>True</Pack>
-			<PackagePath>tools\</PackagePath>
-		</None>
+	  <Compile Remove="tools\**" />
+	  <EmbeddedResource Remove="tools\**" />
+	  <None Remove="tools\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -51,35 +40,33 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
-		<DocumentationFile>Cqrs.Azure.WebJobs.xml</DocumentationFile>
+		<DocumentationFile>Cqrs.Azure.KeyVault.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="3.0.2" />
-		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.4" />
+		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.2.0" />
+		<PackageReference Include="Azure.Identity" Version="1.4.0" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
-		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="2.3.0" />
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+		<PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
+		<PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="Cqrs.Azure.WebJobs.xml" />
-		<None Remove="packages.config" />
-		<None Remove="Tools\**" />
+		<None Remove="Cqrs.Azure.KeyVault.xml" />
+		<None Remove="Cqrs.xml" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
 		<PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
-		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.11.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
-		<ProjectReference Include="..\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

@@ -428,13 +428,13 @@ namespace Cqrs.Azure.ServiceBus
 						catch (AggregateException aggregateException)
 						{
 							if (aggregateException.InnerException is MessageLockLostException)
-								throw new MessageLockLostException(string.Format("The lock supplied for command '{0}' of type {1} is invalid.", command.Id, command.GetType().Name), aggregateException.InnerException);
+								throw new MessageLockLostException(string.Format("The lock supplied for command '{0}' of type {1} is invalid. To avoid this issue add a '{2}.ShouldRefresh' application settings", command.Id, command.GetType().Name, command.GetType().FullName), aggregateException.InnerException);
 							else
 								throw;
 						}
 						catch (MessageLockLostException exception)
 						{
-							throw new MessageLockLostException(string.Format("The lock supplied for command '{0}' of type {1} is invalid.", command.Id, command.GetType().Name), exception);
+							throw new MessageLockLostException(string.Format("The lock supplied for command '{0}' of type {1} is invalid. To avoid this issue add a '{2}.ShouldRefresh' application settings", command.Id, command.GetType().Name, command.GetType().FullName), exception);
 						}
 					}
 					Logger.LogDebug(string.Format("A command message arrived and was processed with the id '{0}'.", message.MessageId));

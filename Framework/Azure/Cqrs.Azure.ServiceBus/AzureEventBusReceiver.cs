@@ -437,13 +437,13 @@ namespace Cqrs.Azure.ServiceBus
 						catch (AggregateException aggregateException)
 						{
 							if (aggregateException.InnerException is MessageLockLostException)
-								throw new MessageLockLostException(string.Format("The lock supplied for event '{0}' of type {1} is invalid.", @event.Id, @event.GetType().Name), aggregateException.InnerException);
+								throw new MessageLockLostException(string.Format("The lock supplied for event '{0}' of type {1} is invalid. To avoid this issue add a '{2}.ShouldRefresh' application settings.", @event.Id, @event.GetType().Name, @event.GetType().FullName), aggregateException.InnerException);
 							else
 								throw;
 						}
 						catch (MessageLockLostException exception)
 						{
-							throw new MessageLockLostException(string.Format("The lock supplied for event '{0}' of type {1} is invalid.", @event.Id, @event.GetType().Name), exception);
+							throw new MessageLockLostException(string.Format("The lock supplied for event '{0}' of type {1} is invalid. To avoid this issue add a '{2}.ShouldRefresh' application settings", @event.Id, @event.GetType().Name, @event.GetType().FullName), exception);
 						}
 					}
 					Logger.LogDebug(string.Format("An event message arrived and was processed with the id '{0}'.", message.MessageId));

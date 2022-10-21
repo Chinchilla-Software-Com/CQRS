@@ -46,7 +46,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Properties\AssemblyInfo.cs" />
+		<Compile Remove="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -75,32 +75,32 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
-	  <PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
-	  <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-	  <PackageReference Include="Microsoft.Azure.DocumentDB" Version="1.21.1" />
-	  <PackageReference Include="Microsoft.Azure.DocumentDB.TransientFaultHandling" Version="1.5.0" />
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
+		<PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
+		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+		<PackageReference Include="Microsoft.Azure.DocumentDB" Version="1.21.1" />
+		<PackageReference Include="Microsoft.Azure.DocumentDB.TransientFaultHandling" Version="1.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Remove="Properties\" />
-	  <Folder Include="Properties\" />
+		<Folder Remove="Properties\" />
+		<Folder Include="Properties\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="Cqrs.Azure.DocumentDb.xml" />
-	  <None Remove="tools\Create-Log-Table.sql" />
+		<None Remove="Cqrs.Azure.DocumentDb.xml" />
+		<None Remove="tools\Create-Log-Table.sql" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
+		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="Microsoft.CSharp" />
+		<Reference Include="Microsoft.CSharp" />
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	  <Exec Command="IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
 	</Target>
 </Project>

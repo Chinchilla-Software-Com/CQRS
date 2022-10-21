@@ -7,7 +7,11 @@
 #endregion
 
 using System;
+using System.Text.RegularExpressions;
+
+using Cqrs.Azure.KeyVault;
 using Cqrs.Commands;
+using Cqrs.Configuration;
 using Cqrs.Events;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
@@ -15,7 +19,11 @@ using TestMethod = NUnit.Framework.TestAttribute;
 using TestInitialize = NUnit.Framework.SetUpAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
 using TestContext = System.Object;
-using System.Text.RegularExpressions;
+
+#if NET472
+#else
+using Microsoft.Extensions.Configuration;
+#endif
 
 namespace Cqrs.Azure.ServiceBus.Tests.Unit
 {
@@ -36,7 +44,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		/// Expecting the serialised data is as expected.
 		/// </summary>
 		[TestMethod]
-		public void SerialiseEvent_TestEvent_ExpectedSerialisedData()
+		public void SerialiseEvent_TestEventWithEncryption_ExpectedSerialisedData()
 		{
 			// Arrange
 			var eventSerialiser = new MessageSerialiser<Guid>();
@@ -54,7 +62,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		/// Expecting the data deserialised to the expected <see cref="Type"/>.
 		/// </summary>
 		[TestMethod]
-		public void DeserialiseEvent_TestEventData_ExpectedEvent()
+		public void DeserialiseEvent_TestEventDataWithEncryptedValues_ExpectedEvent()
 		{
 			// Arrange
 			var eventSerialiser = new MessageSerialiser<Guid>();
@@ -77,10 +85,10 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public void SerialiseCommand_TestCommand_ExpectedSerialisedData()
 		{
 			// Arrange
-			var command = new MessageSerialiser<Guid>();
+			var commandSerialiser = new MessageSerialiser<Guid>();
 
 			// Act
-			string data = command.SerialiseCommand(new TestCommand { Id = new Guid("17c0585b-3b24-4865-9afc-5fa97e36606a") });
+			string data = commandSerialiser.SerialiseCommand(new TestCommand { Id = new Guid("17c0585b-3b24-4865-9afc-5fa97e36606a") });
 
 			// Assert
 			Assert.AreEqual(GoodCommandData, data);
