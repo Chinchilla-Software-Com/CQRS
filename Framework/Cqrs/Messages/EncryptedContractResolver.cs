@@ -85,13 +85,7 @@ namespace Cqrs.Messages
 					{
 						string secret = SecretFactory.GetSecret(encryptedAttribute.KeyName);
 
-						byte[] encryptionKeyBytes;
-						using (SHA256Managed sha = new SHA256Managed())
-						{
-							encryptionKeyBytes = sha.ComputeHash(Encoding.UTF8.GetBytes(secret));
-						}
-
-						prop.ValueProvider = new EncryptedStringValueProvider(pi, encryptionKeyBytes);
+						prop.ValueProvider = new EncryptedStringValueProvider(new EncryptionService(), pi, secret);
 						prop.PropertyType = typeof(string);
 					}
 				}
