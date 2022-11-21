@@ -260,7 +260,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected override string GetConnectionString()
 		{
-			string connectionStringKey = ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey);
+			if (!ConfigurationManager.TryGetSetting(EventHubConnectionStringNameConfigurationKey, out string connectionStringKey))
+				connectionStringKey = null;
+			try
+			{
+				connectionStringKey = ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey);
+			}
+			catch (ConfigurationErrorsException) { }
 			if (string.IsNullOrWhiteSpace(connectionStringKey))
 			{
 				string connectionEndpoint = ConfigurationManager.GetSetting(EventHubConnectionEndpointConfigurationKey);
@@ -279,21 +285,29 @@ namespace Cqrs.Azure.ServiceBus
 		protected override AzureBusRbacSettings GetRbacConnectionSettings()
 		{
 			// double check an endpoint isn't provided, if it is, then we're using endpoints, but if not, we'll assume a connection string is prefered as it's easier
-			bool isUsingConnectionString = !string.IsNullOrWhiteSpace(ConfigurationManager.GetSetting(EventHubConnectionStringNameConfigurationKey));
+			bool isUsingConnectionString;
+			if (!ConfigurationManager.TryGetSetting(EventHubConnectionStringNameConfigurationKey, out string connectionStringKey))
+				isUsingConnectionString = false;
+			else
+				isUsingConnectionString = !string.IsNullOrWhiteSpace(connectionStringKey);
 
-			string endpoint = ConfigurationManager.GetSetting(EventHubConnectionEndpointConfigurationKey);
+			if (!ConfigurationManager.TryGetSetting(EventHubConnectionEndpointConfigurationKey, out string endpoint))
+				endpoint = null;
 			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(endpoint))
 				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{EventHubConnectionEndpointConfigurationKey}' is defined and has a valid connection endpoint value.");
 
-			string applicationId = ConfigurationManager.GetSetting(EventHubConnectionApplicationIdConfigurationKey);
+			if (!ConfigurationManager.TryGetSetting(EventHubConnectionApplicationIdConfigurationKey, out string applicationId))
+				applicationId = null;
 			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(applicationId))
 				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{EventHubConnectionApplicationIdConfigurationKey}' is defined and has a valid application id value.");
 
-			string clientKey = ConfigurationManager.GetSetting(EventHubConnectionClientKeyConfigurationKey);
+			if (!ConfigurationManager.TryGetSetting(EventHubConnectionClientKeyConfigurationKey, out string clientKey))
+				clientKey = null;
 			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(clientKey))
 				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{EventHubConnectionClientKeyConfigurationKey}' is defined and has a valid client key/secret value.");
 
-			string tenantId = ConfigurationManager.GetSetting(EventHubConnectionTenantIdConfigurationKey);
+			if (!ConfigurationManager.TryGetSetting(EventHubConnectionTenantIdConfigurationKey, out string tenantId))
+				tenantId = null;
 			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(tenantId))
 				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{EventHubConnectionTenantIdConfigurationKey}' is defined and has a valid tenant id value.");
 
