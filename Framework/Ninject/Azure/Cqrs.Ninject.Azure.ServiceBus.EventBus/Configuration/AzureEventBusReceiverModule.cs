@@ -72,8 +72,12 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		/// <summary>
 		/// Register the CQRS event receiver
 		/// </summary>
+#if NET5_0_OR_GREATER
+		public virtual void RegisterEventReceiver(IEventReceiver<TAuthenticationToken> bus)
+#else
 		public virtual void RegisterEventReceiver<TBus>(TBus bus)
 			where TBus : IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
+#endif
 		{
 			Bind<IEventReceiver<TAuthenticationToken>>()
 				.ToConstant(bus)
@@ -83,8 +87,12 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		/// <summary>
 		/// Register the CQRS event handler registrar
 		/// </summary>
+#if NET5_0_OR_GREATER
+		public virtual void RegisterEventHandlerRegistrar(IEventHandlerRegistrar bus)
+#else
 		public virtual void RegisterEventHandlerRegistrar<TBus>(TBus bus)
 			where TBus : IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
+#endif
 		{
 			bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(IEventHandlerRegistrar)).Any();
 			if (!isHandlerRegistrationBound)

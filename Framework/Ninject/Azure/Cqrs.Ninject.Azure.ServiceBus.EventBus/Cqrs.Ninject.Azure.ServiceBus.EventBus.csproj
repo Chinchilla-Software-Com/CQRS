@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+		<TargetFrameworks>net452;netstandard2.0;net5.0</TargetFrameworks>
 		<title>Microsoft Azure ServiceBus event bus with CQRS.NET and Ninject</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -54,12 +54,12 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net452;netstandard2.0;net5.0</TargetFrameworks>
 		<DocumentationFile>Cqrs.Ninject.Azure.ServiceBus.CommandBus.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'net5.0' ">
 		<PackageReference Include="Ninject" Version="3.3.4" />
 	</ItemGroup>
 
@@ -81,11 +81,5 @@
 
 	<ItemGroup>
 	  <Folder Include="Properties\" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-	  <PackageReference Include="Ninject">
-	    <Version>3.3.4</Version>
-	  </PackageReference>
 	</ItemGroup>
 </Project>

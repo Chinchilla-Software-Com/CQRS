@@ -12,10 +12,13 @@ using System.Net.NetworkInformation;
 using Cqrs.Authentication;
 using Cqrs.Configuration;
 using Cqrs.Ninject.Azure.WebJobs;
+using Cqrs.Ninject.Configuration;
+
 #if NET472
 #else
 using Microsoft.Extensions.Configuration;
 #endif
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
@@ -27,6 +30,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 		public void Run_RoleNameAndOperationNameSettings_NoErrors()
 		{
 			// Arrange
+			NinjectDependencyResolver.ModulesToLoad.Clear();
 			var host = new CqrsNinjectJobHost<Guid, DefaultAuthenticationTokenHelper>();
 
 			// Act

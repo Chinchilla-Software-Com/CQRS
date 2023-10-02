@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [windows-2019]
+        dotnet-version: [ '3.1.x', '5.0.x', '6.0.x', '7.0.x' ]
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
@@ -25,6 +26,15 @@ jobs:
           6.0.x
           7.0.x
 
+    - name: Setup dependencies caching
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        # Look to see if there is a cache hit for the corresponding requirements file
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget
+
     - name: Prepare Legacy NuGet
       run: |
         cd .\.nuget
@@ -35,6 +45,15 @@ jobs:
     - name: Build Framework with dotnet CLI
       run: dotnet build --configuration Release .\Cqrs.sln
 
+    - name: Test with dotnet
+      run: dotnet test --logger trx --collect "Code Coverage" --results-directory "TestResults-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
+    - name: Upload dotnet test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: dotnet-results-${{ matrix.dotnet-version }}
+        path: TestResults-${{ matrix.dotnet-version }}
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
     - name: Pack with dotnet CLI
       run: |
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Cqrs\Cqrs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
