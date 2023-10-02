@@ -57,7 +57,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 		[TestInitialize]
 		public void Setup()
 		{
-			Console.WriteLine($"Executing directory is: '{System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location)}'");
+			Console.WriteLine($"Executing directory is: '{System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly()?.Location)}'");
 #if NET472
 			ConfigurationManager = new CloudConfigurationManager();
 #else

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net452;net462;net5.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net452;net462;net5.0;net6.0</TargetFrameworks>
 		<title>Microsoft Azure EventHubs for CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -10,6 +10,10 @@
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
 		<PackageReleaseNotes>
+			Version 4.5.1
+
+			* Improved suport for .NET 5.0 and above (currently up-to 7.0)
+
 			Version 4.3
 
 			* Added the ability to use RBAC for connections
@@ -59,12 +63,12 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net462;net452;netstandard2.0;net5.0</TargetFrameworks>
+		<TargetFrameworks>net462;net452;netstandard2.0;net5.0;net6.0</TargetFrameworks>
 		<DocumentationFile>Cqrs.Azure.EventHub.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'net5.0' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'net5.0' OR '$(TargetFramework)' == 'net6.0' ">
 		<PackageReference Include="Microsoft.Azure.EventHubs" Version="4.1.0" />
 		<PackageReference Include="Microsoft.Azure.EventHubs.Processor" Version="4.1.0" />
 		<PackageReference Include="Microsoft.Identity.Client" Version="4.45.0" />
@@ -78,6 +82,10 @@
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
 		<PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.2.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+		<PackageReference Include="Azure.Messaging.ServiceBus" Version="7.16.1" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
