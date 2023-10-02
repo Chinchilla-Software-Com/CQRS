@@ -48,8 +48,9 @@ namespace Cqrs.Scheduler.TimeZones
 				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables()
 				.Build();
-			WebHostModule.Configuration = config;
+			Configuration.ConfigurationManager.Configuration = config;
 			_configurationManager = new CloudConfigurationManager(config);
+			DependencyResolver.ConfigurationManager = _configurationManager;
 #endif
 
 			Console.WriteLine("IMPORTANT: Make sure you have read the ReadMeFirst.txt file");
