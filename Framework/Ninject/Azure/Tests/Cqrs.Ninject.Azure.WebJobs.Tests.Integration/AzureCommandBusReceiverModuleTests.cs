@@ -27,12 +27,13 @@ using Ninject.Modules;
 namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 {
 	[TestClass]
-	public class AzureCommandBusReceiverModuleTest
+	public class AzureCommandBusReceiverModuleTests
 	{
 		[TestMethod]
 		public void Load_DefaultBaseModules_NoErrors()
 		{
 			// Arrange
+			NinjectDependencyResolver.ModulesToLoad.Clear();
 			var module = new AzureCommandBusReceiverModule<Guid>();
 			IList<INinjectModule> modulesToLoad = new List<INinjectModule>
 			{
