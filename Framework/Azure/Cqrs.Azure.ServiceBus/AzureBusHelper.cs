@@ -533,7 +533,7 @@ namespace Cqrs.Azure.ServiceBus
 #endif
 									try
 									{
-										Logger.LogDebug(string.Format("Renewed the {2} lock on {1} '{0}'.", message.MessageId, type, typeName));
+										Logger.LogDebug(string.Format("Renewed the {2} lock on {1} '{0}'.", message.MessageId, type, typeName), "Cqrs.Azure.ServiceBus.AzureBusHelper.RefreshLock");
 									}
 									catch
 									{
@@ -550,7 +550,7 @@ namespace Cqrs.Azure.ServiceBus
 								{
 									try
 									{
-										Logger.LogWarning(string.Format("Renewing the {2} lock on {1} '{0}' failed as the message lock was lost.", message.MessageId, type, typeName), exception: exception);
+										Logger.LogWarning(string.Format("Renewing the {2} lock on {1} '{0}' failed as the message lock was lost.", message.MessageId, type, typeName), "Cqrs.Azure.ServiceBus.AzureBusHelper.RefreshLock", exception: exception);
 									}
 									catch
 									{
@@ -562,7 +562,7 @@ namespace Cqrs.Azure.ServiceBus
 								{
 									try
 									{
-										Logger.LogWarning(string.Format("Renewing the {2} lock on {1} '{0}' failed.", message.MessageId, type, typeName), exception: exception);
+										Logger.LogWarning(string.Format("Renewing the {2} lock on {1} '{0}' failed.", message.MessageId, type, typeName), "Cqrs.Azure.ServiceBus.AzureBusHelper.RefreshLock", exception: exception);
 									}
 									catch
 									{
