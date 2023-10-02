@@ -19,7 +19,9 @@ jobs:
         # this is fixed to just one version so we only run the push operation once
         dotnet-version: [ '7.0.x' ]
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout Code
+      uses: actions/checkout@v1
+
     - name: Setup dotnet CLI
       uses: actions/setup-dotnet@v3.2.0
       with:
@@ -28,14 +30,26 @@ jobs:
           5.0.x
           6.0.x
           7.0.x
+
+    - name: Setup dependencies caching
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        # Look to see if there is a cache hit for the corresponding requirements file
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget
+
     - name: Prepare Legacy NuGet
       run: |
         cd .\.nuget
         ren NuGet.ex_ NuGet.exe
         cd ..
         .nuget\NuGet.exe restore Cqrs.sln
+
     - name: Build Framework with dotnet CLI
       run: dotnet build --configuration Release .\Cqrs.sln
+
     - name: Pack with dotnet CLI
       run: |
         dotnet pack -c Release -property:SolutionDir=.\ -p:Version=${{ env.nuGetVersionNumber }} Framework\Cqrs\Cqrs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
