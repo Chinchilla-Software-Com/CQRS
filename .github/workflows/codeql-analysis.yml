@@ -36,7 +36,8 @@ jobs:
         language: [ 'csharp' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
-        dotnet-version: [ '3.1.x', '5.0.x', '6.0.x', '7.0.x' ]
+        # this is fixed to just one version so we only run the analysis operation once, not once for each version of the runtime
+        dotnet-version: [ '7.0.x' ]
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -56,11 +57,7 @@ jobs:
     - name: Setup dotnet CLI
       uses: actions/setup-dotnet@v3.2.0
       with:
-        dotnet-version: | 
-          3.1.x
-          5.0.x
-          6.0.x
-          7.0.x
+        dotnet-version: ${{ matrix.dotnet-version }}
 
     - name: Prepare Legacy NuGet
       run: |
