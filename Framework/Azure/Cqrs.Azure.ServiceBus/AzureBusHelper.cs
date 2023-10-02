@@ -28,7 +28,7 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
@@ -170,7 +170,7 @@ namespace Cqrs.Azure.ServiceBus
 			return true;
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		/// <summary>
 		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveCommandHandler"/>.
 		/// </summary>
@@ -198,7 +198,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>The <see cref="ICommand{TAuthenticationToken}"/> that was processed.</returns>
 #endif
 		public virtual ICommand<TAuthenticationToken> ReceiveCommand(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			IMessageReceiver client
 #else
 			IMessageReceiver serviceBusReceiver
@@ -253,7 +253,7 @@ namespace Cqrs.Azure.ServiceBus
 			var identifiedEvent = command as ICommandWithIdentity<TAuthenticationToken>;
 			if (identifiedEvent != null)
 				identifyMessage = string.Format(" for aggregate {0}", identifiedEvent.Rsn);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			string topicPath = client == null ? "UNKNOWN" : client.Path;
 #else
 			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
@@ -376,7 +376,7 @@ namespace Cqrs.Azure.ServiceBus
 			return true;
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		/// <summary>
 		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveEventHandler"/>.
 		/// </summary>
@@ -404,7 +404,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
 #endif
 		public virtual IEvent<TAuthenticationToken> ReceiveEvent(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			IMessageReceiver client
 #else
 			IMessageReceiver serviceBusReceiver
@@ -459,7 +459,7 @@ namespace Cqrs.Azure.ServiceBus
 			var identifiedEvent = @event as IEventWithIdentity<TAuthenticationToken>;
 			if (identifiedEvent != null)
 				identifyMessage = string.Format(" for aggregate {0}", identifiedEvent.Rsn);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			string topicPath = client == null ? "UNKNOWN" : client.Path;
 #else
 			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
@@ -492,7 +492,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Refreshes the network lock.
 		/// </summary>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		public virtual void RefreshLock(IMessageReceiver client, CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
 #else
 		public virtual void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
@@ -513,7 +513,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						// Based on LockedUntilUtc property to determine if the lock expires soon
 						// We lock for 45 seconds to ensure any thread based issues are mitigated.
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 						if (DateTime.UtcNow > message.ExpiresAtUtc.AddSeconds(-45))
 #else
 						if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-45))
@@ -526,7 +526,7 @@ namespace Cqrs.Azure.ServiceBus
 								{
 									if (brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
 										return;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 									client.RenewLockAsync(message).Wait(1500);
 #else
 									message.RenewLock();

@@ -53,10 +53,12 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
 				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-			.AddEnvironmentVariables()
+				.AddEnvironmentVariables()
 				.Build();
 
 			configurationManager = new CloudConfigurationManager(config);
+			Configuration.ConfigurationManager.Configuration = config;
+			DependencyResolver.ConfigurationManager = configurationManager;
 #endif
 
 			var eventSerialiser = new MessageSerialiser<Guid>();
@@ -84,10 +86,12 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
 				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-			.AddEnvironmentVariables()
+				.AddEnvironmentVariables()
 				.Build();
 
 			configurationManager = new CloudConfigurationManager(config);
+			Configuration.ConfigurationManager.Configuration = config;
+			DependencyResolver.ConfigurationManager = configurationManager;
 #endif
 
 			var eventSerialiser = new MessageSerialiser<Guid>();

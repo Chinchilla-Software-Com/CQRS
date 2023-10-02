@@ -42,7 +42,7 @@ namespace Cqrs.Events
 				ReferenceLoopHandling = ReferenceLoopHandling.Error,
 				StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
 				TypeNameHandling = TypeNameHandling.All,
-				ContractResolver = new EncryptedContractResolver(new ConfigurationSecretFactory(new ConfigurationManager()))
+				ContractResolver = new EncryptedContractResolver(new ConfigurationSecretFactory(DependencyResolver.ConfigurationManager ?? new ConfigurationManager()))
 			};
 		}
 

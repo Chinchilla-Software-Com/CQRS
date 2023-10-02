@@ -303,9 +303,12 @@ namespace Cqrs.Ninject.Configuration
 				.InSingletonScope();
 
 			if (RegisterDefaultConfigurationManager)
+			{
 				Bind<IConfigurationManager>()
 					.To<ConfigurationManager>()
 					.InSingletonScope();
+				DependencyResolver.ConfigurationManager = Resolve<IConfigurationManager>();
+			}
 
 			if (RegisterDefaultSnapshotStrategy)
 				Bind<ISnapshotStrategy<TAuthenticationToken>>()

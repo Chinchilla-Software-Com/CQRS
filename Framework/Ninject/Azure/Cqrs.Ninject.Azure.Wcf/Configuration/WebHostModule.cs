@@ -13,7 +13,6 @@ using Chinchilla.Logging.Azure.ApplicationInsights;
 using Chinchilla.Logging.Azure.Configuration;
 using Chinchilla.Logging.Configuration;
 using Chinchilla.StateManagement;
-using Chinchilla.StateManagement.Threaded;
 using Chinchilla.StateManagement.Web;
 using Cqrs.Authentication;
 using Cqrs.Azure.ConfigurationManager;
@@ -37,13 +36,6 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 	/// </summary>
 	public class WebHostModule : ResolvableModule
 	{
-#if NETSTANDARD2_0
-		/// <summary>
-		/// Gets or sets the <see cref="IConfiguration"/>. This must be set manually as dependency injection may not be ready in-time.
-		/// </summary>
-		public static IConfiguration Configuration { get; set; }
-#endif
-
 		#region Overrides of NinjectModule
 
 		/// <summary>
@@ -86,13 +78,14 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 
 #if NETSTANDARD2_0
 			Bind<IConfiguration>()
-				.ToConstant(Configuration)
+				.ToConstant(ConfigurationManager.Configuration)
 				.InSingletonScope();
 #endif
 
 			Bind<IConfigurationManager>()
 				.To<CloudConfigurationManager>()
 				.InSingletonScope();
+			DependencyResolver.ConfigurationManager = Resolve<IConfigurationManager>();
 		}
 
 		/// <summary>

@@ -15,7 +15,7 @@ using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
@@ -56,7 +56,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Receives a <see cref="BrokeredMessage"/> from the event bus, identifies a key and queues it accordingly.
 		/// </summary>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		protected override void ReceiveEvent(IMessageReceiver client, BrokeredMessage message)
 #else
 		protected override void ReceiveEvent(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
@@ -69,7 +69,7 @@ namespace Cqrs.Azure.ServiceBus
 				IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
 
 				CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 				string topicPath = client == null ? "UNKNOWN" : client.Path;
 #else
 				string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
@@ -95,7 +95,7 @@ namespace Cqrs.Azure.ServiceBus
 				EnqueueEvent(targetQueueName, @event);
 
 				// remove the original message from the incoming queue
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 				client.CompleteAsync(message.SystemProperties.LockToken).Wait(1500);
 #else
 				message.Complete();
@@ -107,7 +107,7 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("An event message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 				client.AbandonAsync(message.SystemProperties.LockToken).Wait(1500);
 #else
 				message.Abandon();

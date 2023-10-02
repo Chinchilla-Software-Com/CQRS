@@ -7,7 +7,7 @@
 #endregion
 
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 using Microsoft.Azure.ServiceBus;
 using System.IO;
 #else
@@ -18,7 +18,7 @@ namespace Cqrs.Azure.ServiceBus
 {
 	internal static class MessageExtensions
 	{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		public static void AddUserProperty(this Message message, string key, object value)
 		{
 			message.UserProperties.Add(key, value);
@@ -30,7 +30,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 #endif
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		public static bool TryGetUserPropertyValue(this Message message, string key, out object value)
 		{
 			return message.UserProperties.TryGetValue(key, out value);
@@ -42,7 +42,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 #endif
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		private static DataContractBinarySerializer Serialiser = new DataContractBinarySerializer(typeof(string));
 		public static string GetBodyAsString(this Message message)
 		{

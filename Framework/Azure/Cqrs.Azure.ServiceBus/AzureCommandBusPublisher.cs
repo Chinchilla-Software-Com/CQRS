@@ -19,7 +19,7 @@ using Cqrs.Events;
 using Cqrs.Infrastructure;
 using Cqrs.Messages;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 using Microsoft.Azure.ServiceBus;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
 #else
@@ -126,7 +126,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
@@ -173,7 +173,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
@@ -220,7 +220,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 								PrivateServiceBusPublisher.SendAsync(brokeredMessage).Wait();
 #else
 								PrivateServiceBusPublisher.Send(brokeredMessage);
@@ -355,7 +355,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (publicBrokeredMessages.Any())
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 								PublicServiceBusPublisher.SendAsync(publicBrokeredMessages).Wait();
 #else
 								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
@@ -403,7 +403,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (privateBrokeredMessages.Any())
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 								PrivateServiceBusPublisher.SendAsync(privateBrokeredMessages).Wait();
 #else
 								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
@@ -549,7 +549,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						try
 						{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 							PrivateServiceBusPublisher.SendAsync(brokeredMessage).Wait();
 #else
 							PrivateServiceBusPublisher.Send(brokeredMessage);
