@@ -72,8 +72,12 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// <summary>
 		/// Register the CQRS command receiver
 		/// </summary>
+#if NET5_0_OR_GREATER
+		public virtual void RegisterCommandReceiver(ICommandReceiver<TAuthenticationToken> bus)
+#else
 		public virtual void RegisterCommandReceiver<TBus>(TBus bus)
 			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+#endif
 		{
 			Bind<ICommandReceiver<TAuthenticationToken>>()
 				.ToConstant(bus)
@@ -83,11 +87,15 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// <summary>
 		/// Register the CQRS command handler registrar
 		/// </summary>
+#if NET5_0_OR_GREATER
+		public virtual void RegisterCommandHandlerRegistrar(ICommandHandlerRegistrar bus)
+#else
 		public virtual void RegisterCommandHandlerRegistrar<TBus>(TBus bus)
 			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+#endif
 		{
 			Bind<ICommandHandlerRegistrar>()
-					.ToConstant(bus)
+				.ToConstant(bus)
 				.InSingletonScope();
 		}
 
