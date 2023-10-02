@@ -44,12 +44,12 @@ namespace Cqrs.Ninject.Azure.Wcf
 
 #if NETSTANDARD2_0
 		/// <summary>
-		/// Set the <see cref="IConfigurationRoot"/> on <see cref="WebHostModule.Configuration"/> and prepare a <see cref="CloudConfigurationManager"/>
+		/// Set the <see cref="IConfigurationRoot"/> on <see cref="Cqrs.Configuration.ConfigurationManager.Configuration"/> and prepare a <see cref="CloudConfigurationManager"/>
 		/// </summary>
 		public static new void SetConfigurationManager(IConfigurationRoot configuration)
 		{
-			WebHostModule.Configuration = configuration;
-			_configurationManager = new CloudConfigurationManager(WebHostModule.Configuration);
+			Cqrs.Configuration.ConfigurationManager.Configuration = configuration;
+			_configurationManager = new CloudConfigurationManager(Cqrs.Configuration.ConfigurationManager.Configuration);
 		}
 #endif
 
@@ -77,7 +77,7 @@ namespace Cqrs.Ninject.Azure.Wcf
 			{
 				new TWebHostModule(),
 #if NETSTANDARD2_0
-				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(new CloudConfigurationManager(WebHostModule.Configuration))
+				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(new CloudConfigurationManager(Cqrs.Configuration.ConfigurationManager.Configuration))
 #else
 				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(new CloudConfigurationManager())
 #endif

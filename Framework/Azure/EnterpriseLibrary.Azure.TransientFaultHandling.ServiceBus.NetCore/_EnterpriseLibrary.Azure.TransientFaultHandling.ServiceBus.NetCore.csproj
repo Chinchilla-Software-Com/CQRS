@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFramework>netstandard2.0;net5.0</TargetFramework>
 		<title>Transient Fault Handling Application Block - Service Bus integration .NET Core</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -49,8 +49,15 @@
 
 	<ItemGroup>
 		<PackageReference Include="System.ServiceModel.Primitives" Version="4.6.0" />
-		<PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.1" />
 		<PackageReference Include="EnterpriseLibrary.TransientFaultHandling.NetCore" version="6.0.1312" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+		<PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.2.0" />
 	</ItemGroup>
 
 </Project>

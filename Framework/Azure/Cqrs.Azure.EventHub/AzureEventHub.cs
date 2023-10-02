@@ -22,7 +22,7 @@ using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 using Manager = Microsoft.Azure.ServiceBus.Management.ManagementClient;
@@ -350,13 +350,12 @@ namespace Cqrs.Azure.ServiceBus
 			Manager manager;
 			string connectionString = ConnectionString;
 			AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				manager = new Manager(ConnectionString);
 			else
 				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority()));
-#else
-#if NET452
+#elif NET452
 			manager = Manager.CreateFromConnectionString(ConnectionString);
 #else
 			if (!string.IsNullOrWhiteSpace(connectionString))
@@ -364,24 +363,21 @@ namespace Cqrs.Azure.ServiceBus
 			else
 				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, new Uri(rbacSettings.Endpoint), rbacSettings.GetDefaultAuthority()));
 #endif
-#endif
 			CheckPrivateHubExists(manager);
 			CheckPublicHubExists(manager);
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				EventHubPublisher = EventHubClient.CreateFromConnectionString(connectionString);
 			else
 				EventHubPublisher = EventHubClient.CreateWithAzureActiveDirectory(new Uri(rbacSettings.Endpoint), PublicEventHubName, GetActiveDirectoryToken2, rbacSettings.GetDefaultAuthority());
-#else
-#if NET452
+#elif NET452
 			EventHubPublisher = EventHubClient.CreateFromConnectionString(connectionString);
 #else
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				EventHubPublisher = EventHubClient.CreateFromConnectionString(connectionString);
 			else
 				EventHubPublisher = EventHubClient.CreateWithAzureActiveDirectory(new Uri(rbacSettings.Endpoint), PublicEventHubName, GetActiveDirectoryToken2, rbacSettings.GetDefaultAuthority());
-#endif
 #endif
 			StartSettingsChecking();
 		}
@@ -403,13 +399,12 @@ namespace Cqrs.Azure.ServiceBus
 			Manager manager;
 			string connectionString = ConnectionString;
 			AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				manager = new Manager(ConnectionString);
 			else
 				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority()));
-#else
-#if NET452
+#elif NET452
 			manager = Manager.CreateFromConnectionString(ConnectionString);
 #else
 			if (!string.IsNullOrWhiteSpace(connectionString))
@@ -417,18 +412,16 @@ namespace Cqrs.Azure.ServiceBus
 			else
 				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, new Uri(rbacSettings.Endpoint), rbacSettings.GetDefaultAuthority()));
 #endif
-#endif
 
 			CheckPrivateHubExists(manager);
 			CheckPublicHubExists(manager);
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				EventHubReceiver = new EventProcessorHost(PublicEventHubName, PublicEventHubConsumerGroupName, ConnectionString, StorageConnectionString, "Cqrs");
 			else
 				EventHubReceiver = new EventProcessorHost(new Uri(rbacSettings.Endpoint), PublicEventHubName, PublicEventHubConsumerGroupName, Microsoft.Azure.EventHubs.TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken2, rbacSettings.Endpoint, rbacSettings.GetDefaultAuthority()), Microsoft.Azure.Storage.CloudStorageAccount.Parse(StorageConnectionString), "Cqrs");
-#else
-#if NET452
+#elif NET452
 			EventHubReceiver = new EventProcessorHost(PublicEventHubName, PublicEventHubConsumerGroupName, ConnectionString, StorageConnectionString, "Cqrs");
 #else
 			if (!string.IsNullOrWhiteSpace(connectionString))
@@ -438,7 +431,6 @@ namespace Cqrs.Azure.ServiceBus
 				Func<EventProcessorOptions, MessagingFactory> eventHubClientFactory = (options) => { return MessagingFactory.Create(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, new Uri(rbacSettings.Endpoint), rbacSettings.GetDefaultAuthority())); };
 				EventHubReceiver = new EventProcessorHost(rbacSettings.Endpoint, PublicEventHubName, PublicEventHubConsumerGroupName, eventHubClientFactory, () => { return new Microsoft.WindowsAzure.Storage.Blob.CloudBlobClient(new Uri(StorageConnectionString)); }, "Cqrs");
 			}
-#endif
 #endif
 
 			// If this is also a publisher, then it will the check over there and that will handle this
@@ -472,7 +464,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected virtual void CheckHubExists(Manager manager, string hubName, string consumerGroupNames)
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			/*
 			// Configure Queue Settings
 			var eventHubDescription = new EventHubDescription(hubName)

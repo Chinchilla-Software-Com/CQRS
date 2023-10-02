@@ -24,7 +24,7 @@ using Cqrs.Configuration;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.ServiceBus.Management;
@@ -180,7 +180,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected const string DefaultPublicTopicSubscriptionName = "Root";
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		/// <summary>
 		/// The <see cref="Action{IMessageReceiver, TBrokeredMessage}">handler</see> used for <see cref="MessageReceiver.RegisterMessageHandler(Func{BrokeredMessage, CancellationToken, Task}, MessageHandlerOptions)"/> on each receiver.
 		/// </summary>
@@ -192,7 +192,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected Action<IMessageReceiver, BrokeredMessage> ReceiverMessageHandler { get; set; }
 #endif
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		/// <summary>
 		/// The <see cref="MessageHandlerOptions" /> used for <see cref="MessageReceiver.RegisterMessageHandler(Func{BrokeredMessage, CancellationToken, Task}, MessageHandlerOptions)"/> on each receiver.
 		/// </summary>
@@ -365,13 +365,12 @@ namespace Cqrs.Azure.ServiceBus
 			Manager manager;
 			string connectionString = ConnectionString;
 			AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				manager = new Manager(ConnectionString);
 			else
 				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority()));
-#else
-#if NET452
+#elif NET452
 			manager = Manager.CreateFromConnectionString(ConnectionString);
 #else
 			if (!string.IsNullOrWhiteSpace(connectionString))
@@ -379,11 +378,10 @@ namespace Cqrs.Azure.ServiceBus
 			else
 				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, new Uri(rbacSettings.Endpoint), rbacSettings.GetDefaultAuthority()));
 #endif
-#endif
 			CheckPrivateTopicExists(manager, false);
 			CheckPublicTopicExists(manager, false);
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			if (!string.IsNullOrWhiteSpace(connectionString))
 			{
 				PrivateServiceBusPublisher = new TopicClient(ConnectionString, PrivateTopicName);
@@ -394,8 +392,7 @@ namespace Cqrs.Azure.ServiceBus
 				PrivateServiceBusPublisher = new TopicClient(rbacSettings.Endpoint, PrivateTopicName, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority()));
 				PublicServiceBusPublisher = new TopicClient(rbacSettings.Endpoint, PublicTopicName, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority()));
 			}
-#else
-#if NET452
+#elif NET452
 			PrivateServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PrivateTopicName);
 			PublicServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PublicTopicName);
 #else
@@ -409,7 +406,6 @@ namespace Cqrs.Azure.ServiceBus
 				PrivateServiceBusPublisher = TopicClient.CreateWithAzureActiveDirectory(new Uri(rbacSettings.Endpoint), PrivateTopicName, GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority());
 				PublicServiceBusPublisher = TopicClient.CreateWithAzureActiveDirectory(new Uri(rbacSettings.Endpoint), PublicTopicName, GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority());
 			}
-#endif
 #endif
 			StartSettingsChecking();
 		}
@@ -432,20 +428,18 @@ namespace Cqrs.Azure.ServiceBus
 			Manager manager;
 			string connectionString = ConnectionString;
 			AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				manager = new Manager(ConnectionString);
 			else
 				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority()));
-#else
-#if NET452
+#elif NET452
 			manager = Manager.CreateFromConnectionString(ConnectionString);
 #else
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				manager = Manager.CreateFromConnectionString(ConnectionString);
 			else
 				manager = new Manager(rbacSettings.Endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, new Uri(rbacSettings.Endpoint), rbacSettings.GetDefaultAuthority()));
-#endif
 #endif
 
 			CheckPrivateTopicExists(manager);
@@ -484,7 +478,7 @@ namespace Cqrs.Azure.ServiceBus
 			StartSettingsChecking();
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		/// <summary>
 		/// Creates <see cref="AzureBus{TAuthenticationToken}.NumberOfReceiversCount"/> <see cref="IMessageReceiver"/>.
 		/// If flushing is required, any flushed <see cref="IMessageReceiver"/> has <see cref="ClientEntity.CloseAsync()"/> called on it first.
@@ -510,20 +504,18 @@ namespace Cqrs.Azure.ServiceBus
 				IMessageReceiver serviceBusReceiver;
 				string connectionString = ConnectionString;
 				AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 				if (!string.IsNullOrWhiteSpace(connectionString))
 					serviceBusReceiver = new MessageReceiver(ConnectionString, EntityNameHelper.FormatSubscriptionPath(topicName, topicSubscriptionName));
 				else
 					serviceBusReceiver = new MessageReceiver(rbacSettings.Endpoint, EntityNameHelper.FormatSubscriptionPath(topicName, topicSubscriptionName), TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority()));
-#else
-#if NET452
+#elif NET452
 				serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, topicName, topicSubscriptionName);
 #else
 				if (!string.IsNullOrWhiteSpace(connectionString))
 					serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, topicName, topicSubscriptionName);
 				else
 					serviceBusReceiver = SubscriptionClient.CreateWithAzureActiveDirectory(new Uri(rbacSettings.Endpoint), topicName, topicSubscriptionName, GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority());
-#endif
 #endif
 				if (serviceBusReceivers.ContainsKey(i))
 					serviceBusReceivers[i] = serviceBusReceiver;
@@ -536,7 +528,7 @@ namespace Cqrs.Azure.ServiceBus
 				IMessageReceiver serviceBusReceiver;
 				if (serviceBusReceivers.TryGetValue(i, out serviceBusReceiver))
 				{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 					serviceBusReceiver.CloseAsync().Wait(1500);
 #else
 					serviceBusReceiver.Close();
@@ -575,7 +567,7 @@ namespace Cqrs.Azure.ServiceBus
 			// Configure Queue Settings
 			var eventTopicDescription = new TopicDescription(topicName)
 			{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 				MaxSizeInMB = 5120,
 #else
 				MaxSizeInMegabytes = 5120,
@@ -585,7 +577,7 @@ namespace Cqrs.Azure.ServiceBus
 				EnableBatchedOperations = true,
 			};
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			Task<bool> checkTask = manager.TopicExistsAsync(topicName);
 			checkTask.Wait(1500);
 			if (!checkTask.Result)
@@ -676,7 +668,7 @@ namespace Cqrs.Azure.ServiceBus
 			// Let's wrap up using this message bus and start the switch
 			if (serviceBusPublisher != null)
 			{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 				serviceBusPublisher.CloseAsync().Wait(1500);
 #else
 				serviceBusPublisher.Close();
@@ -688,7 +680,7 @@ namespace Cqrs.Azure.ServiceBus
 				// Let's wrap up using this message bus and start the switch
 				if (serviceBusReceiver != null)
 				{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 					serviceBusReceiver.CloseAsync().Wait(1500);
 #else
 					serviceBusReceiver.Close();
@@ -717,7 +709,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Registers the provided <paramref name="receiverMessageHandler"/> with the provided <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		protected virtual void RegisterReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, MessageHandlerOptions receiverMessageHandlerOptions)
 #else
 		protected virtual void RegisterReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
@@ -731,7 +723,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Stores the provided <paramref name="receiverMessageHandler"/> and <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		protected virtual void StoreReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, MessageHandlerOptions receiverMessageHandlerOptions)
 #else
 		protected virtual void StoreReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
@@ -749,7 +741,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			foreach (IMessageReceiver serviceBusReceiver in PrivateServiceBusReceivers.Values)
 			{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 				serviceBusReceiver
 					.RegisterMessageHandler
 					(
@@ -777,7 +769,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 			foreach (IMessageReceiver serviceBusReceiver in PublicServiceBusReceivers.Values)
 			{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 				serviceBusReceiver
 					.RegisterMessageHandler
 					(
@@ -818,7 +810,7 @@ namespace Cqrs.Azure.ServiceBus
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
 			int lockIssues = 0;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			Action<IMessageReceiver, BrokeredMessage, IMessage> leaveDeadlLetterInQueue = (client, deadLetterBrokeredMessage, deadLetterMessage) =>
 #else
 			Action<BrokeredMessage, IMessage> leaveDeadlLetterInQueue = (deadLetterBrokeredMessage, deadLetterMessage) =>
@@ -827,7 +819,7 @@ namespace Cqrs.Azure.ServiceBus
 				// Remove message from queue
 				try
 				{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 					client.AbandonAsync(deadLetterBrokeredMessage.SystemProperties.LockToken).Wait(1500);
 #else
 					deadLetterBrokeredMessage.Abandon();
@@ -841,7 +833,7 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				Logger.LogDebug(string.Format("A dead-letter message of type {0} arrived with the id '{1}' but left in the queue due to settings.", deadLetterMessage.GetType().FullName, deadLetterBrokeredMessage.MessageId));
 			};
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			Action<IMessageReceiver, BrokeredMessage> removeDeadlLetterFromQueue = (client, deadLetterBrokeredMessage) =>
 #else
 			Action<BrokeredMessage> removeDeadlLetterFromQueue = (deadLetterBrokeredMessage) =>
@@ -850,7 +842,7 @@ namespace Cqrs.Azure.ServiceBus
 				// Remove message from queue
 				try
 				{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 					client.CompleteAsync(deadLetterBrokeredMessage.SystemProperties.LockToken).Wait(1500);
 #else
 					deadLetterBrokeredMessage.Complete();
@@ -875,7 +867,7 @@ namespace Cqrs.Azure.ServiceBus
 
 					string connectionString = ConnectionString;
 					AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 					string deadLetterPath = EntityNameHelper.FormatDeadLetterPath(EntityNameHelper.FormatSubscriptionPath(topicName, topicSubscriptionName));
 					MessageReceiver client;
 					if (!string.IsNullOrWhiteSpace(connectionString))
@@ -923,7 +915,7 @@ namespace Cqrs.Azure.ServiceBus
 							{
 								AzureBusHelper.ReceiveEvent
 								(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 									client,
 #else
 									null,
@@ -934,7 +926,7 @@ namespace Cqrs.Azure.ServiceBus
 										bool isRequired = BusHelper.IsEventRequired(@event.GetType());
 										if (!isRequired)
 										{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 											removeDeadlLetterFromQueue(client, message);
 #else
 											removeDeadlLetterFromQueue(message);
@@ -942,7 +934,7 @@ namespace Cqrs.Azure.ServiceBus
 										}
 										else
 										{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 											leaveDeadlLetterInQueue(client, message, @event);
 #else
 											leaveDeadlLetterInQueue(message, @event);
@@ -955,7 +947,7 @@ namespace Cqrs.Azure.ServiceBus
 									SigningTokenConfigurationKey,
 									() =>
 									{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 										removeDeadlLetterFromQueue(client, message);
 #else
 										removeDeadlLetterFromQueue(message);
@@ -968,7 +960,7 @@ namespace Cqrs.Azure.ServiceBus
 							{
 								AzureBusHelper.ReceiveCommand
 								(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 									client,
 #else
 									null,
@@ -979,7 +971,7 @@ namespace Cqrs.Azure.ServiceBus
 										bool isRequired = BusHelper.IsEventRequired(command.GetType());
 										if (!isRequired)
 										{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 											removeDeadlLetterFromQueue(client, message);
 #else
 											removeDeadlLetterFromQueue(message);
@@ -987,7 +979,7 @@ namespace Cqrs.Azure.ServiceBus
 										}
 										else
 										{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 											leaveDeadlLetterInQueue(client, message, command);
 #else
 											leaveDeadlLetterInQueue(message, command);
@@ -1000,7 +992,7 @@ namespace Cqrs.Azure.ServiceBus
 									SigningTokenConfigurationKey,
 									() =>
 									{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 										removeDeadlLetterFromQueue(client, message);
 #else
 										removeDeadlLetterFromQueue(message);
@@ -1017,7 +1009,7 @@ namespace Cqrs.Azure.ServiceBus
 							Logger.LogError(string.Format("A dead-letter message arrived with the id '{0}' but failed to be process.", brokeredMessage.MessageId), exception: exception);
 							try
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 								client.AbandonAsync(brokeredMessage.SystemProperties.LockToken).Wait(1500);
 #else
 								brokeredMessage.Abandon();
@@ -1030,7 +1022,7 @@ namespace Cqrs.Azure.ServiceBus
 							}
 						}
 					}
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 					client.CloseAsync().Wait(1500);
 #else
 					client.Close();
@@ -1054,7 +1046,7 @@ namespace Cqrs.Azure.ServiceBus
 			return brokeredMessageRenewCancellationTokenSource;
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		DataContractBinarySerializer brokeredMessageSerialiser = new DataContractBinarySerializer(typeof(string));
 #endif
 		/// <summary>
@@ -1063,7 +1055,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected virtual BrokeredMessage CreateBrokeredMessage<TMessage>(Func<TMessage, string> serialiserFunction, Type messageType, TMessage message)
 		{
 			string messageBody = serialiserFunction(message);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			byte[] messageBodyData;
 			using (var stream = new MemoryStream())
 			{
@@ -1083,7 +1075,7 @@ namespace Cqrs.Azure.ServiceBus
 			brokeredMessage.AddUserProperty("CorrelationId", brokeredMessage.CorrelationId);
 			brokeredMessage.AddUserProperty("Type", messageType.FullName);
 			brokeredMessage.AddUserProperty("Source", string.Format("{0}/{1}/{2}/{3}", Logger.LoggerSettings.ModuleName, Logger.LoggerSettings.Instance, Logger.LoggerSettings.Environment, Logger.LoggerSettings.EnvironmentInstance));
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			brokeredMessage.AddUserProperty("Framework", ".NET Core");
 #else
 			brokeredMessage.AddUserProperty("Framework", ".NET Framework");

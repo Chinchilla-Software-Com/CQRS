@@ -6,19 +6,17 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-#if NETSTANDARD2_0
 using System;
-#else
 using System.Collections.Generic;
 using System.Data.Common;
-#endif
+
 #if NET40
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Interception;
 #else
 using Microsoft.EntityFrameworkCore;
 #endif
-#if NETCOREAPP3_0
+#if NETCOREAPP3_1_OR_GREATER
 using Microsoft.EntityFrameworkCore.Diagnostics;
 #endif
 using System.Linq;
@@ -53,7 +51,7 @@ namespace Cqrs.Events
 #else
 		private string NameOrConnectionString { get; }
 
-#if NETCOREAPP3_0
+#if NETCOREAPP3_1_OR_GREATER
 		private static  DbCommandInterceptor Interceptor { get; }
 #endif
 
@@ -64,7 +62,7 @@ namespace Cqrs.Events
 		/// <param name="optionsBuilder">A builder used to create or modify options for this context. Databases (and other extensions) typically define extension methods on this object that allow you to configure the context.</param>
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
-#if NETCOREAPP3_0
+#if NETCOREAPP3_1_OR_GREATER
 			optionsBuilder.UseSqlServer(NameOrConnectionString)
 			  .AddInterceptors(Interceptor);
 #else
@@ -80,7 +78,7 @@ namespace Cqrs.Events
 #if NET40
 			DbInterception.Add(new QueueMessageInterceptor());
 #endif
-#if NETCOREAPP3_0
+#if NETCOREAPP3_1_OR_GREATER
 			Interceptor = new QueueMessageInterceptor();
 #endif
 		}
@@ -96,7 +94,7 @@ namespace Cqrs.Events
 			TableName = tableName;
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NETCOREAPP3_1_OR_GREATER
 		/// <summary>
 		/// Instantiates a new instance of the <see cref="SqlEventStoreDataContext"/> class by referencing a file source.
 		/// </summary>
@@ -128,7 +126,7 @@ namespace Cqrs.Events
 		}
 #endif
 
-#if NETCOREAPP3_0
+#if NETCOREAPP3_1_OR_GREATER
 		internal class QueueMessageInterceptor : DbCommandInterceptor
 		{
 			private const string TableReplaceString = "[EventStore]";

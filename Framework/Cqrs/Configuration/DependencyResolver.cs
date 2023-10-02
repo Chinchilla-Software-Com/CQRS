@@ -20,6 +20,11 @@ namespace Cqrs.Configuration
 		/// </summary>
 		public static IDependencyResolver Current { get; protected set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
+		public static IConfigurationManager ConfigurationManager { get; set; }
+
 		#region Implementation of IDependencyResolver
 
 		/// <summary>

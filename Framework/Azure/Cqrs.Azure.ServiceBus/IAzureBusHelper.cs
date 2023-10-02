@@ -14,7 +14,7 @@ using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Messages;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 using Microsoft.Azure.ServiceBus.Core;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
 #else
@@ -48,7 +48,7 @@ namespace Cqrs.Azure.ServiceBus
 		bool PrepareAndValidateCommand<TCommand>(TCommand command, string framework)
 			where TCommand : ICommand<TAuthenticationToken>;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		/// <summary>
 		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveCommandHandler"/>.
 		/// </summary>
@@ -76,7 +76,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>The <see cref="ICommand{TAuthenticationToken}"/> that was processed.</returns>
 #endif
 		ICommand<TAuthenticationToken> ReceiveCommand(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			IMessageReceiver client
 #else
 			IMessageReceiver serviceBusReceiver
@@ -117,7 +117,7 @@ namespace Cqrs.Azure.ServiceBus
 		bool PrepareAndValidateEvent<TEvent>(TEvent @event, string framework)
 			where TEvent : IEvent<TAuthenticationToken>;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		/// <summary>
 		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveEventHandler"/>.
 		/// </summary>
@@ -145,7 +145,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
 #endif
 		IEvent<TAuthenticationToken> ReceiveEvent(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 			IMessageReceiver client
 #else
 			IMessageReceiver serviceBusReceiver
@@ -155,7 +155,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Refreshes the network lock.
 		/// </summary>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		void RefreshLock(IMessageReceiver client, CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message");
 #else
 		void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message");

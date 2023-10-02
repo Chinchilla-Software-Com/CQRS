@@ -69,6 +69,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 				.Build();
 
 			configurationManager = new CloudConfigurationManager(config);
+			DependencyResolver.ConfigurationManager = configurationManager;
 #endif
 
 			var azureEventBusReceiver = new AzureEventBusReceiver<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());
@@ -110,6 +111,8 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 				.Build();
 
 			configurationManager = new CloudConfigurationManager(config);
+			Configuration.ConfigurationManager.Configuration = config;
+			DependencyResolver.ConfigurationManager = configurationManager;
 #endif
 
 			var azureCommandBusReceiver = new AzureCommandBusReceiver<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());

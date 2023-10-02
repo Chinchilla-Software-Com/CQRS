@@ -47,15 +47,15 @@ namespace Cqrs.Services
 				DataContractSerializerOperationBehavior serializerBehavior = operationDescription.Behaviors.Find<DataContractSerializerOperationBehavior>();
 				if (serializerBehavior == null)
 					operationDescription.Behaviors.Add(serializerBehavior = new DataContractSerializerOperationBehavior(operationDescription));
-				#if NET40
+#if NET40
 				serializerBehavior.DataContractResolver = (DataContractResolver)Activator.CreateInstance(AppDomain.CurrentDomain, dataContractType.Assembly.FullName, dataContractType.FullName).Unwrap();
-				#endif
-				#if NETSTANDARD2_0
+#endif
+#if NETSTANDARD2_0
 				serializerBehavior.DataContractResolver = (DataContractResolver)DotNetStandard2Helper.CreateInstanceFrom(dataContractType.Assembly.FullName, dataContractType.FullName);
-				#endif
-				#if NETCOREAPP3_0
+#endif
+#if NETCOREAPP3_1_OR_GREATER
 				serializerBehavior.DataContractResolver = (DataContractResolver)Activator.CreateInstance(dataContractType.Assembly.FullName, dataContractType.FullName).Unwrap();
-				#endif
+#endif
 			}
 		}
 

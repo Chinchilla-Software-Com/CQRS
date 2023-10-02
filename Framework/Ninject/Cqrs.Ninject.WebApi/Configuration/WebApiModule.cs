@@ -9,6 +9,7 @@
 using System;
 using System.Web;
 using Cqrs.Configuration;
+using Cqrs.Ninject.Configuration;
 using Cqrs.WebApi.SignalR.Hubs;
 using Ninject;
 using Ninject.Modules;
@@ -19,7 +20,7 @@ namespace Cqrs.Ninject.WebApi.Configuration
 	/// <summary>
 	/// A <see cref="INinjectModule"/> that sets up default WebApi.
 	/// </summary>
-	public class WebApiModule : NinjectModule
+	public class WebApiModule : ResolvableModule
 	{
 		#region Overrides of NinjectModule
 
@@ -31,6 +32,7 @@ namespace Cqrs.Ninject.WebApi.Configuration
 			Bind<IConfigurationManager>()
 				.To<ConfigurationManager>()
 				.InSingletonScope();
+			DependencyResolver.ConfigurationManager = Resolve<IConfigurationManager>();
 
 			RegisterWebApi();
 		}

@@ -85,6 +85,7 @@ namespace Cqrs.Akka.Tests.Unit
 			kernel.Bind<ICommandPublisher<Guid>>().To<InProcessBus<Guid>>().InSingletonScope();
 			kernel.Bind<ICommandReceiver<Guid>>().To<InProcessBus<Guid>>().InSingletonScope();
 			kernel.Bind<IConfigurationManager>().ToConstant(configurationManager).InSingletonScope();
+			DependencyResolver.ConfigurationManager = configurationManager;
 			kernel.Bind<IBusHelper>().ToConstant(busHelper).InSingletonScope();
 			kernel.Bind<IAuthenticationTokenHelper<Guid>>().To<AuthenticationTokenHelper<Guid>>().InSingletonScope();
 			kernel.Bind<IContextItemCollectionFactory>().To<WebContextItemCollectionFactory>().InSingletonScope();
