@@ -59,7 +59,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		protected override void ReceiveCommand(IMessageReceiver client, BrokeredMessage message)
 #else
-		protected virtual void ReceiveCommand(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
+		protected override void ReceiveCommand(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
 #endif
 		{
 			try

@@ -380,7 +380,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveEventHandler"/>.
 		/// </summary>
-		/// <param name="serviceBusReceiver">The channel the message was received on.</param>
+		/// <param name="client">The channel the message was received on.</param>
 		/// <param name="messageBody">A serialised <see cref="IMessage"/>.</param>
 		/// <param name="receiveEventHandler">The handler method that will process the <see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="messageId">The network id of the <see cref="IMessage"/>.</param>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30104.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs.Scheduler.Events", "Cqrs.Scheduler.Events\Cqrs.Scheduler.Events.csproj", "{10126618-090C-43C5-9A32-045FE3B58AF8}"
 EndProject
@@ -27,6 +27,24 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs.Azure.ConfigurationManager", "..\Framework\Azure\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj", "{5616AEF0-AB33-47D0-9C25-716997A9020C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs.Azure.ServiceBus", "..\Framework\Azure\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj", "{52492642-2F35-4CFC-A3B8-6B9BCCE80DCD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs.Ninject.Azure.Wcf", "..\Framework\Ninject\Azure\Cqrs.Ninject.Azure.Wcf\Cqrs.Ninject.Azure.Wcf.csproj", "{E5B98E42-4969-4810-B1C7-42E22165DC63}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs.Ninject.Azure.ServiceBus.CommandBus", "..\Framework\Ninject\Azure\Cqrs.Ninject.Azure.ServiceBus.CommandBus\Cqrs.Ninject.Azure.ServiceBus.CommandBus.csproj", "{DDE307EA-E03C-40E0-9553-862B323C622B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs.Ninject.Azure.ServiceBus.EventBus", "..\Framework\Ninject\Azure\Cqrs.Ninject.Azure.ServiceBus.EventBus\Cqrs.Ninject.Azure.ServiceBus.EventBus.csproj", "{2DBE8B22-629E-4E2B-977A-1BC078721AE9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ninject", "Ninject", "{868B5403-0EF2-4EDD-B9CC-32B126760BA9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{7C84E9B3-277C-42A3-B9C7-9F2152997E77}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs.Ninject", "..\Framework\Ninject\Cqrs.Ninject\Cqrs.Ninject.csproj", "{D3851993-E23A-4B1C-9CDB-EC8BBFE4E633}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure", "Azure", "{55245302-EADC-499C-A9E9-407347CF32F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs.Azure.WebJobs", "..\Framework\Azure\Cqrs.Azure.WebJobs\Cqrs.Azure.WebJobs.csproj", "{CB8FD439-1677-4C47-8694-6B8B51449E80}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cqrs.Azure.Functions", "..\Framework\Azure\Cqrs.Azure.Functions\Cqrs.Azure.Functions.csproj", "{D72183CE-C1C0-41D7-A7DA-50C3F3B5F2D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,15 +88,48 @@ Global
 		{52492642-2F35-4CFC-A3B8-6B9BCCE80DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52492642-2F35-4CFC-A3B8-6B9BCCE80DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52492642-2F35-4CFC-A3B8-6B9BCCE80DCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5B98E42-4969-4810-B1C7-42E22165DC63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5B98E42-4969-4810-B1C7-42E22165DC63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5B98E42-4969-4810-B1C7-42E22165DC63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5B98E42-4969-4810-B1C7-42E22165DC63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDE307EA-E03C-40E0-9553-862B323C622B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDE307EA-E03C-40E0-9553-862B323C622B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDE307EA-E03C-40E0-9553-862B323C622B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDE307EA-E03C-40E0-9553-862B323C622B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DBE8B22-629E-4E2B-977A-1BC078721AE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DBE8B22-629E-4E2B-977A-1BC078721AE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DBE8B22-629E-4E2B-977A-1BC078721AE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DBE8B22-629E-4E2B-977A-1BC078721AE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3851993-E23A-4B1C-9CDB-EC8BBFE4E633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3851993-E23A-4B1C-9CDB-EC8BBFE4E633}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3851993-E23A-4B1C-9CDB-EC8BBFE4E633}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3851993-E23A-4B1C-9CDB-EC8BBFE4E633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB8FD439-1677-4C47-8694-6B8B51449E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB8FD439-1677-4C47-8694-6B8B51449E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB8FD439-1677-4C47-8694-6B8B51449E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB8FD439-1677-4C47-8694-6B8B51449E80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D72183CE-C1C0-41D7-A7DA-50C3F3B5F2D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D72183CE-C1C0-41D7-A7DA-50C3F3B5F2D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D72183CE-C1C0-41D7-A7DA-50C3F3B5F2D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D72183CE-C1C0-41D7-A7DA-50C3F3B5F2D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D4BA3899-E846-4596-90DB-1C11D3C58357} = {01BE8F52-4852-4445-AC4E-2807A1DB56C6}
-		{01E9A698-D559-458E-BC2F-97B5A80A8A76} = {01BE8F52-4852-4445-AC4E-2807A1DB56C6}
-		{5616AEF0-AB33-47D0-9C25-716997A9020C} = {01BE8F52-4852-4445-AC4E-2807A1DB56C6}
-		{52492642-2F35-4CFC-A3B8-6B9BCCE80DCD} = {01BE8F52-4852-4445-AC4E-2807A1DB56C6}
+		{01E9A698-D559-458E-BC2F-97B5A80A8A76} = {7C84E9B3-277C-42A3-B9C7-9F2152997E77}
+		{5616AEF0-AB33-47D0-9C25-716997A9020C} = {55245302-EADC-499C-A9E9-407347CF32F9}
+		{52492642-2F35-4CFC-A3B8-6B9BCCE80DCD} = {55245302-EADC-499C-A9E9-407347CF32F9}
+		{E5B98E42-4969-4810-B1C7-42E22165DC63} = {7C84E9B3-277C-42A3-B9C7-9F2152997E77}
+		{DDE307EA-E03C-40E0-9553-862B323C622B} = {7C84E9B3-277C-42A3-B9C7-9F2152997E77}
+		{2DBE8B22-629E-4E2B-977A-1BC078721AE9} = {7C84E9B3-277C-42A3-B9C7-9F2152997E77}
+		{868B5403-0EF2-4EDD-B9CC-32B126760BA9} = {01BE8F52-4852-4445-AC4E-2807A1DB56C6}
+		{7C84E9B3-277C-42A3-B9C7-9F2152997E77} = {868B5403-0EF2-4EDD-B9CC-32B126760BA9}
+		{D3851993-E23A-4B1C-9CDB-EC8BBFE4E633} = {868B5403-0EF2-4EDD-B9CC-32B126760BA9}
+		{55245302-EADC-499C-A9E9-407347CF32F9} = {01BE8F52-4852-4445-AC4E-2807A1DB56C6}
+		{CB8FD439-1677-4C47-8694-6B8B51449E80} = {55245302-EADC-499C-A9E9-407347CF32F9}
+		{D72183CE-C1C0-41D7-A7DA-50C3F3B5F2D0} = {55245302-EADC-499C-A9E9-407347CF32F9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\TransientFaultHandling.Core.5.1.1209.0\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.1.1212.0\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.1.1212.0\DesignTime

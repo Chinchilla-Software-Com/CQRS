@@ -1,20 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netcoreapp3.1;NET472</TargetFrameworks>
-		<AzureFunctionsVersion>v2</AzureFunctionsVersion>
+		<TargetFrameworks>net6.0;NET48</TargetFrameworks>
 		<ApplicationIcon>Cqrs.Scheduler.Trigger.ico</ApplicationIcon>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<DebugType>full</DebugType>
 		<DebugSymbols>true</DebugSymbols>
 		<IsPackable>true</IsPackable>
+		<OutputType>Exe</OutputType>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<AzureFunctionsVersion>v3</AzureFunctionsVersion>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<!--
+		<FunctionsEnableWorkerIndexing>false</FunctionsEnableWorkerIndexing>
+		<FunctionsAutoRegisterGeneratedMetadataProvider>True</FunctionsAutoRegisterGeneratedMetadataProvider>
+		<FunctionsEnableExecutorSourceGen>True</FunctionsEnableExecutorSourceGen>
+		-->
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
-		<TargetFramework>netcoreapp2.1</TargetFramework>
-		<AzureFunctionsVersion>v2</AzureFunctionsVersion>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'NET48' ">
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<!--
+		<FunctionsEnableWorkerIndexing>false</FunctionsEnableWorkerIndexing>
+		<FunctionsAutoRegisterGeneratedMetadataProvider>True</FunctionsAutoRegisterGeneratedMetadataProvider>
+		<FunctionsEnableExecutorSourceGen>True</FunctionsEnableExecutorSourceGen>
+		-->
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Chinchilla.Logging.Azure.Storage" Version="4.5.29" />
@@ -23,31 +31,33 @@
 		<PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
 		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
 
-		<!-- These are here because of https://stackoverflow.com/questions/46843367/how-to-setbasepath-in-configurationbuilder-in-core-2-0 -->
-		<PackageReference Include="Microsoft.Extensions.Configuration" Version="3.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.7" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.7" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="3.1.7" />
-		<PackageReference Include="System.Buffers" Version="4.5.1" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.19.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" Version="4.2.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.13.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.15.0" />
+
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-		<!-- Locked at 3.0.9 see - https://github.com/Azure/Azure-Functions/issues/1370 -->
-		<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.9" />
-		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+
+		<PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">
-		<!-- Locked at 1.0.29 to avoid this - https://github.com/Azure/Azure-Functions/issues/1370 - But remember SQL access is broken -->
-		<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.29" />
-		<!-- MS currently requires this be locked to 11.0.2... for now at least -->
-		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net48' ">
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions\Cqrs.Azure.Functions.csproj" />
 		<ProjectReference Include="..\..\Framework\Cqrs\Cqrs.csproj" />
 		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
 		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj" />

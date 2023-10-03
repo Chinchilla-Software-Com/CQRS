@@ -21,7 +21,8 @@ namespace Cqrs.Configuration
 		public static IDependencyResolver Current { get; protected set; }
 
 		/// <summary>
-		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// Gets or sets the <see cref="IConfigurationManager"/>. This must be set manually as dependency injection may not be ready in-time.
+		/// Maybe set by Cqrs.Azure.ConfigurationManager.TelemetryCoreHost{TAuthenticationToken}.SetConfigurationManager(IConfigurationRoot)
 		/// </summary>
 		public static IConfigurationManager ConfigurationManager { get; set; }
 
