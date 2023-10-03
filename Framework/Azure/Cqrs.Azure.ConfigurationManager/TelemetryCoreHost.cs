@@ -29,9 +29,16 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// </summary>
 		protected static IConfigurationManager _configurationManager = null;
 
+		/// <summary>
+		/// Set the <see cref="IConfigurationManager"/> to use before the <see cref="DependencyResolver.Current"/> is set.
+		/// Will also set <see cref="DependencyResolver.ConfigurationManager"/>.
+		/// </summary>
+		/// <param name="configuration"></param>
 		public static void SetConfigurationManager(IConfigurationRoot configuration)
 		{
 			_configurationManager = new CloudConfigurationManager(configuration);
+			Configuration.ConfigurationManager.Configuration = configuration;
+			DependencyResolver.ConfigurationManager = _configurationManager;
 		}
 #endif
 #if NET472
@@ -46,7 +53,7 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// </summary>
 		protected override IConfigurationManager ConfigurationManager
 		{
-			get { return _configurationManager; }
+			get { return _configurationManager ?? DependencyResolver.ConfigurationManager; }
 		}
 
 		/// <summary>

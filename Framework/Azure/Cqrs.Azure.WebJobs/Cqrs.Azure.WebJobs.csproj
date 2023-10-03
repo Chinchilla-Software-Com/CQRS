@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
-		<title>Microsoft Azure Azure WebJobs for CQRS.NET</title>
+		<TargetFrameworks>netstandard2.0;net472;net5.0</TargetFrameworks>
+		<title>Microsoft Azure WebJobs for CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
 		<Description>Use Azure Webjobs with CQRS.NET</Description>
@@ -10,6 +10,10 @@
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
 		<PackageReleaseNotes>
+			Version 4.5.1
+
+			* Improved suport for .NET 5.0 and above (currently up-to 7.0) functions
+
 			Version 4.1.0
 
 			* Switched to .NET Standard 2.0 support from .NET Core 3.0.
@@ -51,10 +55,15 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net472;netstandard2.0;net5.0</TargetFrameworks>
 		<DocumentationFile>Cqrs.Azure.WebJobs.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="3.0.2" />
+		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.4" />
+	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
 		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions" Version="3.0.2" />
@@ -74,7 +83,7 @@
 	<ItemGroup>
 		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
 		<PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
-		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.11.0" />
+		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
 	</ItemGroup>
 
 	<ItemGroup>

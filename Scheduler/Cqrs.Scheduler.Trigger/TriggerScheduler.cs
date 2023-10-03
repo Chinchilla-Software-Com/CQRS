@@ -6,9 +6,8 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using Microsoft.Azure.WebJobs;
-using Microsoft.Extensions.Configuration;
 using System;
+using Microsoft.Extensions.Configuration;
 
 using Chinchilla.Logging;
 using Chinchilla.Logging.Azure.Storage;
@@ -19,17 +18,30 @@ using Cqrs.Configuration;
 using Cqrs.Ninject.Configuration;
 using Cqrs.Scheduler.Commands;
 
+using ExecutionContext = System.Threading.ExecutionContext;
+using Cqrs.Azure.ServiceBus;
+using Cqrs.Authentication;
+using Chinchilla.StateManagement;
+using Cqrs.Bus;
+
 namespace Cqrs.TriggerScheduler
 {
-	public static class TriggerScheduler
+	public class TriggerScheduler
 	{
-		[FunctionName("TriggerScheduler")]
+		private readonly Microsoft.Extensions.Logging.ILogger<TriggerScheduler> _logger;
+
+		public TriggerScheduler(Microsoft.Extensions.Logging.ILogger<TriggerScheduler> logger)
+		{
+			_logger = logger;
+		}
+
+		[Microsoft.Azure.Functions.Worker.Function("TriggerScheduler")]
 #if DEBUG
 		// Run every one minute in debug mode
-		public static void Run([TimerTrigger("0 */1 * * * *")]TimerInfo myTimer, Microsoft.Extensions.Logging.ILogger _logger, ExecutionContext context)
+		public void Run([Microsoft.Azure.Functions.Worker.TimerTrigger("0 */1  * * * *")] Microsoft.Azure.Functions.Worker.TimerInfo myTimer, Microsoft.Extensions.Logging.ILogger _logger, ExecutionContext context)
 #else
 		// Run every 15 minutes in release mode
-		public static void Run([TimerTrigger("0 1/15 * * * *")]TimerInfo myTimer, Microsoft.Extensions.Logging.ILogger _logger, ExecutionContext context)
+		public void Run([Microsoft.Azure.Functions.Worker.TimerTrigger("0 1/15 * * * *")] Microsoft.Azure.Functions.Worker.TimerInfo myTimer, Microsoft.Extensions.Logging.ILogger _logger, ExecutionContext context)
 #endif
 		{
 			if (CommandPublisher == null)
@@ -50,30 +62,35 @@ namespace Cqrs.TriggerScheduler
 		static void PreapreOnce(ExecutionContext context)
 		{
 			Console.WriteLine("IMPORTANT: Make sure you have read the ReadMeFirst.txt file");
-			IConfigurationManager configurationManager;
-#if NET472
-			configurationManager = new ConfigurationManager();
-#else
-			// C# ConfigurationBuilder example for Azure Functions v2 runtime
-			IConfigurationRoot config = new ConfigurationBuilder()
-				.SetBasePath(context.FunctionAppDirectory)
-				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-				.AddEnvironmentVariables()
-				.Build();
-			configurationManager = new CloudConfigurationManager(config);
-			CqrsFunction.SetExecutionPath(context, config);
-#endif
 
-			new CqrsFunction().Run();
-
+			/*
 			// Configure Table storage for logging... see settings file to set connection string
 			((NinjectDependencyResolver)DependencyResolver.Current).Kernel.Unbind(typeof(ILogger));
 			var logger = new TableStorageLogger(DependencyResolver.Current.Resolve<ILoggerSettings>(), DependencyResolver.Current.Resolve<ICorrelationIdHelper>(), DependencyResolver.Current.Resolve<ITelemetryHelper>());
 			((NinjectDependencyResolver)DependencyResolver.Current).Kernel.Bind<ILogger>().ToConstant(logger);
+			*/
 
-			CommandPublisher = DependencyResolver.Current.Resolve<ICommandPublisher<Guid>>();
+			// CommandPublisher = DependencyResolver.Current.Resolve<ICommandPublisher<Guid>>();
 			CorrelationIdHelper = DependencyResolver.Current.Resolve<ICorrelationIdHelper>();
 			Logger = DependencyResolver.Current.Resolve<ILogger>();
+
+			var configurationManager = DependencyResolver.Current.Resolve<IConfigurationManager>();
+			var contextItemCollectionFactory = DependencyResolver.Current.Resolve<IContextItemCollectionFactory>();
+			var authenticationTokenHelper = new DefaultAuthenticationTokenHelper(contextItemCollectionFactory);
+			var messageSerialiser = new MessageSerialiser<Guid>();
+			var busHelper = new BusHelper(configurationManager, contextItemCollectionFactory);
+			var hashAlgorithmFactory = new BuiltInHashAlgorithmFactory();
+			CommandPublisher = new AzureCommandBusPublisher<Guid>
+			(
+				configurationManager,
+				messageSerialiser,
+				authenticationTokenHelper,
+				CorrelationIdHelper,
+				Logger,
+				new AzureBusHelper<Guid>(authenticationTokenHelper, CorrelationIdHelper, Logger, messageSerialiser, busHelper, hashAlgorithmFactory, configurationManager, DependencyResolver.Current),
+				busHelper,
+				hashAlgorithmFactory
+			);
 		}
 	}
 }

@@ -41,7 +41,6 @@ namespace Cqrs.Ninject.Azure.Wcf
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 		where TWebHostModule : WebHostModule, new ()
 	{
-
 #if NETSTANDARD2_0
 		/// <summary>
 		/// Set the <see cref="IConfigurationRoot"/> on <see cref="Cqrs.Configuration.ConfigurationManager.Configuration"/> and prepare a <see cref="CloudConfigurationManager"/>
