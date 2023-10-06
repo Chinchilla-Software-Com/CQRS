@@ -190,9 +190,10 @@ namespace Cqrs.Azure.ServiceBus
 					try
 					{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-						Task<IList<RuleDescription>> getRulesTask = manager.GetRulesAsync(topicName, topicSubscriptionName);
-						getRulesTask.Wait();
-						IEnumerable<RuleDescription> rules = getRulesTask.Result;
+						IEnumerable<RuleDescription> rules = null;
+						Task.Run(async () => {
+							rules = await manager.GetRulesAsync(topicName, topicSubscriptionName);
+						}).Wait();
 #else
 						IEnumerable<RuleDescription> rules = manager.GetRules(client.TopicPath, client.Name).ToList();
 #endif
@@ -207,9 +208,11 @@ namespace Cqrs.Azure.ServiceBus
 							if (sqlFilter != null && reAddRule)
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								client.RemoveRuleAsync("CqrsConfiguredFilter").Wait();
+								Task.Run(async () => {
+									await client.RemoveRuleAsync(ruleDescription.Name);
+								}).Wait();
 #else
-								client.RemoveRule("CqrsConfiguredFilter");
+							client.RemoveRule(ruleDescription.Name);
 #endif
 							}
 						}
@@ -221,9 +224,11 @@ namespace Cqrs.Azure.ServiceBus
 						if (!string.IsNullOrWhiteSpace(filter) && ruleDescription != null)
 						{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-							client.RemoveRuleAsync("$Default").Wait();
+							Task.Run(async () => {
+								await client.RemoveRuleAsync(ruleDescription.Name);
+							}).Wait();
 #else
-							client.RemoveRule("$Default");
+							client.RemoveRule(ruleDescription.Name);
 #endif
 						}
 						// If we don't have a rule and there is no longer a default rule, it will cause issues
@@ -235,7 +240,9 @@ namespace Cqrs.Azure.ServiceBus
 								new SqlFilter("1=1")
 							);
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-							client.AddRuleAsync(ruleDescription).Wait();
+							Task.Run(async () => {
+								await client.AddRuleAsync(ruleDescription);
+							}).Wait();
 #else
 							client.AddRule(ruleDescription);
 #endif
@@ -264,7 +271,9 @@ namespace Cqrs.Azure.ServiceBus
 								new SqlFilter(filter)
 							);
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-							client.AddRuleAsync(ruleDescription).Wait();
+							Task.Run(async () => {
+								await client.AddRuleAsync(ruleDescription);
+							}).Wait();
 #else
 							client.AddRule(ruleDescription);
 #endif

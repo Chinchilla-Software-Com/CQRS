@@ -111,7 +111,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 				.Build();
 
 			configurationManager = new CloudConfigurationManager(config);
-			Configuration.ConfigurationManager.Configuration = config;
+			Configuration.ConfigurationManager.BaseConfiguration = config;
 			DependencyResolver.ConfigurationManager = configurationManager;
 #endif
 

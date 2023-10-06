@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
@@ -126,7 +126,9 @@ namespace Cqrs.Azure.ServiceBus
 							try
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+								Task.Run(async () => {
+									await PublicServiceBusPublisher.SendAsync(brokeredMessage);
+								}).Wait();
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -173,7 +175,9 @@ namespace Cqrs.Azure.ServiceBus
 							try
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								PublicServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+								Task.Run(async () => {
+									await PublicServiceBusPublisher.SendAsync(brokeredMessage);
+								}).Wait();
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -220,7 +224,9 @@ namespace Cqrs.Azure.ServiceBus
 							try
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								PrivateServiceBusPublisher.SendAsync(brokeredMessage).Wait();
+								Task.Run(async () => {
+									await PrivateServiceBusPublisher.SendAsync(brokeredMessage);
+								}).Wait();
 #else
 								PrivateServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -355,7 +361,9 @@ namespace Cqrs.Azure.ServiceBus
 							if (publicBrokeredMessages.Any())
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								PublicServiceBusPublisher.SendAsync(publicBrokeredMessages).Wait();
+								Task.Run(async () => {
+									await PublicServiceBusPublisher.SendAsync(publicBrokeredMessages);
+								}).Wait();
 #else
 								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
 #endif
@@ -403,7 +411,9 @@ namespace Cqrs.Azure.ServiceBus
 							if (privateBrokeredMessages.Any())
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								PrivateServiceBusPublisher.SendAsync(privateBrokeredMessages).Wait();
+								Task.Run(async () => {
+									await PrivateServiceBusPublisher.SendAsync(privateBrokeredMessages);
+								}).Wait();
 #else
 								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
 #endif

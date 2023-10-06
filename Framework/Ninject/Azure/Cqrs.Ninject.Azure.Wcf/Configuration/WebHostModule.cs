@@ -78,7 +78,7 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 
 #if NETSTANDARD2_0
 			Bind<IConfiguration>()
-				.ToConstant(ConfigurationManager.Configuration)
+				.ToConstant(ConfigurationManager.BaseConfiguration)
 				.InSingletonScope();
 #endif
 

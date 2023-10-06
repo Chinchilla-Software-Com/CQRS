@@ -30,7 +30,8 @@ using Microsoft.Azure.WebJobs;
 ///		}
 /// }
 /// </example>
-public class CqrsFunction : CqrsWebHost<Guid, DefaultAuthenticationTokenHelper>
+public class CqrsFunction
+	: CqrsWebHost<Guid, DefaultAuthenticationTokenHelper>
 {
 	/// <summary>
 	/// Indicates if the <see cref="SetExecutionPath"/> method has been called.

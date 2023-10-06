@@ -61,6 +61,9 @@ namespace Cqrs.Azure.Functions
 			PrepareHost();
 		}
 
+		/// <summary>
+		/// Prepares the <see cref="IConfigurationManager"/>
+		/// </summary>
 		protected static void PrepareConfigurationManager()
 		{
 			IConfigurationManager configurationManager;

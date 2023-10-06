@@ -116,13 +116,15 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 				IEnumerable<EventData> results = query.Where(snapshot => snapshot.AggregateId == streamName);
 
-				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
-					results
-						.ToList()
-						.OrderByDescending(eventData => eventData.Version)
-						.Take(1)
-						.Select(EventDeserialiser.Deserialise)
-						.SingleOrDefault()
+				return await Task.FromResult(
+					AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
+						results
+							.ToList()
+							.OrderByDescending(eventData => eventData.Version)
+							.Take(1)
+							.Select(EventDeserialiser.Deserialise)
+							.SingleOrDefault()
+					)
 				);
 			}
 		}

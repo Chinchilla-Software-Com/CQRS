@@ -37,7 +37,7 @@ namespace Cqrs.Azure.ConfigurationManager
 		public static void SetConfigurationManager(IConfigurationRoot configuration)
 		{
 			_configurationManager = new CloudConfigurationManager(configuration);
-			Configuration.ConfigurationManager.Configuration = configuration;
+			Configuration.ConfigurationManager.BaseConfiguration = configuration;
 			DependencyResolver.ConfigurationManager = _configurationManager;
 		}
 #endif

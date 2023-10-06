@@ -81,22 +81,22 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// The name of the private topic.
 		/// </summary>
-		protected string PrivateTopicName { get; private set; }
+		protected string PrivateTopicName { get; set; }
 
 		/// <summary>
 		/// The name of the public topic.
 		/// </summary>
-		protected string PublicTopicName { get; private set; }
+		protected string PublicTopicName { get; set; }
 
 		/// <summary>
 		/// The name of the subscription in the private topic.
 		/// </summary>
-		protected string PrivateTopicSubscriptionName { get; private set; }
+		protected string PrivateTopicSubscriptionName { get; set; }
 
 		/// <summary>
 		/// The name of the subscription in the public topic.
 		/// </summary>
-		protected string PublicTopicSubscriptionName { get; private set; }
+		protected string PublicTopicSubscriptionName { get; set; }
 
 		/// <summary>
 		/// The configuration key for the message bus connection string as used by <see cref="IConfigurationManager"/>.
@@ -264,7 +264,10 @@ namespace Cqrs.Azure.ServiceBus
 			Instantiate();
 		}
 
-		private void Instantiate()
+		/// <summary>
+		/// Setup <see cref="GetActiveDirectoryToken"/>
+		/// </summary>
+		protected virtual void Instantiate()
 		{
 #if NET452
 #else
@@ -301,7 +304,7 @@ namespace Cqrs.Azure.ServiceBus
 				string connectionEndpoint = ConfigurationManager.GetSetting(MessageBusConnectionEndpointConfigurationKey);
 				// double check an endpoint isn't provided, if it is, then we're using endpoints, but if not, we'll assume a connection string is prefered as it's easier
 				if (string.IsNullOrWhiteSpace(connectionEndpoint))
-					throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{MessageBusConnectionStringConfigurationKey}' is defined and has a valid connection string value.");
+					throw new MissingApplicationSettingForConnectionStringException(MessageBusConnectionStringConfigurationKey);
 			}
 			return connectionString;
 		}
@@ -321,22 +324,22 @@ namespace Cqrs.Azure.ServiceBus
 			if (!ConfigurationManager.TryGetSetting(MessageBusConnectionEndpointConfigurationKey, out string endpoint))
 				endpoint = null;
 			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(endpoint))
-				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{MessageBusConnectionEndpointConfigurationKey}' is defined and has a valid connection endpoint value.");
+				throw new MissingApplicationSettingForConnectionStringException(MessageBusConnectionEndpointConfigurationKey);
 
 			if (!ConfigurationManager.TryGetSetting(MessageBusConnectionApplicationIdConfigurationKey, out string applicationId))
 				applicationId = null;
 			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(applicationId))
-				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{MessageBusConnectionApplicationIdConfigurationKey}' is defined and has a valid application id value.");
+				throw new MissingApplicationSettingForConnectionStringException(MessageBusConnectionApplicationIdConfigurationKey);
 
 			if (!ConfigurationManager.TryGetSetting(MessageBusConnectionClientKeyConfigurationKey, out string clientKey))
 				clientKey = null;
 			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(clientKey))
-				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{MessageBusConnectionClientKeyConfigurationKey}' is defined and has a valid client key/secret value.");
+				throw new MissingApplicationSettingForConnectionStringException(MessageBusConnectionClientKeyConfigurationKey);
 
 			if (!ConfigurationManager.TryGetSetting(MessageBusConnectionTenantIdConfigurationKey, out string tenantId))
 				tenantId = null;
 			if (!isUsingConnectionString && string.IsNullOrWhiteSpace(tenantId))
-				throw new ConfigurationErrorsException($"Configuration is missing required information. Make sure the appSetting '{MessageBusConnectionTenantIdConfigurationKey}' is defined and has a valid tenant id value.");
+				throw new MissingApplicationSettingForConnectionStringException(MessageBusConnectionTenantIdConfigurationKey);
 
 			return new AzureBusRbacSettings
 			{
@@ -347,7 +350,7 @@ namespace Cqrs.Azure.ServiceBus
 			};
 		}
 
-#endregion
+		#endregion
 
 		/// <summary>
 		/// Instantiate publishing on this bus by
