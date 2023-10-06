@@ -1,0 +1,106 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net472;net6.0</TargetFrameworks>
+		<title>Microsoft Azure Functions for CQRS.NET</title>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Description>Use Azure Functions with CQRS.NET</Description>
+		<Copyright>Copyright ©  2023</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+		<PackageReleaseNotes>
+			Version 5.0
+
+			* Azure function support added
+		</PackageReleaseNotes>
+		<PackageIcon>images\icon.png</PackageIcon>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>CQRS;CQRS.NET;Pub/Sub;Microservices;Azure;Functions</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="tools\init.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<None Include="tools\install.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\icon.png" Link="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>images\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Configuration\AzureCommandBusPublisherModule.cs" />
+		<Compile Remove="Configuration\AzureCommandBusReceiverModule.cs" />
+		<Compile Remove="Configuration\AzureEventBusPublisherModule.cs" />
+		<Compile Remove="Configuration\AzureEventBusReceiverModule.cs" />
+		<Compile Remove="Content\Program.cs" />
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net472;net6.0</TargetFrameworks>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<DocumentationFile>Cqrs.Azure.Functions.xml</DocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
+		<PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
+		<PackageReference Include="Chinchilla.Logging.Azure" Version="4.5.29" />
+		<PackageReference Include="Chinchilla.Logging.Azure.ApplicationInsights" Version="4.5.29" />
+
+		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
+		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.21.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.19.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.0.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.15.0" />
+
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Cqrs.Azure.Functions.Isolated.xml" />
+		<None Remove="packages.config" />
+		<None Remove="Tools\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Content\Program.cs" PackagePath="tools" Pack="true" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\DependencyInjection\Cqrs.DependencyInjection\Cqrs.DependencyInjection.csproj" />
+		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
+		<ProjectReference Include="..\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+	</Target>
+</Project>

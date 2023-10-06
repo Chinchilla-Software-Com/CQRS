@@ -23,7 +23,8 @@ using Cqrs.Ninject.Azure.WebJobs;
 ///		}
 /// }
 /// </example>
-public class CqrsWebJobProgram : CqrsNinjectJobHost<Guid, DefaultAuthenticationTokenHelper>
+public class CqrsWebJobProgram
+	: CqrsNinjectJobHost<Guid, DefaultAuthenticationTokenHelper>
 {
 	/// <summary>
 	/// Instantiate a new instance of <see cref="CqrsWebJobProgram"/>

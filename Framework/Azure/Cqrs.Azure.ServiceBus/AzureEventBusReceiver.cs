@@ -190,9 +190,10 @@ namespace Cqrs.Azure.ServiceBus
 					try
 					{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-						Task<IList<RuleDescription>> getRulesTask = manager.GetRulesAsync(client.TopicPath, client.SubscriptionName);
-						getRulesTask.Wait();
-						IEnumerable<RuleDescription> rules = getRulesTask.Result;
+						IEnumerable<RuleDescription> rules = null;
+						Task.Run(async () => {
+							rules = await manager.GetRulesAsync(client.TopicPath, client.SubscriptionName);
+						}).Wait();
 #else
 						IEnumerable<RuleDescription> rules = manager.GetRules(client.TopicPath, client.Name).ToList();
 #endif
@@ -207,7 +208,9 @@ namespace Cqrs.Azure.ServiceBus
 							if (sqlFilter != null && reAddRule)
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								client.RemoveRuleAsync("CqrsConfiguredFilter").Wait();
+								Task.Run(async () => {
+									await client.RemoveRuleAsync("CqrsConfiguredFilter");
+								}).Wait();
 #else
 								client.RemoveRule("CqrsConfiguredFilter");
 #endif
@@ -221,7 +224,9 @@ namespace Cqrs.Azure.ServiceBus
 						if (!string.IsNullOrWhiteSpace(filter) && ruleDescription != null)
 						{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-							client.RemoveRuleAsync("$Default").Wait();
+							Task.Run(async () => {
+								await client.RemoveRuleAsync("$Default");
+							}).Wait();
 #else
 							client.RemoveRule("$Default");
 #endif
@@ -235,7 +240,9 @@ namespace Cqrs.Azure.ServiceBus
 								new SqlFilter("1=1")
 							);
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-							client.AddRuleAsync(ruleDescription).Wait();
+							Task.Run(async () => {
+								await client.AddRuleAsync(ruleDescription);
+							}).Wait();
 #else
 							client.AddRule(ruleDescription);
 #endif
@@ -264,7 +271,9 @@ namespace Cqrs.Azure.ServiceBus
 								new SqlFilter(filter)
 							);
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-							client.AddRuleAsync(ruleDescription).Wait();
+							Task.Run(async () => {
+								await client.AddRuleAsync(ruleDescription);
+							}).Wait();
 #else
 							client.AddRule(ruleDescription);
 #endif

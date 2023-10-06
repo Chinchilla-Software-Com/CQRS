@@ -117,7 +117,7 @@ namespace Cqrs.Azure.DocumentDb.Events
 		/// <returns></returns>
 		protected async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
-			return Get(typeof(T), aggregateId, useLastEventOnly, fromVersion);
+			return await Task.FromResult(Get(typeof(T), aggregateId, useLastEventOnly, fromVersion));
 		}
 
 		/// <summary>
@@ -141,11 +141,14 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 				IEnumerable<EventData> results = query.Where(x => x.AggregateId == streamName && x.Version > fromVersion);
 
-				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
-					results
-						.ToList()
-						.OrderByDescending(x => x.EventId)
-						.Select(EventDeserialiser.Deserialise)
+				return await Task.FromResult
+				(
+					AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
+						results
+							.ToList()
+							.OrderByDescending(x => x.EventId)
+							.Select(EventDeserialiser.Deserialise)
+					)
 				);
 			}
 		}
@@ -170,11 +173,14 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 				IEnumerable<EventData> results = query.Where(x => x.AggregateId == streamName && x.Version <= version);
 
-				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
-					results
-						.ToList()
-						.OrderByDescending(x => x.EventId)
-						.Select(EventDeserialiser.Deserialise)
+				return await Task.FromResult
+				(
+					AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
+						results
+							.ToList()
+							.OrderByDescending(x => x.EventId)
+							.Select(EventDeserialiser.Deserialise)
+					)
 				);
 			}
 		}
@@ -199,11 +205,14 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 				IEnumerable<EventData> results = query.Where(x => x.AggregateId == streamName && x.Timestamp <= versionedDate);
 
-				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
-					results
-						.ToList()
-						.OrderByDescending(x => x.EventId)
-						.Select(EventDeserialiser.Deserialise)
+				return await Task.FromResult
+				(
+					AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
+						results
+							.ToList()
+							.OrderByDescending(x => x.EventId)
+							.Select(EventDeserialiser.Deserialise)
+					)
 				);
 			}
 		}
@@ -229,11 +238,14 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 				IEnumerable<EventData> results = query.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp >= fromVersionedDate && eventData.Timestamp <= toVersionedDate);
 
-				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
-					results
-						.ToList()
-						.OrderByDescending(x => x.EventId)
-						.Select(EventDeserialiser.Deserialise)
+				return await Task.FromResult
+				(
+					AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
+						results
+							.ToList()
+							.OrderByDescending(x => x.EventId)
+							.Select(EventDeserialiser.Deserialise)
+					)
 				);
 			}
 		}
@@ -255,10 +267,13 @@ namespace Cqrs.Azure.DocumentDb.Events
 
 				IEnumerable<EventData> results = query.Where(x => x.CorrelationId == correlationId);
 
-				return AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
-					results
-						.ToList()
-						.OrderBy(x => x.Timestamp)
+				return await Task.FromResult
+				(
+					AzureDocumentDbHelper.ExecuteFaultTollerantFunction(() =>
+						results
+							.ToList()
+							.OrderBy(x => x.Timestamp)
+					)
 				);
 			}
 		}

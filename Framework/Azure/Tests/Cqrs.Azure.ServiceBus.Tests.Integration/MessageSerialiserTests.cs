@@ -57,7 +57,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 				.Build();
 
 			configurationManager = new CloudConfigurationManager(config);
-			Configuration.ConfigurationManager.Configuration = config;
+			Configuration.ConfigurationManager.BaseConfiguration = config;
 			DependencyResolver.ConfigurationManager = configurationManager;
 #endif
 
@@ -90,7 +90,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 				.Build();
 
 			configurationManager = new CloudConfigurationManager(config);
-			Configuration.ConfigurationManager.Configuration = config;
+			Configuration.ConfigurationManager.BaseConfiguration = config;
 			DependencyResolver.ConfigurationManager = configurationManager;
 #endif
 

@@ -59,7 +59,7 @@ namespace Cqrs.Azure.DocumentDb
 				Logger.LogDebug(string.Format("Returning cached database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				try
 				{
-					return result;
+					return await Task.FromResult(result);
 				}
 				finally
 				{
@@ -80,7 +80,7 @@ namespace Cqrs.Azure.DocumentDb
 					try
 					{
 						AzureDocumentDbConnectionCache.SetDatabase(databaseCacheKey, result);
-						return result;
+						return await Task.FromResult(result);
 					}
 					finally
 					{
@@ -94,7 +94,7 @@ namespace Cqrs.Azure.DocumentDb
 
 				Logger.LogDebug(string.Format("Getting Azure database took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadDatabase");
 				AzureDocumentDbConnectionCache.SetDatabase(databaseCacheKey, result);
-				return result;
+				return await Task.FromResult(result);
 			}
 			finally
 			{
@@ -120,7 +120,7 @@ namespace Cqrs.Azure.DocumentDb
 				Logger.LogDebug(string.Format("Returning cached collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
 				try
 				{
-					return result;
+					return await Task.FromResult(result);
 				}
 				finally
 				{
@@ -141,7 +141,7 @@ namespace Cqrs.Azure.DocumentDb
 					try
 					{
 						// AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
-						return result;
+						return await Task.FromResult(result);
 					}
 					finally
 					{
@@ -169,7 +169,7 @@ namespace Cqrs.Azure.DocumentDb
 
 				Logger.LogDebug(string.Format("Getting Azure document collection took {0}", DateTime.Now - start), "AzureDocumentDbHelper\\CreateOrReadCollection");
 				// AzureDocumentDbConnectionCache.SetDocumentCollection(documentCollectionCacheKey, result);
-				return result;
+				return await Task.FromResult(result);
 			}
 			finally
 			{

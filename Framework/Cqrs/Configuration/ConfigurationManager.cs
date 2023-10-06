@@ -20,7 +20,7 @@ namespace Cqrs.Configuration
 		/// <summary>
 		/// Gets or sets the <see cref="Microsoft.Extensions.Configuration.IConfiguration"/>. This must be set manually as dependency injection may not be ready in-time.
 		/// </summary>
-		public static Microsoft.Extensions.Configuration.IConfiguration Configuration { get; set; }
+		public static Microsoft.Extensions.Configuration.IConfiguration BaseConfiguration { get; set; }
 #endif
 
 		#region Implementation of IConfigurationManager
