@@ -8,5 +8,28 @@
             },
             "enableLiveMetricsFilters": true
         }
+    },
+    "extensions": {
+        "serviceBus": {
+            "clientRetryOptions": {
+                "mode": "exponential",
+                "tryTimeout": "00:01:00",
+                "delay": "00:00:00.80",
+                "maxDelay": "00:01:00",
+                "maxRetries": 3
+            },
+            "prefetchCount": 0,
+            "transportType": "amqpWebSockets",
+            "webProxy": "https://proxyserver:8080",
+            "autoCompleteMessages": false,
+            "maxAutoLockRenewalDuration": "00:05:00",
+            "maxConcurrentCalls": 16,
+            "maxConcurrentSessions": 8,
+            "maxMessageBatchSize": 1000,
+            "minMessageBatchSize": 1,
+            "maxBatchWaitTime": "00:00:30",
+            "sessionIdleTimeout": "00:01:00",
+            "enableCrossEntityTransactions": false
+        }
     }
 }

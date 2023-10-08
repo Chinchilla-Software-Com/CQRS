@@ -29,8 +29,8 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.EventBus
 		/// </summary>
 		public override void Load(IServiceCollection services)
 		{
-			bool isMessageSerialiserBound = IsRegistered<IAzureBusHelper<TAuthenticationToken>>(services);
-			if (!isMessageSerialiserBound)
+			bool isAzureBusHelper = IsRegistered<IAzureBusHelper<TAuthenticationToken>>(services);
+			if (!isAzureBusHelper)
 			{
 				services.AddSingleton<IAzureBusHelper<TAuthenticationToken>, AzureBusHelper<TAuthenticationToken>>();
 			}

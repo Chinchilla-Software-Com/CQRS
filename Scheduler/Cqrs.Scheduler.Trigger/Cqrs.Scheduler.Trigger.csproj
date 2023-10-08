@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
+		<TargetFrameworks>NET472;net6.0;NET48</TargetFrameworks>
 		<TargetFrameworks>net6.0;NET48</TargetFrameworks>
 		<ApplicationIcon>Cqrs.Scheduler.Trigger.ico</ApplicationIcon>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<DebugType>full</DebugType>
 		<DebugSymbols>true</DebugSymbols>
 		<IsPackable>true</IsPackable>
-		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
 		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<OutputType>Exe</OutputType>
 		<!--
 		<FunctionsEnableWorkerIndexing>false</FunctionsEnableWorkerIndexing>
 		<FunctionsAutoRegisterGeneratedMetadataProvider>True</FunctionsAutoRegisterGeneratedMetadataProvider>
@@ -18,25 +19,61 @@
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(TargetFramework)' == 'NET48' ">
 		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<OutputType>Exe</OutputType>
 		<!--
 		<FunctionsEnableWorkerIndexing>false</FunctionsEnableWorkerIndexing>
 		<FunctionsAutoRegisterGeneratedMetadataProvider>True</FunctionsAutoRegisterGeneratedMetadataProvider>
 		<FunctionsEnableExecutorSourceGen>True</FunctionsEnableExecutorSourceGen>
 		-->
 	</PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'NET472' ">
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<OutputType>Library</OutputType>
+		<!--
+		<PublishReadyToRun>true</PublishReadyToRun>
+		<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+		-->
+	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Chinchilla.Logging.Azure.Storage" Version="4.5.29" />
-		<PackageReference Include="Chinchilla.Logging.Azure.ApplicationInsights" Version="4.5.29" />
-		<PackageReference Include="Chinchilla.Logging.Azure" Version="4.5.29" />
-		<PackageReference Include="Chinchilla.Logging" Version="4.5.29" />
+		<PackageReference Include="Chinchilla.Logging.Azure.Storage" Version="4.5.31" />
+		<PackageReference Include="Chinchilla.Logging.Azure.ApplicationInsights" Version="4.5.31" />
+		<PackageReference Include="Chinchilla.Logging.Azure" Version="4.5.31" />
+		<PackageReference Include="Chinchilla.Logging" Version="4.5.31" />
 		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
 
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'NET472' ">
+		<!--
+		<PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+		-->
+		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.7.0" />
+		<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
+
+		<Reference Include="System.Configuration">
+		  <Private>True</Private>
+		</Reference>
+		<Reference Include="System.Data.Linq">
+		  <Private>True</Private>
+		</Reference>
+		<Reference Include="System.ServiceModel">
+		  <Private>True</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' OR '$(TargetFramework)' == 'NET48' ">
 		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.19.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" Version="4.2.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.13.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.15.0" />
-
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<!-- https://stackoverflow.com/questions/69104798/error-did-not-find-functions-with-language-dotnet-isolated-in-azure-function -->
+		<!--
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.15.0" OutputItemType="Analyzer" />
+		<PackageReference Include="Microsoft.Azure.WebJobs.Script.ExtensionsMetadataGenerator" Version="4.0.1" />
+		-->
+		
+		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions\Cqrs.Azure.Functions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
@@ -57,7 +94,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions\Cqrs.Azure.Functions.csproj" />
 		<ProjectReference Include="..\..\Framework\Cqrs\Cqrs.csproj" />
 		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
 		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj" />

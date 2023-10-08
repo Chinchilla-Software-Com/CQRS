@@ -257,7 +257,7 @@ namespace Cqrs.DependencyInjection.Modules
 
             services.AddSingleton<IBusHelper, BusHelper>();
 
-            if (RegisterDefaultConfigurationManager)
+            if (RegisterDefaultConfigurationManager && Configuration.DependencyResolver.ConfigurationManager != null)
             {
                 services.AddSingleton<IConfigurationManager, ConfigurationManager>();
                 Configuration.DependencyResolver.ConfigurationManager = Resolve<IConfigurationManager>(services);

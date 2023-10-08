@@ -21,8 +21,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Cqrs.Commands;
-using Cqrs.Events;
 
 #if NET472
 #else
@@ -68,8 +66,8 @@ namespace Cqrs.Azure.Functions.Isolated
 		/// </summary>
 		protected override void Prepare()
 		{
-			base.Prepare();
 			PrepareHost();
+			base.Prepare();
 		}
 
 		/// <summary>
@@ -83,7 +81,10 @@ namespace Cqrs.Azure.Functions.Isolated
 			DependencyResolver.ConfigurationManager = _configurationManager;
 #else
 			string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
-			string azureRoot = $"{Environment.GetEnvironmentVariable("HOME")}/site/wwwroot";
+			string azureRoot = Environment.GetEnvironmentVariable("HOME");
+			azureRoot = string.IsNullOrWhiteSpace(azureRoot)
+				? string.Empty
+				: $"{azureRoot}/site/wwwroot";
 
 			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
 
@@ -165,7 +166,6 @@ namespace Cqrs.Azure.Functions.Isolated
 		{
 			base.Start();
 
-			host = hostBuilder.Build();
 			host.Run();
 		}
 		/// <summary>
@@ -183,7 +183,10 @@ namespace Cqrs.Azure.Functions.Isolated
 #endif
 
 			string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
-			string azureRoot = $"{Environment.GetEnvironmentVariable("HOME")}/site/wwwroot/bin";
+			string azureRoot = Environment.GetEnvironmentVariable("HOME");
+			azureRoot = string.IsNullOrWhiteSpace(azureRoot)
+				? string.Empty
+				: $"{azureRoot}/site/wwwroot";
 
 			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
 
@@ -196,13 +199,16 @@ namespace Cqrs.Azure.Functions.Isolated
 		/// </summary>
 		protected override void ConfigureDefaultDependencyResolver()
 		{
-			hostBuilder
+			host = hostBuilder
 				.ConfigureServices(services => {
 					foreach (Module supplementaryModule in GetSupplementaryModules(services))
 						DependencyResolver.ModulesToLoad.Add(supplementaryModule);
 
 					DependencyResolver.Start(services, prepareProvidedKernel: true);
-				});
+				})
+				.Build();
+
+			((DependencyResolver)Cqrs.Configuration.DependencyResolver.Current).SetKernel(host.Services);
 		}
 
 		/// <summary>
@@ -265,7 +271,7 @@ namespace Cqrs.Azure.Functions.Isolated
 		*/
 
 		/// <summary>
-		/// A collection of <see cref="Module"/> that configure SQL server as the <see cref="IEventStore{TAuthenticationToken}"/>
+		/// A collection of <see cref="Module"/> that configure SQL server as the <see cref="Events.IEventStore{TAuthenticationToken}"/>
 		/// </summary>
 		protected virtual IEnumerable<Module> GetEventStoreModules(IServiceCollection services)
 		{

@@ -44,7 +44,7 @@ namespace Cqrs.Azure.Functions.Isolated.Configuration
 			RegisterWebBit(services);
 		}
 
-#endregion
+		#endregion
 
 		/// <summary>
 		/// Register the all Azure configurations
@@ -69,9 +69,15 @@ namespace Cqrs.Azure.Functions.Isolated.Configuration
 #if NET6_0
 			services.AddSingleton<IConfiguration>(Cqrs.Configuration.ConfigurationManager.BaseConfiguration);
 #endif
-
-			services.AddSingleton<IConfigurationManager, CloudConfigurationManager>();
-			DependencyResolver.ConfigurationManager = Resolve<IConfigurationManager>(services);
+			if (DependencyResolver.ConfigurationManager == null)
+			{
+				services.AddSingleton<IConfigurationManager, CloudConfigurationManager>();
+				DependencyResolver.ConfigurationManager = Resolve<IConfigurationManager>(services);
+			}
+			else
+			{
+				services.AddSingleton<IConfigurationManager>(DependencyResolver.ConfigurationManager);
+			}
 		}
 
 		/// <summary>
@@ -111,7 +117,7 @@ namespace Cqrs.Azure.Functions.Isolated.Configuration
 		protected virtual void RegisterBasicServices(IServiceCollection services)
 		{
 			string authenticationType;
-			if (!Resolve<IConfigurationManager>(services).TryGetSetting("Cqrs.AuthenticationTokenType", out authenticationType) || string.IsNullOrWhiteSpace(authenticationType))
+			if (!DependencyResolver.ConfigurationManager.TryGetSetting("Cqrs.AuthenticationTokenType", out authenticationType) || string.IsNullOrWhiteSpace(authenticationType))
 				authenticationType = "Guid";
 
 			if (authenticationType.ToLowerInvariant() == "int" || authenticationType.ToLowerInvariant() == "integer")

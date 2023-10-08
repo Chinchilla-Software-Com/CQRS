@@ -72,7 +72,10 @@ namespace Cqrs.Azure.Functions
 			DependencyResolver.ConfigurationManager = _configurationManager;
 #else
 			string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
-			string azureRoot = $"{Environment.GetEnvironmentVariable("HOME")}/site/wwwroot";
+			string azureRoot = Environment.GetEnvironmentVariable("HOME");
+			azureRoot = string.IsNullOrWhiteSpace(azureRoot)
+				? string.Empty
+				: $"{azureRoot}/site/wwwroot";
 
 			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
 
@@ -173,7 +176,10 @@ namespace Cqrs.Azure.Functions
 #endif
 
 			string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
-			string azureRoot = $"{Environment.GetEnvironmentVariable("HOME")}/site/wwwroot/bin";
+			string azureRoot = Environment.GetEnvironmentVariable("HOME");
+			azureRoot = string.IsNullOrWhiteSpace(azureRoot)
+				? string.Empty
+				: $"{azureRoot}/site/wwwroot";
 
 			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
 
