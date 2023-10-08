@@ -21,9 +21,9 @@ namespace Cqrs.DependencyInjection
     public class DependencyResolver : Configuration.DependencyResolver
 	{
 		/// <summary>
-		/// The inner <see cref="IServiceCollection"/> used by this instance.
+		/// The inner <see cref="IServiceProvider"/> used by this instance.
 		/// </summary>
-		public IServiceCollection Kernel { get; private set; }
+		public IServiceProvider Kernel { get; private set; }
 
 		/// <summary>
 		/// A collection of <see cref="Module"/> instances to load when we call <see cref="PrepareKernel"/>
@@ -38,10 +38,9 @@ namespace Cqrs.DependencyInjection
 		/// <summary>
 		/// Instantiates a new instance of <see cref="DependencyResolver"/>
 		/// </summary>
-		public DependencyResolver(IServiceCollection kernel)
+		public DependencyResolver(IServiceCollection services)
 		{
-			Kernel = kernel;
-			BindDependencyResolver(kernel);
+			BindDependencyResolver(services);
 		}
 
 		/// <summary>
@@ -78,8 +77,16 @@ namespace Cqrs.DependencyInjection
 		/// </summary>
 		public static void PrepareKernel(IServiceCollection services)
 		{
-			foreach(var module in ModulesToLoad)
+			foreach(Module module in ModulesToLoad)
 				module.Load(services);
+		}
+
+		/// <summary>
+		/// Sets the <see cref="IServiceProvider"/>
+		/// </summary>
+		public virtual void SetKernel(IServiceProvider kernel)
+		{
+			Kernel = kernel;
 		}
 
 		/// <summary>
@@ -95,7 +102,7 @@ namespace Cqrs.DependencyInjection
 		/// </summary>
 		public override object Resolve(Type type)
 		{
-			return Kernel.Where(x => x.ServiceType == type).Single();
+			return Kernel.GetService(type);
 		}
 	}
 }

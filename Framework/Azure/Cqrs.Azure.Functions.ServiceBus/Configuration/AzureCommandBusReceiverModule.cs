@@ -13,14 +13,13 @@ using Cqrs.Commands;
 using Cqrs.DependencyInjection.Modules;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
+namespace Cqrs.Azure.Functions.ServiceBus.Configuration
 {
 	/// <summary>
 	/// A <see cref="Module"/> that wires up <see cref="AzureCommandBusReceiver{TAuthenticationToken}"/> as the <see cref="ICommandReceiver"/> and other require components.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class AzureCommandBusReceiverModule<TAuthenticationToken>
-		: ResolvableModule
+	public class AzureCommandBusReceiverModule<TAuthenticationToken> : ResolvableModule
 	{
 		#region Overrides of NinjectModule
 

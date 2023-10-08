@@ -26,10 +26,11 @@ using Manager = Azure.Messaging.ServiceBus.Administration.ServiceBusAdministrati
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
 using OldManager = Microsoft.Azure.ServiceBus.Management.ManagementClient;
 using OldIMessageReceiver = Microsoft.Azure.ServiceBus.Core.IMessageReceiver;
+using OldTopicClient = Microsoft.Azure.ServiceBus.TopicClient;
 #else
-using Microsoft.ServiceBus.Messaging;
 using OldManager = Microsoft.ServiceBus.NamespaceManager;
 using OldIMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
+using OldTopicClient = Microsoft.ServiceBus.Messaging.TopicClient;
 #endif
 
 
@@ -51,24 +52,34 @@ namespace Cqrs.Azure.Functions.ServiceBus
 		#region Overrides of AzureServiceBus<TAuthenticationToken>
 
 		/// <summary>
-		/// Gets the private <see cref="ServiceBusReceiver"/> receivers.
+		/// Gets the private <see cref="ServiceBusSender"/> publisher.
 		/// </summary>
-		protected IDictionary<int, ServiceBusReceiver> PrivateServiceBusReceivers { get; private set; }
+		protected ServiceBusSender PrivateServiceBusPublisher { get; private set; }
 
 		/// <summary>
-		/// Gets the public <see cref="ServiceBusReceiver"/> receivers.
+		/// Gets the public <see cref="ServiceBusSender"/> publisher.
 		/// </summary>
-		protected IDictionary<int, ServiceBusReceiver> PublicServiceBusReceivers { get; private set; }
+		protected ServiceBusSender PublicServiceBusPublisher { get; private set; }
 
 		/// <summary>
-		/// The <see cref="Action{IMessageReceiver, TBrokeredMessage}">handler</see> used for <see cref="MessageReceiver.RegisterMessageHandler(Func{BrokeredMessage, CancellationToken, Task}, MessageHandlerOptions)"/> on each receiver.
+		/// Gets the private <see cref="ServiceBusProcessor"/> receivers.
 		/// </summary>
-		protected virtual Action<ServiceBusReceiver, ServiceBusReceivedMessage> ReceiverMessageHandler { get; set; }
+		protected IDictionary<int, ServiceBusProcessor> PrivateServiceBusReceivers { get; private set; }
+
+		/// <summary>
+		/// Gets the public <see cref="ServiceBusProcessor"/> receivers.
+		/// </summary>
+		protected IDictionary<int, ServiceBusProcessor> PublicServiceBusReceivers { get; private set; }
+
+		/// <summary>
+		/// The <see cref="Func{ProcessMessageEventArgs}">handler</see> used for <see cref="ServiceBusProcessor.OnProcessMessageAsync(ProcessMessageEventArgs)"/> on each receiver.
+		/// </summary>
+		protected virtual Func<ProcessMessageEventArgs, Task> FunctionReceiverMessageHandler { get; set; }
 
 		/// <summary>
 		/// The <see cref="ServiceBusProcessorOptions" /> used.
 		/// </summary>
-		protected virtual ServiceBusProcessorOptions ReceiverMessageHandlerOptions { get; set; }
+		protected virtual ServiceBusProcessorOptions FunctionReceiverMessageHandlerOptions { get; set; }
 
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureServiceBus{TAuthenticationToken}"/>
@@ -177,15 +188,15 @@ namespace Cqrs.Azure.Functions.ServiceBus
 			throw new NotImplementedException("This method should not be called.");
 		}
 		/// <summary>
-		/// Creates a single <see cref="ServiceBusReceiver"/>.
+		/// Creates a single <see cref="ServiceBusProcessor"/>.
 		/// </summary>
 		/// <param name="client">The <see cref="ServiceBusClient"/>.</param>
-		/// <param name="serviceBusReceivers">The receivers collection to place <see cref="ServiceBusReceiver"/> instances into.</param>
+		/// <param name="serviceBusReceivers">The receivers collection to place <see cref="ServiceBusProcessor"/> instances into.</param>
 		/// <param name="topicName">The topic name.</param>
 		/// <param name="topicSubscriptionName">The topic subscription name.</param>
-		protected virtual async Task InstantiateReceivingAsync(ServiceBusClient client, IDictionary<int, ServiceBusReceiver> serviceBusReceivers, string topicName, string topicSubscriptionName)
+		protected virtual async Task InstantiateReceivingAsync(ServiceBusClient client, IDictionary<int, ServiceBusProcessor> serviceBusReceivers, string topicName, string topicSubscriptionName)
 		{
-			ServiceBusReceiver serviceBusReceiver = client.CreateReceiver(topicName, topicSubscriptionName, new ServiceBusReceiverOptions { ReceiveMode = ServiceBusReceiveMode.PeekLock, Identifier = Logger.LoggerSettings.ModuleName });
+			ServiceBusProcessor serviceBusReceiver = client.CreateProcessor(topicName, topicSubscriptionName, new ServiceBusProcessorOptions { ReceiveMode = ServiceBusReceiveMode.PeekLock, Identifier = Logger.LoggerSettings.ModuleName, AutoCompleteMessages = false, MaxConcurrentCalls = MaximumConcurrentReceiverProcessesCount, MaxAutoLockRenewalDuration = new TimeSpan(0, 5, 0) });
 
 			if (serviceBusReceivers.ContainsKey(0))
 			{
@@ -209,7 +220,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 			throw new NotImplementedException("Replaced with CheckPrivateTopicExistsAsync.");
 		}
 		/// <summary>
-		/// Checks if the private topic and subscription name exists as per <see cref="PrivateTopicName"/> and <see cref="PrivateTopicSubscriptionName"/>.
+		/// Checks if the private topic and subscription name exists as per <see cref="AzureServiceBus{TAuthenticationToken}.PrivateTopicName"/> and <see cref="AzureServiceBus{TAuthenticationToken}.PrivateTopicSubscriptionName"/>.
 		/// </summary>
 		/// <param name="manager">The <see cref="ServiceBusClient"/>.</param>
 		/// <param name="createSubscriptionIfNotExists">Create a subscription if there isn't one</param>
@@ -229,7 +240,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 			throw new NotImplementedException("Replaced with CheckPublicTopicExistsAsync.");
 		}
 		/// <summary>
-		/// Checks if the public topic and subscription name exists as per <see cref="PublicTopicName"/> and <see cref="PublicTopicSubscriptionName"/>.
+		/// Checks if the public topic and subscription name exists as per <see cref="AzureServiceBus{TAuthenticationToken}.PublicTopicName"/> and <see cref="AzureServiceBus{TAuthenticationToken}.PublicTopicSubscriptionName"/>.
 		/// </summary>
 		/// <param name="manager">The <see cref="ServiceBusClient"/>.</param>
 		/// <param name="createSubscriptionIfNotExists">Create a subscription if there isn't one</param>
@@ -306,7 +317,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 		/// <summary>
 		/// Registers the provided <paramref name="receiverMessageHandler"/> with the provided <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
-		protected async virtual Task RegisterReceiverMessageHandlerAsync(Action<ServiceBusReceiver, ServiceBusReceivedMessage> receiverMessageHandler, ServiceBusProcessorOptions receiverMessageHandlerOptions)
+		protected async virtual Task RegisterReceiverMessageHandlerAsync(Func<ProcessMessageEventArgs, Task> receiverMessageHandler, ServiceBusProcessorOptions receiverMessageHandlerOptions)
 		{
 			await StoreReceiverMessageHandlerAsync(receiverMessageHandler, receiverMessageHandlerOptions);
 
@@ -321,9 +332,9 @@ namespace Cqrs.Azure.Functions.ServiceBus
 		[Obsolete("Replaced with StoreReceiverMessageHandlerAsync.")]
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-		protected virtual void StoreReceiverMessageHandler(Action<Microsoft.Azure.ServiceBus.Core.IMessageReceiver, Microsoft.Azure.ServiceBus.Message> receiverMessageHandler, Microsoft.Azure.ServiceBus.MessageHandlerOptions receiverMessageHandlerOptions)
+		protected override void StoreReceiverMessageHandler(Action<Microsoft.Azure.ServiceBus.Core.IMessageReceiver, Microsoft.Azure.ServiceBus.Message> receiverMessageHandler, Microsoft.Azure.ServiceBus.MessageHandlerOptions receiverMessageHandlerOptions)
 #else
-		protected virtual void StoreReceiverMessageHandler(Action<Microsoft.ServiceBus.Messaging.SubscriptionClient, Microsoft.ServiceBus.Messaging.BrokeredMessage> receiverMessageHandler, Microsoft.ServiceBus.Messaging.OnMessageOptions receiverMessageHandlerOptions)
+		protected override void StoreReceiverMessageHandler(Action<Microsoft.ServiceBus.Messaging.SubscriptionClient, Microsoft.ServiceBus.Messaging.BrokeredMessage> receiverMessageHandler, Microsoft.ServiceBus.Messaging.OnMessageOptions receiverMessageHandlerOptions)
 #endif
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
 		{
@@ -332,10 +343,10 @@ namespace Cqrs.Azure.Functions.ServiceBus
 		/// <summary>
 		/// Stores the provided <paramref name="receiverMessageHandler"/> and <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
-		protected async virtual Task StoreReceiverMessageHandlerAsync(Action<ServiceBusReceiver, ServiceBusReceivedMessage> receiverMessageHandler, ServiceBusProcessorOptions receiverMessageHandlerOptions)
+		protected async virtual Task StoreReceiverMessageHandlerAsync(Func<ProcessMessageEventArgs, Task> receiverMessageHandler, ServiceBusProcessorOptions receiverMessageHandlerOptions)
 		{
-			ReceiverMessageHandler = receiverMessageHandler;
-			ReceiverMessageHandlerOptions = receiverMessageHandlerOptions;
+			FunctionReceiverMessageHandler = receiverMessageHandler;
+			FunctionReceiverMessageHandlerOptions = receiverMessageHandlerOptions;
 
 			await Task.CompletedTask;
 		}
@@ -599,6 +610,106 @@ namespace Cqrs.Azure.Functions.ServiceBus
 			if (message.TryGetUserPropertyValue("Signature", out value))
 				return value.ToString();
 			return null;
+		}
+
+		/// <summary>
+		/// Triggers settings checking on both public and private publishers and receivers,
+		/// then calls <see cref="AzureServiceBus{TAuthenticationToken}.InstantiatePublishing"/> if <see cref="AzureServiceBus{TAuthenticationToken}.PublicServiceBusPublisher"/> is not null.
+		/// </summary>
+		protected override void TriggerSettingsChecking()
+		{
+			// First refresh the EventBlackListProcessing property
+			bool throwExceptionOnReceiverMessageLockLostExceptionDuringComplete;
+			if (!ConfigurationManager.TryGetSetting(ThrowExceptionOnReceiverMessageLockLostExceptionDuringCompleteConfigurationKey, out throwExceptionOnReceiverMessageLockLostExceptionDuringComplete))
+				throwExceptionOnReceiverMessageLockLostExceptionDuringComplete = true;
+			ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete = throwExceptionOnReceiverMessageLockLostExceptionDuringComplete;
+
+			Task.Run(async () => {
+				await TriggerSettingsCheckingAsync(PrivateServiceBusPublisher, PrivateServiceBusReceivers);
+				await TriggerSettingsCheckingAsync(PublicServiceBusPublisher, PublicServiceBusReceivers);
+			}).Wait();
+
+			// Restart configuration, we order this intentionally with the publisher second as if this triggers the cancellation there's nothing else to process here
+			// we also only need to check one of the publishers
+			if (PublicServiceBusPublisher != null)
+			{
+				Logger.LogDebug("Recursively calling into InstantiatePublishing.");
+				InstantiatePublishing();
+			}
+		}
+
+		/// <summary>
+		/// Replaced with <see cref="TriggerSettingsCheckingAsync(ServiceBusSender, IDictionary{int, ServiceBusProcessor})"/>
+		/// </summary>
+		[Obsolete("Replaced with TriggerSettingsCheckingAsync.")]
+#pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
+		protected override void TriggerSettingsChecking(OldTopicClient serviceBusPublisher, IDictionary<int, OldIMessageReceiver> serviceBusReceivers)
+#pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
+		{
+			throw new NotImplementedException("Replaced with TriggerSettingsCheckingAsync.");
+		}
+		/// <summary>
+		/// Triggers settings checking on the provided <paramref name="serviceBusPublisher"/> and <paramref name="serviceBusReceivers"/>,
+		/// then calls <see cref="InstantiateReceiving()"/>.
+		/// </summary>
+		protected virtual async Task TriggerSettingsCheckingAsync(ServiceBusSender serviceBusPublisher, IDictionary<int, ServiceBusProcessor> serviceBusReceivers)
+		{
+			// Let's wrap up using this message bus and start the switch
+			if (serviceBusPublisher != null)
+			{
+				await serviceBusPublisher.CloseAsync();
+				Logger.LogDebug("Publishing service bus closed.");
+			}
+			foreach (ServiceBusProcessor serviceBusReceiver in serviceBusReceivers.Values)
+			{
+				// Let's wrap up using this message bus and start the switch
+				if (serviceBusReceiver != null)
+				{
+					await serviceBusReceiver.CloseAsync();
+					await serviceBusReceiver.DisposeAsync();
+					Logger.LogDebug("Receiving service bus closed.");
+				}
+				// Restart configuration, we order this intentionally with the receiver first as if this triggers the cancellation we know this isn't a publisher as well
+				if (serviceBusReceiver != null)
+				{
+					Logger.LogDebug("Recursively calling into InstantiateReceiving.");
+					InstantiateReceiving();
+
+					// This will be the case of a connection setting change re-connection
+					if (ReceiverMessageHandler != null && ReceiverMessageHandlerOptions != null)
+					{
+						// Callback to handle received messages
+						Logger.LogDebug("Re-registering onMessage handler.");
+						ApplyReceiverMessageHandler();
+					}
+					else
+						Logger.LogWarning("No onMessage handler was found to re-bind.");
+				}
+			}
+
+			await Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Applies the stored ReceiverMessageHandler and ReceiverMessageHandlerOptions to all receivers in
+		/// <see cref="PrivateServiceBusReceivers"/> and <see cref="PublicServiceBusReceivers"/>.
+		/// </summary>
+		protected override void ApplyReceiverMessageHandler()
+		{
+			foreach (ServiceBusProcessor processor in PrivateServiceBusReceivers.Values)
+			{
+				processor.ProcessMessageAsync += async args => {
+					BusHelper.SetWasPrivateBusUsed(true);
+					await FunctionReceiverMessageHandler(args);
+				};
+			}
+			foreach (ServiceBusProcessor processor in PublicServiceBusReceivers.Values)
+			{
+				processor.ProcessMessageAsync += async args => {
+					BusHelper.SetWasPrivateBusUsed(false);
+					await FunctionReceiverMessageHandler(args);
+				};
+			}
 		}
 
 		#endregion

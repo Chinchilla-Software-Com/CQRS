@@ -9,11 +9,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Azure.Identity;
 using Azure.Messaging.ServiceBus;
+using Azure.Messaging.ServiceBus.Administration;
 using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Azure.ServiceBus;
@@ -24,13 +27,6 @@ using Cqrs.Exceptions;
 using Cqrs.Messages;
 
 using Manager = Azure.Messaging.ServiceBus.Administration.ServiceBusAdministrationClient;
-/*
-using MessageLockLostException = Microsoft.Azure.ServiceBus.MessageLockLostException;
-using Microsoft.Azure.ServiceBus.Management;
-using Microsoft.Azure.ServiceBus.Primitives;
-using Microsoft.Azure.ServiceBus;
-*/
-
 
 namespace Cqrs.Azure.Functions.ServiceBus
 {
@@ -46,8 +42,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 		, ICommandReceiver<TAuthenticationToken>
 	{
 		/// <summary>
-		/// The configuration key for
-		/// the number of receiver <see cref="IMessageReceiver"/> instances to create
+		/// The configuration key for the number of receiver <see cref="ServiceBusReceiver" /> instances to create
 		/// as used by <see cref="IConfigurationManager"/>.
 		/// </summary>
 		protected virtual string NumberOfReceiversCountConfigurationKey
@@ -62,7 +57,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 #else
 		/// <summary>
 		/// The configuration key for
-		/// <see cref="OnMessageOptions.MaxConcurrentCalls"/>.
+		/// <see cref="ServiceBusProcessorOptions.MaxConcurrentCalls"/>.
 		/// as used by <see cref="IConfigurationManager"/>.
 		/// </summary>
 #endif
@@ -73,8 +68,8 @@ namespace Cqrs.Azure.Functions.ServiceBus
 
 		/// <summary>
 		/// The configuration key for
-		/// the <see cref="SqlFilter.SqlExpression"/> that can be applied to
-		/// the <see cref="IMessageReceiver"/> instances in the receivers
+		/// the <see cref="SqlRuleFilter.SqlExpression"/> that can be applied to
+		/// the <see cref="ServiceBusReceiver"/> instances in the receivers
 		/// as used by <see cref="IConfigurationManager"/>.
 		/// </summary>
 		protected virtual string FilterKeyConfigurationKey
@@ -83,8 +78,8 @@ namespace Cqrs.Azure.Functions.ServiceBus
 		}
 
 		/// <summary>
-		/// The <see cref="SqlFilter.SqlExpression"/> that can be applied to
-		/// the <see cref="IMessageReceiver"/> instances in the receivers,
+		/// The <see cref="SqlRuleFilter.SqlExpression"/> that can be applied to
+		/// the <see cref="ServiceBusReceiver"/> instances in the receivers,
 		/// keyed by the topic name as there is the private and public bus
 		/// </summary>
 		protected IDictionary<string, string> FilterKey { get; set; }
@@ -144,9 +139,9 @@ namespace Cqrs.Azure.Functions.ServiceBus
 
 		/// <summary>
 		/// Instantiate receiving on this bus by
-		/// calling <see cref="CheckPrivateTopicExists"/> and <see cref="CheckPublicTopicExists"/>
+		/// calling <see cref="AzureFunctionServiceBus{TAuthenticationToken}.CheckPrivateTopicExistsAsync"/> and <see cref="AzureFunctionServiceBus{TAuthenticationToken}.CheckPublicTopicExistsAsync"/>
 		/// then InstantiateReceiving for private and public topics,
-		/// calls <see cref="CleanUpDeadLetters"/> for the private and public topics,
+		/// calls <see cref="AzureFunctionServiceBus{TAuthenticationToken}.CleanUpDeadLettersAsync"/> for the private and public topics,
 		/// then calling <see cref="AzureBus{TAuthenticationToken}.StartSettingsChecking"/>
 		/// </summary>
 		protected override void InstantiateReceiving()
@@ -243,9 +238,39 @@ namespace Cqrs.Azure.Functions.ServiceBus
 		}
 
 		/// <summary>
+		/// Receives a <see cref="ProcessMessageEventArgs"/> from the command bus.
+		/// </summary>
+		public async virtual Task ReceiveCommandAsync(ProcessMessageEventArgs args)
+		{
+			FieldInfo[] fields = args.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Default | BindingFlags.GetField);
+			FieldInfo messageReceiverField = fields.SingleOrDefault(x => x.FieldType == typeof(ServiceBusReceiver));
+			ServiceBusReceiver messageReceiver = (ServiceBusReceiver)messageReceiverField.GetValue(args);
+			await ReceiveCommand(messageReceiver, args.Message);
+		}
+
+		/// <summary>
 		/// Receives a <see cref="ServiceBusReceivedMessage"/> from the command bus.
 		/// </summary>
-		public virtual void ReceiveCommand(ServiceBusReceiver messageReceiver, ServiceBusReceivedMessage message)
+		[Microsoft.Azure.Functions.Worker.Function("AzureFunctionCommandBusReceiver.Private")]
+//		public async virtual Task ReceiveCommandPrivate(ServiceBusReceiver messageReceiver, [Microsoft.Azure.Functions.Worker.ServiceBusTrigger("Cqrs:Azure:CommandBus:PrivateCommand:Topic:Name", "Cqrs:Azure:CommandBus:PrivateCommand:Topic:Subscription:Name", Connection = "Cqrs.Azure.CommandBus.ConnectionString")] ServiceBusReceivedMessage message, ServiceBusClient client)
+		public async virtual Task ReceiveCommandPrivate(ServiceBusReceiver messageReceiver, [Microsoft.Azure.Functions.Worker.ServiceBusTrigger("Cqrs.Scheduler.Commands-Local.Private", "SampleRec", Connection = "Cqrs.Azure.CommandBus.ConnectionString")] ServiceBusReceivedMessage message, ServiceBusClient client)
+		{
+			await ReceiveCommand(messageReceiver, message);
+		}
+		/// <summary>
+		/// Receives a <see cref="ServiceBusReceivedMessage"/> from the command bus.
+		/// </summary>
+		[Microsoft.Azure.Functions.Worker.Function("AzureFunctionCommandBusReceiver.Public")]
+//		public async virtual Task ReceiveCommandPublic(ServiceBusReceiver messageReceiver, [Microsoft.Azure.Functions.Worker.ServiceBusTrigger("Cqrs:Azure:CommandBus:PublicCommand:Topic:Name", "Cqrs:Azure:CommandBus:PublicCommand:Topic:Subscription:Name", Connection = "Cqrs.Azure.CommandBus.ConnectionString")] ServiceBusReceivedMessage message, ServiceBusClient client)
+		public async virtual Task ReceiveCommandPublic(ServiceBusReceiver messageReceiver, [Microsoft.Azure.Functions.Worker.ServiceBusTrigger("Cqrs.Scheduler.Commands-Local.Public", "SampleRec", Connection = "Cqrs.Azure.CommandBus.ConnectionString")] ServiceBusReceivedMessage message, ServiceBusClient client)
+		{
+			await ReceiveCommand(messageReceiver, message);
+		}
+
+		/// <summary>
+		/// Receives a <see cref="ServiceBusReceivedMessage"/> from the command bus.
+		/// </summary>
+		public async virtual Task ReceiveCommand(ServiceBusReceiver messageReceiver, ServiceBusReceivedMessage message)
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -327,7 +352,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 						// Remove message from queue
 						try
 						{
-							messageReceiver.CompleteMessageAsync(message).Wait(1500);
+							await messageReceiver.CompleteMessageAsync(message);
 						}
 						catch (AggregateException aggregateException)
 						{
@@ -353,7 +378,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 				{
 					Logger.LogError(exception.Message, exception: exception);
 					// Indicates a problem, unlock message in queue
-					messageReceiver.AbandonMessageAsync(message).Wait(1500);
+					await messageReceiver.AbandonMessageAsync(message);
 					wasSuccessfull = false;
 				}
 				else
@@ -366,7 +391,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 					catch (Exception)
 					{
 						// Oh well, move on.
-						messageReceiver.AbandonMessageAsync(message).Wait(1500);
+						await messageReceiver.AbandonMessageAsync(message);
 					}
 				}
 				responseCode = "599";
@@ -376,7 +401,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 				TelemetryHelper.TrackException(exception, null, telemetryProperties);
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("A command message arrived with the id '{0}' but was not authorised.", message.MessageId), exception: exception);
-				messageReceiver.DeadLetterMessageAsync(message, "UnAuthorisedMessageReceivedException", exception.Message).Wait(1500);
+				await messageReceiver.DeadLetterMessageAsync(message, "UnAuthorisedMessageReceivedException", exception.Message);
 				wasSuccessfull = false;
 				responseCode = "401";
 				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
@@ -388,7 +413,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 				TelemetryHelper.TrackException(exception, null, telemetryProperties);
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("A command message arrived with the id '{0}' but no handlers were found to process it.", message.MessageId), exception: exception);
-				messageReceiver.DeadLetterMessageAsync(message, "NoHandlersRegisteredException", exception.Message).Wait(1500);
+				await messageReceiver.DeadLetterMessageAsync(message, "NoHandlersRegisteredException", exception.Message);
 				wasSuccessfull = false;
 				responseCode = "501";
 				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
@@ -399,7 +424,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 				TelemetryHelper.TrackException(exception, null, telemetryProperties);
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("A command message arrived with the id '{0}' but no handler was found to process it.", message.MessageId), exception: exception);
-				messageReceiver.DeadLetterMessageAsync(message, "NoHandlerRegisteredException", exception.Message).Wait(1500);
+				await messageReceiver.DeadLetterMessageAsync(message, "NoHandlerRegisteredException", exception.Message);
 				wasSuccessfull = false;
 				responseCode = "501";
 				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
@@ -410,7 +435,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 				TelemetryHelper.TrackException(exception, null, telemetryProperties);
 				// Indicates a problem, unlock message in queue
 				Logger.LogError(string.Format("A command message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
-				messageReceiver.AbandonMessageAsync(message).Wait(1500);
+				await messageReceiver.AbandonMessageAsync(message);
 				wasSuccessfull = false;
 				responseCode = "500";
 				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
@@ -525,7 +550,7 @@ namespace Cqrs.Azure.Functions.ServiceBus
 		/// <summary>
 		/// Starts listening and processing instances of <see cref="ICommand{TAuthenticationToken}"/> from the command bus.
 		/// </summary>
-		public void Start()
+		public virtual void Start()
 		{
 			InstantiateReceiving();
 
@@ -545,7 +570,9 @@ namespace Cqrs.Azure.Functions.ServiceBus
 			};
 
 			// Callback to handle received messages
-			RegisterReceiverMessageHandlerAsync(ReceiveCommand, options);
+			Task.Run(async () => {
+				await RegisterReceiverMessageHandlerAsync(ReceiveCommandAsync, options);
+			});
 		}
 
 		#endregion
@@ -554,16 +581,6 @@ namespace Cqrs.Azure.Functions.ServiceBus
 		protected override void InstantiatePublishing()
 		{
 			base.InstantiatePublishing();
-		}
-
-		protected override void TriggerSettingsChecking()
-		{
-			base.TriggerSettingsChecking();
-		}
-
-		protected override void ApplyReceiverMessageHandler()
-		{
-			base.ApplyReceiverMessageHandler();
 		}
 	}
 }

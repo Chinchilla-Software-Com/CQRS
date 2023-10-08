@@ -48,7 +48,7 @@ namespace Cqrs.Scheduler.TimeZones
 				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables()
 				.Build();
-			Configuration.ConfigurationManager.Configuration = config;
+			Configuration.ConfigurationManager.BaseConfiguration = config;
 			_configurationManager = new CloudConfigurationManager(config);
 			DependencyResolver.ConfigurationManager = _configurationManager;
 #endif

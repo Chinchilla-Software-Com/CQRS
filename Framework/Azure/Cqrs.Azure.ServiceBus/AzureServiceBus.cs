@@ -168,7 +168,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Specifies if an <see cref="Exception"/> is thrown if the network lock is lost.
 		/// </summary>
-		protected bool ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete { get; private set; }
+		protected bool ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete { get; set; }
 
 		/// <summary>
 		/// The default name of the subscription in the private topic if no <see cref="IConfigurationManager"/> value is set.
@@ -264,9 +264,15 @@ namespace Cqrs.Azure.ServiceBus
 			Instantiate();
 		}
 
+#if NET452
+		/// <summary>
+		/// Does nothing in .NET 4.5.2
+		/// </summary>
+#else
 		/// <summary>
 		/// Setup <see cref="GetActiveDirectoryToken"/>
 		/// </summary>
+#endif
 		protected virtual void Instantiate()
 		{
 #if NET452
