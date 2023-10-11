@@ -10,19 +10,19 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Configuration;
-using Chinchilla.Logging;
 using Cqrs.Bus;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
 using Cqrs.Messages;
-using System.Threading.Tasks;
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-using Microsoft.Azure.ServiceBus;
-using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+#if NETSTANDARD2_0
+using Azure.Messaging.ServiceBus;
+using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusMessage;
 #else
 using Microsoft.ServiceBus.Messaging;
 #endif
@@ -37,7 +37,11 @@ namespace Cqrs.Azure.ServiceBus
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class AzureCommandBusPublisher<TAuthenticationToken>
 		: AzureCommandBus<TAuthenticationToken>
+#if NETSTANDARD2_0
+		, IAsyncPublishAndWaitCommandPublisher<TAuthenticationToken>
+#else
 		, IPublishAndWaitCommandPublisher<TAuthenticationToken>
+#endif
 	{
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureCommandBusPublisher{TAuthenticationToken}"/>.
@@ -58,13 +62,24 @@ namespace Cqrs.Azure.ServiceBus
 				string connectionString = $"ConnectionString : {MessageBusConnectionStringConfigurationKey}";
 				try
 				{
-					string _value = GetConnectionString();
+					string _value =
+#if NETSTANDARD2_0
+						GetConnectionStringAsync().Result;
+#else
+						GetConnectionString();
+#endif
 					if (!string.IsNullOrWhiteSpace(_value))
 						connectionString = string.Concat(connectionString, "=", _value);
 					else
 					{
 						connectionString = $"ConnectionRBACSettings : ";
-						connectionString = string.Concat(connectionString, "=", GetRbacConnectionSettings());
+						connectionString = string.Concat(connectionString, "=",
+#if NETSTANDARD2_0
+							GetRbacConnectionSettingsAsync().Result
+#else
+							GetRbacConnectionSettings()
+#endif
+						);
 					}
 				}
 				catch { /* */ }
@@ -77,7 +92,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Publishes the provided <paramref name="command"/> on the command bus.
 		/// </summary>
-		public virtual void Publish<TCommand>(TCommand command)
+		public virtual
+#if NETSTANDARD2_0
+			async Task PublishAsync
+#else
+			void Publish
+#endif
+			<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (command == null)
@@ -93,16 +114,22 @@ namespace Cqrs.Azure.ServiceBus
 			bool telemeterOverall = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			string telemetryName = string.Format("{0}/{1}/{2}", commandType.FullName, command.GetIdentity(), command.Id);
+			string telemetryName = $"{commandType.FullName}/{command.GetIdentity()}/{command.Id}";
 			var telemeteredCommand = command as ITelemeteredMessage;
 			if (telemeteredCommand != null)
 				telemetryName = telemeteredCommand.TelemetryName;
 			else
-				telemetryName = string.Format("Command/{0}", telemetryName);
+				telemetryName = $"Command/{telemetryName}";
 
 			try
 			{
-				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
+				if (!
+#if NETSTANDARD2_0
+					await AzureBusHelper.PrepareAndValidateCommandAsync
+#else
+					AzureBusHelper.PrepareAndValidateCommand
+#endif
+					(command, "Azure-ServiceBus"))
 					return;
 
 				bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(commandType);
@@ -121,16 +148,20 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
+						BrokeredMessage brokeredMessage =
+#if NETSTANDARD2_0
+							await CreateBrokeredMessageAsync
+#else
+							CreateBrokeredMessage
+#endif
+							(MessageSerialiser.SerialiseCommand, commandType, command);
 						int count = 1;
 						do
 						{
 							try
 							{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								Task.Run(async () => {
-									await PublicServiceBusPublisher.SendAsync(brokeredMessage);
-								}).Wait();
+#if NETSTANDARD2_0
+								await PublicServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -145,7 +176,15 @@ namespace Cqrs.Azure.ServiceBus
 						} while (true);
 						wasSuccessfull = true;
 					}
-					catch (QuotaExceededException exception)
+					catch
+					(
+#if NETSTANDARD2_0
+						ServiceBusException
+#else
+						QuotaExceededException
+#endif
+						exception
+					)
 					{
 						responseCode = "429";
 						Logger.LogError("The size of the command being sent was too large or the topic has reached it's limit.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
@@ -161,7 +200,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Default Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("A command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+					Logger.LogDebug($"A command was published on the public bus with the id '{command.Id}' was of type {commandType.FullName}.");
 				}
 				if ((isPublicBusRequired != null && isPublicBusRequired.Value))
 				{
@@ -170,16 +209,20 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
+						BrokeredMessage brokeredMessage =
+#if NETSTANDARD2_0
+							await CreateBrokeredMessageAsync
+#else
+							CreateBrokeredMessage
+#endif
+							(MessageSerialiser.SerialiseCommand, commandType, command);
 						int count = 1;
 						do
 						{
 							try
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								Task.Run(async () => {
-									await PublicServiceBusPublisher.SendAsync(brokeredMessage);
-								}).Wait();
+								await PublicServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -194,7 +237,15 @@ namespace Cqrs.Azure.ServiceBus
 						} while (true);
 						wasSuccessfull = true;
 					}
-					catch (QuotaExceededException exception)
+					catch
+					(
+#if NETSTANDARD2_0
+						ServiceBusException
+#else
+						QuotaExceededException
+#endif
+						exception
+					)
 					{
 						responseCode = "429";
 						Logger.LogError("The size of the command being sent was too large or the topic has reached it's limit.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
@@ -210,7 +261,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Public Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("A command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+					Logger.LogDebug($"A command was published on the public bus with the id '{command.Id}' was of type {commandType.FullName}.");
 				}
 				if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 				{
@@ -219,16 +270,20 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
+						BrokeredMessage brokeredMessage =
+#if NETSTANDARD2_0
+							await CreateBrokeredMessageAsync
+#else
+							CreateBrokeredMessage
+#endif
+							(MessageSerialiser.SerialiseCommand, commandType, command);
 						int count = 1;
 						do
 						{
 							try
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								Task.Run(async () => {
-									await PrivateServiceBusPublisher.SendAsync(brokeredMessage);
-								}).Wait();
+								await PrivateServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PrivateServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -243,7 +298,15 @@ namespace Cqrs.Azure.ServiceBus
 						} while (true);
 						wasSuccessfull = true;
 					}
-					catch (QuotaExceededException exception)
+					catch
+					(
+#if NETSTANDARD2_0
+						ServiceBusException
+#else
+						QuotaExceededException
+#endif
+						exception
+					)
 					{
 						responseCode = "429";
 						Logger.LogError("The size of the command being sent was too large or the topic has reached it's limit.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
@@ -260,7 +323,7 @@ namespace Cqrs.Azure.ServiceBus
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Command", telemetryName, "Private Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
 
-					Logger.LogDebug(string.Format("An command was published on the private bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+					Logger.LogDebug($"An command was published on the private bus with the id '{command.Id}' was of type {commandType.FullName}.");
 				}
 				mainWasSuccessfull = true;
 			}
@@ -275,7 +338,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Publishes the provided <paramref name="commands"/> on the command bus.
 		/// </summary>
-		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
+		public virtual
+#if NETSTANDARD2_0
+			async Task PublishAsync
+#else
+			void Publish
+#endif
+			<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (commands == null)
@@ -301,11 +370,11 @@ namespace Cqrs.Azure.ServiceBus
 			foreach (TCommand command in sourceCommands)
 			{
 				Type commandType = command.GetType();
-				string subTelemetryName = string.Format("{0}/{1}", commandType.FullName, command.Id);
+				string subTelemetryName = $"{commandType.FullName}/{command.Id}";
 				var telemeteredCommand = command as ITelemeteredMessage;
 				if (telemeteredCommand != null)
 					subTelemetryName = telemeteredCommand.TelemetryName;
-				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);
+				telemetryNames = $"{telemetryNames}{subTelemetryName},";
 			}
 			if (telemetryNames.Length > 0)
 				telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
@@ -318,12 +387,24 @@ namespace Cqrs.Azure.ServiceBus
 				IList<BrokeredMessage> publicBrokeredMessages = new List<BrokeredMessage>(sourceCommands.Count);
 				foreach (TCommand command in sourceCommands)
 				{
-					if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
+					if (!
+#if NETSTANDARD2_0
+						await AzureBusHelper.PrepareAndValidateCommandAsync
+#else
+						AzureBusHelper.PrepareAndValidateCommand
+#endif
+						(command, "Azure-ServiceBus"))
 						continue;
 
 					Type commandType = command.GetType();
 
-					BrokeredMessage brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
+					BrokeredMessage brokeredMessage =
+#if NETSTANDARD2_0
+						await CreateBrokeredMessageAsync
+#else
+						CreateBrokeredMessage
+#endif
+						(MessageSerialiser.SerialiseCommand, commandType, command);
 
 					bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(commandType);
 					bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(commandType);
@@ -332,17 +413,17 @@ namespace Cqrs.Azure.ServiceBus
 					if ((isPublicBusRequired == null || !isPublicBusRequired.Value) && (isPrivateBusRequired == null || !isPrivateBusRequired.Value))
 					{
 						publicBrokeredMessages.Add(brokeredMessage);
-						sourceCommandMessages.Add(string.Format("A command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+						sourceCommandMessages.Add($"A command was published on the public bus with the id '{command.Id}' was of type {commandType.FullName}.");
 					}
 					if ((isPublicBusRequired != null && isPublicBusRequired.Value))
 					{
 						publicBrokeredMessages.Add(brokeredMessage);
-						sourceCommandMessages.Add(string.Format("A command was published on the public bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+						sourceCommandMessages.Add($"A command was published on the public bus with the id '{command.Id}' was of type {commandType.FullName}.");
 					}
 					if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 					{
 						privateBrokeredMessages.Add(brokeredMessage);
-						sourceCommandMessages.Add(string.Format("A command was published on the private bus with the id '{0}' was of type {1}.", command.Id, commandType.FullName));
+						sourceCommandMessages.Add($"A command was published on the private bus with the id '{command.Id}' was of type {commandType.FullName}.");
 					}
 				}
 
@@ -362,10 +443,8 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (publicBrokeredMessages.Any())
 							{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								Task.Run(async () => {
-									await PublicServiceBusPublisher.SendAsync(publicBrokeredMessages);
-								}).Wait();
+#if NETSTANDARD2_0
+								await PublicServiceBusPublisher.SendMessagesAsync(publicBrokeredMessages);
 #else
 								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
 #endif
@@ -383,7 +462,15 @@ namespace Cqrs.Azure.ServiceBus
 					} while (true);
 					wasSuccessfull = true;
 				}
-				catch (QuotaExceededException exception)
+				catch
+				(
+#if NETSTANDARD2_0
+					ServiceBusException
+#else
+					QuotaExceededException
+#endif
+					exception
+				)
 				{
 					responseCode = "429";
 					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", publicBrokeredMessages } });
@@ -412,10 +499,8 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (privateBrokeredMessages.Any())
 							{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								Task.Run(async () => {
-									await PrivateServiceBusPublisher.SendAsync(privateBrokeredMessages);
-								}).Wait();
+#if NETSTANDARD2_0
+								await PrivateServiceBusPublisher.SendMessagesAsync(privateBrokeredMessages);
 #else
 								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
 #endif
@@ -433,7 +518,15 @@ namespace Cqrs.Azure.ServiceBus
 					} while (true);
 					wasSuccessfull = true;
 				}
-				catch (QuotaExceededException exception)
+				catch
+				(
+#if NETSTANDARD2_0
+					ServiceBusException
+#else
+					QuotaExceededException
+#endif
+					exception
+				)
 				{
 					responseCode = "429";
 					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", privateBrokeredMessages } });
@@ -467,10 +560,21 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NETSTANDARD2_0
+			async Task<TEvent> PublishAndWaitAsync
+#else
+			TEvent PublishAndWait
+#endif
+			<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return PublishAndWait<TCommand, TEvent>(command, -1, eventReceiver);
+#if NETSTANDARD2_0
+			return await PublishAndWaitAsync
+#else
+			return PublishAndWait
+#endif
+			<TCommand, TEvent>(command, -1, eventReceiver);
 		}
 
 		/// <summary>
@@ -479,10 +583,21 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NETSTANDARD2_0
+			async Task<TEvent> PublishAndWaitAsync
+#else
+			TEvent PublishAndWait
+#endif
+			<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return PublishAndWait(command, events => (TEvent)events.SingleOrDefault(@event => @event is TEvent), millisecondsTimeout, eventReceiver);
+#if NETSTANDARD2_0
+			return await PublishAndWaitAsync
+#else
+			return PublishAndWait
+#endif
+			(command, events => (TEvent)events.SingleOrDefault(@event => @event is TEvent), millisecondsTimeout, eventReceiver);
 		}
 
 		/// <summary>
@@ -491,13 +606,24 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NETSTANDARD2_0
+			async Task<TEvent> PublishAndWaitAsync
+#else
+			TEvent PublishAndWait
+#endif
+			<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
 			if (num < -1L || num > int.MaxValue)
 				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
-			return PublishAndWait<TCommand, TEvent>(command, (int)timeout.TotalMilliseconds, eventReceiver);
+#if NETSTANDARD2_0
+			return await PublishAndWaitAsync
+#else
+			return PublishAndWait
+#endif
+			<TCommand, TEvent>(command, (int)timeout.TotalMilliseconds, eventReceiver);
 		}
 
 		/// <summary>
@@ -506,10 +632,21 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NETSTANDARD2_0
+			async Task<TEvent> PublishAndWaitAsync
+#else
+			TEvent PublishAndWait
+#endif
+			<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return PublishAndWait(command, condition, -1, eventReceiver);
+#if NETSTANDARD2_0
+			return await PublishAndWaitAsync
+#else
+			return PublishAndWait
+#endif
+			(command, condition, -1, eventReceiver);
 		}
 
 		/// <summary>
@@ -519,7 +656,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
+		public virtual
+#if NETSTANDARD2_0
+			async Task<TEvent> PublishAndWaitAsync
+#else
+			TEvent PublishAndWait
+#endif
+			<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
 			IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (command == null)
@@ -534,11 +677,11 @@ namespace Cqrs.Azure.ServiceBus
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			string telemetryName = string.Format("{0}/{1}", commandType.FullName, command.Id);
+			string telemetryName = "{commandType.FullName}/{command.Id}";
 			var telemeteredCommand = command as ITelemeteredMessage;
 			if (telemeteredCommand != null)
 				telemetryName = telemeteredCommand.TelemetryName;
-			telemetryName = string.Format("Command/{0}", telemetryName);
+			telemetryName = $"Command/{telemetryName}";
 
 			TEvent result;
 
@@ -546,7 +689,13 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				if (eventReceiver != null)
 					throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
-				if (!AzureBusHelper.PrepareAndValidateCommand(command, "Azure-ServiceBus"))
+				if (!
+#if NETSTANDARD2_0
+					await AzureBusHelper.PrepareAndValidateCommandAsync
+#else
+					AzureBusHelper.PrepareAndValidateCommand
+#endif
+					(command, "Azure-ServiceBus"))
 					return (TEvent)(object)null;
 
 				result = (TEvent)(object)null;
@@ -554,16 +703,20 @@ namespace Cqrs.Azure.ServiceBus
 
 				try
 				{
-					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseCommand, commandType, command);
+					var brokeredMessage =
+#if NETSTANDARD2_0
+						await CreateBrokeredMessageAsync
+#else
+						CreateBrokeredMessage
+#endif
+						(MessageSerialiser.SerialiseCommand, commandType, command);
 					int count = 1;
 					do
 					{
 						try
 						{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-							Task.Run(async () => {
-								await PrivateServiceBusPublisher.SendAsync(brokeredMessage);
-							}).Wait();
+							await PrivateServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 							PrivateServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -577,7 +730,15 @@ namespace Cqrs.Azure.ServiceBus
 						count++;
 					} while (true);
 				}
-				catch (QuotaExceededException exception)
+				catch
+				(
+#if NETSTANDARD2_0
+					ServiceBusException
+#else
+					QuotaExceededException
+#endif
+					exception
+				)
 				{
 					responseCode = "429";
 					Logger.LogError("The size of the command being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
@@ -589,7 +750,7 @@ namespace Cqrs.Azure.ServiceBus
 					Logger.LogError("An issue occurred while trying to publish a command.", exception: exception, metaData: new Dictionary<string, object> { { "Command", command } });
 					throw;
 				}
-				Logger.LogInfo(string.Format("A command was sent of type {0}.", commandType.FullName));
+				Logger.LogInfo($"A command was sent of type {commandType.FullName}.");
 				wasSuccessfull = true;
 			}
 			finally
@@ -607,7 +768,7 @@ namespace Cqrs.Azure.ServiceBus
 				return result != null;
 			}, millisecondsTimeout, sleepInMilliseconds: 1000);
 
-			TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command/AndWait", string.Format("Command/AndWait{0}", telemetryName.Substring(7)), null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+			TelemetryHelper.TrackDependency("Azure/Servicebus/CommandBus", "Command/AndWait", $"Command/AndWait{telemetryName.Substring(7)}", null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			return result;
 		}
 
@@ -618,13 +779,24 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NETSTANDARD2_0
+			async Task<TEvent> PublishAndWaitAsync
+#else
+			TEvent PublishAndWait
+#endif
+			<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
 			if (num < -1L || num > int.MaxValue)
 				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
-			return PublishAndWait(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
+#if NETSTANDARD2_0
+			return await PublishAndWaitAsync
+#else
+			return PublishAndWait
+#endif
+			(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
 		}
 
 		#endregion

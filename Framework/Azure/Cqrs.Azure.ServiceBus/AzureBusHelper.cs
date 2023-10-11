@@ -1,5 +1,5 @@
 ﻿#region IMPORTANT NOTE
-// This is copied almost exactly into the eventhub except for a string difference. Replicate changes there until a refactor is done.
+// This was once copied almost exactly into the eventhub except for a string difference and required changes be replicated there until a refactor is done... said refactor was never done but I'm upgrading the .NET Core implementation... so drift
 #endregion
 
 #region Copyright
@@ -28,10 +28,10 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-using Microsoft.Azure.ServiceBus;
-using Microsoft.Azure.ServiceBus.Core;
-using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+using Azure.Messaging.ServiceBus;
+using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusReceivedMessage;
+using IMessageReceiver = Azure.Messaging.ServiceBus.ServiceBusReceiver;
 #else
 using Microsoft.ServiceBus.Messaging;
 using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
@@ -113,7 +113,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <typeparam name="TCommand">The <see cref="Type"/> of<see cref="ICommand{TAuthenticationToken}"/> being sent.</typeparam>
 		/// <param name="command">The <see cref="ICommand{TAuthenticationToken}"/> to send.</param>
 		/// <param name="framework">The framework the <paramref name="command"/> is being sent from.</param>
-		public virtual void PrepareCommand<TCommand>(TCommand command, string framework)
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task PrepareCommandAsync
+#else
+		void PrepareCommand
+#endif
+		<TCommand>(TCommand command, string framework)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
@@ -127,6 +133,10 @@ namespace Cqrs.Azure.ServiceBus
 				frameworks.AddRange(command.Frameworks);
 			frameworks.Add(framework);
 			command.Frameworks = frameworks;
+
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
@@ -135,18 +145,29 @@ namespace Cqrs.Azure.ServiceBus
 		/// <typeparam name="TCommand">The <see cref="Type"/> of<see cref="ICommand{TAuthenticationToken}"/> being sent.</typeparam>
 		/// <param name="command">The <see cref="ICommand{TAuthenticationToken}"/> to send.</param>
 		/// <param name="framework">The framework the <paramref name="command"/> is being sent from.</param>
-		public virtual bool PrepareAndValidateCommand<TCommand>(TCommand command, string framework)
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task<bool> PrepareAndValidateCommandAsync
+#else
+		bool PrepareAndValidateCommand
+#endif
+			<TCommand>(TCommand command, string framework)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			Type commandType = command.GetType();
+			string loggerMethodName = $"{GetType().FullName}\\PrepareAndValidateEvent({commandType.FullName})";
 
 			if (command.Frameworks != null && command.Frameworks.Contains(framework))
 			{
 				// if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
 				if (command.Frameworks.Count() != 1)
 				{
-					Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
+					Logger.LogInfo("The provided command has already been processed in Azure.", loggerMethodName);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					return await Task.FromResult(false);
+#else
 					return false;
+#endif
 				}
 			}
 
@@ -157,33 +178,32 @@ namespace Cqrs.Azure.ServiceBus
 			}
 			catch (Exception exception)
 			{
-				Logger.LogDebug("Locating an ICommandValidator failed.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName), exception);
+				Logger.LogDebug("Locating an ICommandValidator failed.", loggerMethodName, exception);
 			}
 
 			if (commandValidator != null && !commandValidator.IsCommandValid(command))
 			{
-				Logger.LogInfo("The provided command is not valid.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
+				Logger.LogInfo("The provided command is not valid.", loggerMethodName);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				return await Task.FromResult(false);
+#else
 				return false;
+#endif
 			}
 
-			PrepareCommand(command, framework);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await PrepareCommandAsync
+#else
+			PrepareCommand
+#endif
+			(command, framework);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			return await Task.FromResult(true);
+#else
 			return true;
+#endif
 		}
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-		/// <summary>
-		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveCommandHandler"/>.
-		/// </summary>
-		/// <param name="client">The channel the message was received on.</param>
-		/// <param name="messageBody">A serialised <see cref="IMessage"/>.</param>
-		/// <param name="receiveCommandHandler">The handler method that will process the <see cref="ICommand{TAuthenticationToken}"/>.</param>
-		/// <param name="messageId">The network id of the <see cref="IMessage"/>.</param>
-		/// <param name="signature">The signature of the <see cref="IMessage"/>.</param>
-		/// <param name="signingTokenConfigurationKey">The configuration key for the signing token as used by <see cref="IConfigurationManager"/>.</param>
-		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="ICommand{TAuthenticationToken}"/> is being skipped.</param>
-		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
-		/// <returns>The <see cref="ICommand{TAuthenticationToken}"/> that was processed.</returns>
-#else
 		/// <summary>
 		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveCommandHandler"/>.
 		/// </summary>
@@ -196,14 +216,31 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="ICommand{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="ICommand{TAuthenticationToken}"/> that was processed.</returns>
-#endif
-		public virtual ICommand<TAuthenticationToken> ReceiveCommand(
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-			IMessageReceiver client
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			async Task<ICommand<TAuthenticationToken>> ReceiveCommandAsync
 #else
-			IMessageReceiver serviceBusReceiver
+			ICommand<TAuthenticationToken> ReceiveCommand
 #endif
-			, string messageBody, Func<ICommand<TAuthenticationToken>, bool?> receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null)
+			(IMessageReceiver serviceBusReceiver, string messageBody, Func<ICommand<TAuthenticationToken>,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				Task<bool?>
+#else
+				bool?
+#endif
+				> receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				Func<Task>
+#else
+				Action
+#endif
+			 skippedAction = null,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				Func<Task>
+#else
+				Action
+#endif
+			 lockRefreshAction = null)
 		{
 			ICommand<TAuthenticationToken> command;
 			try
@@ -232,13 +269,18 @@ namespace Cqrs.Azure.ServiceBus
 						if (typeParts.Length == 2)
 						{
 							string classType = typeParts[0];
-							bool isRequired = BusHelper.IsEventRequired(string.Format("{0}.IsRequired", classType));
+							bool isRequired = BusHelper.IsEventRequired($"{classType}.IsRequired");
 
 							if (!isRequired)
 							{
 								if (skippedAction != null)
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+									await skippedAction();
+								return await Task.FromResult<ICommand<TAuthenticationToken>>(null);
+#else
 									skippedAction();
 								return null;
+#endif
 							}
 						}
 					}
@@ -252,34 +294,59 @@ namespace Cqrs.Azure.ServiceBus
 			string identifyMessage = null;
 			var identifiedEvent = command as ICommandWithIdentity<TAuthenticationToken>;
 			if (identifiedEvent != null)
-				identifyMessage = string.Format(" for aggregate {0}", identifiedEvent.Rsn);
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-			string topicPath = client == null ? "UNKNOWN" : client.Path;
+				identifyMessage = $" for aggregate {identifiedEvent.Rsn}";
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.EntityPath;
 #else
 			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
 #endif
 			Logger.LogInfo($"A command message arrived from topic {topicPath} with the {messageId} was of type {commandTypeName}{identifyMessage}.");
 
-			VerifySignature(signingTokenConfigurationKey, signature, "A command", messageId, commandTypeName, identifyMessage, messageBody);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await VerifySignatureAsync
+#else
+			VerifySignature
+#endif
+			(signingTokenConfigurationKey, signature, "A command", messageId, commandTypeName, identifyMessage, messageBody);
 			bool canRefresh;
-			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.ShouldRefresh", commandTypeName), out canRefresh))
+			if (!ConfigurationManager.TryGetSetting($"{commandTypeName}.ShouldRefresh", out canRefresh))
 				canRefresh = false;
 
 			if (canRefresh)
 			{
 				if (lockRefreshAction == null)
-					Logger.LogWarning(string.Format("A command message arrived with the {0} was of type {1} and was destined to support lock renewal, but no action was provided.", messageId, commandTypeName));
+					Logger.LogWarning($"A command message arrived with the {messageId} was of type {commandTypeName} and was destined to support lock renewal, but no action was provided.");
 				else
-					lockRefreshAction();
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					await lockRefreshAction
+#else
+					lockRefreshAction
+#endif
+					();
 			}
 
 			// a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
-			bool? result = receiveCommandHandler(command);
+			bool? result =
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await receiveCommandHandler
+#else
+			receiveCommandHandler
+#endif
+				(command);
 			if (result != null && !result.Value)
 				if (skippedAction != null)
-					skippedAction();
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					await skippedAction
+#else
+					skippedAction
+#endif
+					();
 
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			return await Task.FromResult(command);
+#else
 			return command;
+#endif
 		}
 
 		/// <summary>
@@ -296,7 +363,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// False indicates the <paramref name="command"/> wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
 		/// Null indicates the command<paramref name="command"/> wasn't handled as it was already handled.
 		/// </returns>
-		public virtual bool? DefaultReceiveCommand(ICommand<TAuthenticationToken> command, RouteManager routeManager, string framework)
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task<bool?> DefaultReceiveCommandAsync
+#else
+		bool? DefaultReceiveCommand
+#endif
+			(ICommand<TAuthenticationToken> command, RouteManager routeManager, string framework)
 		{
 			Type commandType = command.GetType();
 
@@ -306,7 +379,11 @@ namespace Cqrs.Azure.ServiceBus
 				if (command.Frameworks.Count() != 1)
 				{
 					Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\DefaultReceiveCommand({1})", GetType().FullName, commandType.FullName));
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					return await Task.FromResult<bool?>(null);
+#else
 					return null;
+#endif
 				}
 			}
 
@@ -320,12 +397,20 @@ namespace Cqrs.Azure.ServiceBus
 			if (commandHandler == null)
 			{
 				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				return await Task.FromResult(false);
+#else
 				return false;
+#endif
 			}
 
 			Action<IMessage> handler = commandHandler.Delegate;
 			handler(command);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			return await Task.FromResult(true);
+#else
 			return true;
+#endif
 		}
 
 		/// <summary>
@@ -334,7 +419,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <typeparam name="TEvent">The <see cref="Type"/> of<see cref="IEvent{TAuthenticationToken}"/> being sent.</typeparam>
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to send.</param>
 		/// <param name="framework">The framework the <paramref name="event"/> is being sent from.</param>
-		public virtual void PrepareEvent<TEvent>(TEvent @event, string framework)
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task PrepareEventAsync
+#else
+		void PrepareEvent
+#endif
+			<TEvent>(TEvent @event, string framework)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			if (@event.AuthenticationToken == null || @event.AuthenticationToken.Equals(default(TAuthenticationToken)))
@@ -349,6 +440,10 @@ namespace Cqrs.Azure.ServiceBus
 				frameworks.AddRange(@event.Frameworks);
 			frameworks.Add(framework);
 			@event.Frameworks = frameworks;
+
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
@@ -357,7 +452,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <typeparam name="TEvent">The <see cref="Type"/> of<see cref="IEvent{TAuthenticationToken}"/> being sent.</typeparam>
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to send.</param>
 		/// <param name="framework">The framework the <paramref name="event"/> is being sent from.</param>
-		public virtual bool PrepareAndValidateEvent<TEvent>(TEvent @event, string framework)
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task<bool> PrepareAndValidateEventAsync
+#else
+		bool PrepareAndValidateEvent
+#endif
+			<TEvent>(TEvent @event, string framework)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			Type eventType = @event.GetType();
@@ -368,28 +469,27 @@ namespace Cqrs.Azure.ServiceBus
 				if (@event.Frameworks.Count() != 1)
 				{
 					Logger.LogInfo("The provided event has already been processed in Azure.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					return await Task.FromResult(false);
+#else
 					return false;
+#endif
 				}
 			}
 
-			PrepareEvent(@event, framework);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await PrepareEventAsync
+#else
+			PrepareEvent
+#endif
+			(@event, framework);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			return await Task.FromResult(true);
+#else
 			return true;
+#endif
 		}
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-		/// <summary>
-		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveEventHandler"/>.
-		/// </summary>
-		/// <param name="client">The channel the message was received on.</param>
-		/// <param name="messageBody">A serialised <see cref="IMessage"/>.</param>
-		/// <param name="receiveEventHandler">The handler method that will process the <see cref="IEvent{TAuthenticationToken}"/>.</param>
-		/// <param name="messageId">The network id of the <see cref="IMessage"/>.</param>
-		/// <param name="signature">The signature of the <see cref="IMessage"/>.</param>
-		/// <param name="signingTokenConfigurationKey">The configuration key for the signing token as used by <see cref="IConfigurationManager"/>.</param>
-		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="IEvent{TAuthenticationToken}"/> is being skipped.</param>
-		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
-		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
-#else
 		/// <summary>
 		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveEventHandler"/>.
 		/// </summary>
@@ -402,14 +502,31 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="IEvent{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
-#endif
-		public virtual IEvent<TAuthenticationToken> ReceiveEvent(
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-			IMessageReceiver client
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task<IEvent<TAuthenticationToken>> ReceiveEventAsync
 #else
-			IMessageReceiver serviceBusReceiver
+		IEvent<TAuthenticationToken> ReceiveEvent
 #endif
-			, string messageBody, Func<IEvent<TAuthenticationToken>, bool?> receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null)
+			(IMessageReceiver serviceBusReceiver, string messageBody, Func<IEvent<TAuthenticationToken>,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				Task<bool?>
+#else
+				bool?
+#endif
+				> receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				Func<Task>
+#else
+				Action
+#endif
+			 skippedAction = null,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				Func<Task>
+#else
+				Action
+#endif
+			 lockRefreshAction = null)
 		{
 			IEvent<TAuthenticationToken> @event;
 			try
@@ -438,13 +555,18 @@ namespace Cqrs.Azure.ServiceBus
 						if (typeParts.Length == 2)
 						{
 							string classType = typeParts[0];
-							bool isRequired = BusHelper.IsEventRequired(string.Format("{0}.IsRequired", classType));
+							bool isRequired = BusHelper.IsEventRequired($"{classType}.IsRequired");
 
 							if (!isRequired)
 							{
 								if (skippedAction != null)
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+									await skippedAction();
+								return await Task.FromResult<IEvent<TAuthenticationToken>>(null);
+#else
 									skippedAction();
 								return null;
+#endif
 							}
 						}
 					}
@@ -458,47 +580,77 @@ namespace Cqrs.Azure.ServiceBus
 			object identifyMessage = null;
 			var identifiedEvent = @event as IEventWithIdentity<TAuthenticationToken>;
 			if (identifiedEvent != null)
-				identifyMessage = string.Format(" for aggregate {0}", identifiedEvent.Rsn);
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-			string topicPath = client == null ? "UNKNOWN" : client.Path;
+				identifyMessage = " for aggregate {identifiedEvent.Rsn}";
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.EntityPath;
 #else
 			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
 #endif
 			Logger.LogInfo($"An event message arrived from topic {topicPath} with the {messageId} was of type {eventTypeName}{identifyMessage}.");
 
-			VerifySignature(signingTokenConfigurationKey, signature, "An event", messageId, eventTypeName, identifyMessage, messageBody);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await VerifySignatureAsync
+#else
+			VerifySignature
+#endif
+			(signingTokenConfigurationKey, signature, "An event", messageId, eventTypeName, identifyMessage, messageBody);
 			bool canRefresh;
-			if (!ConfigurationManager.TryGetSetting(string.Format("{0}.ShouldRefresh", eventTypeName), out canRefresh))
+			if (!ConfigurationManager.TryGetSetting($"{eventTypeName}.ShouldRefresh", out canRefresh))
 				if (!ConfigurationManager.TryGetSetting(DefaultMessagesShouldRefreshConfigurationKey, out canRefresh))
 					canRefresh = false;
 
 			if (canRefresh)
 			{
 				if (lockRefreshAction == null)
-					Logger.LogWarning(string.Format("An event message arrived with the {0} was of type {1} and was destined to support lock renewal, but no action was provided.", messageId, eventTypeName));
+					Logger.LogWarning($"An event message arrived with the {messageId} was of type {eventTypeName} and was destined to support lock renewal, but no action was provided.");
 				else
-					lockRefreshAction();
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					await lockRefreshAction
+#else
+					lockRefreshAction
+#endif
+					();
 			}
 
 			// a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
-			bool? result = receiveEventHandler(@event);
+			bool? result =
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				await receiveEventHandler
+#else
+				receiveEventHandler
+#endif
+				(@event);
 			if (result != null && !result.Value)
 				if (skippedAction != null)
-					skippedAction();
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					await skippedAction
+#else
+					skippedAction
+#endif
+					();
 
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			return await Task.FromResult(@event);
+#else
 			return @event;
+#endif
 		}
 
 		/// <summary>
 		/// Refreshes the network lock.
 		/// </summary>
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-		public virtual void RefreshLock(IMessageReceiver client, CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task RefreshLockAsync(IMessageReceiver client,
 #else
-		public virtual void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
+		void RefreshLock(
 #endif
+			CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
 		{
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+#else
 			Task.Factory.StartNewSafely(() =>
+#endif
 			{
 				// The capturing of ObjectDisposedException is because even the properties can throw it.
 				try
@@ -513,8 +665,8 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						// Based on LockedUntilUtc property to determine if the lock expires soon
 						// We lock for 45 seconds to ensure any thread based issues are mitigated.
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-						if (DateTime.UtcNow > message.ExpiresAtUtc.AddSeconds(-45))
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+						if (DateTime.UtcNow > message.ExpiresAt.AddSeconds(-45))
 #else
 						if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-45))
 #endif
@@ -526,18 +678,19 @@ namespace Cqrs.Azure.ServiceBus
 								{
 									if (brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
 										return;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-									client.RenewLockAsync(message).Wait(1500);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+									await client.RenewMessageLockAsync(message);
 #else
 									message.RenewLock();
 #endif
+									string logMessage = $"Renewed the {typeName} lock on {type} '{message.MessageId}'.";
 									try
 									{
-										Logger.LogDebug(string.Format("Renewed the {2} lock on {1} '{0}'.", message.MessageId, type, typeName), "Cqrs.Azure.ServiceBus.AzureBusHelper.RefreshLock");
+										Logger.LogDebug(logMessage, "Cqrs.Azure.ServiceBus.AzureBusHelper.RefreshLock");
 									}
 									catch
 									{
-										Trace.TraceError("Renewed the {2} lock on {1} '{0}'.", message.MessageId, type, typeName);
+										Trace.TraceInformation(logMessage);
 									}
 
 									break;
@@ -546,27 +699,35 @@ namespace Cqrs.Azure.ServiceBus
 								{
 									return;
 								}
-								catch (MessageLockLostException exception)
+								catch (
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+								ServiceBusException
+#else
+								MessageLockLostException
+#endif
+								 exception)
 								{
+									string logMessage = $"Renewing the {typeName} lock on {type} '{message.MessageId}' failed as the message lock was lost.\r\n{exception.Message}";
 									try
 									{
-										Logger.LogWarning(string.Format("Renewing the {2} lock on {1} '{0}' failed as the message lock was lost.", message.MessageId, type, typeName), "Cqrs.Azure.ServiceBus.AzureBusHelper.RefreshLock", exception: exception);
+										Logger.LogWarning(logMessage, "Cqrs.Azure.ServiceBus.AzureBusHelper.RefreshLock", exception: exception);
 									}
 									catch
 									{
-										Trace.TraceError("Renewing the {2} lock on {1} '{0}' failed as the message lock was lost.\r\n{3}", message.MessageId, type, typeName, exception.Message);
+										Trace.TraceWarning(logMessage);
 									}
 									return;
 								}
 								catch (Exception exception)
 								{
+									string logMessage = $"Renewing the {typeName} lock on {type} '{message.MessageId}' failed.\r\n{exception.Message}";
 									try
 									{
-										Logger.LogWarning(string.Format("Renewing the {2} lock on {1} '{0}' failed.", message.MessageId, type, typeName), "Cqrs.Azure.ServiceBus.AzureBusHelper.RefreshLock", exception: exception);
+										Logger.LogWarning(logMessage, "Cqrs.Azure.ServiceBus.AzureBusHelper.RefreshLock", exception: exception);
 									}
 									catch
 									{
-										Trace.TraceError("Renewing the {2} lock on {1} '{0}' failed.\r\n{3}", message.MessageId, type, typeName, exception.Message);
+										Trace.TraceWarning(logMessage);
 									}
 									if (i == 9)
 										return;
@@ -588,7 +749,12 @@ namespace Cqrs.Azure.ServiceBus
 					catch (ObjectDisposedException) { }
 				}
 				catch (ObjectDisposedException) { }
-			}, brokeredMessageRenewCancellationTokenSource.Token);
+			}
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await Task.CompletedTask;
+#else
+			, brokeredMessageRenewCancellationTokenSource.Token);
+#endif
 		}
 
 		/// <summary>
@@ -605,7 +771,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// False indicates the <paramref name="event"/> wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
 		/// Null indicates the <paramref name="event"/> wasn't handled as it was already handled.
 		/// </returns>
-		public virtual bool? DefaultReceiveEvent(IEvent<TAuthenticationToken> @event, RouteManager routeManager, string framework)
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task<bool?> DefaultReceiveEventAsync
+#else
+		bool? DefaultReceiveEvent
+#endif
+			(IEvent<TAuthenticationToken> @event, RouteManager routeManager, string framework)
 		{
 			Type eventType = @event.GetType();
 
@@ -614,8 +786,12 @@ namespace Cqrs.Azure.ServiceBus
 				// if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
 				if (@event.Frameworks.Count() != 1)
 				{
-					Logger.LogInfo("The provided event has already been processed in Azure.", string.Format("{0}\\DefaultReceiveEvent({1})", GetType().FullName, eventType.FullName));
+					Logger.LogInfo("The provided event has already been processed in Azure.", $"{GetType().FullName}\\DefaultReceiveEvent({eventType.FullName})");
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					return await Task.FromResult<bool?>(null);
+#else
 					return null;
+#endif
 				}
 			}
 
@@ -628,22 +804,36 @@ namespace Cqrs.Azure.ServiceBus
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (!handlers.Any())
 			{
-				Logger.LogDebug(string.Format("The event handler for '{0}' is not required.", eventType.FullName));
+				Logger.LogDebug($"The event handler for '{eventType.FullName}' is not required.");
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				return await Task.FromResult(false);
+#else
 				return false;
+#endif
 			}
 
 			foreach (Action<IMessage> handler in handlers)
 				handler(@event);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			return await Task.FromResult(true);
+#else
 			return true;
+#endif
 		}
 
 		/// <summary>
 		/// Verifies that the signature is authorised.
 		/// </summary>
-		protected virtual void VerifySignature(string signingTokenConfigurationKey, string signature, string messagetype, string messageId, string typeName, object identifyMessage, string messageBody)
+		protected virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task VerifySignatureAsync
+#else
+		void VerifySignature
+#endif
+			(string signingTokenConfigurationKey, string signature, string messagetype, string messageId, string typeName, object identifyMessage, string messageBody)
 		{
 			if (string.IsNullOrWhiteSpace(signature))
-				Logger.LogWarning(string.Format("{3} message arrived with the {0} was of type {1}{2} and had no signature.", messageId, typeName, identifyMessage, messagetype));
+				Logger.LogWarning($"{messagetype} message arrived with the {messageId} was of type {typeName}{identifyMessage} and had no signature.");
 			else
 			{
 				bool messageIsValid = false;
@@ -663,6 +853,10 @@ namespace Cqrs.Azure.ServiceBus
 				if (!messageIsValid)
 					throw new UnAuthorisedMessageReceivedException(typeName, messageId, identifyMessage);
 			}
+
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
@@ -670,7 +864,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// on the provided <paramref name="routeManger"/>
 		/// </summary>
 		/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/> the <paramref name="handler"/> can handle.</typeparam>
-		public virtual void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task RegisterHandlerAsync
+#else
+		void RegisterHandler
+#endif
+			<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 			Action<TMessage> registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
@@ -679,12 +879,22 @@ namespace Cqrs.Azure.ServiceBus
 
 			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
 			telemetryHelper.Flush();
+
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-		public virtual void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task RegisterGlobalEventHandlerAsync
+#else
+		void RegisterGlobalEventHandler
+#endif
+			<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 			Action<TMessage> registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
@@ -693,6 +903,10 @@ namespace Cqrs.Azure.ServiceBus
 
 			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterGlobalEventHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
 			telemetryHelper.Flush();
+
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await Task.CompletedTask;
+#endif
 		}
 	}
 }

@@ -9,9 +9,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Channels;
 using Cqrs.Configuration;
 using Cqrs.DependencyInjection.Modules;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Cqrs.DependencyInjection
 {
@@ -24,6 +26,11 @@ namespace Cqrs.DependencyInjection
 		/// The inner <see cref="IServiceProvider"/> used by this instance.
 		/// </summary>
 		public IServiceProvider Kernel { get; private set; }
+
+		/// <summary>
+		/// The inner <see cref="IServiceCollection"/> used by this instance.
+		/// </summary>
+		public IServiceCollection Bindings { get; private set; }
 
 		/// <summary>
 		/// A collection of <see cref="Module"/> instances to load when we call <see cref="PrepareKernel"/>
@@ -40,6 +47,7 @@ namespace Cqrs.DependencyInjection
 		/// </summary>
 		public DependencyResolver(IServiceCollection services)
 		{
+			Bindings = services;
 			BindDependencyResolver(services);
 		}
 
@@ -102,7 +110,29 @@ namespace Cqrs.DependencyInjection
 		/// </summary>
 		public override object Resolve(Type type)
 		{
-			return Kernel.GetService(type);
+			object result = Kernel.GetService(type);
+
+			if (result == null && type.IsClass)
+			{
+				try
+				{
+					var tempBindings = new ServiceCollection();
+					foreach (ServiceDescriptor binding in Bindings)
+						tempBindings.Add(binding);
+					if (!tempBindings.Any(x => x.ServiceType == type))
+						tempBindings.AddSingleton(type, type);
+					using (ServiceProvider tempProvider = tempBindings.BuildServiceProvider())
+					{
+						result = tempProvider.GetService(type);
+					}
+				}
+				catch (ArgumentException)
+				{
+					return result;
+				}
+			}
+
+			return result;
 		}
 	}
 }

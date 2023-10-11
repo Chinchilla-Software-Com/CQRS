@@ -8,17 +8,18 @@
 
 using System;
 using Cqrs.Azure.ServiceBus;
-using Cqrs.Commands;
 using Cqrs.DependencyInjection.Modules;
+using Cqrs.Events;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Cqrs.Azure.Functions.ServiceBus.Configuration
 {
 	/// <summary>
-	/// A <see cref="Module"/> that wires up <see cref="AzureCommandBusPublisher{TAuthenticationToken}"/> as the <see cref="ICommandPublisher{TAuthenticationToken}"/> and other require components.
+	/// A <see cref="Module"/> that wires up <see cref="AzureEventBusPublisher{TAuthenticationToken}"/> as the <see cref="IEventPublisher{TAuthenticationToken}"/> and other require components.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class AzureCommandBusPublisherModule<TAuthenticationToken> : ResolvableModule
+	public class AzureFunctionEventBusPublisherModule<TAuthenticationToken>
+		: ResolvableModule
 	{
 		#region Overrides of NinjectModule
 
@@ -30,29 +31,33 @@ namespace Cqrs.Azure.Functions.ServiceBus.Configuration
 			bool isAzureBusHelper = IsRegistered<IAzureBusHelper<TAuthenticationToken>>(services);
 			if (!isAzureBusHelper)
 			{
-				services.AddSingleton<IAzureBusHelper<TAuthenticationToken>,AzureBusHelper<TAuthenticationToken>>();
+				services.AddSingleton<IAzureBusHelper<TAuthenticationToken>, AzureBusHelper<TAuthenticationToken>>();
 			}
 
-			RegisterCommandSender(services);
-			RegisterCommandMessageSerialiser(services);
+			RegisterEventPublisher(services);
+			RegisterEventMessageSerialiser(services);
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Register the CQRS command publisher
+		/// Register the CQRS event publisher
 		/// </summary>
-		public virtual void RegisterCommandSender(IServiceCollection services)
+		public virtual void RegisterEventPublisher(IServiceCollection services)
 		{
-			services.AddSingleton<ICommandPublisher<TAuthenticationToken>, AzureCommandBusPublisher<TAuthenticationToken>>();
-
-			services.AddSingleton<IPublishAndWaitCommandPublisher<TAuthenticationToken>, AzureCommandBusPublisher<TAuthenticationToken>>();
+			services.AddSingleton<
+#if NETSTANDARD
+				IAsyncEventPublisher
+#else
+				IEventPublisher
+#endif
+				<TAuthenticationToken>, AzureEventBusPublisher<TAuthenticationToken>>();
 		}
 
 		/// <summary>
-		/// Register the CQRS command handler message serialiser
+		/// Register the CQRS event handler message serialiser
 		/// </summary>
-		public virtual void RegisterCommandMessageSerialiser(IServiceCollection services)
+		public virtual void RegisterEventMessageSerialiser(IServiceCollection services)
 		{
 			bool isMessageSerialiserBound = IsRegistered<IMessageSerialiser<TAuthenticationToken>>(services);
 			if (!isMessageSerialiserBound)

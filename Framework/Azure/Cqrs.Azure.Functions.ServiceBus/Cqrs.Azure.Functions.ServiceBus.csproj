@@ -31,6 +31,14 @@
 			<Pack>True</Pack>
 			<PackagePath>tools\</PackagePath>
 		</None>
+		<Compile Remove="AzureFunctionServiceBus.cs" />
+		<Compile Remove="Content\CommandReceiver.cs" />
+		<Compile Remove="MessageExtensions.cs" />
+		<Compile Remove="ServiceBusExtensions.cs" />
+		<Content Include="Content\CommandReceiver.cs" PackagePath="content" Pack="true" />
+		<Compile Remove="Content\EventReceiver.cs" />
+		<Content Include="Content\EventReceiver.cs" PackagePath="content" Pack="true" />
+		<Content Include="Content\host.json" PackagePath="content" Pack="true" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -41,20 +49,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Remove="Content\Program.cs" />
 		<Compile Remove="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 
 	<PropertyGroup>
-		<TargetFrameworks>net472;netstandard2.0;</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;</TargetFrameworks>
 		<DocumentationFile>Cqrs.Azure.Functions.ServiceBus.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
-		<PackageReference Include="Chinchilla.Logging" Version="4.5.31" />
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.7" />
+		<PackageReference Include="Chinchilla.Logging" Version="4.5.32" />
 
 		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.21.0" />
@@ -63,6 +70,9 @@
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.13.0" />
 
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+
+		<PackageReference Include="System.Linq.Async" Version="5.1.0" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
@@ -76,6 +86,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Remove="Content\host.json" />
 		<None Remove="Cqrs.Azure.Functions.ServiceBus.xml" />
 		<None Remove="packages.config" />
 		<None Remove="Tools\**" />

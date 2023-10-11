@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 
 namespace Cqrs.Commands
 {
@@ -25,7 +26,8 @@ namespace Cqrs.Commands
 	/// Receives instances of a <see cref="ICommand{TAuthenticationToken}"/> from the command bus.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of authentication token.</typeparam>
-	public interface ICommandReceiver<TAuthenticationToken> : ICommandReceiver
+	public interface ICommandReceiver<TAuthenticationToken>
+		: ICommandReceiver
 	{
 		/// <summary>
 		/// Receives a <see cref="ICommand{TAuthenticationToken}"/> from the command bus.

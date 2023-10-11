@@ -22,7 +22,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 	public class AzureCommandBusReceiverModule<TAuthenticationToken>
 		: ResolvableModule
 	{
-		#region Overrides of NinjectModule
+		#region Overrides of ResolvableModule
 
 		/// <summary>
 		/// Loads the module into the kernel.
@@ -50,13 +50,20 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 		/// </summary>
 		/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
 		public virtual TBus GetOrCreateBus<TBus>(IServiceCollection services)
-			where TBus : class, ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+			where TBus : class,
+#if NETSTANDARD
+				IAsyncCommandReceiver<TAuthenticationToken>, IAsyncCommandHandlerRegistrar
+#else
+				ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+#endif
 		{
 			bool isBusBound = IsRegistered<TBus>(services);
 			TBus bus;
 			if (!isBusBound)
 			{
+				services.AddSingleton<TBus, TBus>();
 				bus = Resolve<TBus>(services);
+				Unbind<TBus>(services);
 				services.AddSingleton<TBus>(bus);
 			}
 			else
@@ -68,27 +75,39 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 		/// <summary>
 		/// Register the CQRS command receiver
 		/// </summary>
-#if NET5_0_OR_GREATER
-		public virtual void RegisterCommandReceiver(IServiceCollection services, ICommandReceiver<TAuthenticationToken> bus)
+#if NETSTANDARD
+		public virtual void RegisterCommandReceiver(IServiceCollection services, IAsyncCommandReceiver<TAuthenticationToken> bus)
 #else
 		public virtual void RegisterCommandReceiver<TBus>(IServiceCollection services, TBus bus)
 			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
 #endif
 		{
-			services.AddSingleton<ICommandReceiver<TAuthenticationToken>>(bus);
+			services.AddSingleton<
+#if NETSTANDARD
+				IAsyncCommandReceiver
+#else
+				ICommandReceiver
+#endif
+				<TAuthenticationToken>>(bus);
 		}
 
 		/// <summary>
 		/// Register the CQRS command handler registrar
 		/// </summary>
-#if NET5_0_OR_GREATER
-		public virtual void RegisterCommandHandlerRegistrar(IServiceCollection services, ICommandHandlerRegistrar bus)
+#if NETSTANDARD
+		public virtual void RegisterCommandHandlerRegistrar(IServiceCollection services, IAsyncCommandHandlerRegistrar bus)
 #else
 		public virtual void RegisterCommandHandlerRegistrar<TBus>(IServiceCollection services, TBus bus)
 			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
 #endif
 		{
-			services.AddSingleton<ICommandHandlerRegistrar>(bus);
+			services.AddSingleton<
+#if NETSTANDARD
+				IAsyncCommandHandlerRegistrar
+#else
+				ICommandHandlerRegistrar
+#endif
+				>(bus);
 		}
 
 		/// <summary>

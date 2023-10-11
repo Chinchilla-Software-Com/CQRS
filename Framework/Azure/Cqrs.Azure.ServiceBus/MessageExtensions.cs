@@ -7,9 +7,11 @@
 #endregion
 
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-using Microsoft.Azure.ServiceBus;
+#if NETSTANDARD2_0
 using System.IO;
+using System.Runtime.Serialization;
+using System.Text;
+using Azure.Messaging.ServiceBus;
 #else
 using Microsoft.ServiceBus.Messaging;
 #endif
@@ -18,10 +20,10 @@ namespace Cqrs.Azure.ServiceBus
 {
 	internal static class MessageExtensions
 	{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-		public static void AddUserProperty(this Message message, string key, object value)
+#if NETSTANDARD2_0
+		public static void AddUserProperty(this ServiceBusMessage message, string key, object value)
 		{
-			message.UserProperties.Add(key, value);
+			message.ApplicationProperties.Add(key, value);
 		}
 #else
 		public static void AddUserProperty(this BrokeredMessage message, string key, object value)
@@ -30,10 +32,10 @@ namespace Cqrs.Azure.ServiceBus
 		}
 #endif
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-		public static bool TryGetUserPropertyValue(this Message message, string key, out object value)
+#if NETSTANDARD2_0
+		public static bool TryGetUserPropertyValue(this ServiceBusReceivedMessage message, string key, out object value)
 		{
-			return message.UserProperties.TryGetValue(key, out value);
+			return message.ApplicationProperties.TryGetValue(key, out value);
 		}
 #else
 		public static bool TryGetUserPropertyValue(this BrokeredMessage message, string key, out object value)
@@ -42,16 +44,26 @@ namespace Cqrs.Azure.ServiceBus
 		}
 #endif
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0
 		private static DataContractBinarySerializer Serialiser = new DataContractBinarySerializer(typeof(string));
-		public static string GetBodyAsString(this Message message)
+		public static string GetBodyAsString(this ServiceBusReceivedMessage message)
 		{
-			using (var stream = new MemoryStream(message.Body.Length))
+			byte[] rawStream = message.Body.ToArray();
+			using (var stream = new MemoryStream(rawStream.Length))
 			{
-				stream.Write(message.Body, 0, message.Body.Length);
+				stream.Write(rawStream, 0, rawStream.Length);
 				stream.Flush();
 				stream.Position = 0;
-				return (string)Serialiser.ReadObject(stream);
+				try
+				{
+					return (string)Serialiser.ReadObject(stream);
+				}
+				catch (SerializationException)
+				{
+					stream.Position = 0;
+					using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+						return reader.ReadToEnd();
+				}
 			}
 		}
 #else

@@ -21,15 +21,15 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 	public class AzureCommandBusPublisherModule<TAuthenticationToken>
 		: ResolvableModule
 	{
-		#region Overrides of NinjectModule
+		#region Overrides of ResolvableModule
 
 		/// <summary>
 		/// Loads the module into the kernel.
 		/// </summary>
 		public override void Load(IServiceCollection services)
 		{
-			bool isMessageSerialiserBound = IsRegistered<IAzureBusHelper<TAuthenticationToken>>(services);
-			if (!isMessageSerialiserBound)
+			bool isAzureBusHelper = IsRegistered<IAzureBusHelper<TAuthenticationToken>>(services);
+			if (!isAzureBusHelper)
 			{
 				services.AddSingleton<IAzureBusHelper<TAuthenticationToken>,AzureBusHelper<TAuthenticationToken>>();
 			}
@@ -45,9 +45,21 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 		/// </summary>
 		public virtual void RegisterCommandSender(IServiceCollection services)
 		{
-			services.AddSingleton<ICommandPublisher<TAuthenticationToken>, AzureCommandBusPublisher<TAuthenticationToken>>();
+			services.AddSingleton<
+#if NETSTANDARD
+				IAsyncCommandPublisher
+#else
+				ICommandPublisher
+#endif
+				<TAuthenticationToken>, AzureCommandBusPublisher<TAuthenticationToken>>();
 
-			services.AddSingleton<IPublishAndWaitCommandPublisher<TAuthenticationToken>, AzureCommandBusPublisher<TAuthenticationToken>>();
+			services.AddSingleton<
+#if NETSTANDARD
+				IAsyncPublishAndWaitCommandPublisher
+#else
+				IPublishAndWaitCommandPublisher
+#endif
+				<TAuthenticationToken>, AzureCommandBusPublisher<TAuthenticationToken>>();
 		}
 
 		/// <summary>

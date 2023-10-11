@@ -7,9 +7,9 @@
 #endregion
 
 using System;
-using System.Linq;
 using Cqrs.Azure.ServiceBus;
 using Cqrs.Commands;
+using Cqrs.Ninject.Configuration;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
@@ -18,7 +18,8 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureCommandBusPublisher{TAuthenticationToken}"/> as the <see cref="ICommandPublisher{TAuthenticationToken}"/> and other require components.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class AzureCommandBusPublisherModule<TAuthenticationToken> : NinjectModule
+	public class AzureCommandBusPublisherModule<TAuthenticationToken>
+		: ResolvableModule
 	{
 		#region Overrides of NinjectModule
 
@@ -27,8 +28,8 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// </summary>
 		public override void Load()
 		{
-			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IAzureBusHelper<TAuthenticationToken>)).Any();
-			if (!isMessageSerialiserBound)
+			bool isAzureBusHelper = IsRegistered<IAzureBusHelper<TAuthenticationToken>>();
+			if (!isAzureBusHelper)
 			{
 				Bind<IAzureBusHelper<TAuthenticationToken>>()
 					.To<AzureBusHelper<TAuthenticationToken>>()
@@ -46,11 +47,23 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// </summary>
 		public virtual void RegisterCommandSender()
 		{
-			Bind<ICommandPublisher<TAuthenticationToken>>()
+			Bind<
+#if NETSTANDARD || NET6_0
+				IAsyncCommandPublisher
+#else
+				ICommandPublisher
+#endif
+				<TAuthenticationToken>>()
 				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
 
-			Bind<IPublishAndWaitCommandPublisher<TAuthenticationToken>>()
+			Bind<
+#if NETSTANDARD || NET6_0
+				IAsyncPublishAndWaitCommandPublisher
+#else
+				IPublishAndWaitCommandPublisher
+#endif
+				<TAuthenticationToken>>()
 				.To<AzureCommandBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
 		}
@@ -60,7 +73,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// </summary>
 		public virtual void RegisterCommandMessageSerialiser()
 		{
-			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IMessageSerialiser<TAuthenticationToken>)).Any();
+			bool isMessageSerialiserBound = IsRegistered<IMessageSerialiser<TAuthenticationToken>>();
 			if (!isMessageSerialiserBound)
 			{
 				Bind<IMessageSerialiser<TAuthenticationToken>>()

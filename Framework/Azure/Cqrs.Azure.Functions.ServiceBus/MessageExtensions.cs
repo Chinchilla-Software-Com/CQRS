@@ -10,6 +10,7 @@ using Azure.Messaging.ServiceBus;
 using System;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Text;
 using System.Xml;
 
 namespace Cqrs.Azure.Functions.ServiceBus
@@ -36,7 +37,16 @@ namespace Cqrs.Azure.Functions.ServiceBus
 				stream.Write(rawStream, 0, rawStream.Length);
 				stream.Flush();
 				stream.Position = 0;
-				return (string)Serialiser.ReadObject(stream);
+				try
+				{
+					return (string)Serialiser.ReadObject(stream);
+				}
+				catch (SerializationException ex)
+				{
+					stream.Position = 0;
+					using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+						return reader.ReadToEnd();
+				}
 			}
 		}
 	}

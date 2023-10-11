@@ -1,31 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>netcoreapp3.1;net472</TargetFrameworks>
+		<TargetFrameworks>net6.0</TargetFrameworks>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
 		<RootNamespace>Cqrs.Scheduler.TimeZones</RootNamespace>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<DebugType>full</DebugType>
 		<DebugSymbols>true</DebugSymbols>
 		<PlatformTarget>AnyCPU</PlatformTarget>
+		<ApplicationIcon>Cqrs.Scheduler.TimeZones.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<ApplicationIcon>Cqrs.Scheduler.TimeZones.ico</ApplicationIcon>
-		<StartupObject>Cqrs.Scheduler.TimeZones.TimeZoneWebJob</StartupObject>
 		<IsPackable>true</IsPackable>
+		<StartupObject>Program</StartupObject>
 	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'net472' ">
-		<DefineConstants>NET472</DefineConstants>
-	</PropertyGroup>
-
-	<ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-	</ItemGroup>
-
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
-		<PackageReference Include="Ninject.Web.Common.WebHost" version="3.3.2" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<Compile Remove="tools\**" />
@@ -37,33 +27,29 @@
 
 	<ItemGroup>
 		<Compile Remove="Properties\AssemblyInfo.cs" />
+		<Compile Remove="TimeZoneWebJob.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Chinchilla.Logging.Azure.Storage" Version="4.5.31" />
-		<PackageReference Include="Chinchilla.Logging.Azure.ApplicationInsights" Version="4.5.31" />
-		<PackageReference Include="Chinchilla.Logging.Azure" Version="4.5.31" />
-		<PackageReference Include="Chinchilla.Logging" Version="4.5.31" />
-		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.5" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
-		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-		<PackageReference Include="Ninject" version="3.3.6" />
-		<PackageReference Include="System.Net.NameResolution" Version="4.3.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.15.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Framework\Cqrs\Cqrs.csproj" />
-		<ProjectReference Include="..\..\Framework\Ninject\Azure\Cqrs.Ninject.Azure.WebJobs\Cqrs.Ninject.Azure.WebJobs.csproj" />
+		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions.Isolated\Cqrs.Azure.Functions.Isolated.csproj" />
+		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions.ServiceBus\Cqrs.Azure.Functions.ServiceBus.csproj" />
 		<ProjectReference Include="..\Cqrs.Scheduler.Commands\Cqrs.Scheduler.Commands.csproj" />
 		<ProjectReference Include="..\Cqrs.Scheduler.Events\Cqrs.Scheduler.Events.csproj" />
 	</ItemGroup>
-
 	<ItemGroup>
+		<None Update="host.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="cqrs.settings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</None>
 		<None Update="App.config">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="App.Prod.config">
-			<DependentUpon>App.config</DependentUpon>
 		</None>
 		<None Update="local.settings.json">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -77,4 +63,7 @@
 		</Compile>
 	</ItemGroup>
 
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)cqrs.settings.json&quot; COPY /Y &quot;$(ProjectDir)sample.settings.json&quot; &quot;$(ProjectDir)cqrs.settings.json&quot;&#xD;&#xA;IF NOT EXIST &quot;$(ProjectDir)local.settings.json&quot; COPY /Y &quot;$(ProjectDir)sample.settings.json&quot; &quot;$(ProjectDir)local.settings.json&quot;" />
+	</Target>
 </Project>

@@ -9,17 +9,18 @@
 using System;
 using Cqrs.Azure.ServiceBus;
 using Cqrs.Bus;
-using Cqrs.Commands;
 using Cqrs.DependencyInjection.Modules;
+using Cqrs.Events;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Cqrs.Azure.Functions.ServiceBus.Configuration
 {
 	/// <summary>
-	/// A <see cref="Module"/> that wires up <see cref="AzureCommandBusReceiver{TAuthenticationToken}"/> as the <see cref="ICommandReceiver"/> and other require components.
+	/// A <see cref="Module"/> that wires up <see cref="AzureEventBusReceiver{TAuthenticationToken}"/> as the <see cref="IEventReceiver"/> and other require components.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class AzureCommandBusReceiverModule<TAuthenticationToken> : ResolvableModule
+	public class AzureFunctionEventBusReceiverModule<TAuthenticationToken>
+		: ResolvableModule
 	{
 		#region Overrides of NinjectModule
 
@@ -34,11 +35,11 @@ namespace Cqrs.Azure.Functions.ServiceBus.Configuration
 				services.AddSingleton<IAzureBusHelper<TAuthenticationToken>, AzureBusHelper<TAuthenticationToken>>();
 			}
 
-			RegisterCommandMessageSerialiser(services);
-			var bus = GetOrCreateBus<AzureCommandBusReceiver<TAuthenticationToken>>(services);
+			RegisterEventMessageSerialiser(services);
+			var bus = GetOrCreateBus<AzureEventBusReceiver<TAuthenticationToken>>(services);
 
-			RegisterCommandReceiver(services, bus);
-			RegisterCommandHandlerRegistrar(services, bus);
+			RegisterEventReceiver(services, bus);
+			RegisterEventHandlerRegistrar(services, bus);
 		}
 
 		#endregion
@@ -49,13 +50,20 @@ namespace Cqrs.Azure.Functions.ServiceBus.Configuration
 		/// </summary>
 		/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
 		public virtual TBus GetOrCreateBus<TBus>(IServiceCollection services)
-			where TBus : class, ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+			where TBus : class,
+#if NETSTANDARD
+				IAsyncEventReceiver<TAuthenticationToken>, IAsyncEventHandlerRegistrar
+#else
+				IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
+#endif
 		{
 			bool isBusBound = IsRegistered<TBus>(services);
 			TBus bus;
 			if (!isBusBound)
 			{
+				services.AddSingleton<TBus, TBus>();
 				bus = Resolve<TBus>(services);
+				Unbind<TBus>(services);
 				services.AddSingleton<TBus>(bus);
 			}
 			else
@@ -65,35 +73,51 @@ namespace Cqrs.Azure.Functions.ServiceBus.Configuration
 		}
 
 		/// <summary>
-		/// Register the CQRS command receiver
+		/// Register the CQRS event receiver
 		/// </summary>
-#if NET5_0_OR_GREATER
-		public virtual void RegisterCommandReceiver(IServiceCollection services, ICommandReceiver<TAuthenticationToken> bus)
+#if NETSTANDARD
+		public virtual void RegisterEventReceiver(IServiceCollection services, IAsyncEventReceiver<TAuthenticationToken> bus)
 #else
-		public virtual void RegisterCommandReceiver<TBus>(IServiceCollection services, TBus bus)
-			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+		public virtual void RegisterEventReceiver<TBus>(IServiceCollection services, TBus bus)
+			where TBus : IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
 #endif
 		{
-			services.AddSingleton<ICommandReceiver<TAuthenticationToken>>(bus);
+			services.AddSingleton<
+#if NETSTANDARD
+				IAsyncEventReceiver
+#else
+				IEventReceiver
+#endif
+				<TAuthenticationToken>>(bus);
 		}
 
 		/// <summary>
-		/// Register the CQRS command handler registrar
+		/// Register the CQRS event handler registrar
 		/// </summary>
-#if NET5_0_OR_GREATER
-		public virtual void RegisterCommandHandlerRegistrar(IServiceCollection services, ICommandHandlerRegistrar bus)
+#if NETSTANDARD
+		public virtual void RegisterEventHandlerRegistrar(IServiceCollection services, IAsyncEventHandlerRegistrar bus)
 #else
-		public virtual void RegisterCommandHandlerRegistrar<TBus>(IServiceCollection services, TBus bus)
-			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+		public virtual void RegisterEventHandlerRegistrar<TBus>(IServiceCollection services, TBus bus)
+			where TBus : IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
 #endif
 		{
-			services.AddSingleton<ICommandHandlerRegistrar>(bus);
+			bool isHandlerRegistrationBound = IsRegistered<IEventHandlerRegistrar>(services);
+			if (!isHandlerRegistrationBound)
+			{
+				services.AddSingleton<
+#if NETSTANDARD
+					IAsyncEventHandlerRegistrar
+#else
+					IEventHandlerRegistrar 
+#endif
+					>(bus);
+			}
 		}
 
 		/// <summary>
-		/// Register the CQRS command handler message serialiser
+		/// Register the CQRS event handler message serialiser
 		/// </summary>
-		public virtual void RegisterCommandMessageSerialiser(IServiceCollection services)
+		public virtual void RegisterEventMessageSerialiser(IServiceCollection services)
 		{
 			bool isMessageSerialiserBound = IsRegistered<IMessageSerialiser<TAuthenticationToken>>(services);
 			if (!isMessageSerialiserBound)

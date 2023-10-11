@@ -7,10 +7,10 @@
 #endregion
 
 using System;
-using System.Linq;
 using Cqrs.Azure.ServiceBus;
 using Cqrs.Bus;
 using Cqrs.Commands;
+using Cqrs.Ninject.Configuration;
 using Ninject;
 using Ninject.Modules;
 
@@ -20,7 +20,8 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureCommandBusReceiver{TAuthenticationToken}"/> as the <see cref="ICommandReceiver"/> and other require components.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class AzureCommandBusReceiverModule<TAuthenticationToken> : NinjectModule
+	public class AzureCommandBusReceiverModule<TAuthenticationToken>
+		: ResolvableModule
 	{
 		#region Overrides of NinjectModule
 
@@ -29,8 +30,8 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// </summary>
 		public override void Load()
 		{
-			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IAzureBusHelper<TAuthenticationToken>)).Any();
-			if (!isMessageSerialiserBound)
+			bool isAzureBusHelper = IsRegistered<IAzureBusHelper<TAuthenticationToken>>();
+			if (!isAzureBusHelper)
 			{
 				Bind<IAzureBusHelper<TAuthenticationToken>>()
 					.To<AzureBusHelper<TAuthenticationToken>>()
@@ -52,9 +53,14 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// </summary>
 		/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
 		public virtual TBus GetOrCreateBus<TBus>()
-			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+			where TBus : class,
+#if NETSTANDARD || NET6_0
+				IAsyncCommandReceiver<TAuthenticationToken>, IAsyncCommandHandlerRegistrar
+#else
+				ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+#endif
 		{
-			bool isBusBound = Kernel.GetBindings(typeof(TBus)).Any();
+			bool isBusBound = IsRegistered<TBus>();
 			TBus bus;
 			if (!isBusBound)
 			{
@@ -72,14 +78,20 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// <summary>
 		/// Register the CQRS command receiver
 		/// </summary>
-#if NET5_0_OR_GREATER
-		public virtual void RegisterCommandReceiver(ICommandReceiver<TAuthenticationToken> bus)
+#if NETSTANDARD || NET6_0
+		public virtual void RegisterCommandReceiver(IAsyncCommandReceiver<TAuthenticationToken> bus)
 #else
 		public virtual void RegisterCommandReceiver<TBus>(TBus bus)
 			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
 #endif
 		{
-			Bind<ICommandReceiver<TAuthenticationToken>>()
+			Bind<
+#if NETSTANDARD || NET6_0
+				IAsyncCommandReceiver
+#else
+				ICommandReceiver
+#endif
+				<TAuthenticationToken>>()
 				.ToConstant(bus)
 				.InSingletonScope();
 		}
@@ -87,14 +99,20 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// <summary>
 		/// Register the CQRS command handler registrar
 		/// </summary>
-#if NET5_0_OR_GREATER
-		public virtual void RegisterCommandHandlerRegistrar(ICommandHandlerRegistrar bus)
+#if NETSTANDARD || NET6_0
+		public virtual void RegisterCommandHandlerRegistrar(IAsyncCommandHandlerRegistrar bus)
 #else
 		public virtual void RegisterCommandHandlerRegistrar<TBus>(TBus bus)
 			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
 #endif
 		{
-			Bind<ICommandHandlerRegistrar>()
+			Bind<
+#if NETSTANDARD || NET6_0
+				IAsyncCommandHandlerRegistrar
+#else
+				ICommandHandlerRegistrar
+#endif
+				>()
 				.ToConstant(bus)
 				.InSingletonScope();
 		}
@@ -104,7 +122,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// </summary>
 		public virtual void RegisterCommandMessageSerialiser()
 		{
-			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IMessageSerialiser<TAuthenticationToken>)).Any();
+			bool isMessageSerialiserBound = IsRegistered<IMessageSerialiser<TAuthenticationToken>>();
 			if (!isMessageSerialiserBound)
 			{
 				Bind<IMessageSerialiser<TAuthenticationToken>>()

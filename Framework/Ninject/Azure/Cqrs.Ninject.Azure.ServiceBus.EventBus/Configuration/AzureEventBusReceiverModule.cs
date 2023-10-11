@@ -7,10 +7,10 @@
 #endregion
 
 using System;
-using System.Linq;
 using Cqrs.Azure.ServiceBus;
 using Cqrs.Bus;
 using Cqrs.Events;
+using Cqrs.Ninject.Configuration;
 using Ninject;
 using Ninject.Modules;
 
@@ -20,7 +20,8 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureEventBusReceiver{TAuthenticationToken}"/> as the <see cref="IEventReceiver"/> and other require components.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class AzureEventBusReceiverModule<TAuthenticationToken> : NinjectModule
+	public class AzureEventBusReceiverModule<TAuthenticationToken>
+		: ResolvableModule
 	{
 		#region Overrides of NinjectModule
 
@@ -29,8 +30,8 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		/// </summary>
 		public override void Load()
 		{
-			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IAzureBusHelper<TAuthenticationToken>)).Any();
-			if (!isMessageSerialiserBound)
+			bool isAzureBusHelper = IsRegistered<IAzureBusHelper<TAuthenticationToken>>();
+			if (!isAzureBusHelper)
 			{
 				Bind<IAzureBusHelper<TAuthenticationToken>>()
 					.To<AzureBusHelper<TAuthenticationToken>>()
@@ -52,9 +53,14 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		/// </summary>
 		/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
 		public virtual TBus GetOrCreateBus<TBus>()
-			where TBus : IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
+			where TBus : class,
+#if NETSTANDARD || NET6_0
+				IAsyncEventReceiver<TAuthenticationToken>, IAsyncEventHandlerRegistrar
+#else
+				IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
+#endif
 		{
-			bool isBusBound = Kernel.GetBindings(typeof(TBus)).Any();
+			bool isBusBound = IsRegistered<TBus>();
 			TBus bus;
 			if (!isBusBound)
 			{
@@ -72,14 +78,20 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		/// <summary>
 		/// Register the CQRS event receiver
 		/// </summary>
-#if NET5_0_OR_GREATER
-		public virtual void RegisterEventReceiver(IEventReceiver<TAuthenticationToken> bus)
+#if NETSTANDARD || NET6_0
+		public virtual void RegisterEventReceiver(IAsyncEventReceiver<TAuthenticationToken> bus)
 #else
 		public virtual void RegisterEventReceiver<TBus>(TBus bus)
 			where TBus : IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
 #endif
 		{
-			Bind<IEventReceiver<TAuthenticationToken>>()
+			Bind<
+#if NETSTANDARD || NET6_0
+				IAsyncEventReceiver
+#else
+				IEventReceiver
+#endif
+				<TAuthenticationToken>>()
 				.ToConstant(bus)
 				.InSingletonScope();
 		}
@@ -87,17 +99,23 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		/// <summary>
 		/// Register the CQRS event handler registrar
 		/// </summary>
-#if NET5_0_OR_GREATER
-		public virtual void RegisterEventHandlerRegistrar(IEventHandlerRegistrar bus)
+#if NETSTANDARD || NET6_0
+		public virtual void RegisterEventHandlerRegistrar(IAsyncEventHandlerRegistrar bus)
 #else
 		public virtual void RegisterEventHandlerRegistrar<TBus>(TBus bus)
 			where TBus : IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
 #endif
 		{
-			bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(IEventHandlerRegistrar)).Any();
+			bool isHandlerRegistrationBound = IsRegistered<IEventHandlerRegistrar>();
 			if (!isHandlerRegistrationBound)
 			{
-				Bind<IEventHandlerRegistrar>()
+				Bind<
+#if NETSTANDARD || NET6_0
+					IAsyncEventHandlerRegistrar
+#else
+					IEventHandlerRegistrar
+#endif
+					>()
 					.ToConstant(bus)
 					.InSingletonScope();
 			}
@@ -108,7 +126,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		/// </summary>
 		public virtual void RegisterEventMessageSerialiser()
 		{
-			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IMessageSerialiser<TAuthenticationToken>)).Any();
+			bool isMessageSerialiserBound = IsRegistered<IMessageSerialiser<TAuthenticationToken>>();
 			if (!isMessageSerialiserBound)
 			{
 				Bind<IMessageSerialiser<TAuthenticationToken>>()

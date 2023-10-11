@@ -35,9 +35,23 @@ namespace Cqrs.DependencyInjection.Modules
 		/// <returns>Null if no resolution is made.</returns>
 		protected virtual object Resolve(IServiceCollection services, Type type)
 		{
-			IServiceProvider serviceProvider = services.BuildServiceProvider();
-			var service = serviceProvider.GetService(type);
-			return service;
+			using (ServiceProvider tempProvider = services.BuildServiceProvider())
+			{
+				// temporarily set the Kernel
+				var di = DependencyResolver.Current as DependencyResolver;
+				bool setTemporaryKernel = di != null && di.Kernel == null;
+				if (setTemporaryKernel)
+					di.SetKernel(tempProvider);
+
+				object result = tempProvider.GetService(type);
+
+				// resolve the Kernel back to null
+				if (setTemporaryKernel)
+					di.SetKernel(null);
+
+				return result;
+			}
+
 		}
 	}
 }

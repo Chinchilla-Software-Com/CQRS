@@ -10,19 +10,21 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-using Microsoft.Azure.ServiceBus;
-using Microsoft.Azure.ServiceBus.Core;
-using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+
+#if NETSTANDARD2_0
+using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusReceivedMessage;
+using IMessageReceiver = Azure.Messaging.ServiceBus.ServiceBusReceiver;
 #else
 using Microsoft.ServiceBus.Messaging;
 using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
+
 using SpinWait = Cqrs.Infrastructure.SpinWait;
 
 namespace Cqrs.Azure.ServiceBus
@@ -56,23 +58,28 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Receives a <see cref="BrokeredMessage"/> from the command bus, identifies a key and queues it accordingly.
 		/// </summary>
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-		protected override void ReceiveCommand(IMessageReceiver client, BrokeredMessage message)
+		protected override
+#if NETSTANDARD2_0
+			async Task ReceiveCommandAsync
 #else
-		protected override void ReceiveCommand(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
+			void ReceiveCommand
 #endif
+			(IMessageReceiver serviceBusReceiver, BrokeredMessage message)
 		{
 			try
 			{
-				Logger.LogDebug(string.Format("A command message arrived with the id '{0}'.", message.MessageId));
+				Logger.LogDebug($"A command message arrived with the id '{message.MessageId}'.");
 				string messageBody = message.GetBodyAsString();
 				ICommand<TAuthenticationToken> command = MessageSerialiser.DeserialiseCommand(messageBody);
 
 				CorrelationIdHelper.SetCorrelationId(command.CorrelationId);
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-				string topicPath = client == null ? "UNKNOWN" : client.Path;
+				string topicPath = serviceBusReceiver == null
+					? "UNKNOWN"
+					:
+#if NETSTANDARD2_0
+						serviceBusReceiver.EntityPath;
 #else
-				string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
+						serviceBusReceiver.TopicPath;
 #endif
 				Logger.LogInfo($"A command message arrived from topic {topicPath} with the {message.MessageId} was of type {command.GetType().FullName}.");
 
@@ -83,11 +90,11 @@ namespace Cqrs.Azure.ServiceBus
 				try
 				{
 					object rsn = commandType.GetProperty("Rsn").GetValue(command, null);
-					targetQueueName = string.Format("{0}.{1}", targetQueueName, rsn);
+					targetQueueName = $"{targetQueueName}.{rsn}";
 				}
 				catch
 				{
-					Logger.LogDebug(string.Format("A command message arrived with the id '{0}' was of type {1} but with no Rsn property.", message.MessageId, commandType));
+					Logger.LogDebug($"A command message arrived with the id '{message.MessageId}' was of type {commandType} but with no Rsn property.");
 					// Do nothing if there is no rsn. Just use command type name
 				}
 
@@ -95,20 +102,24 @@ namespace Cqrs.Azure.ServiceBus
 				EnqueueCommand(targetQueueName, command);
 
 				// remove the original message from the incoming queue
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-				client.CompleteAsync(message.SystemProperties.LockToken).Wait(1500);
+#if NETSTANDARD2_0
+				if (serviceBusReceiver != null)
+					await serviceBusReceiver.CompleteMessageAsync(message);
 #else
 				message.Complete();
 #endif
 
-				Logger.LogDebug(string.Format("A command message arrived and was processed with the id '{0}'.", message.MessageId));
+				Logger.LogDebug($"A command message arrived and was processed with the id '{message.MessageId}'.");
 			}
 			catch (Exception exception)
 			{
 				// Indicates a problem, unlock message in queue
-				Logger.LogError(string.Format("A command message arrived with the id '{0}' but failed to be process.", message.MessageId), exception: exception);
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-				client.AbandonAsync(message.SystemProperties.LockToken).Wait(1500);
+				Logger.LogError($"A command message arrived with the id '{message.MessageId}' but failed to be process.", exception: exception);
+#if NETSTANDARD2_0
+				if (serviceBusReceiver != null)
+					await serviceBusReceiver.AbandonMessageAsync(message);
+				else
+					throw;
 #else
 				message.Abandon();
 #endif
@@ -126,7 +137,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		/// <summary>
 		/// Creates the queue of the name <paramref name="queueName"/> if it does not already exist,
-		/// the queue is attached to <see cref="DequeuAndProcessCommand"/> using a <see cref="Thread"/>.
+		/// the queue is attached to <see cref="DequeueAndProcessCommand"/> using a <see cref="Thread"/>.
 		/// </summary>
 		/// <param name="queueName">The name of the queue to check and create.</param>
 		protected void CreateQueueAndAttachListenerIfNotExist(string queueName)
@@ -142,13 +153,13 @@ namespace Cqrs.Azure.ServiceBus
 						new Thread(() =>
 						{
 							Thread.CurrentThread.Name = queueName;
-							DequeuAndProcessCommand(queueName);
+							DequeueAndProcessCommand(queueName);
 						}).Start();
 					}
 				}
 				catch (Exception exception)
 				{
-					Logger.LogError(string.Format("Processing a request to start a thread for the queue '{0}' failed.", queueName), exception: exception);
+					Logger.LogError($"Processing a request to start a thread for the queue '{queueName}' failed.", exception: exception);
 				}
 				finally
 				{
@@ -157,12 +168,20 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+#if NETSTANDARD2_0
 		/// <summary>
 		/// Takes an <see cref="ICommand{TAuthenticationToken}"/> off the queue of <paramref name="queueName"/>
-		/// and calls <see cref="ReceiveCommand"/>. Repeats in a loop until the queue is empty.
+		/// and calls <see cref="ReceiveCommandAsync(IMessageReceiver, BrokeredMessage)"/>. Repeats in a loop until the queue is empty.
 		/// </summary>
 		/// <param name="queueName">The name of the queue process.</param>
-		protected void DequeuAndProcessCommand(string queueName)
+#else
+	/// <summary>
+	/// Takes an <see cref="ICommand{TAuthenticationToken}"/> off the queue of <paramref name="queueName"/>
+	/// and calls <see cref="ReceiveCommand"/>. Repeats in a loop until the queue is empty.
+	/// </summary>
+	/// <param name="queueName">The name of the queue process.</param>
+#endif
+		protected void DequeueAndProcessCommand(string queueName)
 		{
 			SpinWait.SpinUntil
 			(
@@ -184,7 +203,7 @@ namespace Cqrs.Azure.ServiceBus
 									}
 									catch (Exception exception)
 									{
-										Logger.LogError(string.Format("Trying to set the CorrelationId from the command type {1} for a request for the queue '{0}' failed.", queueName, command.GetType()), exception: exception);
+										Logger.LogError($"Trying to set the CorrelationId from the command type {command.GetType()} for a request for the queue '{queueName}' failed.", exception: exception);
 									}
 									try
 									{
@@ -192,30 +211,36 @@ namespace Cqrs.Azure.ServiceBus
 									}
 									catch (Exception exception)
 									{
-										Logger.LogError(string.Format("Trying to set the AuthenticationToken from the command type {1} for a request for the queue '{0}' failed.", queueName, command.GetType()), exception: exception);
+										Logger.LogError($"Trying to set the AuthenticationToken from the command type {command.GetType()} for a request for the queue '{queueName}' failed.", exception: exception);
 									}
 									try
 									{
+#if NETSTANDARD2_0
+										Task.Factory.StartNewSafelyAsync(async () => {
+											await ReceiveCommandAsync(command);
+										}).Wait();
+#else
 										ReceiveCommand(command);
+#endif
 									}
 									catch (Exception exception)
 									{
-										Logger.LogError(string.Format("Processing the command type {1} for a request for the queue '{0}' failed.", queueName, command.GetType()), exception: exception);
+										Logger.LogError($"Processing the command type {command.GetType()} for a request for the queue '{queueName}' failed.", exception: exception);
 										queue.Enqueue(command);
 									}
 								}
 								else
-									Logger.LogDebug(string.Format("Trying to dequeue a command from the queue '{0}' failed.", queueName));
+									Logger.LogDebug($"Trying to dequeue a command from the queue '{queueName}' failed.");
 							}
 						}
 						else
-							Logger.LogDebug(string.Format("Trying to find the queue '{0}' failed.", queueName));
+							Logger.LogDebug($"Trying to find the queue '{queueName}' failed.");
 
 						Thread.Sleep(100);
 					}
 					catch (Exception exception)
 					{
-						Logger.LogError(string.Format("Dequeuing and processing a request for the queue '{0}' failed.", queueName), exception: exception);
+						Logger.LogError($"Dequeuing and processing a request for the queue '{queueName}' failed.", exception: exception);
 					}
 
 					// Always return false to keep this spinning.
