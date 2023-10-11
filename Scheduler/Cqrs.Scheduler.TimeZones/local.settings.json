@@ -1,15 +1,16 @@
 {
 	"IsEncrypted": false,
 	"Values": {
-		"AzureWebJobsStorage": "UseDevelopmentStorage=true",
-		"FUNCTIONS_WORKER_RUNTIME": "dotnet"
+		"AzureWebJobsStorage": "UseDevelopmentStorage=true"
+		// https://stackoverflow.com/questions/69104798/error-did-not-find-functions-with-language-dotnet-isolated-in-azure-function#75554132
+		// "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
 	},
 	"Chinchilla": {
 		"Logging": {
 			"EnableThreadedLoggingOutput": "true",
 			"EnableThreadedLogging": "true",
 			"UseApplicationInsightTelemetryHelper": "false",
-			"ModuleName": "Cqrs.Scheduler.TriggerScheduler",
+			"ModuleName": "Cqrs.Scheduler.TimeZones",
 			"Instance": "AU-East",
 			"Environment": "Local",
 			"EnvironmentInstance": "One",
@@ -23,19 +24,15 @@
 			"AppName": "Cqrs.Scheduler.TimeZones",
 			"ApplicationInsightsInstrumentationKey": "ApiKey",
 			"EnableEventReceiving": false,
-			"EnableCommandReceiving": true
+			"EnableCommandReceiving": true,
+			"PauseAndWaitMaximumCount": 0
 		},
 		"MessageBus": {
 			"BlackListProcessing": "false"
 		},
-		"WebJobs": {
-			"EnabledApplicationInsightsDeveloperMode": false,
-			"DisableWebJobHostControl": true
-		},
 		"Azure": {
 			"CommandBus": {
-				// Endpoint=sb://{Namespace}.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey={Key}
-				"ConnectionString": "Endpoint=sb://cg-prod-scheduler-au-east.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=MFruMYCnOeFmsCEJNwwnSXTTGyTilb91wc3IIIY0O14=",
+				"ConnectionString": "Endpoint=sb://sb-expensinel-beta-au-east.servicebus.windows.net/;SharedAccessKeyName=Local;SharedAccessKey=IIAnA3jgpKtEPwuBqDdkmIUfELHskomnF+ASbOH/Vq0=",
 				"Publisher": {
 					"UseApplicationInsightTelemetryHelper": true
 				},
@@ -65,8 +62,7 @@
 				}
 			},
 			"EventBus": {
-				// Endpoint=sb://{Namespace}.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey={Key}
-				"ConnectionString": "Endpoint=sb://cg-prod-scheduler-au-east.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=MFruMYCnOeFmsCEJNwwnSXTTGyTilb91wc3IIIY0O14=",
+				"ConnectionString": "Endpoint=sb://sb-expensinel-beta-au-east.servicebus.windows.net/;SharedAccessKeyName=Local;SharedAccessKey=IIAnA3jgpKtEPwuBqDdkmIUfELHskomnF+ASbOH/Vq0=",
 				"Publisher": {
 					"UseApplicationInsightTelemetryHelper": true
 				},
@@ -108,6 +104,7 @@
 		}
 	},
 	"ConnectionStrings": {
-		"Logs": "UseDevelopmentStorage=true"
+		"Logs": "UseDevelopmentStorage=true",
+		"Cqrs.Azure.CommandBus.ConnectionString": "Endpoint=sb://sb-expensinel-beta-au-east.servicebus.windows.net/;SharedAccessKeyName=Local;SharedAccessKey=IIAnA3jgpKtEPwuBqDdkmIUfELHskomnF+ASbOH/Vq0="
 	}
 }

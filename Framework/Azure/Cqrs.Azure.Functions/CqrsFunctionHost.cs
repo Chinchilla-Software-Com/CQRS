@@ -116,6 +116,26 @@ namespace Cqrs.Azure.Functions
 				{
 					options.EnableUserCodeException = true;
 				})
+				.ConfigureAppConfiguration(config =>
+				{
+#if NET472
+#else
+					string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
+					string azureRoot = Environment.GetEnvironmentVariable("HOME");
+					azureRoot = string.IsNullOrWhiteSpace(azureRoot)
+						? string.Empty
+						: $"{azureRoot}/site/wwwroot";
+
+					string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
+
+					// C# ConfigurationBuilder example for Azure Functions v2 runtime
+					config
+						.SetBasePath(actualRoot)
+						.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true);
+#endif
+					/*
+					*/
+				})
 				.ConfigureServices(services =>
 				{
 					ConfigureApplicationInsights(services);

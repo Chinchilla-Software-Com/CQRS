@@ -16,7 +16,8 @@ namespace Cqrs.Ninject.Configuration
 	/// <summary>
 	/// A <see cref="INinjectModule"/> that can resolve anything bound before being called.
 	/// </summary>
-	public abstract class ResolvableModule : NinjectModule
+	public abstract class ResolvableModule
+		: NinjectModule
 	{
 		/// <summary>
 		/// Resolves instances for the specified <typeparamref name="T"/>.

@@ -19,8 +19,8 @@ using Cqrs.Events;
 using Cqrs.Messages;
 
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-using Microsoft.Azure.ServiceBus;
-using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+using Azure.Messaging.ServiceBus;
+using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusMessage;
 #else
 using Microsoft.ServiceBus.Messaging;
 #endif
@@ -35,7 +35,11 @@ namespace Cqrs.Azure.ServiceBus
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class AzureEventBusPublisher<TAuthenticationToken>
 		: AzureEventBus<TAuthenticationToken>
+#if NETSTANDARD2_0
+		, IAsyncEventPublisher<TAuthenticationToken>
+#else
 		, IEventPublisher<TAuthenticationToken>
+#endif
 	{
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureEventBusPublisher{TAuthenticationToken}"/>.
@@ -56,13 +60,24 @@ namespace Cqrs.Azure.ServiceBus
 				string connectionString = $"ConnectionString : {MessageBusConnectionStringConfigurationKey}";
 				try
 				{
-					string _value = GetConnectionString();
+					string _value =
+#if NETSTANDARD2_0
+						GetConnectionStringAsync().Result;
+#else
+						GetConnectionString();
+#endif
 					if (!string.IsNullOrWhiteSpace(_value))
 						connectionString = string.Concat(connectionString, "=", _value);
 					else
 					{
 						connectionString = $"ConnectionRBACSettings : ";
-						connectionString = string.Concat(connectionString, "=", GetRbacConnectionSettings());
+						connectionString = string.Concat(connectionString, "=",
+#if NETSTANDARD2_0
+							GetRbacConnectionSettingsAsync().Result
+#else
+							GetRbacConnectionSettings()
+#endif
+						);
 					}
 				}
 				catch { /* */ }
@@ -75,7 +90,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Publishes the provided <paramref name="event"/> on the event bus.
 		/// </summary>
-		public virtual void Publish<TEvent>(TEvent @event)
+		public virtual
+#if NETSTANDARD2_0
+			async Task PublishAsync
+#else
+			void Publish
+#endif
+			<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			if (@event == null)
@@ -91,16 +112,22 @@ namespace Cqrs.Azure.ServiceBus
 			bool telemeterOverall = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
-			string telemetryName = string.Format("{0}/{1}/{2}", eventType.FullName, @event.GetIdentity(), @event.Id);
+			string telemetryName = $"{eventType.FullName}/{@event.GetIdentity()}/{@event.Id}";
 			var telemeteredEvent = @event as ITelemeteredMessage;
 			if (telemeteredEvent != null)
 				telemetryName = telemeteredEvent.TelemetryName;
 			else
-				telemetryName = string.Format("Event/{0}", telemetryName);
+				telemetryName = $"Event/{telemetryName}";
 
 			try
 			{
-				if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-ServiceBus"))
+				if (!
+#if NETSTANDARD2_0
+					await AzureBusHelper.PrepareAndValidateEventAsync
+#else
+					AzureBusHelper.PrepareAndValidateEvent
+#endif
+					(@event, "Azure-ServiceBus"))
 					return;
 
 				bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(eventType);
@@ -119,16 +146,20 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
+						var brokeredMessage =
+#if NETSTANDARD2_0
+							await CreateBrokeredMessageAsync
+#else
+							CreateBrokeredMessage
+#endif
+							(MessageSerialiser.SerialiseEvent, eventType, @event);
 						int count = 1;
 						do
 						{
 							try
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								Task.Run(async () => {
-									await PublicServiceBusPublisher.SendAsync(brokeredMessage);
-								}).Wait();
+								await PublicServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -143,7 +174,15 @@ namespace Cqrs.Azure.ServiceBus
 						} while (true);
 						wasSuccessfull = true;
 					}
-					catch (QuotaExceededException exception)
+					catch
+					(
+#if NETSTANDARD2_0
+						ServiceBusException
+#else
+						QuotaExceededException
+#endif
+						exception
+					)
 					{
 						responseCode = "429";
 						Logger.LogError("The size of the event being sent was too large or the topic has reached it's limit.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
@@ -168,16 +207,20 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
+						var brokeredMessage =
+#if NETSTANDARD2_0
+							await CreateBrokeredMessageAsync
+#else
+							CreateBrokeredMessage
+#endif
+							(MessageSerialiser.SerialiseEvent, eventType, @event);
 						int count = 1;
 						do
 						{
 							try
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								Task.Run(async () => {
-									await PublicServiceBusPublisher.SendAsync(brokeredMessage);
-								}).Wait();
+								await PublicServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -192,7 +235,15 @@ namespace Cqrs.Azure.ServiceBus
 						} while (true);
 						wasSuccessfull = true;
 					}
-					catch (QuotaExceededException exception)
+					catch
+					(
+#if NETSTANDARD2_0
+						ServiceBusException
+#else
+						QuotaExceededException
+#endif
+						exception
+					)
 					{
 						responseCode = "429";
 						Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
@@ -217,16 +268,20 @@ namespace Cqrs.Azure.ServiceBus
 					wasSuccessfull = false;
 					try
 					{
-						var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
+						BrokeredMessage brokeredMessage =
+#if NETSTANDARD2_0
+							await CreateBrokeredMessageAsync
+#else
+							CreateBrokeredMessage
+#endif
+							(MessageSerialiser.SerialiseEvent, eventType, @event);
 						int count = 1;
 						do
 						{
 							try
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								Task.Run(async () => {
-									await PrivateServiceBusPublisher.SendAsync(brokeredMessage);
-								}).Wait();
+								await PrivateServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PrivateServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -241,7 +296,15 @@ namespace Cqrs.Azure.ServiceBus
 						} while (true);
 						wasSuccessfull = true;
 					}
-					catch (QuotaExceededException exception)
+					catch
+					(
+#if NETSTANDARD2_0
+						ServiceBusException
+#else
+						QuotaExceededException
+#endif
+						exception
+					)
 					{
 						responseCode = "429";
 						Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Event", @event } });
@@ -273,7 +336,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Publishes the provided <paramref name="events"/> on the event bus.
 		/// </summary>
-		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
+		public virtual
+#if NETSTANDARD2_0
+			async Task PublishAsync
+#else
+			void Publish
+#endif
+			<TEvent>(IEnumerable<TEvent> events)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			if (events == null)
@@ -299,11 +368,11 @@ namespace Cqrs.Azure.ServiceBus
 			foreach (TEvent @event in sourceEvents)
 			{
 				Type eventType = @event.GetType();
-				string subTelemetryName = string.Format("{0}/{1}/{2}", eventType.FullName, @event.GetIdentity(), @event.Id);
+				string subTelemetryName = $"{eventType.FullName}/{@event.GetIdentity()}/{@event.Id}";
 				var telemeteredEvent = @event as ITelemeteredMessage;
 				if (telemeteredEvent != null)
 					subTelemetryName = telemeteredEvent.TelemetryName;
-				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);
+				telemetryNames = $"{telemetryNames}{subTelemetryName},";
 			}
 			if (telemetryNames.Length > 0)
 				telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
@@ -316,12 +385,24 @@ namespace Cqrs.Azure.ServiceBus
 				IList<BrokeredMessage> publicBrokeredMessages = new List<BrokeredMessage>(sourceEvents.Count);
 				foreach (TEvent @event in sourceEvents)
 				{
-					if (!AzureBusHelper.PrepareAndValidateEvent(@event, "Azure-ServiceBus"))
+					if (!
+#if NETSTANDARD2_0
+						await AzureBusHelper.PrepareAndValidateEventAsync
+#else
+						AzureBusHelper.PrepareAndValidateEvent
+#endif
+						(@event, "Azure-ServiceBus"))
 						continue;
 
 					Type eventType = @event.GetType();
 
-					BrokeredMessage brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, eventType, @event);
+					BrokeredMessage brokeredMessage =
+#if NETSTANDARD2_0
+						await CreateBrokeredMessageAsync
+#else
+						CreateBrokeredMessage
+#endif
+						(MessageSerialiser.SerialiseEvent, eventType, @event);
 
 					bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(eventType);
 					bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(eventType);
@@ -330,12 +411,12 @@ namespace Cqrs.Azure.ServiceBus
 					if ((isPublicBusRequired == null || !isPublicBusRequired.Value) && (isPrivateBusRequired == null || !isPrivateBusRequired.Value))
 					{
 						publicBrokeredMessages.Add(brokeredMessage);
-						sourceEventMessages.Add(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
+						sourceEventMessages.Add($"A event was published on the public bus with the id '{@event.Id}' was of type {eventType.FullName}.");
 					}
 					if ((isPublicBusRequired != null && isPublicBusRequired.Value))
 					{
 						publicBrokeredMessages.Add(brokeredMessage);
-						sourceEventMessages.Add(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
+						sourceEventMessages.Add($"A event was published on the public bus with the id '{@event.Id}' was of type {eventType.FullName}.");
 					}
 					if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 					{
@@ -361,9 +442,7 @@ namespace Cqrs.Azure.ServiceBus
 							if (publicBrokeredMessages.Any())
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								Task.Run(async () => {
-									await PublicServiceBusPublisher.SendAsync(publicBrokeredMessages);
-								}).Wait();
+								await PublicServiceBusPublisher.SendMessagesAsync(publicBrokeredMessages);
 #else
 								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
 #endif
@@ -381,7 +460,15 @@ namespace Cqrs.Azure.ServiceBus
 					} while (true);
 					wasSuccessfull = true;
 				}
-				catch (QuotaExceededException exception)
+				catch
+				(
+#if NETSTANDARD2_0
+					ServiceBusException
+#else
+					QuotaExceededException
+#endif
+					exception
+				)
 				{
 					responseCode = "429";
 					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Events", publicBrokeredMessages } });
@@ -411,9 +498,7 @@ namespace Cqrs.Azure.ServiceBus
 							if (privateBrokeredMessages.Any())
 							{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								Task.Run(async () => {
-									await PrivateServiceBusPublisher.SendAsync(privateBrokeredMessages);
-								}).Wait();
+								await PrivateServiceBusPublisher.SendMessagesAsync(privateBrokeredMessages);
 #else
 								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
 #endif
@@ -431,7 +516,15 @@ namespace Cqrs.Azure.ServiceBus
 					} while (true);
 					wasSuccessfull = true;
 				}
-				catch (QuotaExceededException exception)
+				catch
+				(
+#if NETSTANDARD2_0
+					ServiceBusException
+#else
+					QuotaExceededException
+#endif
+					exception
+				)
 				{
 					responseCode = "429";
 					Logger.LogError("The size of the event being sent was too large.", exception: exception, metaData: new Dictionary<string, object> { { "Events", privateBrokeredMessages } });

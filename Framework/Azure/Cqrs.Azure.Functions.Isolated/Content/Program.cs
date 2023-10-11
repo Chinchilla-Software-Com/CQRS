@@ -5,16 +5,14 @@ using Cqrs.Azure.Functions;
 using Cqrs.Configuration;
 
 public class Program
-	: CqrsFunctionHost<Guid>
+	: CqrsIsolatedFunctionHost<Guid, DefaultAuthenticationTokenHelper, IsolatedFunctionHostModule>
 {
+	/// <summary>
+	/// Entry point for the issolated application.
+	/// </summary>
 	public static void Main(string[] args)
 	{
 		PrepareConfigurationManager();
 		new Program().Go();
-	}
-
-	protected override void ConfigureDefaultDependencyResolver()
-	{
-		// todo implement
 	}
 }

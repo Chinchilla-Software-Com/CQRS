@@ -8,6 +8,7 @@
 
 using System;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using Cqrs.Messages;
 
 namespace Cqrs.Bus

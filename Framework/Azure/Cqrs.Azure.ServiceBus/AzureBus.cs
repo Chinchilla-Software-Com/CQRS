@@ -16,12 +16,11 @@ using Chinchilla.Logging;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-using Microsoft.Azure.ServiceBus;
-using Microsoft.Azure.ServiceBus.Core;
-using Microsoft.Azure.ServiceBus.Management;
-using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
-using RetryPolicy = Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling.RetryPolicy;
+
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+using Azure.Identity;
+using Azure.Messaging.ServiceBus;
+using ManagementClient = Azure.Messaging.ServiceBus.Administration.ServiceBusAdministrationClient;
 #else
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
@@ -101,7 +100,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected const int DefaultMaximumConcurrentReceiverProcessesCount = 1;
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Used by .NET Framework, but not .Net Core
 		/// </summary>
@@ -144,28 +143,74 @@ namespace Cqrs.Azure.ServiceBus
 			Logger = logger;
 			ConfigurationManager = configurationManager;
 
-			// ReSharper disable DoNotCallOverridableMethodsInConstructor
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			UpdateSettingsAsync().Wait();
+#else
 			UpdateSettings();
+#endif
 			if (isAPublisher)
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				InstantiatePublishingAsync().Wait();
+#else
 				InstantiatePublishing();
-			// ReSharper restore DoNotCallOverridableMethodsInConstructor
+#endif
 		}
 
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
-		/// Sets <see cref="ConnectionString"/> from <see cref="GetConnectionString"/>.
+		/// Sets <see cref="ConnectionString"/> from 
+		/// <see cref = "GetConnectionStringAsync" />.
 		/// </summary>
-		protected virtual void SetConnectionStrings()
+#else
+		/// <summary>
+		/// Sets <see cref="ConnectionString"/> from 
+		/// <see cref="GetConnectionString"/>.
+		/// </summary>
+#endif
+		protected virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			async Task SetConnectionStringsAsync
+#else
+			void SetConnectionStrings
+#endif
+			()
 		{
-			ConnectionString = GetConnectionString();
+			ConnectionString =
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				await GetConnectionStringAsync
+#else
+				GetConnectionString
+#endif
+				();
 			Logger.LogSensitive(string.Format("Connection string settings set to {0}.", ConnectionString));
 		}
 
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
-		/// Sets <see cref="RbacConnectionSettings"/> from <see cref="GetRbacConnectionSettings"/>.
+		/// Sets <see cref="RbacConnectionSettings"/> from 
+		/// <see cref = "GetRbacConnectionSettingsAsync" />.
 		/// </summary>
-		protected virtual void SetRbacConnectionSettings()
+#else
+		/// <summary>
+		/// Sets <see cref="RbacConnectionSettings"/> from 
+		/// <see cref="GetRbacConnectionSettings"/>.
+		/// </summary>
+#endif
+		protected virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			async Task SetRbacConnectionSettingsAsync
+#else
+			void SetRbacConnectionSettings
+#endif
+			()
 		{
-			RbacConnectionSettings = GetRbacConnectionSettings();
+			RbacConnectionSettings =
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				await GetRbacConnectionSettingsAsync
+#else
+				GetRbacConnectionSettings
+#endif
+				();
 			Logger.LogSensitive(string.Format("Connection RBAC settings set to {0}.", RbacConnectionSettings));
 		}
 
@@ -190,12 +235,24 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Gets the connection string for the bus.
 		/// </summary>
-		protected abstract string GetConnectionString();
+		protected abstract
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		Task<string> GetConnectionStringAsync
+#else
+		string GetConnectionString
+#endif
+			();
 
 		/// <summary>
 		/// Gets the RBAC connection settings for the bus from <see cref="AzureBus{TAuthenticationToken}.ConfigurationManager"/>
 		/// </summary>
-		protected abstract AzureBusRbacSettings GetRbacConnectionSettings();
+		protected abstract
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		Task<AzureBusRbacSettings> GetRbacConnectionSettingsAsync
+#else
+		AzureBusRbacSettings GetRbacConnectionSettings
+#endif
+			();
 
 		/// <summary>
 		/// Returns <see cref="DefaultNumberOfReceiversCount"/>.
@@ -218,20 +275,45 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Instantiate publishing on this bus.
 		/// </summary>
-		protected abstract void InstantiatePublishing();
+		protected abstract
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		Task InstantiatePublishingAsync
+#else
+		void InstantiatePublishing
+#endif
+			();
 
 		/// <summary>
 		/// Instantiate receiving on this bus.
 		/// </summary>
-		protected abstract void InstantiateReceiving();
+		protected abstract
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		Task InstantiateReceivingAsync
+#else
+		void InstantiateReceiving
+#endif
+			();
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Creates a new instance of <see cref="ManagementClient"/> with the <see cref="ConnectionString"/>.
 		/// </summary>
-		protected virtual ManagementClient GetManager()
+		protected virtual async Task<ManagementClient> GetManagerAsync()
 		{
-			var manager = new ManagementClient(ConnectionString);
+
+			string connectionString = ConnectionString;
+			AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
+
+			ManagementClient manager;
+			if (!string.IsNullOrWhiteSpace(connectionString))
+				manager = new ManagementClient(ConnectionString);
+			else
+			{
+				var credentials = new ClientSecretCredential(rbacSettings.TenantId, rbacSettings.ApplicationId, rbacSettings.ClientKey);
+				manager = new ManagementClient(rbacSettings.Endpoint, credentials);
+			}
+			return await Task.FromResult(manager);
+		}
 #else
 		/// <summary>
 		/// Creates a new instance of <see cref="NamespaceManager"/> with the <see cref="ConnectionString"/>.
@@ -239,10 +321,12 @@ namespace Cqrs.Azure.ServiceBus
 		protected virtual NamespaceManager GetManager()
 		{
 			NamespaceManager manager = NamespaceManager.CreateFromConnectionString(ConnectionString);
-#endif
 			return manager;
 		}
+#endif
 
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+#else
 		/// <summary>
 		/// Gets the default retry policy dedicated to handling transient conditions with Windows Azure Service Bus.
 		/// </summary>
@@ -250,37 +334,68 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			get
 			{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-				RetryManager retryManager = RetryManager.Instance;
-#else
 				RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance<RetryManager>();
-#endif
 				RetryPolicy retryPolicy = retryManager.GetDefaultAzureServiceBusRetryPolicy();
 				retryPolicy.Retrying += (sender, args) =>
 				{
-					var message = string.Format("Retrying action - Count:{0}, Delay:{1}", args.CurrentRetryCount, args.Delay);
+					var message = $"Retrying action - Count:{args.CurrentRetryCount}, Delay:{args.Delay}";
 					Logger.LogWarning(message, "AzureServiceBusRetryPolicy", args.LastException);
 				};
 				return retryPolicy;
 			}
 		}
+#endif
 
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		/// <summary>
+		/// Starts a new <see cref="Task"/> that periodically calls <see cref="ValidateSettingsHaveChangedAsync"/>
+		/// and if there is a change, calls <see cref="TriggerSettingsCheckingAsync"/>.
+		/// </summary>
+		protected virtual async Task StartSettingsCheckingAsync
+#else
 		/// <summary>
 		/// Starts a new <see cref="Task"/> that periodically calls <see cref="ValidateSettingsHaveChanged"/>
 		/// and if there is a change, calls <see cref="TriggerSettingsChecking"/>.
 		/// </summary>
-		protected virtual void StartSettingsChecking()
+		protected virtual void StartSettingsChecking
+#endif
+			()
 		{
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+#else
 			Task.Factory.StartNewSafely(() =>
+#endif
 			{
-				SpinWait.SpinUntil(ValidateSettingsHaveChanged, sleepInMilliseconds: 1000);
+				SpinWait.SpinUntil(
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					() => { return ValidateSettingsHaveChangedAsync().Result; }
+#else
+					ValidateSettingsHaveChanged
+#endif
+					, sleepInMilliseconds: 1000);
 
 				Logger.LogInfo("Connecting string settings for the Azure Service Bus changed and will now refresh.");
 
 				// Update the connection string and trigger a restart;
-				if (ValidateSettingsHaveChanged())
-					TriggerSettingsChecking();
+				if (
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					await ValidateSettingsHaveChangedAsync
+#else
+					ValidateSettingsHaveChanged
+#endif
+
+					())
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+					await TriggerSettingsCheckingAsync
+#else
+					TriggerSettingsChecking
+#endif
+					();
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			}
+#else
 			});
+#endif
 		}
 
 		/// <summary>
@@ -289,17 +404,44 @@ namespace Cqrs.Azure.ServiceBus
 		/// or <see cref="MaximumConcurrentReceiverProcessesCount"/> have changed.
 		/// </summary>
 		/// <returns></returns>
-		protected virtual bool ValidateSettingsHaveChanged()
+		protected virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		async Task<bool> ValidateSettingsHaveChangedAsync
+#else
+		bool ValidateSettingsHaveChanged
+#endif
+			()
 		{
-			return ConnectionString != GetConnectionString()
+			return ConnectionString !=
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				await GetConnectionStringAsync
+#else
+				GetConnectionString
+#endif
+				()
 				||
-			RbacConnectionSettings.ToString() != GetRbacConnectionSettings().ToString()
+			RbacConnectionSettings.ToString() !=
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				(await GetRbacConnectionSettingsAsync())
+#else
+				GetRbacConnectionSettings()
+#endif
+					.ToString()
 				||
 			NumberOfReceiversCount != GetCurrentNumberOfReceiversCount()
 				||
 			MaximumConcurrentReceiverProcessesCount != GetCurrentMaximumConcurrentReceiverProcessesCount();
 		}
 
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		/// <summary>
+		/// Calls 
+		/// <see cref="SetConnectionStringsAsync"/>
+		/// <see cref="SetRbacConnectionSettingsAsync"/>
+		/// <see cref="SetNumberOfReceiversCount"/> and 
+		/// <see cref="SetMaximumConcurrentReceiverProcessesCount"/>
+		/// </summary>
+#else
 		/// <summary>
 		/// Calls 
 		/// <see cref="SetConnectionStrings"/>
@@ -307,10 +449,22 @@ namespace Cqrs.Azure.ServiceBus
 		/// <see cref="SetNumberOfReceiversCount"/> and 
 		/// <see cref="SetMaximumConcurrentReceiverProcessesCount"/>
 		/// </summary>
-		protected virtual void UpdateSettings()
+#endif
+		protected virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			async Task UpdateSettingsAsync
+#else
+			void UpdateSettings
+#endif
+			()
 		{
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await SetConnectionStringsAsync();
+			await SetRbacConnectionSettingsAsync();
+#else
 			SetConnectionStrings();
 			SetRbacConnectionSettings();
+#endif
 			SetNumberOfReceiversCount();
 			SetMaximumConcurrentReceiverProcessesCount();
 		}
@@ -318,11 +472,17 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Change the settings used by this bus.
 		/// </summary>
-		protected abstract void TriggerSettingsChecking();
+		protected abstract
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			Task TriggerSettingsCheckingAsync
+#else
+			void TriggerSettingsChecking
+#endif
+			();
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
-		/// Sets the handler on <see cref="IReceiverClient.RegisterMessageHandler(Func{Message, System.Threading.CancellationToken, Task}, MessageHandlerOptions)"/>.
+		/// Sets the handler on <see cref="ServiceBusProcessor.ProcessMessageAsync"/>.
 		/// </summary>
 #else
 		/// <summary>

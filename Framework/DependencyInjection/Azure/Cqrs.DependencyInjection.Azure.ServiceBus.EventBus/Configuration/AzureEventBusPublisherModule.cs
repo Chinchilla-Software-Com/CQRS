@@ -19,17 +19,17 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.EventBus
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureEventBusPublisherModule<TAuthenticationToken>
-		: Module
+		: ResolvableModule
 	{
-		#region Overrides of NinjectModule
+		#region Overrides of ResolvableModule
 
 		/// <summary>
 		/// Loads the module into the kernel.
 		/// </summary>
 		public override void Load(IServiceCollection services)
 		{
-			bool isMessageSerialiserBound = IsRegistered<IAzureBusHelper<TAuthenticationToken>>(services);
-			if (!isMessageSerialiserBound)
+			bool isAzureBusHelper = IsRegistered<IAzureBusHelper<TAuthenticationToken>>(services);
+			if (!isAzureBusHelper)
 			{
 				services.AddSingleton<IAzureBusHelper<TAuthenticationToken>, AzureBusHelper<TAuthenticationToken>>();
 			}
@@ -45,7 +45,13 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.EventBus
 		/// </summary>
 		public virtual void RegisterEventPublisher(IServiceCollection services)
 		{
-			services.AddSingleton<IEventPublisher<TAuthenticationToken>, AzureEventBusPublisher<TAuthenticationToken>>();
+			services.AddSingleton<
+#if NETSTANDARD
+				IAsyncEventPublisher
+#else
+				IEventPublisher
+#endif
+				<TAuthenticationToken>, AzureEventBusPublisher<TAuthenticationToken>>();
 		}
 
 		/// <summary>

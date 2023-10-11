@@ -7,7 +7,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using Cqrs.Azure.ServiceBus;
 using Cqrs.Events;
 using Ninject.Modules;
@@ -18,7 +17,8 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureQueuedEventBusReceiver{TAuthenticationToken}"/> as the <see cref="IEventReceiver"/> and other require components.
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-	public class AzureQueuedEventBusReceiverModule<TAuthenticationToken> : AzureEventBusReceiverModule<TAuthenticationToken>
+	public class AzureQueuedEventBusReceiverModule<TAuthenticationToken>
+		: AzureEventBusReceiverModule<TAuthenticationToken>
 	{
 		#region Overrides of AzureEventBusReceiverModule<TAuthenticationToken>
 
@@ -27,8 +27,8 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		/// </summary>
 		public override void Load()
 		{
-			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IAzureBusHelper<TAuthenticationToken>)).Any();
-			if (!isMessageSerialiserBound)
+			bool isAzureBusHelper = IsRegistered<IAzureBusHelper<TAuthenticationToken>>();
+			if (!isAzureBusHelper)
 			{
 				Bind<IAzureBusHelper<TAuthenticationToken>>()
 					.To<AzureBusHelper<TAuthenticationToken>>()

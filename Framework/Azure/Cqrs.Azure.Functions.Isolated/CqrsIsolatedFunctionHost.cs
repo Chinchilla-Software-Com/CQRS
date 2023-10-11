@@ -62,12 +62,28 @@ namespace Cqrs.Azure.Functions.Isolated
 		}
 
 		/// <summary>
+		/// Instantiate a new instance of <see cref="CqrsIsolatedFunctionHost{TAuthenticationToken, TAuthenticationTokenHelper, TIsolatedFunctionHostModule}"/>
+		/// </summary>
+		public CqrsIsolatedFunctionHost()
+		{
+			HandlerTypes = GetCommandOrEventTypes();
+		}
+
+		/// <summary>
 		/// Prepare the host before registering handlers and starting the host.
 		/// </summary>
 		protected override void Prepare()
 		{
 			PrepareHost();
 			base.Prepare();
+		}
+
+		/// <summary>
+		/// Add JUST ONE command and/or event handler here from each assembly you want automatically scanned.
+		/// </summary>
+		protected virtual Type[] GetCommandOrEventTypes()
+		{
+			return new Type[] { };
 		}
 
 		/// <summary>
@@ -91,6 +107,7 @@ namespace Cqrs.Azure.Functions.Isolated
 			// C# ConfigurationBuilder example for Azure Functions v2 runtime
 			IConfigurationRoot config = new ConfigurationBuilder()
 				.SetBasePath(actualRoot)
+				.AddCommandLine(Environment.GetCommandLineArgs())
 				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables()
 				.Build();
@@ -120,13 +137,36 @@ namespace Cqrs.Azure.Functions.Isolated
 			FunctionsDebugger.Enable();
 #endif
 			hostBuilder = new HostBuilder()
-				.ConfigureFunctionsWorkerDefaults(builder => { }, options =>
+				.ConfigureFunctionsWorkerDefaults(builder => {
+				}, options =>
 				{
 					options.EnableUserCodeException = true;
 				})
+				.ConfigureAppConfiguration(config =>
+				{
+#if NET472
+#else
+					string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
+					string azureRoot = Environment.GetEnvironmentVariable("HOME");
+					azureRoot = string.IsNullOrWhiteSpace(azureRoot)
+						? string.Empty
+						: $"{azureRoot}/site/wwwroot";
+
+					string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
+
+					// C# ConfigurationBuilder example for Azure Functions v2 runtime
+					config
+						.SetBasePath(actualRoot)
+						.AddCommandLine(Environment.GetCommandLineArgs())
+						.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
+						.AddEnvironmentVariables();
+#endif
+					/*
+					*/
+				})
 				.ConfigureServices(services =>
 				{
-					ConfigureApplicationInsights(services);
+					// ConfigureApplicationInsights(services);
 					ConfigureHostServices(services);
 				});
 		}

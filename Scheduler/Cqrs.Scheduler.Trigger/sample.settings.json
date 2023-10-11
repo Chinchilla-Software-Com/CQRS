@@ -1,8 +1,9 @@
 {
 	"IsEncrypted": false,
 	"Values": {
-		"AzureWebJobsStorage": "UseDevelopmentStorage=true",
-		"FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+		"AzureWebJobsStorage": "UseDevelopmentStorage=true"
+		// https://stackoverflow.com/questions/69104798/error-did-not-find-functions-with-language-dotnet-isolated-in-azure-function#75554132
+		// "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
 	},
 	"Chinchilla": {
 		"Logging": {
@@ -24,7 +25,7 @@
 			"ApplicationInsightsInstrumentationKey": "ApiKey",
 			"EnableEventReceiving": false,
 			"EnableCommandReceiving": false,
-			"PauseAndWaitMaximumCount":  0
+			"PauseAndWaitMaximumCount": 0
 		},
 		"Azure": {
 			"CommandBus": {
@@ -46,6 +47,7 @@
 		}
 	},
 	"ConnectionStrings": {
-		"Logs": "UseDevelopmentStorage=true"
+		"Logs": "UseDevelopmentStorage=true",
+		"Cqrs.Azure.CommandBus.ConnectionString": "Endpoint=sb://{Namespace}.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey={Key}"
 	}
 }
