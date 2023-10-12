@@ -51,7 +51,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 		/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
 		public virtual TBus GetOrCreateBus<TBus>(IServiceCollection services)
 			where TBus : class,
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				IAsyncCommandReceiver<TAuthenticationToken>, IAsyncCommandHandlerRegistrar
 #else
 				ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
@@ -75,7 +75,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 		/// <summary>
 		/// Register the CQRS command receiver
 		/// </summary>
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		public virtual void RegisterCommandReceiver(IServiceCollection services, IAsyncCommandReceiver<TAuthenticationToken> bus)
 #else
 		public virtual void RegisterCommandReceiver<TBus>(IServiceCollection services, TBus bus)
@@ -83,7 +83,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 #endif
 		{
 			services.AddSingleton<
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				IAsyncCommandReceiver
 #else
 				ICommandReceiver
@@ -94,7 +94,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 		/// <summary>
 		/// Register the CQRS command handler registrar
 		/// </summary>
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		public virtual void RegisterCommandHandlerRegistrar(IServiceCollection services, IAsyncCommandHandlerRegistrar bus)
 #else
 		public virtual void RegisterCommandHandlerRegistrar<TBus>(IServiceCollection services, TBus bus)
@@ -102,7 +102,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 #endif
 		{
 			services.AddSingleton<
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				IAsyncCommandHandlerRegistrar
 #else
 				ICommandHandlerRegistrar

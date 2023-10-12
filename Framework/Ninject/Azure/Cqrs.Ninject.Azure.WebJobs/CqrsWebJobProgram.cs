@@ -31,7 +31,7 @@ public class CqrsWebJobProgram
 	/// </summary>
 	public CqrsWebJobProgram()
 	{
-		HandlerTypes = GetCommandOrEventTypes();
+		HandlerTypes = GetCommandOrEventHandlerTypes();
 	}
 
 	/// <remarks>
@@ -49,7 +49,7 @@ public class CqrsWebJobProgram
 	/// <summary>
 	/// Add JUST ONE command and/or event handler here from each assembly you want automatically scanned.
 	/// </summary>
-	protected virtual Type[] GetCommandOrEventTypes()
+	protected virtual Type[] GetCommandOrEventHandlerTypes()
 	{
 		return new Type[] { };
 	}

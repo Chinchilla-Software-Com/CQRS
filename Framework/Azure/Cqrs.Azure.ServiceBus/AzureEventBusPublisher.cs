@@ -18,7 +18,7 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Messages;
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 using Azure.Messaging.ServiceBus;
 using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusMessage;
 #else
@@ -35,7 +35,7 @@ namespace Cqrs.Azure.ServiceBus
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class AzureEventBusPublisher<TAuthenticationToken>
 		: AzureEventBus<TAuthenticationToken>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		, IAsyncEventPublisher<TAuthenticationToken>
 #else
 		, IEventPublisher<TAuthenticationToken>
@@ -61,7 +61,7 @@ namespace Cqrs.Azure.ServiceBus
 				try
 				{
 					string _value =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						GetConnectionStringAsync().Result;
 #else
 						GetConnectionString();
@@ -72,7 +72,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						connectionString = $"ConnectionRBACSettings : ";
 						connectionString = string.Concat(connectionString, "=",
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							GetRbacConnectionSettingsAsync().Result
 #else
 							GetRbacConnectionSettings()
@@ -91,7 +91,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Publishes the provided <paramref name="event"/> on the event bus.
 		/// </summary>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task PublishAsync
 #else
 			void Publish
@@ -122,7 +122,7 @@ namespace Cqrs.Azure.ServiceBus
 			try
 			{
 				if (!
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					await AzureBusHelper.PrepareAndValidateEventAsync
 #else
 					AzureBusHelper.PrepareAndValidateEvent
@@ -147,7 +147,7 @@ namespace Cqrs.Azure.ServiceBus
 					try
 					{
 						var brokeredMessage =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							await CreateBrokeredMessageAsync
 #else
 							CreateBrokeredMessage
@@ -158,8 +158,8 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
-								await PublicServiceBusPublisher.SendMessageAsync(brokeredMessage);
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+								await PublicServiceBusPublisher.SendMessageAsync(brokeredMessage).ConfigureAwait(true);
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
 #endif
@@ -176,7 +176,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					catch
 					(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						ServiceBusException
 #else
 						QuotaExceededException
@@ -208,7 +208,7 @@ namespace Cqrs.Azure.ServiceBus
 					try
 					{
 						var brokeredMessage =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							await CreateBrokeredMessageAsync
 #else
 							CreateBrokeredMessage
@@ -219,7 +219,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await PublicServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
@@ -237,7 +237,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					catch
 					(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						ServiceBusException
 #else
 						QuotaExceededException
@@ -269,7 +269,7 @@ namespace Cqrs.Azure.ServiceBus
 					try
 					{
 						BrokeredMessage brokeredMessage =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							await CreateBrokeredMessageAsync
 #else
 							CreateBrokeredMessage
@@ -280,7 +280,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await PrivateServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PrivateServiceBusPublisher.Send(brokeredMessage);
@@ -298,7 +298,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					catch
 					(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						ServiceBusException
 #else
 						QuotaExceededException
@@ -337,7 +337,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Publishes the provided <paramref name="events"/> on the event bus.
 		/// </summary>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task PublishAsync
 #else
 			void Publish
@@ -386,7 +386,7 @@ namespace Cqrs.Azure.ServiceBus
 				foreach (TEvent @event in sourceEvents)
 				{
 					if (!
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						await AzureBusHelper.PrepareAndValidateEventAsync
 #else
 						AzureBusHelper.PrepareAndValidateEvent
@@ -397,7 +397,7 @@ namespace Cqrs.Azure.ServiceBus
 					Type eventType = @event.GetType();
 
 					BrokeredMessage brokeredMessage =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						await CreateBrokeredMessageAsync
 #else
 						CreateBrokeredMessage
@@ -441,7 +441,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (publicBrokeredMessages.Any())
 							{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await PublicServiceBusPublisher.SendMessagesAsync(publicBrokeredMessages);
 #else
 								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
@@ -462,7 +462,7 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch
 				(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					ServiceBusException
 #else
 					QuotaExceededException
@@ -497,7 +497,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (privateBrokeredMessages.Any())
 							{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await PrivateServiceBusPublisher.SendMessagesAsync(privateBrokeredMessages);
 #else
 								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
@@ -518,7 +518,7 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch
 				(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					ServiceBusException
 #else
 					QuotaExceededException

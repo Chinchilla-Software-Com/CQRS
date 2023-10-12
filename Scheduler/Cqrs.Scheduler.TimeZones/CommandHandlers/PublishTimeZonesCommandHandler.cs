@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Cqrs.Commands;
 using Cqrs.Scheduler.Commands;
 using Cqrs.Scheduler.Events;
@@ -34,7 +35,7 @@ namespace Cqrs.Scheduler.CommandHandlers
 		/// If <paramref name="minutes"/> is null then get all <see cref="TimeZoneInfo">time-zones</see> that are at midnight.
 		/// Raises a notification for each found <see cref="TimeZoneInfo">time-zone</see>.
 		/// </summary>
-		protected virtual void FindAndPublishTimeZones(short? minutes, DateTimeOffset processDate)
+		protected virtual async Task FindAndPublishTimeZones(short? minutes, DateTimeOffset processDate)
 		{
 			string appSettingName;
 			bool defaultRunSetting;
@@ -88,7 +89,7 @@ namespace Cqrs.Scheduler.CommandHandlers
 					@event.TimezoneId = timeZoneInfo.Id;
 					@event.ProcessDate = processDate;
 					@event.LocalHour = pair.Hour;
-					EventPublisher.Publish(@event);
+					await EventPublisher.PublishAsync(@event);
 				}
 				catch (Exception exception)
 				{

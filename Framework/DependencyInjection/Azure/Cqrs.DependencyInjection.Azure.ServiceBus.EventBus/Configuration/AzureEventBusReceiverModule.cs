@@ -51,7 +51,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.EventBus
 		/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
 		public virtual TBus GetOrCreateBus<TBus>(IServiceCollection services)
 			where TBus : class,
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				IAsyncEventReceiver<TAuthenticationToken>, IAsyncEventHandlerRegistrar
 #else
 				IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
@@ -75,7 +75,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.EventBus
 		/// <summary>
 		/// Register the CQRS event receiver
 		/// </summary>
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		public virtual void RegisterEventReceiver(IServiceCollection services, IAsyncEventReceiver<TAuthenticationToken> bus)
 #else
 		public virtual void RegisterEventReceiver<TBus>(IServiceCollection services, TBus bus)
@@ -83,7 +83,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.EventBus
 #endif
 		{
 			services.AddSingleton<
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				IAsyncEventReceiver
 #else
 				IEventReceiver
@@ -94,7 +94,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.EventBus
 		/// <summary>
 		/// Register the CQRS event handler registrar
 		/// </summary>
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		public virtual void RegisterEventHandlerRegistrar(IServiceCollection services, IAsyncEventHandlerRegistrar bus)
 #else
 		public virtual void RegisterEventHandlerRegistrar<TBus>(IServiceCollection services, TBus bus)
@@ -105,7 +105,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.EventBus
 			if (!isHandlerRegistrationBound)
 			{
 				services.AddSingleton<
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					IAsyncEventHandlerRegistrar
 #else
 					IEventHandlerRegistrar 

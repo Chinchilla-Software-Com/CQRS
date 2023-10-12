@@ -17,7 +17,7 @@ using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusReceivedMessage;
 using IMessageReceiver = Azure.Messaging.ServiceBus.ServiceBusReceiver;
 #else
@@ -58,8 +58,8 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Receives a <see cref="BrokeredMessage"/> from the command bus, identifies a key and queues it accordingly.
 		/// </summary>
-		protected override
-#if NETSTANDARD2_0
+		public override
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task ReceiveCommandAsync
 #else
 			void ReceiveCommand
@@ -76,7 +76,7 @@ namespace Cqrs.Azure.ServiceBus
 				string topicPath = serviceBusReceiver == null
 					? "UNKNOWN"
 					:
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						serviceBusReceiver.EntityPath;
 #else
 						serviceBusReceiver.TopicPath;
@@ -102,7 +102,7 @@ namespace Cqrs.Azure.ServiceBus
 				EnqueueCommand(targetQueueName, command);
 
 				// remove the original message from the incoming queue
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				if (serviceBusReceiver != null)
 					await serviceBusReceiver.CompleteMessageAsync(message);
 #else
@@ -115,7 +115,7 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				// Indicates a problem, unlock message in queue
 				Logger.LogError($"A command message arrived with the id '{message.MessageId}' but failed to be process.", exception: exception);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				if (serviceBusReceiver != null)
 					await serviceBusReceiver.AbandonMessageAsync(message);
 				else
@@ -168,7 +168,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Takes an <see cref="ICommand{TAuthenticationToken}"/> off the queue of <paramref name="queueName"/>
 		/// and calls <see cref="ReceiveCommandAsync(IMessageReceiver, BrokeredMessage)"/>. Repeats in a loop until the queue is empty.
@@ -215,8 +215,8 @@ namespace Cqrs.Azure.ServiceBus
 									}
 									try
 									{
-#if NETSTANDARD2_0
-										Task.Factory.StartNewSafelyAsync(async () => {
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+										SafeTask.RunSafelyAsync(async () => {
 											await ReceiveCommandAsync(command);
 										}).Wait();
 #else

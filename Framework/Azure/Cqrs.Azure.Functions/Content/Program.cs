@@ -7,6 +7,9 @@ using Cqrs.Configuration;
 public class Program
 	: CqrsFunctionHost<Guid>
 {
+	/// <summary>
+	/// Entry point.
+	/// </summary>
 	public static void Main(string[] args)
 	{
 		PrepareConfigurationManager();
