@@ -351,17 +351,19 @@ namespace Cqrs.Azure.ServiceBus
 		/// Starts a new <see cref="Task"/> that periodically calls <see cref="ValidateSettingsHaveChangedAsync"/>
 		/// and if there is a change, calls <see cref="TriggerSettingsCheckingAsync"/>.
 		/// </summary>
-		protected virtual async Task StartSettingsCheckingAsync
 #else
 		/// <summary>
 		/// Starts a new <see cref="Task"/> that periodically calls <see cref="ValidateSettingsHaveChanged"/>
 		/// and if there is a change, calls <see cref="TriggerSettingsChecking"/>.
 		/// </summary>
-		protected virtual void StartSettingsChecking
 #endif
+		protected virtual void StartSettingsChecking
 			()
 		{
+			// this is always in a separate task as it runs in the background
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 #if NETSTANDARD2_0 || NET48_OR_GREATER
+			Task.Factory.StartNewSafelyAsync(async () =>
 #else
 			Task.Factory.StartNewSafely(() =>
 #endif
@@ -391,11 +393,8 @@ namespace Cqrs.Azure.ServiceBus
 					TriggerSettingsChecking
 #endif
 					();
-#if NETSTANDARD2_0 || NET48_OR_GREATER
-			}
-#else
 			});
-#endif
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 		}
 
 		/// <summary>

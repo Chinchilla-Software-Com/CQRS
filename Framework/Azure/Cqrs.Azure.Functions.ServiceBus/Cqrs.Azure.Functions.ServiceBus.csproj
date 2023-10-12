@@ -32,6 +32,10 @@
 			<PackagePath>tools\</PackagePath>
 		</None>
 		<Compile Remove="AzureFunctionServiceBus.cs" />
+		<Compile Remove="Configuration\AzureFunctionCommandBusPublisherModule.cs" />
+		<Compile Remove="Configuration\AzureFunctionCommandBusReceiverModule.cs" />
+		<Compile Remove="Configuration\AzureFunctionEventBusPublisherModule.cs" />
+		<Compile Remove="Configuration\AzureFunctionEventBusReceiverModule.cs" />
 		<Compile Remove="Content\CommandReceiver.cs" />
 		<Compile Remove="MessageExtensions.cs" />
 		<Compile Remove="ServiceBusExtensions.cs" />
@@ -60,8 +64,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.7" />
-		<PackageReference Include="Chinchilla.Logging" Version="4.5.32" />
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.11" />
+		<PackageReference Include="Chinchilla.Logging" Version="4.5.33" />
 
 		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.21.0" />
@@ -97,6 +101,10 @@
 		<ProjectReference Include="..\..\DependencyInjection\Cqrs.DependencyInjection\Cqrs.DependencyInjection.csproj" />
 		<ProjectReference Include="..\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
 		<ProjectReference Include="..\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Configuration\" />
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

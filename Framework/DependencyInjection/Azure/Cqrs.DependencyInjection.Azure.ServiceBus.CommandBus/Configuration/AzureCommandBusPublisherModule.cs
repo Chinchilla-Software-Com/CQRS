@@ -46,7 +46,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 		public virtual void RegisterCommandSender(IServiceCollection services)
 		{
 			services.AddSingleton<
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				IAsyncCommandPublisher
 #else
 				ICommandPublisher
@@ -54,7 +54,8 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 				<TAuthenticationToken>, AzureCommandBusPublisher<TAuthenticationToken>>();
 
 			services.AddSingleton<
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+
 				IAsyncPublishAndWaitCommandPublisher
 #else
 				IPublishAndWaitCommandPublisher

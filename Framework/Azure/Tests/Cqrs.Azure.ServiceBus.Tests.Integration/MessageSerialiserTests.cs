@@ -19,7 +19,7 @@ using TestInitialize = NUnit.Framework.SetUpAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
 using TestContext = System.Object;
 
-#if NET472
+#if NET472_OR_GREATER
 #else
 using Cqrs.Azure.ConfigurationManager;
 using Microsoft.Extensions.Configuration;
@@ -48,7 +48,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		{
 			// Arrange
 			IConfigurationManager configurationManager;
-#if NET472
+#if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
@@ -81,7 +81,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		{
 			// Arrange
 			IConfigurationManager configurationManager;
-#if NET472
+#if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()

@@ -15,7 +15,7 @@ using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Messages;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusReceivedMessage;
 using IMessageReceiver = Azure.Messaging.ServiceBus.ServiceBusReceiver;
 #else
@@ -37,7 +37,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <typeparam name="TCommand">The <see cref="Type"/> of<see cref="ICommand{TAuthenticationToken}"/> being sent.</typeparam>
 		/// <param name="command">The <see cref="ICommand{TAuthenticationToken}"/> to send.</param>
 		/// <param name="framework">The framework the <paramref name="command"/> is being sent from.</param>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task PrepareCommandAsync
 #else
 		void PrepareCommand
@@ -51,7 +51,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <typeparam name="TCommand">The <see cref="Type"/> of<see cref="ICommand{TAuthenticationToken}"/> being sent.</typeparam>
 		/// <param name="command">The <see cref="ICommand{TAuthenticationToken}"/> to send.</param>
 		/// <param name="framework">The framework the <paramref name="command"/> is being sent from.</param>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task<bool> PrepareAndValidateCommandAsync
 #else
 		bool PrepareAndValidateCommand
@@ -71,25 +71,25 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="ICommand{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="ICommand{TAuthenticationToken}"/> that was processed.</returns>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task<ICommand<TAuthenticationToken>> ReceiveCommandAsync
 #else
 		ICommand<TAuthenticationToken> ReceiveCommand
 #endif
 			(IMessageReceiver serviceBusReceiver, string messageBody, Func<ICommand<TAuthenticationToken>,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				Task<bool?>
 #else
 				bool?
 #endif
 				> receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				Func<Task>
 #else
 				Action
 #endif
 				skippedAction = null,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				Func<Task>
 #else
 				Action
@@ -110,7 +110,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// False indicates the <paramref name="command"/> wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
 		/// Null indicates the command<paramref name="command"/> wasn't handled as it was already handled.
 		/// </returns>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task<bool?> DefaultReceiveCommandAsync
 #else
 		bool? DefaultReceiveCommand
@@ -123,7 +123,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <typeparam name="TEvent">The <see cref="Type"/> of<see cref="IEvent{TAuthenticationToken}"/> being sent.</typeparam>
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to send.</param>
 		/// <param name="framework">The framework the <paramref name="event"/> is being sent from.</param>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task PrepareEventAsync
 #else
 		void PrepareEvent
@@ -137,7 +137,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <typeparam name="TEvent">The <see cref="Type"/> of<see cref="IEvent{TAuthenticationToken}"/> being sent.</typeparam>
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to send.</param>
 		/// <param name="framework">The framework the <paramref name="event"/> is being sent from.</param>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task<bool> PrepareAndValidateEventAsync
 #else
 		bool PrepareAndValidateEvent
@@ -157,26 +157,26 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="IEvent{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task<IEvent<TAuthenticationToken>> ReceiveEventAsync
 #else
 		IEvent<TAuthenticationToken> ReceiveEvent
 #endif
 			(IMessageReceiver serviceBusReceiver, string messageBody,
 				Func<IEvent<TAuthenticationToken>,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			Task<bool?>
 #else
 			bool?
 #endif
 			> receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				Func<Task>
 #else
 				Action
 #endif
 				skippedAction = null,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				Func<Task>
 #else
 				Action
@@ -186,7 +186,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Refreshes the network lock.
 		/// </summary>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task RefreshLockAsync(IMessageReceiver client,
 #else
 		void RefreshLock(
@@ -207,7 +207,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// False indicates the <paramref name="event"/> wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
 		/// Null indicates the <paramref name="event"/> wasn't handled as it was already handled.
 		/// </returns>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task<bool?> DefaultReceiveEventAsync
 #else
 		bool? DefaultReceiveEvent
@@ -219,7 +219,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// on the provided <paramref name="routeManger"/>
 		/// </summary>
 		/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/> the <paramref name="handler"/> can handle.</typeparam>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task RegisterHandlerAsync
 #else
 		void RegisterHandler
@@ -230,7 +230,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		Task RegisterGlobalEventHandlerAsync
 #else
 		void RegisterGlobalEventHandler

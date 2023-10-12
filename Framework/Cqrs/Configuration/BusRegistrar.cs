@@ -33,7 +33,17 @@ namespace Cqrs.Configuration
 		/// <summary>
 		/// A <see cref="Func{Type, Type, THandlerRegistrar}"/> to use in-place of <see cref="IEventHandlerRegistrar"/>
 		/// </summary>
+		public static Func<Type, Type, IAsyncHandlerRegistrar> GetAsyncEventHandlerRegistrar { get; set; }
+
+		/// <summary>
+		/// A <see cref="Func{Type, Type, THandlerRegistrar}"/> to use in-place of <see cref="IEventHandlerRegistrar"/>
+		/// </summary>
 		public static Func<Type, Type, IHandlerRegistrar> GetEventHandlerRegistrar { get; set; }
+
+		/// <summary>
+		/// A <see cref="Func{Type, Type, THandlerRegistrar}"/> to use in-place of <see cref="ICommandHandlerRegistrar"/>
+		/// </summary>
+		public static Func<Type, Type, IAsyncHandlerRegistrar> GetAsyncCommandHandlerRegistrar { get; set; }
 
 		/// <summary>
 		/// A <see cref="Func{Type, Type, THandlerRegistrar}"/> to use in-place of <see cref="ICommandHandlerRegistrar"/>
@@ -49,6 +59,12 @@ namespace Cqrs.Configuration
 				throw new ArgumentNullException("dependencyResolver");
 
 			DependencyResolver = dependencyResolver;
+
+			if (GetAsyncEventHandlerRegistrar == null)
+				GetAsyncEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) => DependencyResolver.Resolve<IAsyncEventHandlerRegistrar>();
+			if (GetAsyncCommandHandlerRegistrar == null)
+				GetAsyncCommandHandlerRegistrar = (messageType, handlerDelegateTargetedType) => DependencyResolver.Resolve<IAsyncCommandHandlerRegistrar>();
+
 			if (GetEventHandlerRegistrar == null)
 				GetEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) => DependencyResolver.Resolve<IEventHandlerRegistrar>();
 			if (GetCommandHandlerRegistrar == null)
@@ -61,12 +77,12 @@ namespace Cqrs.Configuration
 		/// <param name="typesFromAssemblyContainingMessages">A collection of <see cref="Type"/> to track back to their containing <see cref="Assembly"/> and scan.</param>
 		public virtual void Register(params Type[] typesFromAssemblyContainingMessages)
 		{
-			var eventHandlerRegistrar = DependencyResolver.Resolve<IEventHandlerRegistrar>();
-			if (eventHandlerRegistrar != null)
+			bool registerEventHandlers = DependencyResolver.Resolve<IAsyncEventHandlerRegistrar>() != null || DependencyResolver.Resolve<IEventHandlerRegistrar>() != null;
+			if (registerEventHandlers)
 				Register(true, ResolveEventHandlerInterface, true, typesFromAssemblyContainingMessages);
 
-			var commandHandlerRegistrar = DependencyResolver.Resolve<ICommandHandlerRegistrar>();
-			if (commandHandlerRegistrar != null)
+			bool registercommandHandlers = DependencyResolver.Resolve<IAsyncCommandHandlerRegistrar>() != null || DependencyResolver.Resolve<ICommandHandlerRegistrar>() != null;
+			if (registercommandHandlers)
 				Register(false, ResolveCommandHandlerInterface, false, typesFromAssemblyContainingMessages);
 		}
 
@@ -146,11 +162,26 @@ namespace Cqrs.Configuration
 		protected virtual void InvokeHandler(Type @interface, bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, Type executorType)
 		{
 			MethodInfo registerExecutorMethod = null;
+			string methodName = "RegisterHandlerAsync";
 
-			MethodInfo originalRegisterExecutorMethod = (trueForEventsFalseForCommands ? GetEventHandlerRegistrar(null, executorType) : GetCommandHandlerRegistrar(null, executorType))
+			IAsyncHandlerRegistrar asyncHandlerRegistrar =
+				trueForEventsFalseForCommands
+					? GetAsyncEventHandlerRegistrar(null, executorType)
+					: GetAsyncCommandHandlerRegistrar(null, executorType);
+			IHandlerRegistrar handlerRegistrar = null;
+			if (asyncHandlerRegistrar == null)
+			{
+				methodName = "RegisterHandler";
+				handlerRegistrar =
+					trueForEventsFalseForCommands
+						? GetEventHandlerRegistrar(null, executorType)
+						: GetCommandHandlerRegistrar(null, executorType);
+			}
+
+			MethodInfo originalRegisterExecutorMethod = ((object)asyncHandlerRegistrar ?? (object)handlerRegistrar)
 				.GetType()
 				.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-				.Where(mi => mi.Name == "RegisterHandler")
+				.Where(mi => mi.Name == methodName)
 				.Where(mi => mi.IsGenericMethod)
 				.Where(mi => mi.GetGenericArguments().Count() == 1)
 				.Single(mi => mi.GetParameters().Count() == 3);
@@ -215,7 +246,21 @@ namespace Cqrs.Configuration
 			{
 				holdMessageLock = true;
 			}
-			registerExecutorMethod.Invoke(trueForEventsFalseForCommands ? GetEventHandlerRegistrar(messageType, handlerDelegate.TargetedType) : GetCommandHandlerRegistrar(messageType, handlerDelegate.TargetedType), new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType, holdMessageLock });
+
+			IAsyncHandlerRegistrar asyncHandlerRegistrar =
+				trueForEventsFalseForCommands
+					? GetAsyncEventHandlerRegistrar(messageType, handlerDelegate.TargetedType)
+					: GetAsyncCommandHandlerRegistrar(messageType, handlerDelegate.TargetedType);
+			IHandlerRegistrar handlerRegistrar = null;
+			if (asyncHandlerRegistrar == null)
+			{
+				handlerRegistrar =
+					trueForEventsFalseForCommands
+						? GetEventHandlerRegistrar(messageType, handlerDelegate.TargetedType)
+						: GetCommandHandlerRegistrar(messageType, handlerDelegate.TargetedType);
+			}
+
+			registerExecutorMethod.Invoke((object)asyncHandlerRegistrar ?? (object)handlerRegistrar, new object[] { handlerDelegate.Delegate, handlerDelegate.TargetedType, holdMessageLock });
 		}
 
 		/// <summary>

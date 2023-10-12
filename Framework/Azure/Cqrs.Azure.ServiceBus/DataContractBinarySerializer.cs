@@ -11,7 +11,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		public DataContractBinarySerializer(Type type)
 		{
-			this.dataContractSerializer = new DataContractSerializer(type);
+			dataContractSerializer = new DataContractSerializer(type);
 		}
 
 		public override object ReadObject(Stream stream)

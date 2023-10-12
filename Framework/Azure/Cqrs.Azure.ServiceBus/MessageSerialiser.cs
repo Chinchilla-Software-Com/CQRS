@@ -27,7 +27,8 @@ namespace Cqrs.Azure.ServiceBus
 
 		static MessageSerialiser()
 		{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			// this compiler directive is intentionally .NET Core and not 4.8
+#if NETSTANDARD2_0
 			RedirectAssembly("mscorlib", "System.Private.CoreLib");
 #else
 			RedirectAssembly("System.Private.CoreLib", "mscorlib");

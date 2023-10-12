@@ -46,7 +46,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.EventBus
 		public virtual void RegisterEventPublisher(IServiceCollection services)
 		{
 			services.AddSingleton<
-#if NETSTANDARD
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				IAsyncEventPublisher
 #else
 				IEventPublisher

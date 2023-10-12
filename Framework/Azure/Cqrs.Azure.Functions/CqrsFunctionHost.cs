@@ -18,7 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-#if NET472
+#if NET48
 #else
 using Microsoft.Extensions.Configuration;
 #endif
@@ -67,7 +67,7 @@ namespace Cqrs.Azure.Functions
 		protected static void PrepareConfigurationManager()
 		{
 			IConfigurationManager configurationManager;
-#if NET472
+#if NET48
 			configurationManager = new CloudConfigurationManager();
 			DependencyResolver.ConfigurationManager = _configurationManager;
 #else
@@ -107,7 +107,7 @@ namespace Cqrs.Azure.Functions
 		/// </summary>
 		protected virtual void PrepareHost()
 		{
-#if NET472
+#if NET48
 			FunctionsDebugger.Enable();
 #endif
 
@@ -118,7 +118,7 @@ namespace Cqrs.Azure.Functions
 				})
 				.ConfigureAppConfiguration(config =>
 				{
-#if NET472
+#if NET48
 #else
 					string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
 					string azureRoot = Environment.GetEnvironmentVariable("HOME");

@@ -23,7 +23,7 @@ using Cqrs.Configuration;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 using Azure.Messaging.ServiceBus;
 using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusReceivedMessage;
 using IMessageReceiver = Azure.Messaging.ServiceBus.ServiceBusProcessor;
@@ -180,7 +180,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected const string DefaultPublicTopicSubscriptionName = "Root";
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// The <see cref="Func{ProcessMessageEventArgs}">handler</see> used for <see cref="ServiceBusProcessor.OnProcessMessageAsync(ProcessMessageEventArgs)"/> on each receiver.
 		/// </summary>
@@ -192,7 +192,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected Action<IMessageReceiver, BrokeredMessage> ReceiverMessageHandler { get; set; }
 #endif
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// The <see cref="ServiceBusProcessorOptions" /> used.
 		/// </summary>
@@ -290,7 +290,7 @@ namespace Cqrs.Azure.ServiceBus
 		}
 #endif
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// The underlaying <see cref="ServiceBusClient"/>.
 		/// Do not use this directly. Use <see cref="GetOrCreateClientAsync"/>
@@ -341,7 +341,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Gets the connection string for the bus from <see cref="AzureBus{TAuthenticationToken}.ConfigurationManager"/>
 		/// </summary>
 		protected override
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		async Task<string> GetConnectionStringAsync
 #else
 		string GetConnectionString
@@ -357,7 +357,7 @@ namespace Cqrs.Azure.ServiceBus
 				if (string.IsNullOrWhiteSpace(connectionEndpoint))
 					throw new MissingApplicationSettingForConnectionStringException(MessageBusConnectionStringConfigurationKey);
 			}
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			return await Task.FromResult(connectionString);
 #else
 			return connectionString;
@@ -368,7 +368,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Gets the RBAC connection settings for the bus from <see cref="AzureBus{TAuthenticationToken}.ConfigurationManager"/>
 		/// </summary>
 		protected override
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		async Task<AzureBusRbacSettings> GetRbacConnectionSettingsAsync
 #else
 		AzureBusRbacSettings GetRbacConnectionSettings
@@ -409,7 +409,7 @@ namespace Cqrs.Azure.ServiceBus
 				ClientKey = clientKey,
 				TenantId = tenantId
 			};
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			return await Task.FromResult(result);
 #else
 			return result;
@@ -418,7 +418,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		#endregion
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Instantiate publishing on this bus by
 		/// calling <see cref="CheckPrivateTopicExistsAsync(Manager, bool)"/> and <see cref="CheckPublicTopicExistsAsync(Manager, bool)"/>
@@ -432,7 +432,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 #endif
 		protected override
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task InstantiatePublishingAsync
 #else
 			void InstantiatePublishing
@@ -445,14 +445,14 @@ namespace Cqrs.Azure.ServiceBus
 #endif
 
 			Manager manager =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await GetManagerAsync
 #else
 				GetManager
 #endif
 				();
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await CheckPrivateTopicExistsAsync(manager, false);
 			await CheckPublicTopicExistsAsync(manager, false);
 #else
@@ -460,7 +460,7 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPublicTopicExists(manager, false);
 #endif
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			ServiceBusClient client = await GetOrCreateClientAsync();
 			PrivateServiceBusPublisher = client.CreateSender(PrivateTopicName, new ServiceBusSenderOptions { Identifier = $"{Logger.LoggerSettings.ModuleName} Private Bus" });
 			PublicServiceBusPublisher = client.CreateSender(PublicTopicName, new ServiceBusSenderOptions { Identifier = $"{Logger.LoggerSettings.ModuleName} Public Bus" });
@@ -479,15 +479,10 @@ namespace Cqrs.Azure.ServiceBus
 				PublicServiceBusPublisher = TopicClient.CreateWithAzureActiveDirectory(new Uri(RbacConnectionSettings.Endpoint), PublicTopicName, GetActiveDirectoryToken, RbacConnectionSettings.GetDefaultAuthority());
 			}
 #endif
-#if NETSTANDARD2_0
-			await StartSettingsCheckingAsync
-#else
-				StartSettingsChecking
-#endif
-			();
+			StartSettingsChecking();
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Instantiate receiving on this bus by
 		/// calling <see cref="CheckPrivateTopicExistsAsync(Manager, bool)"/> and <see cref="CheckPublicTopicExistsAsync(Manager, bool)"/>
@@ -505,7 +500,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 #endif
 		protected override
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task InstantiateReceivingAsync
 #else
 			void InstantiateReceiving
@@ -514,7 +509,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 
 			Manager manager =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await GetManagerAsync
 #else
 				GetManager
@@ -523,7 +518,7 @@ namespace Cqrs.Azure.ServiceBus
 			string connectionString = ConnectionString;
 			AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await CheckPrivateTopicExistsAsync(manager);
 			await CheckPublicTopicExistsAsync(manager);
 #else
@@ -533,7 +528,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			try
 			{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await InstantiateReceivingAsync
 #else
 				InstantiateReceiving
@@ -546,7 +541,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 			try
 			{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await InstantiateReceivingAsync
 #else
 				InstantiateReceiving
@@ -562,7 +557,7 @@ namespace Cqrs.Azure.ServiceBus
 			string enableDeadLetterCleanUpValue = ConfigurationManager.GetSetting("Cqrs.Azure.Servicebus.EnableDeadLetterCleanUp");
 			if (bool.TryParse(enableDeadLetterCleanUpValue, out enableDeadLetterCleanUp) && enableDeadLetterCleanUp)
 			{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await CleanUpDeadLettersAsync(PrivateTopicName, PrivateTopicSubscriptionName);
 				await CleanUpDeadLettersAsync(PublicTopicName, PublicTopicSubscriptionName);
 #else
@@ -576,15 +571,10 @@ namespace Cqrs.Azure.ServiceBus
 			if (PublicServiceBusPublisher != null)
 				return;
 
-#if NETSTANDARD2_0
-			await StartSettingsCheckingAsync
-#else
-			StartSettingsChecking
-#endif
-			();
+			StartSettingsChecking();
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Creates a single <see cref="IMessageReceiver"/>.
 		/// If flushing is required, any flushed <see cref="IMessageReceiver"/> has <see cref="IMessageReceiver.CloseAsync(CancellationToken)"/> called on it first.
@@ -604,14 +594,14 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="topicSubscriptionName">The topic subscription name.</param>
 #endif
 		protected virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task InstantiateReceivingAsync
 #else
 			void InstantiateReceiving
 #endif
 			(Manager manager, IDictionary<int, IMessageReceiver> serviceBusReceivers, string topicName, string topicSubscriptionName)
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			IMessageReceiver serviceBusReceiver = (await GetOrCreateClientAsync()).CreateProcessor(topicName, topicSubscriptionName, new ServiceBusProcessorOptions { ReceiveMode = ServiceBusReceiveMode.PeekLock, Identifier = $"{Logger.LoggerSettings.ModuleName} Receiver", AutoCompleteMessages = false, MaxConcurrentCalls = MaximumConcurrentReceiverProcessesCount, MaxAutoLockRenewalDuration = new TimeSpan(0, 5, 0) });
 
 			if (serviceBusReceivers.ContainsKey(0))
@@ -662,14 +652,14 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="manager">The <see cref="Manager"/>.</param>
 		/// <param name="createSubscriptionIfNotExists">Create a subscription if there isn't one</param>
 		protected virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task CheckPrivateTopicExistsAsync
 #else
 			void CheckPrivateTopicExists
 #endif
 			(Manager manager, bool createSubscriptionIfNotExists = true)
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await CheckTopicExistsAsync
 #else
 			CheckTopicExists
@@ -683,14 +673,14 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="manager">The <see cref="Manager"/>.</param>
 		/// <param name="createSubscriptionIfNotExists">Create a subscription if there isn't one</param>
 		protected virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task CheckPublicTopicExistsAsync
 #else
 			void CheckPublicTopicExists
 #endif
 			(Manager manager, bool createSubscriptionIfNotExists = true)
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await CheckTopicExistsAsync
 #else
 			CheckTopicExists
@@ -703,7 +693,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Checks if a subscription name by the provided <paramref name="subscriptionName"/> exists.
 		/// </summary>
 		protected virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task CheckTopicExistsAsync
 #else
 			void CheckTopicExists
@@ -713,18 +703,14 @@ namespace Cqrs.Azure.ServiceBus
 			// Configure Queue Settings
 			var eventTopicDescription = new TopicDescription(topicName)
 			{
-#if NETSTANDARD2_0
 				MaxSizeInMegabytes = 5120,
-#else
-				MaxSizeInMegabytes = 5120,
-#endif
 				DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
 				EnablePartitioning = true,
 				EnableBatchedOperations = true,
 				SupportOrdering = true
 			};
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			bool topicExists = await manager.TopicExistsAsync(topicName);
 			if (!topicExists)
 			{
@@ -774,7 +760,7 @@ namespace Cqrs.Azure.ServiceBus
 #endif
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// First runs <see cref="AzureBus{TAuthenticationToken}.ValidateSettingsHaveChangedAsync"/> then checks
 		/// <see cref="PublicTopicName"/>, <see cref="PublicTopicSubscriptionName"/>,
@@ -788,7 +774,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 #endif
 		protected override
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task<bool> ValidateSettingsHaveChangedAsync
 #else
 			bool ValidateSettingsHaveChanged
@@ -796,7 +782,7 @@ namespace Cqrs.Azure.ServiceBus
 			()
 		{
 			if (
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await base.ValidateSettingsHaveChangedAsync
 #else
 				base.ValidateSettingsHaveChanged
@@ -812,7 +798,7 @@ namespace Cqrs.Azure.ServiceBus
 			PrivateTopicSubscriptionName != (ConfigurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName);
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Triggers settings checking on both public and private publishers and receivers,
 		/// then calls <see cref="InstantiatePublishingAsync"/> if <see cref="PublicServiceBusPublisher"/> is not null.
@@ -824,7 +810,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 #endif
 		protected override
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task TriggerSettingsCheckingAsync
 #else
 			void TriggerSettingsChecking
@@ -837,7 +823,7 @@ namespace Cqrs.Azure.ServiceBus
 				throwExceptionOnReceiverMessageLockLostExceptionDuringComplete = true;
 			ThrowExceptionOnReceiverMessageLockLostExceptionDuringComplete = throwExceptionOnReceiverMessageLockLostExceptionDuringComplete;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await TriggerSettingsCheckingAsync(PrivateServiceBusPublisher, PrivateServiceBusReceivers);
 			await TriggerSettingsCheckingAsync(PublicServiceBusPublisher, PublicServiceBusReceivers);
 #else
@@ -850,7 +836,7 @@ namespace Cqrs.Azure.ServiceBus
 			if (PublicServiceBusPublisher != null)
 			{
 				Logger.LogDebug("Recursively calling into InstantiatePublishing.");
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await InstantiatePublishingAsync
 #else
 				InstantiatePublishing
@@ -859,7 +845,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Triggers settings checking on the provided <paramref name="serviceBusPublisher"/> and <paramref name="serviceBusReceivers"/>,
 		/// then calls <see cref="InstantiateReceivingAsync()"/>.
@@ -871,7 +857,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 #endif
 		protected virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task TriggerSettingsCheckingAsync
 #else
 			void TriggerSettingsChecking
@@ -881,7 +867,7 @@ namespace Cqrs.Azure.ServiceBus
 			// Let's wrap up using this message bus and start the switch
 			if (serviceBusPublisher != null)
 			{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await serviceBusPublisher.CloseAsync();
 #else
 				serviceBusPublisher.Close();
@@ -893,7 +879,7 @@ namespace Cqrs.Azure.ServiceBus
 				// Let's wrap up using this message bus and start the switch
 				if (serviceBusReceiver != null)
 				{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					await serviceBusReceiver.CloseAsync();
 					await serviceBusReceiver.DisposeAsync();
 #else
@@ -905,7 +891,7 @@ namespace Cqrs.Azure.ServiceBus
 				if (serviceBusReceiver != null)
 				{
 					Logger.LogDebug("Recursively calling into InstantiateReceiving.");
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					await InstantiateReceivingAsync();
 #else
 					InstantiateReceiving();
@@ -927,13 +913,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Registers the provided <paramref name="receiverMessageHandler"/> with the provided <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		protected async virtual Task RegisterReceiverMessageHandlerAsync(Func<ProcessMessageEventArgs, Task> receiverMessageHandler, ServiceBusProcessorOptions receiverMessageHandlerOptions)
 #else
 		protected virtual void RegisterReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
 #endif
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await StoreReceiverMessageHandlerAsync
 #else
 			StoreReceiverMessageHandler
@@ -942,7 +928,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			ApplyReceiverMessageHandler();
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await Task.CompletedTask;
 #endif
 		}
@@ -950,7 +936,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Stores the provided <paramref name="receiverMessageHandler"/> and <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		protected virtual async Task StoreReceiverMessageHandlerAsync(Func<ProcessMessageEventArgs, Task> receiverMessageHandler, ServiceBusProcessorOptions receiverMessageHandlerOptions)
 #else
 		protected virtual void StoreReceiverMessageHandler(Action<IMessageReceiver, BrokeredMessage> receiverMessageHandler, OnMessageOptions receiverMessageHandlerOptions)
@@ -959,7 +945,7 @@ namespace Cqrs.Azure.ServiceBus
 			ReceiverMessageHandler = receiverMessageHandler;
 			ReceiverMessageHandlerOptions = receiverMessageHandlerOptions;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await Task.CompletedTask;
 #endif
 		}
@@ -972,7 +958,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			foreach (IMessageReceiver serviceBusReceiver in PrivateServiceBusReceivers.Values)
 			{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				serviceBusReceiver.ProcessMessageAsync += async args =>
 				{
 					BusHelper.SetWasPrivateBusUsed(true);
@@ -993,7 +979,7 @@ namespace Cqrs.Azure.ServiceBus
 				}
 			foreach (IMessageReceiver serviceBusReceiver in PublicServiceBusReceivers.Values)
 			{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				serviceBusReceiver.ProcessMessageAsync += async args => {
 					BusHelper.SetWasPrivateBusUsed(false);
 					await ReceiverMessageHandler(args);
@@ -1021,7 +1007,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="topicSubscriptionName">The name of the subscription.</param>
 		/// <returns></returns>
 		protected virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task<CancellationTokenSource> CleanUpDeadLettersAsync
 #else
 			CancellationTokenSource CleanUpDeadLetters
@@ -1032,7 +1018,7 @@ namespace Cqrs.Azure.ServiceBus
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "Azure/Servicebus" } };
 			int lockIssues = 0;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			Func<ServiceBusReceiver, ServiceBusReceivedMessage, IMessage, Task> leaveDeadlLetterInQueue = async (receiver, deadLetterBrokeredMessage, deadLetterMessage) =>
 #else
 			Action<BrokeredMessage, IMessage> leaveDeadlLetterInQueue = (deadLetterBrokeredMessage, deadLetterMessage) =>
@@ -1041,7 +1027,7 @@ namespace Cqrs.Azure.ServiceBus
 				// Remove message from queue
 				try
 				{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					await receiver.AbandonMessageAsync(deadLetterBrokeredMessage);
 #else
 					deadLetterBrokeredMessage.Abandon();
@@ -1050,7 +1036,7 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch
 				(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					ServiceBusException
 #else
 					MessageLockLostException
@@ -1063,11 +1049,11 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				Logger.LogDebug($"A dead-letter message of type {deadLetterMessage.GetType().FullName} arrived with the id '{deadLetterBrokeredMessage.MessageId}' but left in the queue due to settings.", "Cqrs.Azure.ServiceBus.CleanUpDeadLetters.LeaveDeadlLetterInQueue");
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await Task.CompletedTask;
 #endif
 			};
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			Func<ServiceBusReceiver, ServiceBusReceivedMessage, Task> removeDeadlLetterFromQueue = async (receiver, deadLetterBrokeredMessage) =>
 #else
 			Action<BrokeredMessage> removeDeadlLetterFromQueue = (deadLetterBrokeredMessage) =>
@@ -1076,7 +1062,7 @@ namespace Cqrs.Azure.ServiceBus
 				// Remove message from queue
 				try
 				{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					await receiver.CompleteMessageAsync(deadLetterBrokeredMessage);
 #else
 					deadLetterBrokeredMessage.Complete();
@@ -1085,7 +1071,7 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch
 				(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					ServiceBusException
 #else
 					MessageLockLostException
@@ -1098,12 +1084,12 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				Logger.LogDebug($"A dead-letter message arrived with the id '{deadLetterBrokeredMessage.MessageId}' but was removed as processing was skipped due to settings.", "Cqrs.Azure.ServiceBus.CleanUpDeadLetters(Async).RemoveDeadlLetterFromQueue");
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await Task.CompletedTask;
 #endif
 			};
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 #else
 			Task.Factory.StartNewSafely(() =>
 #endif
@@ -1114,7 +1100,7 @@ namespace Cqrs.Azure.ServiceBus
 					lockIssues = 0;
 					IEnumerable<BrokeredMessage> brokeredMessages;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					ServiceBusReceiver deadLetterReceiver = (await GetOrCreateClientAsync()).CreateReceiver(topicName, topicSubscriptionName, new ServiceBusReceiverOptions
 					{
 						Identifier = $"{Logger.LoggerSettings.ModuleName} DeadLetter Cleaner",
@@ -1155,13 +1141,13 @@ namespace Cqrs.Azure.ServiceBus
 							BrokeredMessage message = brokeredMessage;
 							try
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await AzureBusHelper.ReceiveEventAsync(deadLetterReceiver, 
 #else
 								AzureBusHelper.ReceiveEvent(null, 
 #endif
 									messageBody,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 									async @event =>
 #else
 									@event =>
@@ -1170,7 +1156,7 @@ namespace Cqrs.Azure.ServiceBus
 										bool isRequired = BusHelper.IsEventRequired(@event.GetType());
 										if (!isRequired)
 										{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 											await removeDeadlLetterFromQueue(deadLetterReceiver, message);
 #else
 											removeDeadlLetterFromQueue(message);
@@ -1178,13 +1164,13 @@ namespace Cqrs.Azure.ServiceBus
 										}
 										else
 										{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 											await leaveDeadlLetterInQueue(deadLetterReceiver, message, @event);
 #else
 											leaveDeadlLetterInQueue(message, @event);
 #endif
 										}
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 										return await Task.FromResult<bool?>(true);
 #else
 										return true;
@@ -1193,26 +1179,26 @@ namespace Cqrs.Azure.ServiceBus
 									$"id '{brokeredMessage.MessageId}'",
 									ExtractSignature(message),
 									SigningTokenConfigurationKey,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 									async
 #endif
 									() =>
 									{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 										await
 #endif
 										removeDeadlLetterFromQueue(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 										deadLetterReceiver,
 #endif
 										message);
 									},
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 									async
 #endif
 									() =>
 									{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 										await Task.CompletedTask;
 #endif
 									}
@@ -1220,13 +1206,13 @@ namespace Cqrs.Azure.ServiceBus
 							}
 							catch
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await AzureBusHelper.ReceiveEventAsync(deadLetterReceiver,
 #else
 								AzureBusHelper.ReceiveEvent(null, 
 #endif
 									messageBody,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 									async command =>
 #else
 									command =>
@@ -1235,7 +1221,7 @@ namespace Cqrs.Azure.ServiceBus
 										bool isRequired = BusHelper.IsEventRequired(command.GetType());
 										if (!isRequired)
 										{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 											await removeDeadlLetterFromQueue(deadLetterReceiver, message);
 #else
 											removeDeadlLetterFromQueue(message);
@@ -1243,13 +1229,13 @@ namespace Cqrs.Azure.ServiceBus
 										}
 										else
 										{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 											await leaveDeadlLetterInQueue(deadLetterReceiver, message, command);
 #else
 											leaveDeadlLetterInQueue(message, command);
 #endif
 										}
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 										return await Task.FromResult<bool?>(true);
 #else
 										return true;
@@ -1258,26 +1244,26 @@ namespace Cqrs.Azure.ServiceBus
 									$"id '{brokeredMessage.MessageId}'",
 									ExtractSignature(message),
 									SigningTokenConfigurationKey,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 									async
 #endif
 									() =>
 									{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 										await
 #endif
 										removeDeadlLetterFromQueue(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 										deadLetterReceiver,
 #endif
 										message);
 									},
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 									async
 #endif
 									() =>
 									{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 										await Task.CompletedTask;
 #endif
 									}
@@ -1291,7 +1277,7 @@ namespace Cqrs.Azure.ServiceBus
 							Logger.LogError($"A dead-letter message arrived with the id '{brokeredMessage.MessageId}' but failed to be process.", exception: exception);
 							try
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await deadLetterReceiver.AbandonMessageAsync(brokeredMessage);
 #else
 								brokeredMessage.Abandon();
@@ -1299,7 +1285,7 @@ namespace Cqrs.Azure.ServiceBus
 							}
 							catch
 							(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								ServiceBusException
 #else
 								MessageLockLostException
@@ -1312,7 +1298,7 @@ namespace Cqrs.Azure.ServiceBus
 							}
 						}
 					}
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 #else
 					client.Close();
 #endif
@@ -1331,26 +1317,26 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch (ObjectDisposedException) { }
 			}
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 #else
 			, brokeredMessageRenewCancellationTokenSource.Token);
 #endif
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			return await Task.FromResult(brokeredMessageRenewCancellationTokenSource);
 #else
 			return brokeredMessageRenewCancellationTokenSource;
 #endif
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		DataContractBinarySerializer brokeredMessageSerialiser = new DataContractBinarySerializer(typeof(string));
 #endif
 		/// <summary>
 		/// Create a <see cref="BrokeredMessage"/> with additional properties to aid routing and tracing
 		/// </summary>
 		protected virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task<ServiceBusMessage> CreateBrokeredMessageAsync
 #else
 			BrokeredMessage CreateBrokeredMessage
@@ -1358,7 +1344,7 @@ namespace Cqrs.Azure.ServiceBus
 			<TMessage>(Func<TMessage, string> serialiserFunction, Type messageType, TMessage message)
 		{
 			string messageBody = serialiserFunction(message);
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			byte[] messageBodyData;
 			using (var stream = new MemoryStream())
 			{
@@ -1379,6 +1365,7 @@ namespace Cqrs.Azure.ServiceBus
 			brokeredMessage.AddUserProperty("Type", messageType.FullName);
 			brokeredMessage.AddUserProperty("Source", $"{Logger.LoggerSettings.ModuleName}/{Logger.LoggerSettings.Instance}/{Logger.LoggerSettings.Environment}/{Logger.LoggerSettings.EnvironmentInstance}");
 			brokeredMessage.AddUserProperty("Framework",
+			// this compiler directive is intentionally .NET Core and not 4.8
 #if NETSTANDARD2_0
 				".NET Core"
 #else
@@ -1429,7 +1416,7 @@ namespace Cqrs.Azure.ServiceBus
 				// Just move on
 			}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			return await Task.FromResult(brokeredMessage);
 #else
 			return brokeredMessage;

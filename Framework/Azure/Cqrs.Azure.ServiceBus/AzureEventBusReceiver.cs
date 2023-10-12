@@ -20,7 +20,7 @@ using Cqrs.Events;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 using Azure.Messaging.ServiceBus;
 using System.Reflection;
 using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusReceivedMessage;
@@ -45,7 +45,7 @@ namespace Cqrs.Azure.ServiceBus
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class AzureEventBusReceiver<TAuthenticationToken>
 		: AzureEventBus<TAuthenticationToken>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		, IAsyncEventHandlerRegistrar
 		, IAsyncEventReceiver<TAuthenticationToken>
 #else
@@ -63,7 +63,7 @@ namespace Cqrs.Azure.ServiceBus
 			get { return "Cqrs.Azure.EventBus.NumberOfReceiversCount"; }
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Used by .NET Framework, but not .Net Core
 		/// </summary>
@@ -135,7 +135,7 @@ namespace Cqrs.Azure.ServiceBus
 				try
 				{
 					string _value =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						GetConnectionStringAsync().Result;
 #else
 						GetConnectionString();
@@ -146,7 +146,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						connectionString = $"ConnectionRBACSettings : ";
 						connectionString = string.Concat(connectionString, "=",
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							GetRbacConnectionSettingsAsync().Result
 #else
 							GetRbacConnectionSettings()
@@ -161,12 +161,12 @@ namespace Cqrs.Azure.ServiceBus
 
 		#region Overrides of AzureServiceBus<TAuthenticationToken>
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		private static SemaphoreSlim lockObject = new SemaphoreSlim(1, 1);
 #else
 		private object lockObject = new object();
 #endif
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Calls <see cref="AzureServiceBus{TAuthenticationToken}.InstantiateReceivingAsync()"/>
 		/// then uses a <see cref="Task"/> to apply the <see cref="FilterKey"/> as a <see cref="RuleDescription"/>
@@ -188,21 +188,21 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="topicSubscriptionName">The topic subscription name.</param>
 #endif
 		protected override
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task InstantiateReceivingAsync
 #else
 			void InstantiateReceiving
 #endif
 			(Manager manager, IDictionary<int, IMessageReceiver> serviceBusReceivers, string topicName, string topicSubscriptionName)
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await base.InstantiateReceivingAsync
 #else
 			base.InstantiateReceiving
 #endif
 				(manager, serviceBusReceivers, topicName, topicSubscriptionName);
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			// https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/servicebus/Azure.Messaging.ServiceBus/samples/Sample12_ManagingRules.md
 			await using ServiceBusRuleManager ruleManager = (await GetOrCreateClientAsync()).CreateRuleManager(topicName, topicSubscriptionName);
 
@@ -232,7 +232,7 @@ namespace Cqrs.Azure.ServiceBus
 						return;
 					FilterKey[topicName] = filter;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 #else
 					client = serviceBusReceivers[0];
 #endif
@@ -240,7 +240,7 @@ namespace Cqrs.Azure.ServiceBus
 					bool reAddRule = false;
 					try
 					{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						IEnumerable<RuleDescription> rules = await ruleManager
 							.GetRulesAsync()
 							.Where(r => r.Name == "CqrsConfiguredFilter" || r.Name == "$Default")
@@ -258,7 +258,7 @@ namespace Cqrs.Azure.ServiceBus
 								reAddRule = true;
 							if (sqlFilter != null && reAddRule)
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await ruleManager.DeleteRuleAsync(ruleDescription.Name);
 #else
 								client.RemoveRule(ruleDescription.Name);
@@ -272,7 +272,7 @@ namespace Cqrs.Azure.ServiceBus
 						// If there is a default rule and we have a rule, it will cause issues
 						if (!string.IsNullOrWhiteSpace(filter) && ruleDescription != null)
 						{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							await ruleManager.DeleteRuleAsync(ruleDescription.Name);
 #else
 							client.RemoveRule(ruleDescription.Name);
@@ -281,7 +281,7 @@ namespace Cqrs.Azure.ServiceBus
 						// If we don't have a rule and there is no longer a default rule, it will cause issues
 						else if (string.IsNullOrWhiteSpace(filter) && !rules.Any())
 						{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							await ruleManager.CreateRuleAsync("$Default", new SqlFilter("1=1"));
 #else
 							ruleDescription = new RuleDescription
@@ -296,7 +296,7 @@ namespace Cqrs.Azure.ServiceBus
 					catch (AggregateException ex)
 					{
 						if (!(ex.InnerException is
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							ServiceBusException
 #else
 							MessagingEntityNotFoundException
@@ -306,7 +306,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					catch
 					(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						ServiceBusException
 #else
 						MessagingEntityNotFoundException
@@ -323,7 +323,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						try
 						{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							await ruleManager.CreateRuleAsync("CqrsConfiguredFilter", new SqlFilter(filter));
 #else
 							RuleDescription ruleDescription = new RuleDescription
@@ -337,7 +337,7 @@ namespace Cqrs.Azure.ServiceBus
 						}
 						catch
 						(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							ServiceBusException
 #else
 							MessagingEntityNotFoundException
@@ -363,7 +363,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 				}
 			}
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			finally
 			{
 				await ruleManager.DisposeAsync();
@@ -385,7 +385,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// In many cases the <paramref name="targetedType"/> will be the handler class itself, what you actually want is the target of what is being updated.
 		/// </remarks>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task RegisterHandlerAsync
 #else
 			void RegisterHandler
@@ -393,7 +393,7 @@ namespace Cqrs.Azure.ServiceBus
 			<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await AzureBusHelper.RegisterHandlerAsync
 #else
 			AzureBusHelper.RegisterHandler
@@ -405,7 +405,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Register an event handler that will listen and respond to events.
 		/// </summary>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task RegisterHandlerAsync
 #else
 			void RegisterHandler
@@ -413,7 +413,7 @@ namespace Cqrs.Azure.ServiceBus
 			<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await RegisterHandlerAsync
 #else
 			RegisterHandler
@@ -421,7 +421,7 @@ namespace Cqrs.Azure.ServiceBus
 			(handler, null, holdMessageLock);
 		}
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		/// <summary>
 		/// Receives a <see cref="ProcessMessageEventArgs"/> from the command bus.
 		/// </summary>
@@ -438,7 +438,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task RegisterGlobalEventHandlerAsync
 #else
 			void RegisterGlobalEventHandler
@@ -446,7 +446,7 @@ namespace Cqrs.Azure.ServiceBus
 			<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			await AzureBusHelper.RegisterGlobalEventHandlerAsync
 #else
 			AzureBusHelper.RegisterGlobalEventHandler
@@ -457,8 +457,8 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Receives a <see cref="BrokeredMessage"/> from the event bus.
 		/// </summary>
-		protected virtual
-#if NETSTANDARD2_0
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		async Task ReceiveEventAsync(ServiceBusReceiver
 #else
 			void ReceiveEvent(IMessageReceiver
@@ -487,13 +487,13 @@ namespace Cqrs.Azure.ServiceBus
 					string messageBody = message.GetBodyAsString();
 
 					IEvent<TAuthenticationToken> @event =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						await AzureBusHelper.ReceiveEventAsync(
 #else
 						AzureBusHelper.ReceiveEvent(
 #endif
 						serviceBusReceiver, messageBody,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						ReceiveEventAsync,
 #else
 						ReceiveEvent,
@@ -501,7 +501,7 @@ namespace Cqrs.Azure.ServiceBus
 						$"id '{message.MessageId}'",
 						ExtractSignature(message),
 						SigningTokenConfigurationKey,
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						async
 #endif
 						() =>
@@ -512,7 +512,7 @@ namespace Cqrs.Azure.ServiceBus
 							// Remove message from queue
 							try
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								if (serviceBusReceiver != null)
 									await serviceBusReceiver.CompleteMessageAsync(message);
 #else
@@ -522,13 +522,13 @@ namespace Cqrs.Azure.ServiceBus
 							catch (AggregateException aggregateException)
 							{
 								if (aggregateException.InnerException is
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 									ServiceBusException
 #else
 									MessageLockLostException
 #endif
 								)
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 									throw aggregateException.InnerException;
 #else
 									throw new MessageLockLostException($"The lock supplied for the skipped event message '{message.MessageId}' is invalid.", aggregateException.InnerException);
@@ -536,7 +536,7 @@ namespace Cqrs.Azure.ServiceBus
 								else
 									throw;
 							}
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 #else
 							catch (MessageLockLostException exception)
 							{
@@ -546,12 +546,12 @@ namespace Cqrs.Azure.ServiceBus
 							Logger.LogDebug($"An event message arrived with the id '{message.MessageId}' but processing was skipped due to event settings.");
 							TelemetryHelper.TrackEvent("Cqrs/Handle/Event/Skipped", telemetryProperties);
 						},
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						async
 #endif
 						() =>
 						{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							// Apparently locks are renewed automatically
 							// see https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-service-bus-trigger?tabs=python-v2%2Cisolated-process%2Cnodejs-v4%2Cextensionv5&pivots=programming-language-csharp#peeklock-behavior
 							// ignore all of that and let's do this manually anyways
@@ -586,7 +586,7 @@ namespace Cqrs.Azure.ServiceBus
 						// Remove message from queue
 						try
 						{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							if (serviceBusReceiver != null)
 								await serviceBusReceiver.CompleteMessageAsync(message);
 #else
@@ -596,13 +596,13 @@ namespace Cqrs.Azure.ServiceBus
 						catch (AggregateException aggregateException)
 						{
 							if (aggregateException.InnerException is
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								ServiceBusException
 #else
 									MessageLockLostException
 #endif
 							)
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								throw aggregateException.InnerException;
 #else
 								throw new MessageLockLostException($"The lock supplied for event '{@event.Id}' of type {@event.GetType().Name} is invalid. To avoid this issue add a '{@event.GetType().FullName}.ShouldRefresh' application settings", aggregateException.InnerException);
@@ -610,7 +610,7 @@ namespace Cqrs.Azure.ServiceBus
 							else
 								throw;
 						}
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 #else
 						catch (MessageLockLostException exception)
 						{
@@ -631,7 +631,7 @@ namespace Cqrs.Azure.ServiceBus
 			}
 			catch
 			(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				ServiceBusException
 #else
 				MessageLockLostException
@@ -647,7 +647,7 @@ namespace Cqrs.Azure.ServiceBus
 					Logger.LogError(exception.Message, exception: exception);
 					// Indicates a problem, unlock message in queue
 					wasSuccessfull = false;
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					if (serviceBusReceiver != null)
 						await serviceBusReceiver.AbandonMessageAsync(message);
 					else
@@ -661,7 +661,7 @@ namespace Cqrs.Azure.ServiceBus
 					Logger.LogWarning(exception.Message, exception: exception);
 					try
 					{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						if (serviceBusReceiver != null)
 							await serviceBusReceiver.DeadLetterMessageAsync(message, "LockLostButHandled", "The message was handled but the lock was lost.");
 #else
@@ -671,7 +671,7 @@ namespace Cqrs.Azure.ServiceBus
 					catch (Exception)
 					{
 						// Oh well, move on.
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						if (serviceBusReceiver != null)
 							await serviceBusReceiver.AbandonMessageAsync(message);
 						else
@@ -692,7 +692,7 @@ namespace Cqrs.Azure.ServiceBus
 				responseCode = "401";
 				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
 				telemetryProperties.Add("ExceptionMessage", exception.Message);
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				if (serviceBusReceiver != null)
 					await serviceBusReceiver.DeadLetterMessageAsync(message, "UnAuthorisedMessageReceivedException", exception.Message);
 				else
@@ -710,7 +710,7 @@ namespace Cqrs.Azure.ServiceBus
 				responseCode = "501";
 				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
 				telemetryProperties.Add("ExceptionMessage", exception.Message);
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				if (serviceBusReceiver != null)
 					await serviceBusReceiver.DeadLetterMessageAsync(message, "NoHandlersRegisteredException", exception.Message);
 				else
@@ -728,7 +728,7 @@ namespace Cqrs.Azure.ServiceBus
 				responseCode = "501";
 				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
 				telemetryProperties.Add("ExceptionMessage", exception.Message);
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				if (serviceBusReceiver != null)
 					await serviceBusReceiver.DeadLetterMessageAsync(message, "NoHandlerRegisteredException", exception.Message);
 				else
@@ -746,7 +746,7 @@ namespace Cqrs.Azure.ServiceBus
 				responseCode = "500";
 				telemetryProperties.Add("ExceptionType", exception.GetType().FullName);
 				telemetryProperties.Add("ExceptionMessage", exception.Message);
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				if (serviceBusReceiver != null)
 					await serviceBusReceiver.AbandonMessageAsync(message);
 				else
@@ -815,7 +815,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Receives a <see cref="IEvent{TAuthenticationToken}"/> from the event bus.
 		/// </summary>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task<bool?> ReceiveEventAsync
 #else
 			bool? ReceiveEvent
@@ -823,7 +823,7 @@ namespace Cqrs.Azure.ServiceBus
 			(IEvent<TAuthenticationToken> @event)
 		{
 			return
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				await AzureBusHelper.DefaultReceiveEventAsync
 #else
 				AzureBusHelper.DefaultReceiveEvent
@@ -878,8 +878,8 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		public virtual void Start()
 		{
-#if NETSTANDARD2_0
-			Task.Factory.StartNewSafelyAsync(async () => {
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			SafeTask.RunSafelyAsync(async () => {
 				await InstantiateReceivingAsync();
 
 				// Configure the callback options

@@ -36,12 +36,12 @@ namespace Cqrs.Hosts
 		/// <summary>
 		/// The <see cref="IEventReceiver"/> that will be configured to receive <see cref="IEvent{TAuthenticationToken}">events</see>.
 		/// </summary>
-		protected IEventReceiver<TAuthenticationToken> EventBus { get; private set; }
+		protected IEventReceiver EventBus { get; private set; }
 
 		/// <summary>
 		/// The <see cref="ICommandReceiver"/> that will be configured to receive <see cref="ICommand{TAuthenticationToken}">commands</see>.
 		/// </summary>
-		protected ICommandReceiver<TAuthenticationToken> CommandBus { get; private set; }
+		protected ICommandReceiver CommandBus { get; private set; }
 
 		/// <summary>
 		/// The hosts telemetry name if telemetry is configured
@@ -125,8 +125,8 @@ namespace Cqrs.Hosts
 			ServicePointManager.DefaultConnectionLimit = 1000;
 
 			RunStartUp();
-			EventBus = DependencyResolver.Current.Resolve<IEventReceiver<TAuthenticationToken>>();
-			CommandBus = DependencyResolver.Current.Resolve<ICommandReceiver<TAuthenticationToken>>();
+			EventBus = (IEventReceiver)DependencyResolver.Current.Resolve<IAsyncEventReceiver<TAuthenticationToken>>() ?? (IEventReceiver)DependencyResolver.Current.Resolve<IEventReceiver<TAuthenticationToken>>();
+			CommandBus = (ICommandReceiver)DependencyResolver.Current.Resolve<IAsyncCommandReceiver<TAuthenticationToken>>() ?? (ICommandReceiver)DependencyResolver.Current.Resolve<ICommandReceiver<TAuthenticationToken>>();
 			Guid correlationId = Guid.NewGuid();
 			CorrelationIdHelper = DependencyResolver.Current.Resolve<ICorrelationIdHelper>();
 			CorrelationIdHelper.SetCorrelationId(correlationId);

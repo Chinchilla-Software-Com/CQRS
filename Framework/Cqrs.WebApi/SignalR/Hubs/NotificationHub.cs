@@ -107,11 +107,9 @@ namespace Cqrs.WebApi.SignalR.Hubs
 		{
 			string userToken = UserToken();
 			string connectionId = Context.ConnectionId;
-			return Task.Factory.StartNewSafely(() =>
+			return SafeTask.RunSafelyAsync(async () =>
 			{
-				Task work = Groups.Add(connectionId, string.Format("User-{0}", userToken));
-				work.ConfigureAwait(false);
-				work.Wait();
+				await Groups.Add(connectionId, string.Format("User-{0}", userToken));
 
 				CurrentHub
 					.Clients
@@ -123,9 +121,7 @@ namespace Cqrs.WebApi.SignalR.Hubs
 					try
 					{
 						Guid userRsn = ConvertUserTokenToUserRsn(userToken);
-						work = Groups.Add(connectionId, string.Format("UserRsn-{0}", userRsn));
-						work.ConfigureAwait(false);
-						work.Wait();
+						await Groups.Add(connectionId, string.Format("UserRsn-{0}", userRsn));
 
 						CurrentHub
 							.Clients

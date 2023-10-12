@@ -22,7 +22,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-#if NET472
+#if NET48
 #else
 using Microsoft.Extensions.Configuration;
 #endif
@@ -66,7 +66,7 @@ namespace Cqrs.Azure.Functions.Isolated
 		/// </summary>
 		public CqrsIsolatedFunctionHost()
 		{
-			HandlerTypes = GetCommandOrEventTypes();
+			HandlerTypes = GetCommandOrEventHandlerTypes();
 		}
 
 		/// <summary>
@@ -81,7 +81,7 @@ namespace Cqrs.Azure.Functions.Isolated
 		/// <summary>
 		/// Add JUST ONE command and/or event handler here from each assembly you want automatically scanned.
 		/// </summary>
-		protected virtual Type[] GetCommandOrEventTypes()
+		protected virtual Type[] GetCommandOrEventHandlerTypes()
 		{
 			return new Type[] { };
 		}
@@ -92,7 +92,7 @@ namespace Cqrs.Azure.Functions.Isolated
 		protected static void PrepareConfigurationManager()
 		{
 			Cqrs.Configuration.IConfigurationManager configurationManager;
-#if NET472
+#if NET48
 			configurationManager = new CloudConfigurationManager();
 			DependencyResolver.ConfigurationManager = _configurationManager;
 #else
@@ -133,7 +133,7 @@ namespace Cqrs.Azure.Functions.Isolated
 		/// </summary>
 		protected virtual void PrepareHost()
 		{
-#if NET472
+#if NET48
 			FunctionsDebugger.Enable();
 #endif
 			hostBuilder = new HostBuilder()
@@ -144,7 +144,7 @@ namespace Cqrs.Azure.Functions.Isolated
 				})
 				.ConfigureAppConfiguration(config =>
 				{
-#if NET472
+#if NET48
 #else
 					string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
 					string azureRoot = Environment.GetEnvironmentVariable("HOME");

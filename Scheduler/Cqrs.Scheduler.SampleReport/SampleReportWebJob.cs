@@ -29,7 +29,7 @@ namespace Cqrs.Scheduler.SampleReport
 	/// </summary>
 	public partial class SampleReportWebJob : CqrsWebJobProgram
 	{
-		protected override Type[] GetCommandOrEventTypes()
+		protected override Type[] GetCommandOrEventHandlerTypes()
 		{
 			return new[] { typeof(SendAnEmailAtMidnight) };
 		}

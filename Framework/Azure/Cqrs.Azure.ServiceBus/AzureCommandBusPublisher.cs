@@ -20,7 +20,7 @@ using Cqrs.Events;
 using Cqrs.Infrastructure;
 using Cqrs.Messages;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 using Azure.Messaging.ServiceBus;
 using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusMessage;
 #else
@@ -37,7 +37,7 @@ namespace Cqrs.Azure.ServiceBus
 	[DebuggerDisplay("{DebuggerDisplay,nq}")]
 	public class AzureCommandBusPublisher<TAuthenticationToken>
 		: AzureCommandBus<TAuthenticationToken>
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 		, IAsyncPublishAndWaitCommandPublisher<TAuthenticationToken>
 #else
 		, IPublishAndWaitCommandPublisher<TAuthenticationToken>
@@ -63,7 +63,7 @@ namespace Cqrs.Azure.ServiceBus
 				try
 				{
 					string _value =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						GetConnectionStringAsync().Result;
 #else
 						GetConnectionString();
@@ -74,7 +74,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						connectionString = $"ConnectionRBACSettings : ";
 						connectionString = string.Concat(connectionString, "=",
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							GetRbacConnectionSettingsAsync().Result
 #else
 							GetRbacConnectionSettings()
@@ -93,7 +93,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Publishes the provided <paramref name="command"/> on the command bus.
 		/// </summary>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task PublishAsync
 #else
 			void Publish
@@ -124,7 +124,7 @@ namespace Cqrs.Azure.ServiceBus
 			try
 			{
 				if (!
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					await AzureBusHelper.PrepareAndValidateCommandAsync
 #else
 					AzureBusHelper.PrepareAndValidateCommand
@@ -149,7 +149,7 @@ namespace Cqrs.Azure.ServiceBus
 					try
 					{
 						BrokeredMessage brokeredMessage =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							await CreateBrokeredMessageAsync
 #else
 							CreateBrokeredMessage
@@ -160,7 +160,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await PublicServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
@@ -178,7 +178,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					catch
 					(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						ServiceBusException
 #else
 						QuotaExceededException
@@ -210,7 +210,7 @@ namespace Cqrs.Azure.ServiceBus
 					try
 					{
 						BrokeredMessage brokeredMessage =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							await CreateBrokeredMessageAsync
 #else
 							CreateBrokeredMessage
@@ -221,7 +221,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await PublicServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PublicServiceBusPublisher.Send(brokeredMessage);
@@ -239,7 +239,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					catch
 					(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						ServiceBusException
 #else
 						QuotaExceededException
@@ -271,7 +271,7 @@ namespace Cqrs.Azure.ServiceBus
 					try
 					{
 						BrokeredMessage brokeredMessage =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							await CreateBrokeredMessageAsync
 #else
 							CreateBrokeredMessage
@@ -282,7 +282,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							try
 							{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await PrivateServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 								PrivateServiceBusPublisher.Send(brokeredMessage);
@@ -300,7 +300,7 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					catch
 					(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						ServiceBusException
 #else
 						QuotaExceededException
@@ -339,7 +339,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Publishes the provided <paramref name="commands"/> on the command bus.
 		/// </summary>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task PublishAsync
 #else
 			void Publish
@@ -388,7 +388,7 @@ namespace Cqrs.Azure.ServiceBus
 				foreach (TCommand command in sourceCommands)
 				{
 					if (!
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						await AzureBusHelper.PrepareAndValidateCommandAsync
 #else
 						AzureBusHelper.PrepareAndValidateCommand
@@ -399,7 +399,7 @@ namespace Cqrs.Azure.ServiceBus
 					Type commandType = command.GetType();
 
 					BrokeredMessage brokeredMessage =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						await CreateBrokeredMessageAsync
 #else
 						CreateBrokeredMessage
@@ -443,7 +443,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (publicBrokeredMessages.Any())
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await PublicServiceBusPublisher.SendMessagesAsync(publicBrokeredMessages);
 #else
 								PublicServiceBusPublisher.SendBatch(publicBrokeredMessages);
@@ -464,7 +464,7 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch
 				(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					ServiceBusException
 #else
 					QuotaExceededException
@@ -499,7 +499,7 @@ namespace Cqrs.Azure.ServiceBus
 						{
 							if (privateBrokeredMessages.Any())
 							{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 								await PrivateServiceBusPublisher.SendMessagesAsync(privateBrokeredMessages);
 #else
 								PrivateServiceBusPublisher.SendBatch(privateBrokeredMessages);
@@ -520,7 +520,7 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch
 				(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					ServiceBusException
 #else
 					QuotaExceededException
@@ -561,7 +561,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task<TEvent> PublishAndWaitAsync
 #else
 			TEvent PublishAndWait
@@ -569,7 +569,7 @@ namespace Cqrs.Azure.ServiceBus
 			<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			return await PublishAndWaitAsync
 #else
 			return PublishAndWait
@@ -584,7 +584,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task<TEvent> PublishAndWaitAsync
 #else
 			TEvent PublishAndWait
@@ -592,7 +592,7 @@ namespace Cqrs.Azure.ServiceBus
 			<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			return await PublishAndWaitAsync
 #else
 			return PublishAndWait
@@ -607,7 +607,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task<TEvent> PublishAndWaitAsync
 #else
 			TEvent PublishAndWait
@@ -618,7 +618,7 @@ namespace Cqrs.Azure.ServiceBus
 			long num = (long)timeout.TotalMilliseconds;
 			if (num < -1L || num > int.MaxValue)
 				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			return await PublishAndWaitAsync
 #else
 			return PublishAndWait
@@ -633,7 +633,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task<TEvent> PublishAndWaitAsync
 #else
 			TEvent PublishAndWait
@@ -641,7 +641,7 @@ namespace Cqrs.Azure.ServiceBus
 			<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			return await PublishAndWaitAsync
 #else
 			return PublishAndWait
@@ -657,7 +657,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task<TEvent> PublishAndWaitAsync
 #else
 			TEvent PublishAndWait
@@ -690,7 +690,7 @@ namespace Cqrs.Azure.ServiceBus
 				if (eventReceiver != null)
 					throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
 				if (!
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					await AzureBusHelper.PrepareAndValidateCommandAsync
 #else
 					AzureBusHelper.PrepareAndValidateCommand
@@ -704,7 +704,7 @@ namespace Cqrs.Azure.ServiceBus
 				try
 				{
 					var brokeredMessage =
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 						await CreateBrokeredMessageAsync
 #else
 						CreateBrokeredMessage
@@ -715,7 +715,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						try
 						{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 							await PrivateServiceBusPublisher.SendMessageAsync(brokeredMessage);
 #else
 							PrivateServiceBusPublisher.Send(brokeredMessage);
@@ -732,7 +732,7 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch
 				(
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 					ServiceBusException
 #else
 					QuotaExceededException
@@ -780,7 +780,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
 		public virtual
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task<TEvent> PublishAndWaitAsync
 #else
 			TEvent PublishAndWait
@@ -791,7 +791,7 @@ namespace Cqrs.Azure.ServiceBus
 			long num = (long)timeout.TotalMilliseconds;
 			if (num < -1L || num > int.MaxValue)
 				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
-#if NETSTANDARD2_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 			return await PublishAndWaitAsync
 #else
 			return PublishAndWait
