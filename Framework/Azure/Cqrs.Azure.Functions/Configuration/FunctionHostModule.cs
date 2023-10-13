@@ -24,12 +24,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 #endif
 
-namespace Cqrs.Azure.Functions.Isolated.Configuration
+namespace Cqrs.Azure.Functions.Configuration
 {
 	/// <summary>
 	/// The core <see cref="Module"/> for use defining base level requirements.
 	/// </summary>
-	public class IsolatedFunctionHostModule : ResolvableModule
+	public class FunctionHostModule : ResolvableModule
 	{
 		#region Overrides of ResolvableModule
 

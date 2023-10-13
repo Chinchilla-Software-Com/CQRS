@@ -25,7 +25,7 @@ namespace Cqrs.Scheduler.SampleReport.EventHandlers
 		/// <param name="configurationManager">The <see cref="IConfigurationManager"/> to use to get email settings.</param>
 		public SendAnEmailAtMidnight(IConfigurationManager configurationManager)
 		{
-			ReportEmailAddress = configurationManager.GetSetting("ReportEmailAddress");
+			ReportEmailAddress = configurationManager.GetSetting("Values.ReportEmailAddress");
 		}
 
 		/// <summary>

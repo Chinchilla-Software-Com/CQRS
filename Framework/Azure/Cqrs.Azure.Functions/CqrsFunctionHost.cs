@@ -7,20 +7,23 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 using Cqrs.Azure.ConfigurationManager;
-using Cqrs.Configuration;
+using Cqrs.DependencyInjection;
 using Cqrs.Hosts;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Hosting;
+using Cqrs.Authentication;
+using Cqrs.Azure.Functions.Configuration;
+using Cqrs.DependencyInjection.Modules;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
 #if NET48
 #else
-using Microsoft.Extensions.Configuration;
 #endif
 
 namespace Cqrs.Azure.Functions
@@ -28,9 +31,12 @@ namespace Cqrs.Azure.Functions
 	/// <summary>
 	/// Execute command and event handlers in an Azure WebJob
 	/// </summary>
-	public abstract class CqrsFunctionHost<TAuthenticationToken> : TelemetryCoreHost<TAuthenticationToken>
+	public class CqrsFunctionHost<TAuthenticationToken, TAuthenticationTokenHelper, TIsolatedFunctionHostModule>
+		: TelemetryCoreHost<TAuthenticationToken>
+		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
+		where TIsolatedFunctionHostModule : FunctionHostModule, new()
 	{
-		IHost host { get; set; }
+		IServiceCollection hostServices { get; set; }
 
 		/// <summary>
 		/// Indicates if the <see cref="SetExecutionPath"/> method has been called.
@@ -45,11 +51,21 @@ namespace Cqrs.Azure.Functions
 		/// <summary>
 		/// Let's get going by calling this first.
 		/// </summary>
-		public virtual void Go()
+		public virtual void Go(IServiceCollection services)
 		{
+			hostServices = services;
+
 			CoreHost = this;
 			StartHost();
-			Logger.LogInfo("Application Stopped.");
+			Logger.LogInfo("Application Up and Ready.");
+		}
+
+		/// <summary>
+		/// Instantiate a new instance of <see cref="CqrsFunctionHost{TAuthenticationToken, TAuthenticationTokenHelper, TIsolatedFunctionHostModule}"/>
+		/// </summary>
+		public CqrsFunctionHost()
+		{
+			HandlerTypes = GetCommandOrEventHandlerTypes();
 		}
 
 		/// <summary>
@@ -57,36 +73,30 @@ namespace Cqrs.Azure.Functions
 		/// </summary>
 		protected override void Prepare()
 		{
-			base.Prepare();
 			PrepareHost();
+			base.Prepare();
 		}
 
 		/// <summary>
-		/// Prepares the <see cref="IConfigurationManager"/>
+		/// Add JUST ONE command and/or event handler here from each assembly you want automatically scanned.
 		/// </summary>
-		protected static void PrepareConfigurationManager()
+		protected virtual Type[] GetCommandOrEventHandlerTypes()
 		{
-			IConfigurationManager configurationManager;
+			return new Type[] { };
+		}
+
+		/// <summary>
+		/// Prepares the <see cref="Cqrs.Configuration.IConfigurationManager"/>
+		/// </summary>
+		public static void PrepareConfigurationManager(string rootPath, IConfigurationRoot config)
+		{
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET48
 			configurationManager = new CloudConfigurationManager();
 			DependencyResolver.ConfigurationManager = _configurationManager;
 #else
-			string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
-			string azureRoot = Environment.GetEnvironmentVariable("HOME");
-			azureRoot = string.IsNullOrWhiteSpace(azureRoot)
-				? string.Empty
-				: $"{azureRoot}/site/wwwroot";
-
-			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
-
-			// C# ConfigurationBuilder example for Azure Functions v2 runtime
-			IConfigurationRoot config = new ConfigurationBuilder()
-				.SetBasePath(actualRoot)
-				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-				.AddEnvironmentVariables()
-				.Build();
 			configurationManager = new CloudConfigurationManager(config);
-			SetExecutionPath(config);
+			SetExecutionPath(config, rootPath);
 #endif
 		}
 
@@ -107,68 +117,6 @@ namespace Cqrs.Azure.Functions
 		/// </summary>
 		protected virtual void PrepareHost()
 		{
-#if NET48
-			FunctionsDebugger.Enable();
-#endif
-
-			host = new HostBuilder()
-				.ConfigureFunctionsWorkerDefaults(builder => { }, options =>
-				{
-					options.EnableUserCodeException = true;
-				})
-				.ConfigureAppConfiguration(config =>
-				{
-#if NET48
-#else
-					string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
-					string azureRoot = Environment.GetEnvironmentVariable("HOME");
-					azureRoot = string.IsNullOrWhiteSpace(azureRoot)
-						? string.Empty
-						: $"{azureRoot}/site/wwwroot";
-
-					string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
-
-					// C# ConfigurationBuilder example for Azure Functions v2 runtime
-					config
-						.SetBasePath(actualRoot)
-						.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true);
-#endif
-					/*
-					*/
-				})
-				.ConfigureServices(services =>
-				{
-					ConfigureApplicationInsights(services);
-					ConfigureHostServices(services);
-				})
-				.Build();
-		}
-
-		/// <summary>
-		/// Configures the isolated process application to emit logs directly Application Insights.
-		/// As per https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide#application-insights
-		/// </summary>
-		protected virtual void ConfigureApplicationInsights(IServiceCollection services)
-		{
-			services.AddApplicationInsightsTelemetryWorkerService();
-			services.ConfigureFunctionsApplicationInsights();
-			services.Configure<LoggerFilterOptions>(options =>
-			{
-				// The Application Insights SDK adds a default logging filter that instructs ILogger to capture only Warning and more severe logs. Application Insights requires an explicit override.
-				// Log levels can also be configured using appsettings.json. For more information, see https://learn.microsoft.com/en-us/azure/azure-monitor/app/worker-service#ilogger-logs
-				LoggerFilterRule toRemove = options.Rules.FirstOrDefault(rule => rule.ProviderName == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
-
-				if (toRemove != null)
-					options.Rules.Remove(toRemove);
-			});
-		}
-
-		/// <summary>
-		/// Configures the services of the <see cref="IHost"/>
-		/// As per https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide#application-insights
-		/// </summary>
-		protected virtual void ConfigureHostServices(IServiceCollection services)
-		{
 		}
 
 		/// <summary>
@@ -178,8 +126,6 @@ namespace Cqrs.Azure.Functions
 		protected override void Start()
 		{
 			base.Start();
-
-			host.Run();
 		}
 		/// <summary>
 		/// Sets the execution path
@@ -187,42 +133,100 @@ namespace Cqrs.Azure.Functions
 		public static void SetExecutionPath
 		(
 #if NET6_0
-			Microsoft.Extensions.Configuration.IConfigurationRoot config
+			Microsoft.Extensions.Configuration.IConfigurationRoot config, 
 #endif
+			string rootPath
 		)
 		{
 #if NET6_0
 			SetConfigurationManager(config);
 #endif
 
-			string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
-			string azureRoot = Environment.GetEnvironmentVariable("HOME");
-			azureRoot = string.IsNullOrWhiteSpace(azureRoot)
-				? string.Empty
-				: $"{azureRoot}/site/wwwroot";
-
-			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
-
-			Configuration.ConfigurationExtensions.GetExecutionPath = () => Path.Combine(actualRoot);
+			Cqrs.Configuration.ConfigurationExtensions.GetExecutionPath = () => Path.Combine(rootPath);
 			HasSetExecutionPath = true;
 		}
-	}
 
-	class ExampleCqrsFunctionHost
-		: CqrsFunctionHost<Guid>
-	{
 		/// <summary>
-		/// Entry point for the issolated application.
+		/// Configure the <see cref="DependencyResolver"/>.
 		/// </summary>
-		public static void Main(string[] args)
-		{
-			PrepareConfigurationManager();
-			new ExampleCqrsFunctionHost().Go();
-		}
-
 		protected override void ConfigureDefaultDependencyResolver()
 		{
-			throw new NotImplementedException();
+			foreach (Module supplementaryModule in GetSupplementaryModules(hostServices))
+				DependencyResolver.ModulesToLoad.Add(supplementaryModule);
+
+			DependencyResolver.Start(hostServices, prepareProvidedKernel: true);
+
+			((DependencyResolver)Cqrs.Configuration.DependencyResolver.Current).SetKernel(hostServices.BuildServiceProvider());
+		}
+
+		/// <summary>
+		/// A collection of <see cref="Module"/> that are required to be loaded
+		/// </summary>
+		protected virtual IEnumerable<Module> GetSupplementaryModules(IServiceCollection services)
+		{
+			var results = new List<Module>
+			{
+				new TIsolatedFunctionHostModule(),
+#if NET6_0
+				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(new CloudConfigurationManager(Cqrs.Configuration.ConfigurationManager.BaseConfiguration))
+#else
+				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(new CloudConfigurationManager())
+#endif
+			};
+
+//			results.AddRange(GetCommandBusModules(services));
+//			results.AddRange(GetEventBusModules(services));
+			results.AddRange(GetEventStoreModules(services));
+
+			return results;
+		}
+
+		/*
+		/// <summary>
+		/// A collection of <see cref="Module"/> that configure the Azure Servicebus as a command bus as both
+		/// <see cref="ICommandPublisher{TAuthenticationToken}"/> and <see cref="ICommandReceiver{TAuthenticationToken}"/>.
+		/// </summary>
+		protected virtual IEnumerable<Module> GetCommandBusModules(IServiceCollection services)
+		{
+			var list = new List<Module> { new AzureCommandBusPublisherModule<TAuthenticationToken>() };
+			bool setting;
+
+			if (!ConfigurationManager.TryGetSetting("Cqrs.Hosts.EnableCommandReceiving", out setting))
+				setting = true;
+			if (setting)
+				list.Add(new AzureCommandBusReceiverModule<TAuthenticationToken>());
+
+			return list;
+		}
+
+		/// <summary>
+		/// A collection of <see cref="Module"/> that configure the Azure Servicebus as a event bus as both
+		/// <see cref="IEventPublisher{TAuthenticationToken}"/> and <see cref="IEventReceiver{TAuthenticationToken}"/>
+		/// If the app setting Cqrs.Host.EnableEventReceiving is "false" then no modules will be returned.
+		/// </summary>
+		protected virtual IEnumerable<Module> GetEventBusModules(IServiceCollection services)
+		{
+			var list = new List<Module> { new AzureEventBusPublisherModule<TAuthenticationToken>() };
+			bool setting;
+
+			if (!ConfigurationManager.TryGetSetting("Cqrs.Hosts.EnableEventReceiving", out setting))
+				setting = true;
+			if (setting)
+				list.Add(new AzureEventBusReceiverModule<TAuthenticationToken>());
+
+			return list;
+		}
+		*/
+
+		/// <summary>
+		/// A collection of <see cref="Module"/> that configure SQL server as the <see cref="Events.IEventStore{TAuthenticationToken}"/>
+		/// </summary>
+		protected virtual IEnumerable<Module> GetEventStoreModules(IServiceCollection services)
+		{
+			return new List<Module>
+			{
+				new SimplifiedSqlModule<TAuthenticationToken>()
+			};
 		}
 	}
 }
