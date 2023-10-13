@@ -162,7 +162,7 @@ namespace Cqrs.Configuration
 					CorrelationIdHelper,
 					ConfigurationManager
 				);
-#if NET40
+#if NET40_OR_GREATER
 				SnapshotAggregateRepository = new SnapshotRepository<TAuthenticationToken>
 				(
 					new SqlSnapshotStore(ConfigurationManager, new SnapshotDeserialiser(), Logger, CorrelationIdHelper, new DefaultSnapshotBuilder()),

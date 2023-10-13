@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;net40;netcoreapp3.1</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net40;netcoreapp3.1;net48</TargetFrameworks>
 		<title>CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -116,7 +116,7 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net40;netstandard2.0;netcoreapp3.1</TargetFrameworks>
+		<TargetFrameworks>net40;netstandard2.0;netcoreapp3.1;net48</TargetFrameworks>
 		<DocumentationFile>Cqrs.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
@@ -152,7 +152,7 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.0.1" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' OR '$(TargetFramework)' == 'net48' ">
 		<Reference Include="Microsoft.CSharp" />
 		<Reference Include="System" />
 		<Reference Include="System.ComponentModel.DataAnnotations" />
@@ -163,7 +163,7 @@
 		<Reference Include="System.Web" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net40' OR '$(TargetFramework)' == 'net48' ">
 		<PackageReference Include="EntityFramework" Version="6.3.0" />
 	</ItemGroup>
 

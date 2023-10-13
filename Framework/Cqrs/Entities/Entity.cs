@@ -9,7 +9,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
-#if NET40
+#if NET40_OR_GREATER
 using System.Data.Linq.Mapping;
 #endif
 using Cqrs.DataStores;
@@ -28,7 +28,7 @@ namespace Cqrs.Entities
 		/// </summary>
 		[Required]
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column(IsPrimaryKey = true)]
 #endif
 		public virtual Guid Rsn { get; set; }
@@ -37,7 +37,7 @@ namespace Cqrs.Entities
 		/// The order of this <see cref="IEntity"/> to sort by, by default.
 		/// </summary>
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column]
 #endif
 		public virtual int SortingOrder { get; set; }
@@ -48,7 +48,7 @@ namespace Cqrs.Entities
 		/// </summary>
 		[Required]
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column]
 #endif
 		public virtual bool IsDeleted { get; set; }

@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using Cqrs.Domain;
 
 namespace Cqrs.Commands
@@ -35,11 +36,22 @@ namespace Cqrs.Commands
 		/// Responds to the provided <paramref name="message"/>.
 		/// </summary>
 		/// <param name="message">The <see cref="DtoCommand{TAuthenticationToken,TDto}"/> to respond to or "handle"</param>
-		public void Handle(DtoCommand<TAuthenticationToken, TDto> message)
+		public virtual
+#if NET40
+			void Handle
+#else
+			async Task HandleAsync
+#endif
+			(DtoCommand<TAuthenticationToken, TDto> message)
 		{
 			var item = new DtoAggregateRoot<TAuthenticationToken, TDto>(message.Id, message.Original, message.New);
 			UnitOfWork.Add(item);
 			UnitOfWork.Commit();
+
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		#endregion

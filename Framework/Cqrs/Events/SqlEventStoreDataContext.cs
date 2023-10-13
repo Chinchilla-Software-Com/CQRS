@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 
-#if NET40
+#if NET40_OR_GREATER
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Interception;
 #else
@@ -38,7 +38,7 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <param name="nameOrConnectionString">Either the database name or a connection string.</param>
 		public SqlEventStoreDataContext(string nameOrConnectionString)
-#if NET40
+#if NET40_OR_GREATER
 			: base(nameOrConnectionString) { }
 #else
 			: base()
@@ -47,7 +47,7 @@ namespace Cqrs.Events
 		}
 #endif
 
-#if NET40
+#if NET40_OR_GREATER
 #else
 		private string NameOrConnectionString { get; }
 
@@ -75,7 +75,7 @@ namespace Cqrs.Events
 
 		static SqlEventStoreDataContext()
 		{
-#if NET40
+#if NET40_OR_GREATER
 			DbInterception.Add(new QueueMessageInterceptor());
 #endif
 #if NETCOREAPP3_1_OR_GREATER
@@ -177,7 +177,7 @@ namespace Cqrs.Events
 			}
 		}
 #endif
-#if NET40
+#if NET40_OR_GREATER
 		internal class QueueMessageInterceptor : IDbCommandInterceptor
 		{
 			private const string TableReplaceString = "[EventStore]";

@@ -9,7 +9,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if NET40
+#if NET40_OR_GREATER
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 #else
@@ -459,7 +459,7 @@ namespace Cqrs.DataStores
 
 		class SqlDbContext : DbContext
 		{
-#if NET40
+#if NET40_OR_GREATER
 			/// <summary>
 			/// Instantiates a new instance of the <see cref="SqlDbContext"/> class using the given string as the name or connection string for the database to which a connection will be made. See the class remarks for how this is used to create a connection.
 			/// </summary>

@@ -8,7 +8,7 @@
 
 using System;
 using System.Configuration;
-#if NET40
+#if NET40_OR_GREATER
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 #else

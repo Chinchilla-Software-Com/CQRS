@@ -9,7 +9,7 @@
 using System;
 using System.Reflection;
 using System.Linq;
-#if NET40
+#if NET40_OR_GREATER
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 #else
@@ -67,7 +67,7 @@ namespace Cqrs.DataStores
 		private static string GetTableName<TEntity>(this DbSet<TEntity> dbSet, DbContext dbContext = null) where TEntity : class
 		{
 			dbContext = dbContext ?? dbSet.GetContext();
-#if NET40
+#if NET40_OR_GREATER
 			string tableName = (dbContext as IObjectContextAdapter).ObjectContext.CreateObjectSet<TEntity>().EntitySet.Name; ;
 #else
 			IModel model = dbContext.Model;
