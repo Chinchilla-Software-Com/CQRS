@@ -11,6 +11,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
@@ -58,7 +59,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Receives a <see cref="EventData"/> from the command bus, identifies a key and queues it accordingly.
 		/// </summary>
-		protected override void ReceiveCommand(PartitionContext context, EventData eventData)
+		protected override
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			async Task ReceiveCommandAsync
+#else
+			void ReceiveCommand
+#endif
+				(PartitionContext context, EventData eventData)
 		{
 			// Do a manual 10 try attempt with back-off
 			for (int i = 0; i < 10; i++)
@@ -107,7 +114,15 @@ namespace Cqrs.Azure.ServiceBus
 					EnqueueCommand(targetQueueName, command);
 
 					// remove the original message from the incoming queue
-					context.CheckpointAsync(eventData);
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#else
+					Task.Run(async () => {
+#endif
+						await context.CheckpointAsync(eventData);
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#else
+					}).Wait();
+#endif
 
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
 					Logger.LogDebug(string.Format("A command message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
@@ -237,7 +252,13 @@ namespace Cqrs.Azure.ServiceBus
 									}
 									try
 									{
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+										SafeTask.RunSafelyAsync(async () => {
+											await ReceiveCommandAsync(command);
+										}).Wait();
+#else
 										ReceiveCommand(command);
+#endif
 									}
 									catch (Exception exception)
 									{

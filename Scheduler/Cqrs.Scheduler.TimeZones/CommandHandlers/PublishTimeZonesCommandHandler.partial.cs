@@ -34,7 +34,7 @@ namespace Cqrs.Scheduler.CommandHandlers
 			EventPublisher = eventPublisher;
 		}
 
-		public void Handle(PublishTimeZonesCommand message)
+		public virtual async Task HandleAsync(PublishTimeZonesCommand message)
 		{
 			DateTime actualDateTime = DateTime.UtcNow;
 
@@ -44,13 +44,11 @@ namespace Cqrs.Scheduler.CommandHandlers
 			// We Console.WriteLine as this is a WebJob and that will send output to the diagnostic Azure WebJob portal.
 			Console.WriteLine("The calculated time is: '{0}' and the actual time is: '{1}'", processDate, actualDateTime);
 
-			SafeTask.RunSafelyAsync(async() => {
-				await FindAndPublishTimeZones(null, processDate);
-				await FindAndPublishTimeZones(0, processDate);
-				await FindAndPublishTimeZones(15, processDate);
-				await FindAndPublishTimeZones(30, processDate);
-				await FindAndPublishTimeZones(45, processDate);
-			}).Wait();
+			await FindAndPublishTimeZones(null, processDate);
+			await FindAndPublishTimeZones(0, processDate);
+			await FindAndPublishTimeZones(15, processDate);
+			await FindAndPublishTimeZones(30, processDate);
+			await FindAndPublishTimeZones(45, processDate);
 		}
 	}
 }

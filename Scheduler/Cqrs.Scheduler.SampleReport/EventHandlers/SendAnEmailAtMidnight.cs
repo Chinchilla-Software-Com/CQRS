@@ -10,6 +10,7 @@ namespace Cqrs.Scheduler.SampleReport.EventHandlers
 {
 	using System;
 	using System.Net.Mail;
+	using System.Threading.Tasks;
 	using Cqrs.Configuration;
 	using Cqrs.Events;
 	using Events;
@@ -39,11 +40,13 @@ namespace Cqrs.Scheduler.SampleReport.EventHandlers
 		/// Responds to the provided <paramref name="message"/>.
 		/// </summary>
 		/// <param name="message">The <see cref="ItsMidnightInEvent"/> to respond to or "handle"</param>
-		public void Handle(ItsMidnightInEvent message)
+		public async Task HandleAsync(ItsMidnightInEvent message)
 		{
 			var emailMessage = string.Format("At {0} it was midnight in {1}", message.ProcessDate, message.TimezoneId);
 			var smtpClient = new SmtpClient();
 			smtpClient.Send(ReportEmailAddress, ReportEmailAddress, string.Format("It's midnight in {0}", message.TimezoneId), emailMessage);
+
+			await Task.CompletedTask;
 		}
 
 		#endregion

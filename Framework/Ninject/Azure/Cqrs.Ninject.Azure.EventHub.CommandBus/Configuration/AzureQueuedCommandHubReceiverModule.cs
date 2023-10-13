@@ -25,7 +25,14 @@ namespace Cqrs.Azure.EventHub.CommandBus.Configuration
 		/// </summary>
 		public override void RegisterCommandHandlerRegistrar()
 		{
-			Bind<ICommandHandlerRegistrar>()
+			Bind
+			<
+#if NET452
+				ICommandHandlerRegistrar
+#else
+				IAsyncCommandHandlerRegistrar
+#endif
+			>()
 				.To<AzureQueuedCommandBusReceiver<TAuthenticationToken>>()
 				.InSingletonScope();
 		}

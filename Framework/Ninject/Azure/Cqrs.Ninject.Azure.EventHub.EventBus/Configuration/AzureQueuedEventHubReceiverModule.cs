@@ -25,7 +25,14 @@ namespace Cqrs.Azure.EventHub.EventBus.Configuration
 		/// </summary>
 		public override void RegisterEventHandlerRegistrar()
 		{
-			Bind<IEventHandlerRegistrar>()
+			Bind
+			<
+#if NET452
+				IEventHandlerRegistrar
+#else
+				IAsyncEventHandlerRegistrar
+#endif
+			>()
 				.To<AzureQueuedEventBusReceiver<TAuthenticationToken>>()
 				.InSingletonScope();
 		}

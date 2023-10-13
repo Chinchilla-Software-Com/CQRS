@@ -378,7 +378,7 @@ namespace Cqrs.Azure.ServiceBus
 				// if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
 				if (command.Frameworks.Count() != 1)
 				{
-					Logger.LogInfo("The provided command has already been processed in Azure.", string.Format("{0}\\DefaultReceiveCommand({1})", GetType().FullName, commandType.FullName));
+					Logger.LogInfo("The provided command has already been processed in Azure.", $"{GetType().FullName}\\DefaultReceiveCommand({commandType.FullName})");
 #if NETSTANDARD2_0 || NET48_OR_GREATER
 					return await Task.FromResult<bool?>(null);
 #else
@@ -396,7 +396,7 @@ namespace Cqrs.Azure.ServiceBus
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (commandHandler == null)
 			{
-				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
+				Logger.LogDebug($"The command handler for '{commandType.FullName}' is not required.");
 #if NETSTANDARD2_0 || NET48_OR_GREATER
 				return await Task.FromResult(false);
 #else
@@ -404,11 +404,14 @@ namespace Cqrs.Azure.ServiceBus
 #endif
 			}
 
-			Action<IMessage> handler = commandHandler.Delegate;
-			handler(command);
+
 #if NETSTANDARD2_0 || NET48_OR_GREATER
+			Func<IMessage, Task> handler = commandHandler.Delegate;
+			await handler(command);
 			return await Task.FromResult(true);
 #else
+			Action<IMessage> handler = commandHandler.Delegate;
+			handler(command);
 			return true;
 #endif
 		}
@@ -468,7 +471,7 @@ namespace Cqrs.Azure.ServiceBus
 				// if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
 				if (@event.Frameworks.Count() != 1)
 				{
-					Logger.LogInfo("The provided event has already been processed in Azure.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
+					Logger.LogInfo("The provided event has already been processed in Azure.", $"{GetType().FullName}\\PrepareAndValidateEvent({eventType.FullName})");
 #if NETSTANDARD2_0 || NET48_OR_GREATER
 					return await Task.FromResult(false);
 #else
@@ -800,7 +803,13 @@ namespace Cqrs.Azure.ServiceBus
 
 			bool isRequired = BusHelper.IsEventRequired(eventType);
 
-			IEnumerable<Action<IMessage>> handlers = routeManager.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
+			IEnumerable<
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+		Func<IMessage, Task>
+#else
+		Action<IMessage>
+#endif
+				> handlers = routeManager.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (!handlers.Any())
 			{
@@ -812,11 +821,12 @@ namespace Cqrs.Azure.ServiceBus
 #endif
 			}
 
-			foreach (Action<IMessage> handler in handlers)
-				handler(@event);
+			foreach (var handler in handlers)
 #if NETSTANDARD2_0 || NET48_OR_GREATER
+				await handler(@event);
 			return await Task.FromResult(true);
 #else
+				handler(@event);
 			return true;
 #endif
 		}
@@ -838,7 +848,7 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				bool messageIsValid = false;
 				// see https://github.com/Chinchilla-Software-Com/CQRS/wiki/Inter-process-function-security</remarks>
-				string configurationKey = string.Format("{0}.SigningToken", typeName);
+				string configurationKey = $"{typeName}.SigningToken";
 				string signingToken;
 				HashAlgorithm signer = Signer.Create();
 				if (ConfigurationManager.TryGetSetting(configurationKey, out signingToken) && !string.IsNullOrWhiteSpace(signingToken))
@@ -870,14 +880,26 @@ namespace Cqrs.Azure.ServiceBus
 #else
 		void RegisterHandler
 #endif
-			<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+			<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage>
+#endif
+			handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			Action<TMessage> registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
+
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage>
+#endif
+			registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
 
 			routeManger.RegisterHandler(registerableHandler, targetedType);
 
-			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
+			telemetryHelper.TrackEvent($"Cqrs/RegisterHandler/{typeof(TMessage).FullName}", new Dictionary<string, string> { { "Type", "Azure/Bus" } });
 			telemetryHelper.Flush();
 
 #if NETSTANDARD2_0 || NET48_OR_GREATER
@@ -894,14 +916,26 @@ namespace Cqrs.Azure.ServiceBus
 #else
 		void RegisterGlobalEventHandler
 #endif
-			<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)
+			<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage>
+#endif
+			handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			Action<TMessage> registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
+
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage>
+#endif
+				registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
 
 			routeManger.RegisterGlobalEventHandler(registerableHandler);
 
-			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterGlobalEventHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
+			telemetryHelper.TrackEvent($"Cqrs/RegisterGlobalEventHandler/{typeof(TMessage).FullName}", new Dictionary<string, string> { { "Type", "Azure/Bus" } });
 			telemetryHelper.Flush();
 
 #if NETSTANDARD2_0 || NET48_OR_GREATER

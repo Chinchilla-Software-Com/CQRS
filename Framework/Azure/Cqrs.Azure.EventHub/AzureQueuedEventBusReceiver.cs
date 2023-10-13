@@ -18,6 +18,7 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
+using System.Threading.Tasks;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 using EventData = Microsoft.Azure.EventHubs.EventData;
@@ -58,7 +59,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Receives an <see cref="EventData"/> message from the event bus, identifies a key and queues it accordingly.
 		/// </summary>
-		protected override void ReceiveEvent(PartitionContext context, EventData eventData)
+		protected override
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			async Task ReceiveEventAsync
+#else
+			void ReceiveEvent
+#endif
+		(PartitionContext context, EventData eventData)
 		{
 			// Do a manual 10 try attempt with back-off
 			for (int i = 0; i < 10; i++)
@@ -167,7 +174,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		/// <summary>
 		/// Creates the queue of the name <paramref name="queueName"/> if it does not already exist,
-		/// the queue is attached to <see cref="DequeuAndProcessEvent"/> using a <see cref="Thread"/>.
+		/// the queue is attached to <see cref="DequeueAndProcessEvent"/> using a <see cref="Thread"/>.
 		/// </summary>
 		/// <param name="queueName">The name of the queue to check and create.</param>
 		protected void CreateQueueAndAttachListenerIfNotExist(string queueName)
@@ -183,7 +190,7 @@ namespace Cqrs.Azure.ServiceBus
 						new Thread(() =>
 						{
 							Thread.CurrentThread.Name = queueName;
-							DequeuAndProcessEvent(queueName);
+							DequeueAndProcessEvent(queueName);
 						}).Start();
 					}
 				}
@@ -203,7 +210,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// and calls <see cref="ReceiveEvent"/>. Repeats in a loop until the queue is empty.
 		/// </summary>
 		/// <param name="queueName">The name of the queue process.</param>
-		protected void DequeuAndProcessEvent(string queueName)
+		protected void DequeueAndProcessEvent(string queueName)
 		{
 			SpinWait.SpinUntil
 			(
@@ -237,7 +244,13 @@ namespace Cqrs.Azure.ServiceBus
 									}
 									try
 									{
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+										SafeTask.RunSafelyAsync(async () => {
+											await ReceiveEventAsync(@event);
+										}).Wait();
+#else
 										ReceiveEvent(@event);
+#endif
 									}
 									catch (Exception exception)
 									{

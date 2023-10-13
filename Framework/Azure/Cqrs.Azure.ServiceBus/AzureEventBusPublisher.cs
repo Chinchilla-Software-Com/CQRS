@@ -198,7 +198,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Default Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
+					Logger.LogDebug($"An event was published on the public bus with the id '{@event.Id}' was of type {eventType.FullName}.");
 				}
 				if ((isPublicBusRequired != null && isPublicBusRequired.Value))
 				{
@@ -259,7 +259,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Public Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
-					Logger.LogDebug(string.Format("An event was published on the public bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
+					Logger.LogDebug($"An event was published on the public bus with the id '{@event.Id}' was of type {eventType.FullName}.");
 				}
 				if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 				{
@@ -321,7 +321,7 @@ namespace Cqrs.Azure.ServiceBus
 						TelemetryHelper.TrackDependency("Azure/Servicebus/EventBus", "Event", telemetryName, "Private Bus", startedAt, stopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 					}
 
-					Logger.LogDebug(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
+					Logger.LogDebug($"An event was published on the private bus with the id '{@event.Id}' was of type {eventType.FullName}.");
 				}
 				mainWasSuccessfull = true;
 			}
@@ -421,7 +421,7 @@ namespace Cqrs.Azure.ServiceBus
 					if (isPrivateBusRequired != null && isPrivateBusRequired.Value)
 					{
 						privateBrokeredMessages.Add(brokeredMessage);
-						sourceEventMessages.Add(string.Format("An event was published on the private bus with the id '{0}' was of type {1}.", @event.Id, eventType.FullName));
+						sourceEventMessages.Add($"An event was published on the private bus with the id '{@event.Id}' was of type {eventType.FullName}.");
 					}
 				}
 

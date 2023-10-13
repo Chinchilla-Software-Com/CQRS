@@ -17,7 +17,8 @@ using Cqrs.Scheduler.Events;
 
 namespace Cqrs.Scheduler.CommandHandlers
 {
-	public partial class PublishTimeZonesCommandHandler : ICommandHandler<Guid, PublishTimeZonesCommand>
+	public partial class PublishTimeZonesCommandHandler
+		: ICommandHandler<Guid, PublishTimeZonesCommand>
 	{
 		/// <summary>
 		/// Gets the current time to the nearest (in the past) 15 minutes.

@@ -8,6 +8,7 @@
 
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Bus;
 using Cqrs.Commands;
@@ -60,7 +61,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="ICommand{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="ICommand{TAuthenticationToken}"/> that was processed.</returns>
-		ICommand<TAuthenticationToken> ReceiveCommand(IMessageReceiver serviceBusReceiver, string messageBody, Func<ICommand<TAuthenticationToken>, bool?> receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null);
+		ICommand<TAuthenticationToken> ReceiveCommand(IMessageReceiver serviceBusReceiver, string messageBody, Func<ICommand<TAuthenticationToken>,
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+				Task<bool?>
+#else
+				bool?
+#endif
+			> receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null);
 
 		/// <summary>
 		/// The default command handler that
@@ -76,7 +83,12 @@ namespace Cqrs.Azure.ServiceBus
 		/// False indicates the <paramref name="command"/> wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
 		/// Null indicates the command<paramref name="command"/> wasn't handled as it was already handled.
 		/// </returns>
-		bool? DefaultReceiveCommand(ICommand<TAuthenticationToken> command, RouteManager routeManager, string framework);
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+		Task<bool?> DefaultReceiveCommandAsync
+#else
+		bool? DefaultReceiveCommand
+#endif
+			(ICommand<TAuthenticationToken> command, RouteManager routeManager, string framework);
 
 		/// <summary>
 		/// Prepares an <see cref="IEvent{TAuthenticationToken}"/> to be sent specifying the framework it is sent via.
@@ -108,7 +120,14 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="IEvent{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
-		IEvent<TAuthenticationToken> ReceiveEvent(IMessageReceiver serviceBusReceiver, string messageBody, Func<IEvent<TAuthenticationToken>, bool?> receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null);
+		IEvent<TAuthenticationToken> ReceiveEvent(IMessageReceiver serviceBusReceiver, string messageBody, Func<IEvent<TAuthenticationToken>,
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Task<bool?>
+#else
+			bool?
+#endif
+
+			> receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null);
 
 		/// <summary>
 		/// Refreshes the network lock.
@@ -133,20 +152,42 @@ namespace Cqrs.Azure.ServiceBus
 		/// False indicates the <paramref name="event"/> wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
 		/// Null indicates the <paramref name="event"/> wasn't handled as it was already handled.
 		/// </returns>
-		bool? DefaultReceiveEvent(IEvent<TAuthenticationToken> @event, RouteManager routeManager, string framework);
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+		Task<bool?> DefaultReceiveEventAsync
+#else
+		bool? DefaultReceiveEvent
+#endif
+			(IEvent<TAuthenticationToken> @event, RouteManager routeManager, string framework);
 
 		/// <summary>
 		/// Manually registers the provided <paramref name="handler"/> 
 		/// on the provided <paramref name="routeManger"/>
 		/// </summary>
 		/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/> the <paramref name="handler"/> can handle.</typeparam>
-		void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+		Task RegisterHandlerAsync
+#else
+		void RegisterHandler
+#endif
+			<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger,
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage> 
+#endif
+				 handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage;
 
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-		void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)
+		void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger,
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage> 
+#endif
+				 handler, bool holdMessageLock = true)
 			where TMessage : IMessage;
 	}
 }

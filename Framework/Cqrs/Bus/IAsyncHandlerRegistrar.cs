@@ -26,14 +26,14 @@ namespace Cqrs.Bus
 		/// In many cases the <paramref name="targetedType"/> will be the handler class itself, what you actually want is the target of what is being updated.
 		/// </remarks>
 		[OperationContract]
-		Task RegisterHandlerAsync<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+		Task RegisterHandlerAsync<TMessage>(Func<TMessage, Task> handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage;
 
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
 		[OperationContract]
-		Task RegisterHandlerAsync<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
+		Task RegisterHandlerAsync<TMessage>(Func<TMessage, Task> handler, bool holdMessageLock = true)
 			where TMessage : IMessage;
 	}
 }

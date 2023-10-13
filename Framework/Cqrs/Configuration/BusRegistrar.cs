@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Security;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Bus;
 using Cqrs.Commands;
@@ -150,6 +151,7 @@ namespace Cqrs.Configuration
 			}
 		}
 
+#if NET40
 		/// <summary>
 		/// Extract the <see cref="IHandlerRegistrar.RegisterHandler{TMessage}(System.Action{TMessage},System.Type,bool)"/> method of <see cref="GetEventHandlerRegistrar"/> or <see cref="GetCommandHandlerRegistrar"/>.
 		/// Create an <see cref="Action"/> around the provided <paramref name="executorType"/>
@@ -159,6 +161,17 @@ namespace Cqrs.Configuration
 		/// <param name="trueForEventsFalseForCommands">Indicates if this is registers <see cref="IEventHandler"/> or <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/>.</param>
 		/// <param name="resolveMessageHandlerInterface"><see cref="ResolveEventHandlerInterface"/> or <see cref="ResolveCommandHandlerInterface"/></param>
 		/// <param name="executorType">The <see cref="Type"/> of the event handler that will do the handling</param>
+#else
+		/// <summary>
+		/// Extract the <see cref="IHandlerRegistrar.RegisterHandler{TMessage}(System.Func{TMessage, Task},System.Type,bool)"/> method of <see cref="GetEventHandlerRegistrar"/> or <see cref="GetCommandHandlerRegistrar"/>.
+		/// Create an <see cref="Action"/> around the provided <paramref name="executorType"/>
+		/// Then register the created <see cref="Action"/> using the extracted <see cref="IHandlerRegistrar.RegisterHandler{TMessage}(System.Func{TMessage, Task},System.Type,bool)"/> method
+		/// </summary>
+		/// <param name="interface">The <see cref="Type"/> of <see cref="IHandler"/></param>
+		/// <param name="trueForEventsFalseForCommands">Indicates if this is registers <see cref="IEventHandler"/> or <see cref="ICommandHandler{TAuthenticationToken,TCommand}"/>.</param>
+		/// <param name="resolveMessageHandlerInterface"><see cref="ResolveEventHandlerInterface"/> or <see cref="ResolveCommandHandlerInterface"/></param>
+		/// <param name="executorType">The <see cref="Type"/> of the event handler that will do the handling</param>
+#endif
 		protected virtual void InvokeHandler(Type @interface, bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, Type executorType)
 		{
 			MethodInfo registerExecutorMethod = null;
@@ -270,7 +283,12 @@ namespace Cqrs.Configuration
 		/// <param name="resolveMessageHandlerInterface">Not used.</param>
 		protected virtual HandlerDelegate BuildDelegateAction(Type executorType, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface)
 		{
-			Action<dynamic> handlerDelegate = x =>
+#if NET40
+			Action<dynamic> handlerDelegate = 
+#else
+			Func<dynamic, Task> handlerDelegate = async
+#endif
+				x =>
 			{
 				Stopwatch stopWatch = Stopwatch.StartNew();
 				var telemetryHelper = DependencyResolver.Resolve<ITelemetryHelper>();
@@ -280,7 +298,12 @@ namespace Cqrs.Configuration
 				telemetryHelper.TrackTrace($"Calling handler '{handlerName}'", 1);
 				try
 				{
+#if NET40
 					handler.Handle(x);
+#else
+					await handler.HandleAsync(x);
+#endif
+
 					succeeded = "Succeeded";
 				}
 				catch (NotImplementedException exception)

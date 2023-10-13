@@ -16,11 +16,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Cqrs.DependencyInjection
 {
-    /// <summary>
-    /// The <see cref="Module"/> to wireup <see cref="IEvent{TAuthenticationToken}"/> to <see cref="LinqToSqlEventStore{TAuthenticationToken}"/>.
-    /// </summary>
-    /// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
-    public class LinqToSqlModule<TAuthenticationToken> : ResolvableModule
+	/// <summary>
+	/// The <see cref="Module"/> to wireup <see cref="IEvent{TAuthenticationToken}"/> to <see cref="LinqToSqlEventStore{TAuthenticationToken}"/>.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class LinqToSqlModule<TAuthenticationToken> : ResolvableModule
 	{
 #region Overrides of NinjectModule
 

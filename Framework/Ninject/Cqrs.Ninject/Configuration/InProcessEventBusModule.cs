@@ -77,7 +77,11 @@ namespace Cqrs.Ninject.Configuration
 			bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(IEventHandlerRegistrar)).Any();
 			if (!isHandlerRegistrationBound)
 			{
+#if NET40
 				Bind<IEventHandlerRegistrar>()
+#else
+				Bind<IAsyncEventHandlerRegistrar>()
+#endif
 					.ToConstant(inProcessBus)
 					.InSingletonScope();
 			}

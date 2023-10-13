@@ -24,7 +24,7 @@ namespace Cqrs.Bus
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
 		[OperationContract]
-		Task RegisterGlobalEventHandlerAsync<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
+		Task RegisterGlobalEventHandlerAsync<TMessage>(Func<TMessage, Task> handler, bool holdMessageLock = true)
 			where TMessage : IMessage;
 	}
 }

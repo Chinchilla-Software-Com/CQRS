@@ -86,7 +86,13 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 #else
 			await azureEventBusReceiver.RegisterHandlerAsync
 #endif
-				<TestEvent>(handler.Handle, handler.GetType());
+				<TestEvent>(handler.
+#if NET472
+					Handle
+#else
+					HandleAsync
+#endif
+				, handler.GetType());
 			azureEventBusReceiver.Start();
 
 			var azureEventBusPublisher = new AzureEventBusPublisher<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());
@@ -145,7 +151,13 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 #else
 			await azureCommandBusReceiver.RegisterHandlerAsync
 #endif
-				<TestCommand>(handler.Handle, handler.GetType());
+				<TestCommand>(handler.
+#if NET472
+					Handle
+#else
+					HandleAsync
+#endif
+				, handler.GetType());
 			azureCommandBusReceiver.Start();
 
 			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());

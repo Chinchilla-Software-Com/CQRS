@@ -26,12 +26,26 @@ namespace Cqrs.Azure.ServiceBus
 	{
 		protected ILogger Logger { get; private set; }
 
-		protected Action<PartitionContext, EventData> ReceiverMessageHandler { get; private set; }
+		protected
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<PartitionContext, EventData, Task>
+#else
+			Action<PartitionContext, EventData>
+#endif
+			ReceiverMessageHandler { get; private set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DefaultEventProcessor"/> class.
 		/// </summary>
-		public DefaultEventProcessor(ILogger logger, Action<PartitionContext, EventData> receiverMessageHandler)
+		public DefaultEventProcessor(ILogger logger,
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<PartitionContext, EventData, Task>
+#else
+			Action<PartitionContext, EventData>
+#endif
+			receiverMessageHandler)
 		{
 			Logger = logger;
 			ReceiverMessageHandler = receiverMessageHandler;

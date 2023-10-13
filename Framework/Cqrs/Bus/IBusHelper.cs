@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Messages;
@@ -51,13 +52,36 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Build a message handler that implements telemetry capturing as well as off thread handling.
 		/// </summary>
-		Action<TMessage> BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper, Action<TMessage> handler, bool holdMessageLock, string source)
+#if NET40
+		Action<TMessage>
+#else
+		Func<TMessage, Task>
+#endif
+			BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper,
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				handler, bool holdMessageLock, string source)
 			where TMessage : IMessage;
 
 		/// <summary>
 		/// Build a message handler that implements telemetry capturing as well as off thread handling.
 		/// </summary>
-		Action<TMessage> BuildActionHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock)
+#if NET40
+		Action<TMessage>
+#else
+		Func<TMessage, Task>
+#endif
+			BuildActionHandler<TMessage>(
+
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				handler, bool holdMessageLock)
 			where TMessage : IMessage;
 
 		/// <summary>

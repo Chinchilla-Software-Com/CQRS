@@ -26,7 +26,8 @@ namespace Cqrs.Bus
 	/// <summary>
 	/// A helper for command and event buses that also caches <see cref="IConfigurationManager"/> look ups.
 	/// </summary>
-	public class BusHelper : IBusHelper
+	public class BusHelper
+		: IBusHelper
 	{
 		/// <summary>
 		/// Instantiates a new instance of <see cref="BusHelper"/>
@@ -252,10 +253,27 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Build a message handler that implements telemetry capturing as well as off thread handling.
 		/// </summary>
-		public virtual Action<TMessage> BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper, Action<TMessage> handler, bool holdMessageLock, string source)
+		public virtual
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper,
+#if NET40
+				Action<TMessage>
+#else
+				Func<TMessage, Task>
+#endif
+					handler, bool holdMessageLock, string source)
 			where TMessage : IMessage
 		{
-			Action<TMessage> registerableMessageHandler = message =>
+#if NET40
+			Action<TMessage> registerableMessageHandler = 
+#else
+			Func<TMessage, Task> registerableMessageHandler = async
+#endif
+			message =>
 			{
 				DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 				Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -291,7 +309,11 @@ namespace Cqrs.Bus
 
 				try
 				{
-					handler(message);
+#if NET40
+#else
+					await
+#endif
+						handler(message);
 				}
 				catch (Exception exception)
 				{
@@ -363,21 +385,72 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Build a message handler that implements telemetry capturing as well as off thread handling.
 		/// </summary>
-		public virtual Action<TMessage> BuildActionHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock)
+		public virtual
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				BuildActionHandler<TMessage>(
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+			handler, bool holdMessageLock)
 			where TMessage : IMessage
 		{
-			Action<TMessage> registerableMessageHandler = handler;
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				registerableMessageHandler = handler;
 
-			Action<TMessage> registerableHandler = registerableMessageHandler;
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				registerableHandler = registerableMessageHandler;
 			if (!holdMessageLock)
 			{
-				registerableHandler = message =>
-				{
-					Task.Factory.StartNewSafely(() =>
+				registerableHandler =
+#if NET40
+#else
+					async
+#endif
+					message =>
 					{
-						registerableMessageHandler(message);
-					});
-				};
+#if NET40
+#else
+						// attempt to get this to release quickly
+						await Task.CompletedTask;
+#endif
+						// runs off in a very async fashion... inner task runs while out workflow continues without waiting for completion
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+#if NET40
+						Task.Factory.StartNewSafely(
+#else
+						Task.Factory.StartNewSafelyAsync(async
+#endif
+						() =>
+						{
+#if NET40
+#else
+								// attempt to get this to release quickly
+								await Task.CompletedTask;
+								await
+#endif
+									registerableMessageHandler(message);
+						})
+#if NET40
+#else
+						.ConfigureAwait(false)
+#endif
+						;
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+					};
 			}
 
 			return registerableHandler;
