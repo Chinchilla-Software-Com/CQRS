@@ -422,7 +422,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Instantiate publishing on this bus by
 		/// calling <see cref="CheckPrivateTopicExistsAsync(Manager, bool)"/> and <see cref="CheckPublicTopicExistsAsync(Manager, bool)"/>
-		/// then calling <see cref="AzureBus{TAuthenticationToken}.StartSettingsCheckingAsync"/>
+		/// then calling <see cref="AzureBus{TAuthenticationToken}.StartSettingsChecking"/>
 		/// </summary>
 #else
 		/// <summary>
@@ -488,7 +488,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// calling <see cref="CheckPrivateTopicExistsAsync(Manager, bool)"/> and <see cref="CheckPublicTopicExistsAsync(Manager, bool)"/>
 		/// then InstantiateReceiving for private and public topics,
 		/// calls <see cref="CleanUpDeadLettersAsync(string, string)"/> for the private and public topics,
-		/// then calling <see cref="AzureBus{TAuthenticationToken}.StartSettingsCheckingAsync"/>
+		/// then calling <see cref="AzureBus{TAuthenticationToken}.StartSettingsChecking"/>
 		/// </summary>
 #else
 		/// <summary>

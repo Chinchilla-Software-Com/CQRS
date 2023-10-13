@@ -32,7 +32,7 @@ namespace Cqrs.Azure.Functions.Isolated
 	/// <summary>
 	/// Execute command and event handlers in an Azure WebJob
 	/// </summary>
-	public abstract class CqrsIsolatedFunctionHost<TAuthenticationToken, TAuthenticationTokenHelper, TIsolatedFunctionHostModule>
+	public class CqrsIsolatedFunctionHost<TAuthenticationToken, TAuthenticationTokenHelper, TIsolatedFunctionHostModule>
 		: TelemetryCoreHost<TAuthenticationToken>
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 		where TIsolatedFunctionHostModule : IsolatedFunctionHostModule, new()

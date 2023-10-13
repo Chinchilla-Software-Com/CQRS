@@ -428,8 +428,12 @@ namespace Cqrs.Azure.ServiceBus
 		public async virtual Task ReceiveEventAsync(ProcessMessageEventArgs args)
 		{
 			FieldInfo[] fields = args.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Default | BindingFlags.GetField);
+
 			FieldInfo messageReceiverField = fields.SingleOrDefault(x => x.FieldType == typeof(ServiceBusReceiver));
 			ServiceBusReceiver messageReceiver = (ServiceBusReceiver)messageReceiverField.GetValue(args);
+
+			FieldInfo messageReceiveActionsField = fields.SingleOrDefault(x => x.FieldType == typeof(ProcessorReceiveActions));
+			ProcessorReceiveActions messageReceiveActions = (ProcessorReceiveActions)messageReceiveActionsField.GetValue(args);
 			await ReceiveEventAsync(messageReceiver, args.Message);
 		}
 #endif

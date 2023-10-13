@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net48;net6.0</TargetFrameworks>
+		<TargetFrameworks>net48;netstandard2.0</TargetFrameworks>
 		<title>Microsoft Azure Functions for CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -31,6 +31,14 @@
 			<Pack>True</Pack>
 			<PackagePath>tools\</PackagePath>
 		</None>
+		<Compile Remove="AzureFunctionServiceBus.cs" />
+		<Compile Remove="Content\IsolatedCommandReceiver.cs" />
+		<Compile Remove="Content\IsolatedEventReceiver.cs" />
+		<Compile Remove="MessageExtensions.cs" />
+		<Compile Remove="ServiceBusExtensions.cs" />
+		<Content Include="Content\IsolatedCommandReceiver.cs" PackagePath="content" Pack="true" />
+		<Content Include="Content\IsolatedEventReceiver.cs" PackagePath="content" Pack="true" />
+		<Content Include="Content\host.json" PackagePath="content" Pack="true" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -41,32 +49,33 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Remove="Content\Program.cs" />
-		<Compile Remove="Content\Startup.cs" />
 		<Compile Remove="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 
 	<PropertyGroup>
-		<TargetFrameworks>net48;net6.0</TargetFrameworks>
-		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
-		<DocumentationFile>Cqrs.Azure.Functions.xml</DocumentationFile>
+		<TargetFrameworks>netstandard2.0;</TargetFrameworks>
+		<DocumentationFile>Cqrs.Azure.Functions.ServiceBus.Isolated.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Chinchilla.Logging.Azure" Version="4.5.34" />
-		<PackageReference Include="Chinchilla.Logging.Azure.ApplicationInsights" Version="4.5.34" />
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.11" />
+		<PackageReference Include="Chinchilla.Logging" Version="4.5.34" />
 
 		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.21.0" />
-		<PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.19.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.0.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.13.0" />
 
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+
+		<PackageReference Include="System.Linq.Async" Version="5.1.0" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="6.0.0" />
 	</ItemGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
@@ -77,20 +86,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Remove="Cqrs.Azure.Functions.xml" />
+		<None Remove="Content\host.json" />
+		<None Remove="Cqrs.Azure.Functions.ServiceBus.Isolated.xml" />
 		<None Remove="packages.config" />
+		<Compile Remove="Configuration\**" />
+		<EmbeddedResource Remove="Configuration\**" />
+		<None Remove="Configuration\**" />
 		<None Remove="Tools\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Content Include="Content\Program.cs" PackagePath="content" Pack="true" />
-	  <Content Include="Content\Startup.cs" PackagePath="content" Pack="true" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
 		<ProjectReference Include="..\..\DependencyInjection\Cqrs.DependencyInjection\Cqrs.DependencyInjection.csproj" />
 		<ProjectReference Include="..\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
+		<ProjectReference Include="..\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj" />
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

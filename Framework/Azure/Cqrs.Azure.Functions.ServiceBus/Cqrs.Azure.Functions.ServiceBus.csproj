@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net48;netstandard2.0</TargetFrameworks>
 		<title>Microsoft Azure Functions for CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -32,15 +32,11 @@
 			<PackagePath>tools\</PackagePath>
 		</None>
 		<Compile Remove="AzureFunctionServiceBus.cs" />
-		<Compile Remove="Configuration\AzureFunctionCommandBusPublisherModule.cs" />
-		<Compile Remove="Configuration\AzureFunctionCommandBusReceiverModule.cs" />
-		<Compile Remove="Configuration\AzureFunctionEventBusPublisherModule.cs" />
-		<Compile Remove="Configuration\AzureFunctionEventBusReceiverModule.cs" />
 		<Compile Remove="Content\CommandReceiver.cs" />
+		<Compile Remove="Content\EventReceiver.cs" />
 		<Compile Remove="MessageExtensions.cs" />
 		<Compile Remove="ServiceBusExtensions.cs" />
 		<Content Include="Content\CommandReceiver.cs" PackagePath="content" Pack="true" />
-		<Compile Remove="Content\EventReceiver.cs" />
 		<Content Include="Content\EventReceiver.cs" PackagePath="content" Pack="true" />
 		<Content Include="Content\host.json" PackagePath="content" Pack="true" />
 	</ItemGroup>
@@ -69,9 +65,7 @@
 
 		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.21.0" />
 		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.21.0" />
-		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.19.0" />
-		<PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.0.0" />
-		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.13.0" />
+		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.13.0" />
 
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 
@@ -101,10 +95,6 @@
 		<ProjectReference Include="..\..\DependencyInjection\Cqrs.DependencyInjection\Cqrs.DependencyInjection.csproj" />
 		<ProjectReference Include="..\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
 		<ProjectReference Include="..\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Configuration\" />
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">

@@ -428,9 +428,21 @@ namespace Cqrs.Azure.ServiceBus
 		public async virtual Task ReceiveCommandAsync(ProcessMessageEventArgs args)
 		{
 			FieldInfo[] fields = args.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Default | BindingFlags.GetField);
+
 			FieldInfo messageReceiverField = fields.SingleOrDefault(x => x.FieldType == typeof(ServiceBusReceiver));
 			ServiceBusReceiver messageReceiver = (ServiceBusReceiver)messageReceiverField.GetValue(args);
+
+			FieldInfo messageReceiveActionsField = fields.SingleOrDefault(x => x.FieldType == typeof(ProcessorReceiveActions));
+			ProcessorReceiveActions messageReceiveActions = (ProcessorReceiveActions)messageReceiveActionsField.GetValue(args);
 			await ReceiveCommandAsync(messageReceiver, args.Message);
+		}
+
+		/// <summary>
+		/// Receives a <see cref="ProcessMessageEventArgs"/> from the command bus.
+		/// </summary>
+		public async virtual Task ReceiveCommandAsync(ServiceBusClient client, BrokeredMessage message)
+		{
+			await ReceiveCommandAsync((ServiceBusReceiver)null, message);
 		}
 #endif
 

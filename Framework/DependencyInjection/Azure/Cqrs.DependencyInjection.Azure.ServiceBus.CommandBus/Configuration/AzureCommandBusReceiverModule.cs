@@ -20,7 +20,23 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureCommandBusReceiverModule<TAuthenticationToken>
+		: AzureCommandBusReceiverModule<TAuthenticationToken, AzureCommandBusReceiver<TAuthenticationToken>>
+	{
+	}
+
+	/// <summary>
+	/// A <see cref="Module"/> that wires up <see cref="AzureCommandBusReceiver{TAuthenticationToken}"/> as the <see cref="ICommandReceiver"/> and other require components.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
+	public class AzureCommandBusReceiverModule<TAuthenticationToken, TBus>
 		: ResolvableModule
+			where TBus : class,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				IAsyncCommandReceiver<TAuthenticationToken>, IAsyncCommandHandlerRegistrar
+#else
+				ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+#endif
 	{
 		#region Overrides of ResolvableModule
 
@@ -36,7 +52,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 			}
 
 			RegisterCommandMessageSerialiser(services);
-			var bus = GetOrCreateBus<AzureCommandBusReceiver<TAuthenticationToken>>(services);
+			var bus = GetOrCreateBus(services);
 
 			RegisterCommandReceiver(services, bus);
 			RegisterCommandHandlerRegistrar(services, bus);
@@ -48,14 +64,7 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 		/// Checks if an existing <typeparamref name="TBus"/> has already been registered, if not
 		/// it tries to instantiates a new instance via resolution and registers that instance.
 		/// </summary>
-		/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
-		public virtual TBus GetOrCreateBus<TBus>(IServiceCollection services)
-			where TBus : class,
-#if NETSTANDARD2_0 || NET48_OR_GREATER
-				IAsyncCommandReceiver<TAuthenticationToken>, IAsyncCommandHandlerRegistrar
-#else
-				ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
-#endif
+		public virtual TBus GetOrCreateBus(IServiceCollection services)
 		{
 			bool isBusBound = IsRegistered<TBus>(services);
 			TBus bus;
@@ -75,12 +84,13 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 		/// <summary>
 		/// Register the CQRS command receiver
 		/// </summary>
+		public virtual void RegisterCommandReceiver(IServiceCollection services,
 #if NETSTANDARD2_0 || NET48_OR_GREATER
-		public virtual void RegisterCommandReceiver(IServiceCollection services, IAsyncCommandReceiver<TAuthenticationToken> bus)
+			IAsyncCommandReceiver<TAuthenticationToken> bus
 #else
-		public virtual void RegisterCommandReceiver<TBus>(IServiceCollection services, TBus bus)
-			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+			TBus bus
 #endif
+		)
 		{
 			services.AddSingleton<
 #if NETSTANDARD2_0 || NET48_OR_GREATER
@@ -94,12 +104,13 @@ namespace Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus
 		/// <summary>
 		/// Register the CQRS command handler registrar
 		/// </summary>
+		public virtual void RegisterCommandHandlerRegistrar(IServiceCollection services,
 #if NETSTANDARD2_0 || NET48_OR_GREATER
-		public virtual void RegisterCommandHandlerRegistrar(IServiceCollection services, IAsyncCommandHandlerRegistrar bus)
+			IAsyncCommandHandlerRegistrar bus
 #else
-		public virtual void RegisterCommandHandlerRegistrar<TBus>(IServiceCollection services, TBus bus)
-			where TBus : ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
+			TBus bus
 #endif
+		)
 		{
 			services.AddSingleton<
 #if NETSTANDARD2_0 || NET48_OR_GREATER
