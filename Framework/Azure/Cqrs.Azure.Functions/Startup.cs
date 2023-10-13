@@ -7,20 +7,30 @@
 #endregion
 
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+#if NET6_0
 using Microsoft.Extensions.Configuration;
 using System;
+#endif
 
 [assembly: FunctionsStartup(typeof(Cqrs.Scheduler.Trigger.Startup))]
 namespace Cqrs.Scheduler.Trigger
 {
+	/// <summary>
+	/// A <see cref="FunctionsStartup"/> for hoisting the CQRS platform into a WebJob based function
+	/// </summary>
 	public class Startup
 		: FunctionsStartup
 	{
+		/// <summary>
+		/// Configures using the provided <paramref name="builder"/>
+		/// </summary>
 		public override void Configure(IFunctionsHostBuilder builder)
 		{
-
 		}
 
+		/// <summary>
+		/// Configures the application configuration settings using the provided <paramref name="builder"/>
+		/// </summary>
 		public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder builder)
 		{
 			FunctionsHostBuilderContext context = builder.GetContext();
