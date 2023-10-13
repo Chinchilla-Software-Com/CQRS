@@ -7,7 +7,7 @@
 #endregion
 
 using System;
-#if NET40
+#if NET40_OR_GREATER
 using System.Data.Linq.Mapping;
 #endif
 using System.Runtime.Serialization;
@@ -21,7 +21,7 @@ namespace Cqrs.Events
 	/// </summary>
 	[Serializable]
 	[DataContract]
-#if NET40
+#if NET40_OR_GREATER
 	[Table(Name = "EventStore")]
 #endif
 	public class EventData
@@ -30,7 +30,7 @@ namespace Cqrs.Events
 		/// The data/content of the <see cref="IEvent{TAuthenticationToken}"/>.
 		/// </summary>
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column(CanBeNull = false, DbType = "text NOT NULL")]
 #endif
 		public object Data { get; set; }
@@ -39,7 +39,7 @@ namespace Cqrs.Events
 		/// The identifier of the <see cref="IEvent{TAuthenticationToken}"/>.
 		/// </summary>
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column(IsPrimaryKey = true)]
 #endif
 		public Guid EventId { get; set; }
@@ -48,7 +48,7 @@ namespace Cqrs.Events
 		/// The <see cref="Type"/> of the <see cref="IEvent{TAuthenticationToken}"/>
 		/// </summary>
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column(CanBeNull = false)]
 #endif
 		public string EventType { get; set; }
@@ -57,7 +57,7 @@ namespace Cqrs.Events
 		/// The globally identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> , meaning it also includes <see cref="Type"/> information.
 		/// </summary>
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column(CanBeNull = false)]
 #endif
 		public string AggregateId { get; set; }
@@ -66,7 +66,7 @@ namespace Cqrs.Events
 		/// The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// </summary>
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column(CanBeNull = false)]
 #endif
 		public Guid AggregateRsn { get; set; }
@@ -75,7 +75,7 @@ namespace Cqrs.Events
 		/// The new version number the targeted <see cref="IAggregateRoot{TAuthenticationToken}"/> or <see cref="ISaga{TAuthenticationToken}"/> that raised this.
 		/// </summary>
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column(CanBeNull = false)]
 #endif
 		public long Version { get; set; }
@@ -85,7 +85,7 @@ namespace Cqrs.Events
 		/// The date and time the event was raised or published.
 		/// </summary>
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column(CanBeNull = false)]
 #endif
 		public DateTime Timestamp { get; set; }
@@ -94,7 +94,7 @@ namespace Cqrs.Events
 		/// An identifier used to group together several <see cref="IMessage"/>. Any <see cref="IMessage"/> with the same <see cref="CorrelationId"/> were triggered by the same initiating request.
 		/// </summary>
 		[DataMember]
-#if NET40
+#if NET40_OR_GREATER
 		[Column(CanBeNull = false)]
 #endif
 		public Guid CorrelationId { get; set; }

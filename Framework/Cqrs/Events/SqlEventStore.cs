@@ -8,7 +8,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET40
+#if NET40_OR_GREATER
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 #else
@@ -161,7 +161,7 @@ namespace Cqrs.Events
 				bool found = ConfigurationManager.TryGetSetting(SqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
 				if (found && int.TryParse(commandTimeoutValue, out commandTimeout))
 				{
-#if NET40
+#if NET40_OR_GREATER
 					// Get the ObjectContext related to this DbContext
 					var objectContext = (dbDataContext as IObjectContextAdapter).ObjectContext;
 

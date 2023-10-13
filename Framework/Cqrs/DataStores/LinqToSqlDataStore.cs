@@ -1,4 +1,4 @@
-﻿#if NET40
+﻿#if NET40_OR_GREATER
 
 #region Copyright
 // // -----------------------------------------------------------------------
@@ -245,7 +245,7 @@ namespace Cqrs.DataStores
 		#endregion
 
 		#region Implementation of IDisposable
-		#pragma warning disable CA1063 // Implement IDisposable Correctly
+#pragma warning disable CA1063 // Implement IDisposable Correctly
 
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -272,7 +272,7 @@ namespace Cqrs.DataStores
 			}
 		}
 
-		#pragma warning restore CA1063 // Implement IDisposable Correctly
+#pragma warning restore CA1063 // Implement IDisposable Correctly
 		#endregion
 
 		#region Implementation of IDataStore<TData>
