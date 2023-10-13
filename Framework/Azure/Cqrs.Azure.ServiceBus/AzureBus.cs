@@ -182,7 +182,7 @@ namespace Cqrs.Azure.ServiceBus
 				GetConnectionString
 #endif
 				();
-			Logger.LogSensitive(string.Format("Connection string settings set to {0}.", ConnectionString));
+			Logger.LogSensitive($"Connection string settings set to {ConnectionString}.");
 		}
 
 #if NETSTANDARD2_0 || NET48_OR_GREATER
@@ -211,7 +211,7 @@ namespace Cqrs.Azure.ServiceBus
 				GetRbacConnectionSettings
 #endif
 				();
-			Logger.LogSensitive(string.Format("Connection RBAC settings set to {0}.", RbacConnectionSettings));
+			Logger.LogSensitive($"Connection RBAC settings set to {RbacConnectionSettings}.");
 		}
 
 		/// <summary>
@@ -220,7 +220,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected virtual void SetNumberOfReceiversCount()
 		{
 			NumberOfReceiversCount = GetCurrentNumberOfReceiversCount();
-			Logger.LogDebug(string.Format("Number of receivers settings set to {0}.", NumberOfReceiversCount));
+			Logger.LogDebug($"Number of receivers settings set to {NumberOfReceiversCount}.");
 		}
 
 		/// <summary>
@@ -229,7 +229,7 @@ namespace Cqrs.Azure.ServiceBus
 		protected virtual void SetMaximumConcurrentReceiverProcessesCount()
 		{
 			MaximumConcurrentReceiverProcessesCount = GetCurrentMaximumConcurrentReceiverProcessesCount();
-			Logger.LogDebug(string.Format("Number of receivers settings set to {0}.", MaximumConcurrentReceiverProcessesCount));
+			Logger.LogDebug($"Number of receivers settings set to {MaximumConcurrentReceiverProcessesCount}.");
 		}
 
 		/// <summary>

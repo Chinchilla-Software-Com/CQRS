@@ -47,7 +47,14 @@ namespace Cqrs.Azure.EventHub.EventBus.Configuration
 		/// </summary>
 		public virtual void RegisterEventHandlerRegistrar()
 		{
-			Bind<IEventHandlerRegistrar>()
+			Bind
+			<
+#if NET452
+				IEventHandlerRegistrar
+#else
+				IAsyncEventHandlerRegistrar
+#endif
+			>()
 				.To<AzureEventBusReceiver<TAuthenticationToken>>()
 				.InSingletonScope();
 		}

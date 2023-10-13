@@ -11,6 +11,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
@@ -32,8 +33,13 @@ namespace Cqrs.Bus
 	public class InProcessBus<TAuthenticationToken>
 		: IPublishAndWaitCommandPublisher<TAuthenticationToken>
 		, IEventPublisher<TAuthenticationToken>
+#if NET40
 		, IEventHandlerRegistrar
 		, ICommandHandlerRegistrar
+#else
+		, IAsyncEventHandlerRegistrar
+		, IAsyncCommandHandlerRegistrar
+#endif
 		, ICommandReceiver<TAuthenticationToken>
 		, IEventReceiver<TAuthenticationToken>
 	{
@@ -218,7 +224,12 @@ namespace Cqrs.Bus
 
 				try
 				{
-					Action<IMessage> handler = commandHandler.Delegate;
+#if NET40
+					Action<IMessage>
+#else
+					Func<IMessage, Task>
+#endif
+						handler = commandHandler.Delegate;
 					handler(command);
 				}
 				catch (Exception exception)
@@ -425,12 +436,17 @@ namespace Cqrs.Bus
 				if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventName), out isRequired))
 					isRequired = true;
 
-				IEnumerable<Action<IMessage>> handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
+#if NET40
+				IEnumerable<Action<IMessage>>
+#else
+				IEnumerable<Func<IMessage, Task>>
+#endif
+					handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
 				// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 				if (!handlers.Any())
 					Logger.LogDebug(string.Format("An event handler for '{0}' is not required.", eventName));
 
-				foreach (Action<IMessage> handler in handlers)
+				foreach (var handler in handlers)
 				{
 					IList<IEvent<TAuthenticationToken>> events;
 					if (EventWaits.TryGetValue(@event.CorrelationId, out events))
@@ -582,7 +598,12 @@ namespace Cqrs.Bus
 				result = (TEvent)(object)null;
 				EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
 
-				Action<IMessage> handler = commandHandler.Delegate;
+#if NET40
+				Action<IMessage>
+#else
+				Func<IMessage, Task>
+#endif
+					handler = commandHandler.Delegate;
 				handler(command);
 				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
 				wasSuccessfull = true;
@@ -629,37 +650,98 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
-		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+		public virtual
+#if NET40
+			void RegisterHandler
+#else
+			async Task RegisterHandlerAsync
+#endif
+			<TMessage>(
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			Action<TMessage> registerableHandler = BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(TelemetryHelper, handler, holdMessageLock, "In-Process/Bus");
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				registerableHandler = BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(TelemetryHelper, handler, holdMessageLock, "In-Process/Bus");
 
 			Routes.RegisterHandler(registerableHandler, targetedType);
 
 			TelemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "In-Process/Bus" } });
 			TelemetryHelper.Flush();
+
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
-		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
+		public virtual
+#if NET40
+			void RegisterHandler
+#else
+			async Task RegisterHandlerAsync
+#endif
+			<TMessage>(
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			RegisterHandler(handler, null, holdMessageLock);
+#if NET40
+			RegisterHandler
+#else
+			await RegisterHandlerAsync
+#endif
+				(handler, null, holdMessageLock);
 		}
 
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true) where TMessage : IMessage
+		public virtual
+#if NET40
+			void RegisterGlobalEventHandler
+#else
+			async Task RegisterGlobalEventHandlerAsync
+#endif
+			<TMessage>(
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+			handler, bool holdMessageLock = true) where TMessage : IMessage
 		{
-			Action<TMessage> registerableHandler = BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(TelemetryHelper, handler, holdMessageLock, "In-Process/Bus");
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+			registerableHandler = BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(TelemetryHelper, handler, holdMessageLock, "In-Process/Bus");
 
 			Routes.RegisterGlobalEventHandler(registerableHandler, holdMessageLock);
 
 			TelemetryHelper.TrackEvent(string.Format("Cqrs/RegisterGlobalEventHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "In-Process/Bus" } });
 			TelemetryHelper.Flush();
+
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		#endregion

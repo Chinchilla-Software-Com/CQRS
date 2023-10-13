@@ -224,7 +224,13 @@ namespace Cqrs.Azure.ServiceBus
 #else
 		void RegisterHandler
 #endif
-		<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+		<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage>
+#endif
+			handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage;
 
 		/// <summary>
@@ -235,7 +241,13 @@ namespace Cqrs.Azure.ServiceBus
 #else
 		void RegisterGlobalEventHandler
 #endif
-		<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)
+		<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger,
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage>
+#endif
+				handler, bool holdMessageLock = true)
 			where TMessage : IMessage;
 	}
 }

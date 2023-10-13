@@ -19,7 +19,7 @@ public class CommandReceiver
 	/// <summary>
 	/// Receives a <see cref="ServiceBusReceivedMessage"/> from the command bus.
 	/// </summary>
-	[Microsoft.Azure.Functions.Worker.Function("AzureFunctionCommandBusReceiver.Private")]
+	[Microsoft.Azure.Functions.Worker.Function("Timzezones.Isolated.Private")]
 	public async virtual Task ReceiveCommandPrivate([Microsoft.Azure.Functions.Worker.ServiceBusTrigger("Cqrs.Scheduler.Commands-Local.Private", "Cqrs.Timezone-Publisher", Connection = "Cqrs.Azure.CommandBus.ConnectionString")] ServiceBusReceivedMessage message)
 	{
 		await _commandReceiver.ReceiveCommandAsync((ServiceBusReceiver)null, message);
@@ -27,7 +27,7 @@ public class CommandReceiver
 	/// <summary>
 	/// Receives a <see cref="ServiceBusReceivedMessage"/> from the command bus.
 	/// </summary>
-	[Microsoft.Azure.Functions.Worker.Function("AzureFunctionCommandBusReceiver.Public")]
+	[Microsoft.Azure.Functions.Worker.Function("Timzezones.Isolated.Public")]
 	public async virtual Task ReceiveCommandPublic([Microsoft.Azure.Functions.Worker.ServiceBusTrigger("Cqrs.Scheduler.Commands-Local.Public", "Cqrs.Timezone-Publisher", Connection = "Cqrs.Azure.CommandBus.ConnectionString")] ServiceBusReceivedMessage message)
 	{
 		await _commandReceiver.ReceiveCommandAsync((ServiceBusReceiver)null, message);

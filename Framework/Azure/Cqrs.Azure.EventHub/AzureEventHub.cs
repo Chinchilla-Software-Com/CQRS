@@ -165,7 +165,14 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// The <see cref="Action{PartitionContext, EventData}">handler</see> used for <see cref="EventProcessorHost.RegisterEventProcessorFactoryAsync(IEventProcessorFactory)"/> on <see cref="EventHubReceiver"/>.
 		/// </summary>
-		protected Action<PartitionContext, EventData> ReceiverMessageHandler { get; private set; }
+		protected
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<PartitionContext, EventData, Task>
+#else
+			Action<PartitionContext, EventData>
+#endif
+				ReceiverMessageHandler { get; private set; }
 
 		/// <summary>
 		/// The <see cref="EventProcessorOptions" /> used for <see cref="EventProcessorHost.RegisterEventProcessorFactoryAsync(IEventProcessorFactory)"/> on <see cref="EventHubReceiver"/>.
@@ -557,7 +564,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Registers the provided <paramref name="receiverMessageHandler"/> with the provided <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
-		protected virtual void RegisterReceiverMessageHandler(Action<PartitionContext, EventData> receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)
+		protected virtual void RegisterReceiverMessageHandler(
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<PartitionContext, EventData, Task>
+#else
+			Action<PartitionContext, EventData>
+#endif
+					receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)
 		{
 			StoreReceiverMessageHandler(receiverMessageHandler, receiverMessageHandlerOptions);
 
@@ -567,7 +580,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Stores the provided <paramref name="receiverMessageHandler"/> and <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
-		protected virtual void StoreReceiverMessageHandler(Action<PartitionContext, EventData> receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)
+		protected virtual void StoreReceiverMessageHandler(
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<PartitionContext, EventData, Task>
+#else
+			Action<PartitionContext, EventData>
+#endif
+				receiverMessageHandler, EventProcessorOptions receiverMessageHandlerOptions = null)
 		{
 			ReceiverMessageHandler = receiverMessageHandler;
 			ReceiverMessageHandlerOptions = receiverMessageHandlerOptions;

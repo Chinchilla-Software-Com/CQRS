@@ -20,6 +20,7 @@ using Cqrs.Exceptions;
 using Cqrs.Messages;
 
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
+using System.Threading.Tasks;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.EventHubs.Processor;
@@ -37,8 +38,14 @@ namespace Cqrs.Azure.ServiceBus
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureEventBusReceiver<TAuthenticationToken>
 		: AzureEventHubBus<TAuthenticationToken>
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+		, IAsyncEventHandlerRegistrar
+		, IAsyncEventReceiver<TAuthenticationToken>
+#else
 		, IEventHandlerRegistrar
 		, IEventReceiver<TAuthenticationToken>
+#endif
 	{
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
 		/// <summary>
@@ -90,25 +97,53 @@ namespace Cqrs.Azure.ServiceBus
 		/// <remarks>
 		/// In many cases the <paramref name="targetedType"/> will be the handler class itself, what you actually want is the target of what is being updated.
 		/// </remarks>
-		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+		public virtual
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			async Task RegisterHandlerAsync<TMessage>(Func<TMessage, Task>
+#else
+			void RegisterHandler<TMessage>(Action<TMessage> 
+#endif
+				handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			AzureBusHelper.RegisterHandler(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			await AzureBusHelper.RegisterHandlerAsync
+#else
+			AzureBusHelper.RegisterHandler
+#endif
+			(TelemetryHelper, Routes, handler, targetedType, holdMessageLock);
 		}
 
 		/// <summary>
 		/// Register an event handler that will listen and respond to events.
 		/// </summary>
-		public void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = false)
+		public virtual
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			async Task RegisterHandlerAsync<TMessage>(Func<TMessage, Task>
+#else
+			void RegisterHandler<TMessage>(Action<TMessage> 
+#endif
+				handler, bool holdMessageLock = false)
 			where TMessage : IMessage
 		{
-			RegisterHandler(handler, null, holdMessageLock);
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			await RegisterHandlerAsync
+#else
+			RegisterHandler
+#endif
+				(handler, null, holdMessageLock);
 		}
 
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
+		public virtual
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			async Task RegisterGlobalEventHandlerAsync<TMessage>(Func<TMessage, Task>
+#else
+			void RegisterGlobalEventHandler<TMessage>(Action<TMessage> 
+#endif
+				handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 			Routes.RegisterGlobalEventHandler(handler, holdMessageLock);
@@ -117,7 +152,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Receives a <see cref="EventData"/> from the event bus.
 		/// </summary>
-		protected virtual void ReceiveEvent(PartitionContext context, EventData eventData)
+		protected virtual
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			async Task ReceiveEventAsync
+#else
+			void ReceiveEvent
+#endif
+			(PartitionContext context, EventData eventData)
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -155,11 +196,12 @@ namespace Cqrs.Azure.ServiceBus
 					string messageBody = Encoding.UTF8.GetString(eventData.GetBytes());
 #endif
 
-					IEvent<TAuthenticationToken> @event = AzureBusHelper.ReceiveEvent(null, messageBody, ReceiveEvent,
+					IEvent<TAuthenticationToken> @event =
+						AzureBusHelper.ReceiveEvent(null, messageBody,
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
-					string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset),
+							ReceiveEventAsync, string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset),
 #else
-					string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset),
+							ReceiveEvent, string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset),
 #endif
 						ExtractSignature(eventData),
 						SigningTokenConfigurationKey,
@@ -173,7 +215,13 @@ namespace Cqrs.Azure.ServiceBus
 #endif
 							responseCode = "204";
 							// Remove message from queue
-							context.CheckpointAsync(eventData);
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+							SafeTask.RunSafely(async () => {
+								await context.CheckpointAsync(eventData);
+							});
+#else
+							context.CheckpointAsync(eventData).Wait();
+#endif
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
 							Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but processing was skipped due to event settings.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
 #else
@@ -203,7 +251,11 @@ namespace Cqrs.Azure.ServiceBus
 							telemetryName = string.Format("Cqrs/Handle/Event/{0}", telemetryName);
 						}
 						// Remove message from queue
-						context.CheckpointAsync(eventData);
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+						await context.CheckpointAsync(eventData);
+#else
+						context.CheckpointAsync(eventData).Wait();
+#endif
 					}
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
 					Logger.LogDebug(string.Format("An event message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
@@ -304,7 +356,11 @@ namespace Cqrs.Azure.ServiceBus
 				finally
 				{
 					// Eventually just accept it
-					context.CheckpointAsync(eventData);
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+					await context.CheckpointAsync(eventData);
+#else
+					context.CheckpointAsync(eventData).Wait();
+#endif
 
 					TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles--, telemetryProperties);
 
@@ -362,9 +418,20 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Receives a <see cref="IEvent{TAuthenticationToken}"/> from the event bus.
 		/// </summary>
-		public virtual bool? ReceiveEvent(IEvent<TAuthenticationToken> @event)
+		public virtual
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			async Task<bool?> ReceiveEventAsync
+#else
+			bool? ReceiveEvent
+#endif
+				(IEvent<TAuthenticationToken> @event)
 		{
-			return AzureBusHelper.DefaultReceiveEvent(@event, Routes, "Azure-EventHub");
+			return
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+				await AzureBusHelper.DefaultReceiveEventAsync(@event, Routes, "Azure-EventHub");
+#else
+				AzureBusHelper.DefaultReceiveEvent(@event, Routes, "Azure-EventHub");
+#endif
 		}
 
 		#region Overrides of AzureServiceBus<TAuthenticationToken>
@@ -394,12 +461,19 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Starts listening and processing instances of <see cref="IEvent{TAuthenticationToken}"/> from the event bus.
 		/// </summary>
-		public void Start()
+		public virtual void Start()
 		{
 			InstantiateReceiving();
 
 			// Callback to handle received messages
-			RegisterReceiverMessageHandler(ReceiveEvent);
+			RegisterReceiverMessageHandler(
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+				ReceiveEventAsync
+#else
+				ReceiveEvent
+#endif
+			);
 		}
 
 		#endregion

@@ -8,6 +8,7 @@
 
 using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Cqrs.Infrastructure
 {
@@ -33,6 +34,30 @@ namespace Cqrs.Infrastructure
 
 			ParameterExpression sourceParameter = Expression.Parameter(typeof(TBase), "source");
 			Expression<Action<TBase>> result = Expression.Lambda<Action<TBase>>
+			(
+				Expression.Invoke(source, Expression.Convert(sourceParameter, typeof(TDerived))),
+				sourceParameter
+			);
+			return result.Compile();
+		}
+
+		/// <summary>
+		/// If <typeparamref name="TDerived"/> equals <typeparamref name="TBase"/> then <paramref name="source"/> is compiled using <see cref="Expression{TDelegate}.Compile()"/>
+		/// Otherwise <paramref name="source"/> is converted to type <typeparamref name="TDerived"/> from <typeparamref name="TBase"/>
+		/// </summary>
+		/// <typeparam name="TBase">The source <see cref="Type"/>.</typeparam>
+		/// <typeparam name="TDerived">The target <see cref="Type"/>.</typeparam>
+		/// <param name="source">The delegate to adjust.</param>
+		public static Func<TBase, Task> CastArgument<TBase, TDerived>(Expression<Func<TDerived, Task>> source)
+			where TDerived : TBase
+		{
+			if (typeof(TDerived) == typeof(TBase))
+			{
+				return (Func<TBase, Task>)((Delegate)source.Compile());
+			}
+
+			ParameterExpression sourceParameter = Expression.Parameter(typeof(TBase), "source");
+			Expression<Func<TBase, Task>> result = Expression.Lambda<Func<TBase, Task>>
 			(
 				Expression.Invoke(source, Expression.Convert(sourceParameter, typeof(TDerived))),
 				sourceParameter

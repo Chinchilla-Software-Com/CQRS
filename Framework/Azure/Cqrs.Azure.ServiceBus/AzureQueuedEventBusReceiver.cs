@@ -159,7 +159,7 @@ namespace Cqrs.Azure.ServiceBus
 				}
 				catch (Exception exception)
 				{
-					Logger.LogError(string.Format("Processing a request to start a thread for the queue '{0}' failed.", queueName), exception: exception);
+					Logger.LogError($"Processing a request to start a thread for the queue '{queueName}' failed.", exception: exception);
 				}
 				finally
 				{

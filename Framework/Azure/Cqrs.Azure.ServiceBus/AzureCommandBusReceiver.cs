@@ -386,11 +386,11 @@ namespace Cqrs.Azure.ServiceBus
 		/// </remarks>
 		public virtual
 #if NETSTANDARD2_0 || NET48_OR_GREATER
-			async Task RegisterHandlerAsync
+			async Task RegisterHandlerAsync<TMessage>(Func<TMessage, Task>
 #else
-			void RegisterHandler
+			void RegisterHandler<TMessage>(Action<TMessage>
 #endif
-			<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+				handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 #if NETSTANDARD2_0 || NET48_OR_GREATER
@@ -406,11 +406,11 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		public virtual
 #if NETSTANDARD2_0 || NET48_OR_GREATER
-			async Task RegisterHandlerAsync
+			async Task RegisterHandlerAsync<TMessage>(Func<TMessage, Task>
 #else
-			void RegisterHandler
+			void RegisterHandler<TMessage>(Action<TMessage>
 #endif
-			<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
+			 handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 #if NETSTANDARD2_0 || NET48_OR_GREATER

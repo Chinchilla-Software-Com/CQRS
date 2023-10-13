@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Cqrs.Exceptions;
@@ -57,7 +58,13 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
-		public virtual void RegisterHandler<TMessage>(Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+		public virtual void RegisterHandler<TMessage>(
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 			Route route;
@@ -82,7 +89,13 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
-		public void RegisterHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
+		public virtual void RegisterHandler<TMessage>(
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 			RegisterHandler(handler, null, holdMessageLock);
@@ -91,7 +104,13 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-		public void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true) where TMessage : IMessage
+		public virtual void RegisterGlobalEventHandler<TMessage>(
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				handler, bool holdMessageLock = true) where TMessage : IMessage
 		{
 			GlobalEventRoute.Handlers.Add
 			(
@@ -115,7 +134,7 @@ namespace Cqrs.Bus
 		/// <exception cref="InvalidOperationException">
 		/// If more than one <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is not an <see cref="ICommand{TAuthenticationToken}"/> OR
 		/// If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is not an <see cref="ICommand{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
-		public RouteHandlerDelegate GetSingleHandler<TMessage>(bool throwExceptionOnNoRouteHandlers = true)
+		public virtual RouteHandlerDelegate GetSingleHandler<TMessage>(bool throwExceptionOnNoRouteHandlers = true)
 			where TMessage : IMessage
 		{
 			Route route;
@@ -154,7 +173,7 @@ namespace Cqrs.Bus
 		/// <exception cref="InvalidOperationException">
 		/// If more than one <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is not an <see cref="ICommand{TAuthenticationToken}"/> OR
 		/// If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is not an <see cref="ICommand{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
-		public RouteHandlerDelegate GetSingleHandler<TMessage>(TMessage message, bool throwExceptionOnNoRouteHandlers = true)
+		public virtual RouteHandlerDelegate GetSingleHandler<TMessage>(TMessage message, bool throwExceptionOnNoRouteHandlers = true)
 			where TMessage : IMessage
 		{
 			Route route;
@@ -195,7 +214,7 @@ namespace Cqrs.Bus
 		/// <exception cref="NoCommandHandlerRegisteredException">If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is an <see cref="ICommand{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
 		/// <exception cref="NoEventHandlerRegisteredException"> If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is an <see cref="IEvent{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
 		/// <exception cref="NoHandlerRegisteredException"> If no <see cref="RouteHandlerDelegate"/> is found and <typeparamref name="TMessage"/> is not either an <see cref="ICommand{TAuthenticationToken}"/> or an <see cref="IEvent{TAuthenticationToken}"/> and <paramref name="throwExceptionOnNoRouteHandlers"/> is true.</exception>
-		public IEnumerable<RouteHandlerDelegate> GetHandlers<TMessage>(TMessage message, bool throwExceptionOnNoRouteHandlers = true)
+		public virtual IEnumerable<RouteHandlerDelegate> GetHandlers<TMessage>(TMessage message, bool throwExceptionOnNoRouteHandlers = true)
 			where TMessage : IMessage
 		{
 			Type messageType = message.GetType();

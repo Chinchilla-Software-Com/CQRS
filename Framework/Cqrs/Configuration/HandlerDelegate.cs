@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using Cqrs.Messages;
 
 namespace Cqrs.Configuration
@@ -26,7 +27,13 @@ namespace Cqrs.Configuration
 		/// <summary>
 		/// The delegate that gets executed.
 		/// </summary>
-		public Action<T> Delegate { get; set; }
+		public
+#if NET40
+			Action<T>
+#else
+			Func<T, Task>
+#endif
+				Delegate { get; set; }
 
 		/// <summary>
 		/// The <see cref="Type"/> of the targeted object that <see cref="Delegate"/> operates on.

@@ -22,7 +22,7 @@ public class EventReceiver
 	/// <summary>
 	/// Receives a <see cref="ServiceBusReceivedMessage"/> from the event bus.
 	/// </summary>
-	[FunctionName("AzureFunctionEventBusReceiver-Private")]
+	[FunctionName("SampleReports-Private")]
 	public async virtual Task ReceiveEventPrivate([ServiceBusTrigger("Cqrs.Scheduler.Events-Local.Private", "Cqrs.SampleReport", AutoCompleteMessages = false)] ServiceBusReceivedMessage message, ServiceBusClient client, ServiceBusMessageActions messageActions)
 	{
 		await _eventReceiver.ReceiveEventAsync(client, messageActions, message);
@@ -30,7 +30,7 @@ public class EventReceiver
 	/// <summary>
 	/// Receives a <see cref="ServiceBusReceivedMessage"/> from the event bus.
 	/// </summary>
-	[FunctionName("AzureFunctionEventBusReceiver-Public")]
+	[FunctionName("SampleReports-Public")]
 	public async virtual Task ReceiveEventPublic([ServiceBusTrigger("Cqrs.Scheduler.Events-Local.Public", "Cqrs.SampleReport", AutoCompleteMessages = false)] ServiceBusReceivedMessage message, ServiceBusClient client, ServiceBusMessageActions messageActions)
 	{
 		await _eventReceiver.ReceiveEventAsync(client, messageActions, message);

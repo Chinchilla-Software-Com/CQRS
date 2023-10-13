@@ -24,6 +24,7 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
+using System.ServiceModel.Channels;
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
@@ -199,7 +200,13 @@ namespace Cqrs.Azure.ServiceBus
 #else
 			IMessageReceiver serviceBusReceiver
 #endif
-			, string messageBody, Func<ICommand<TAuthenticationToken>, bool?> receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null)
+			, string messageBody, Func<ICommand<TAuthenticationToken>,
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+				Task<bool?>
+#else
+				bool?
+#endif
+			> receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null)
 		{
 			ICommand<TAuthenticationToken> command;
 			try
@@ -270,7 +277,14 @@ namespace Cqrs.Azure.ServiceBus
 			}
 
 			// a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
-			bool? result = receiveCommandHandler(command);
+			bool? result = null;
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			SafeTask.RunSafely(async () => {
+				result = await receiveCommandHandler(command);
+			}).Wait();
+#else
+			result = receiveCommandHandler(command);
+#endif
 			if (result != null && !result.Value)
 				if (skippedAction != null)
 					skippedAction();
@@ -292,7 +306,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// False indicates the <paramref name="command"/> wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
 		/// Null indicates the command<paramref name="command"/> wasn't handled as it was already handled.
 		/// </returns>
-		public virtual bool? DefaultReceiveCommand(ICommand<TAuthenticationToken> command, RouteManager routeManager, string framework)
+		public virtual
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			async Task<bool?> DefaultReceiveCommandAsync
+#else
+			bool? DefaultReceiveCommand
+#endif
+			(ICommand<TAuthenticationToken> command, RouteManager routeManager, string framework)
 		{
 			Type commandType = command.GetType();
 
@@ -319,7 +339,12 @@ namespace Cqrs.Azure.ServiceBus
 				return false;
 			}
 
-			Action<IMessage> handler = commandHandler.Delegate;
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<IMessage, Task>
+#else
+			Action<IMessage>
+#endif
+				handler = commandHandler.Delegate;
 			handler(command);
 			return true;
 		}
@@ -384,7 +409,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="skippedAction">The <see cref="Action"/> to call when the <see cref="IEvent{TAuthenticationToken}"/> is being skipped.</param>
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
-		public virtual IEvent<TAuthenticationToken> ReceiveEvent(IMessageReceiver serviceBusReceiver, string messageBody, Func<IEvent<TAuthenticationToken>, bool?> receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null)
+		public virtual IEvent<TAuthenticationToken> ReceiveEvent(IMessageReceiver serviceBusReceiver, string messageBody, Func<IEvent<TAuthenticationToken>,
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+				Task<bool?>
+#else
+				bool?
+#endif
+			> receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null)
 		{
 			IEvent<TAuthenticationToken> @event;
 			try
@@ -458,7 +489,15 @@ namespace Cqrs.Azure.ServiceBus
 			}
 
 			// a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
-			bool? result = receiveEventHandler(@event);
+
+			bool? result = null;
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+				SafeTask.RunSafely(async () => {
+					result = await receiveEventHandler(@event);
+				}).Wait();
+#else
+			result = receiveEventHandler(@event);
+#endif
 			if (result != null && !result.Value)
 				if (skippedAction != null)
 					skippedAction();
@@ -582,7 +621,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// False indicates the <paramref name="event"/> wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
 		/// Null indicates the <paramref name="event"/> wasn't handled as it was already handled.
 		/// </returns>
-		public virtual bool? DefaultReceiveEvent(IEvent<TAuthenticationToken> @event, RouteManager routeManager, string framework)
+		public virtual
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			async Task<bool?> DefaultReceiveEventAsync
+#else
+			bool? DefaultReceiveEvent
+#endif
+				(IEvent<TAuthenticationToken> @event, RouteManager routeManager, string framework)
 		{
 			Type eventType = @event.GetType();
 
@@ -601,7 +646,14 @@ namespace Cqrs.Azure.ServiceBus
 
 			bool isRequired = BusHelper.IsEventRequired(eventType);
 
-			IEnumerable<Action<IMessage>> handlers = routeManager.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
+			IEnumerable<
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+				Func<IMessage, Task>
+#else
+				Action<IMessage>
+#endif
+			> handlers = routeManager.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (!handlers.Any())
 			{
@@ -609,7 +661,7 @@ namespace Cqrs.Azure.ServiceBus
 				return false;
 			}
 
-			foreach (Action<IMessage> handler in handlers)
+			foreach (var handler in handlers)
 				handler(@event);
 			return true;
 		}
@@ -647,10 +699,29 @@ namespace Cqrs.Azure.ServiceBus
 		/// on the provided <paramref name="routeManger"/>
 		/// </summary>
 		/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/> the <paramref name="handler"/> can handle.</typeparam>
-		public virtual void RegisterHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, Type targetedType, bool holdMessageLock = true)
+		public virtual
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			async Task RegisterHandlerAsync
+#else
+			void RegisterHandler
+#endif
+				<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger,
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage>
+#endif
+				handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			Action<TMessage> registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage>
+#endif
+				registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
 
 			routeManger.RegisterHandler(registerableHandler, targetedType);
 
@@ -661,10 +732,23 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
-		public virtual void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action<TMessage> handler, bool holdMessageLock = true)
+		public virtual void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger,
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage>
+#endif
+				handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-			Action<TMessage> registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			Func<TMessage, Task>
+#else
+			Action<TMessage>
+#endif
+				registerableHandler = BusHelper.BuildActionHandler(handler, holdMessageLock);
 
 			routeManger.RegisterGlobalEventHandler(registerableHandler);
 

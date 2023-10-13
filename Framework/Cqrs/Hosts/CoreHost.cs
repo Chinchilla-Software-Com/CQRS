@@ -15,6 +15,7 @@ using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Infrastructure;
 using Cqrs.Bus;
+using System.Threading.Tasks;
 
 namespace Cqrs.Hosts
 {
@@ -171,7 +172,13 @@ namespace Cqrs.Hosts
 		/// </summary>
 		/// <param name="eventHandler">The event handler to call</param>
 		/// <param name="holdMessageLock">If false, this will spin off another thread. This is a bad performance impact. Strongly suggest you use lock renewing instead... which is configuration based... so even better.</param>
-		protected virtual void ManuallyRegisterEventHandler<TMessage>(Action<TMessage> eventHandler, bool holdMessageLock = true)
+		protected virtual void ManuallyRegisterEventHandler<TMessage>(
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				eventHandler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 			var eventHandlerRegistrar = DependencyResolver.Current.Resolve<IEventHandlerRegistrar>();
@@ -183,7 +190,13 @@ namespace Cqrs.Hosts
 		/// </summary>
 		/// <param name="commandHandler">The command handler to call</param>
 		/// <param name="holdMessageLock">If false, this will spin off another thread. This is a bad performance impact. Strongly suggest you use lock renewing instead... which is configuration based... so even better.</param>
-		protected virtual void ManuallyRegisterCommandHandler<TMessage>(Action<TMessage> commandHandler, bool holdMessageLock = true)
+		protected virtual void ManuallyRegisterCommandHandler<TMessage>(
+#if NET40
+			Action<TMessage>
+#else
+			Func<TMessage, Task>
+#endif
+				commandHandler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
 			var eventHandlerRegistrar = DependencyResolver.Current.Resolve<IEventHandlerRegistrar>();
