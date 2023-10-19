@@ -345,7 +345,10 @@ namespace Cqrs.Azure.ServiceBus
 			Action<IMessage>
 #endif
 				handler = commandHandler.Delegate;
-			handler(command);
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			await
+#endif
+				handler(command);
 			return true;
 		}
 
@@ -662,7 +665,12 @@ namespace Cqrs.Azure.ServiceBus
 			}
 
 			foreach (var handler in handlers)
+			{
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+				await
+#endif
 				handler(@event);
+			}
 			return true;
 		}
 
@@ -727,6 +735,10 @@ namespace Cqrs.Azure.ServiceBus
 
 			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
 			telemetryHelper.Flush();
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>

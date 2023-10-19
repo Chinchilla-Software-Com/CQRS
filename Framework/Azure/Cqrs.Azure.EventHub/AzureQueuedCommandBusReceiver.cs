@@ -168,7 +168,11 @@ namespace Cqrs.Azure.ServiceBus
 				}
 			}
 			// Eventually just accept it
-			context.CheckpointAsync(eventData);
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			await
+#endif
+				context.CheckpointAsync(eventData);
 		}
 
 		/// <summary>
@@ -213,11 +217,20 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+		/// <summary>
+		/// Takes an <see cref="ICommand{TAuthenticationToken}"/> off the queue of <paramref name="queueName"/>
+		/// and calls <see cref="ReceiveCommandAsync(PartitionContext, EventData)"/>. Repeats in a loop until the queue is empty.
+		/// </summary>
+		/// <param name="queueName">The name of the queue process.</param>
+#else
 		/// <summary>
 		/// Takes an <see cref="ICommand{TAuthenticationToken}"/> off the queue of <paramref name="queueName"/>
 		/// and calls <see cref="ReceiveCommand"/>. Repeats in a loop until the queue is empty.
 		/// </summary>
 		/// <param name="queueName">The name of the queue process.</param>
+#endif
 		protected void DequeuAndProcessCommand(string queueName)
 		{
 			SpinWait.SpinUntil
