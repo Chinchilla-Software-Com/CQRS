@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD2_0 || NETCOREAPP3_1_OR_GREATER
+﻿#if NETSTANDARD2_0
 using System;
 using System.Globalization;
 using System.Reflection;

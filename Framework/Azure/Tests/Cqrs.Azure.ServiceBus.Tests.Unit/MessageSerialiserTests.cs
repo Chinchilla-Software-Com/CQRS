@@ -9,7 +9,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-using Cqrs.Azure.KeyVault;
+using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Commands;
 using Cqrs.Configuration;
 using Cqrs.Events;
@@ -47,6 +47,18 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public void SerialiseEvent_TestEventWithEncryption_ExpectedSerialisedData()
 		{
 			// Arrange
+			IConfigurationManager configurationManager;
+#if NET472_OR_GREATER
+			configurationManager = new Configuration.ConfigurationManager();
+#else
+			IConfigurationRoot config = new ConfigurationBuilder()
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables()
+				.Build();
+
+			configurationManager = new CloudConfigurationManager(config);
+#endif
+			DependencyResolver.ConfigurationManager = configurationManager;
 			var eventSerialiser = new MessageSerialiser<Guid>();
 
 			// Act
@@ -65,6 +77,18 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public void DeserialiseEvent_TestEventDataWithEncryptedValues_ExpectedEvent()
 		{
 			// Arrange
+			IConfigurationManager configurationManager;
+#if NET472_OR_GREATER
+			configurationManager = new Configuration.ConfigurationManager();
+#else
+			IConfigurationRoot config = new ConfigurationBuilder()
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables()
+				.Build();
+
+			configurationManager = new CloudConfigurationManager(config);
+#endif
+			DependencyResolver.ConfigurationManager = configurationManager;
 			var eventSerialiser = new MessageSerialiser<Guid>();
 
 			// Act

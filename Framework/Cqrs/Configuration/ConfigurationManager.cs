@@ -16,7 +16,7 @@ namespace Cqrs.Configuration
 	/// </summary>
 	public class ConfigurationManager : IConfigurationManager
 	{
-#if NETSTANDARD2_0 || NETCOREAPP3_1_OR_GREATER
+#if NETSTANDARD2_0
 		/// <summary>
 		/// Gets or sets the <see cref="Microsoft.Extensions.Configuration.IConfiguration"/>. This must be set manually as dependency injection may not be ready in-time.
 		/// </summary>

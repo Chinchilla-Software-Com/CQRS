@@ -38,7 +38,7 @@ namespace Cqrs.DataStores
 			string tableName = table.GetTableName(context);
 			const string sqlCommand = "TRUNCATE TABLE {0}";
 #pragma warning disable EF1000 // Review SQL queries for security vulnerabilities
-#if NETCOREAPP3_0
+#if NETSTANDARD2_0
 			_ = context.Database.ExecuteSqlRaw(string.Format(sqlCommand, tableName));
 #else
 			_ = context.Database.ExecuteSqlCommand(string.Format(sqlCommand, tableName));

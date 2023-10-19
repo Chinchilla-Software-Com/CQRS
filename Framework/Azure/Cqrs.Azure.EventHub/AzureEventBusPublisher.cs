@@ -17,7 +17,7 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Messages;
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 using EventData = Microsoft.Azure.EventHubs.EventData;
@@ -79,7 +79,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					var brokeredMessage = CreateBrokeredMessage(MessageSerialiser.SerialiseEvent, @event.GetType(), @event);
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 					EventHubPublisher.SendAsync(brokeredMessage).Wait();
 #else
 					EventHubPublisher.Send(brokeredMessage);
@@ -163,7 +163,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					if (brokeredMessages.Any())
 					{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 						EventHubPublisher.SendAsync(brokeredMessages).Wait();
 #else
 						EventHubPublisher.SendBatch(brokeredMessages);

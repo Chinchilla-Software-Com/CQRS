@@ -8,7 +8,7 @@
 
 using System;
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 #else
