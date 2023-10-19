@@ -96,6 +96,9 @@ jobs:
       # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
 
+    - name: Build Scheduler with dotnet CLI
+      run: dotnet build --configuration Release .\Scheduler\Cqrs.Scheduler.sln
+
     - name: Pack with dotnet CLI
       run: |
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Cqrs\Cqrs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
