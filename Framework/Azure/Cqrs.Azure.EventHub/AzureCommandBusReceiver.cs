@@ -209,7 +209,11 @@ namespace Cqrs.Azure.ServiceBus
 							telemetryName = string.Format("Cqrs/Handle/Command/{0}", telemetryName);
 						}
 						// Remove message from queue
-						context.CheckpointAsync(eventData);
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+						await
+#endif
+							context.CheckpointAsync(eventData);
 					}
 #if NETSTANDARD2_0 || NET5_0_OR_GREATER
 					Logger.LogDebug(string.Format("A command message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
@@ -306,7 +310,11 @@ namespace Cqrs.Azure.ServiceBus
 				finally
 				{
 					// Eventually just accept it
-					context.CheckpointAsync(eventData);
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+					await
+#endif
+						context.CheckpointAsync(eventData);
 
 					TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles--, telemetryProperties);
 

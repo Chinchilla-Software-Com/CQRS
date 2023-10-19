@@ -147,6 +147,10 @@ namespace Cqrs.Azure.ServiceBus
 			where TMessage : IMessage
 		{
 			Routes.RegisterGlobalEventHandler(handler, holdMessageLock);
+
+#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
