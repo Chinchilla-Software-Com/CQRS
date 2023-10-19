@@ -25,7 +25,7 @@ using Cqrs.Events;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
 using System.ServiceModel.Channels;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
@@ -167,7 +167,7 @@ namespace Cqrs.Azure.ServiceBus
 			return true;
 		}
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 		/// <summary>
 		/// Deserialises and processes the <paramref name="messageBody"/> received from the network through the provided <paramref name="receiveCommandHandler"/>.
 		/// </summary>
@@ -195,13 +195,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>The <see cref="ICommand{TAuthenticationToken}"/> that was processed.</returns>
 #endif
 		public virtual ICommand<TAuthenticationToken> ReceiveCommand(
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			IMessageReceiver client
 #else
 			IMessageReceiver serviceBusReceiver
 #endif
 			, string messageBody, Func<ICommand<TAuthenticationToken>,
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 				Task<bool?>
 #else
 				bool?
@@ -256,7 +256,7 @@ namespace Cqrs.Azure.ServiceBus
 			var identifiedEvent = command as ICommandWithIdentity<TAuthenticationToken>;
 			if (identifiedEvent != null)
 				identifyMessage = string.Format(" for aggregate {0}", identifiedEvent.Rsn);
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			string topicPath = client == null ? "UNKNOWN" : client.Path;
 #else
 			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
@@ -278,7 +278,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			// a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
 			bool? result = null;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			SafeTask.RunSafely(async () => {
 				result = await receiveCommandHandler(command);
 			}).Wait();
@@ -307,7 +307,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Null indicates the command<paramref name="command"/> wasn't handled as it was already handled.
 		/// </returns>
 		public virtual
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			async Task<bool?> DefaultReceiveCommandAsync
 #else
 			bool? DefaultReceiveCommand
@@ -339,13 +339,13 @@ namespace Cqrs.Azure.ServiceBus
 				return false;
 			}
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			Func<IMessage, Task>
 #else
 			Action<IMessage>
 #endif
 				handler = commandHandler.Delegate;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			await
 #endif
 				handler(command);
@@ -413,7 +413,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <param name="lockRefreshAction">The <see cref="Action"/> to call to refresh the network lock.</param>
 		/// <returns>The <see cref="IEvent{TAuthenticationToken}"/> that was processed.</returns>
 		public virtual IEvent<TAuthenticationToken> ReceiveEvent(IMessageReceiver serviceBusReceiver, string messageBody, Func<IEvent<TAuthenticationToken>,
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 				Task<bool?>
 #else
 				bool?
@@ -470,7 +470,7 @@ namespace Cqrs.Azure.ServiceBus
 				identifyMessage = string.Format(" for aggregate {0}", identifiedEvent.Rsn);
 			string topicPath = serviceBusReceiver == null
 				? "UNKNOWN"
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 				: serviceBusReceiver.Path;
 #else
 				: serviceBusReceiver.TopicPath;
@@ -494,7 +494,7 @@ namespace Cqrs.Azure.ServiceBus
 			// a false response means the action wasn't handled, but didn't throw an error, so we assume, by convention, that this means it was skipped.
 
 			bool? result = null;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 				SafeTask.RunSafely(async () => {
 					result = await receiveEventHandler(@event);
 				}).Wait();
@@ -511,7 +511,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Refreshes the network lock.
 		/// </summary>
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 		public virtual void RefreshLock(IMessageReceiver client, CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
 #else
 		public virtual void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
@@ -532,7 +532,7 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						// Based on LockedUntilUtc property to determine if the lock expires soon
 						// We lock for 45 seconds to ensure any thread based issues are mitigated.
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 						if (DateTime.UtcNow > message.ExpiresAtUtc.AddSeconds(-45))
 #else
 						if (DateTime.UtcNow > message.LockedUntilUtc.AddSeconds(-45))
@@ -545,7 +545,7 @@ namespace Cqrs.Azure.ServiceBus
 								{
 									if (brokeredMessageRenewCancellationTokenSource.Token.IsCancellationRequested)
 										return;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 									client.RenewLockAsync(message).Wait(1500);
 #else
 									message.RenewLock();
@@ -625,7 +625,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Null indicates the <paramref name="event"/> wasn't handled as it was already handled.
 		/// </returns>
 		public virtual
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			async Task<bool?> DefaultReceiveEventAsync
 #else
 			bool? DefaultReceiveEvent
@@ -651,7 +651,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			IEnumerable<
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 				Func<IMessage, Task>
 #else
 				Action<IMessage>
@@ -666,7 +666,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			foreach (var handler in handlers)
 			{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 				await
 #endif
 				handler(@event);
@@ -709,13 +709,13 @@ namespace Cqrs.Azure.ServiceBus
 		/// <typeparam name="TMessage">The <see cref="Type"/> of <see cref="IMessage"/> the <paramref name="handler"/> can handle.</typeparam>
 		public virtual
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			async Task RegisterHandlerAsync
 #else
 			void RegisterHandler
 #endif
 				<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger,
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			Func<TMessage, Task>
 #else
 			Action<TMessage>
@@ -724,7 +724,7 @@ namespace Cqrs.Azure.ServiceBus
 			where TMessage : IMessage
 		{
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			Func<TMessage, Task>
 #else
 			Action<TMessage>
@@ -736,7 +736,7 @@ namespace Cqrs.Azure.ServiceBus
 			telemetryHelper.TrackEvent(string.Format("Cqrs/RegisterHandler/{0}", typeof(TMessage).FullName), new Dictionary<string, string> { { "Type", "Azure/Bus" } });
 			telemetryHelper.Flush();
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			await Task.CompletedTask;
 #endif
 		}
@@ -746,7 +746,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		public virtual void RegisterGlobalEventHandler<TMessage>(ITelemetryHelper telemetryHelper, RouteManager routeManger,
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			Func<TMessage, Task>
 #else
 			Action<TMessage>
@@ -755,7 +755,7 @@ namespace Cqrs.Azure.ServiceBus
 			where TMessage : IMessage
 		{
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			Func<TMessage, Task>
 #else
 			Action<TMessage>

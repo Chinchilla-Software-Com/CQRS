@@ -16,7 +16,7 @@ using Chinchilla.Logging;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Cqrs.Infrastructure;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.ServiceBus.Management;
@@ -101,7 +101,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected const int DefaultMaximumConcurrentReceiverProcessesCount = 1;
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 		/// <summary>
 		/// Used by .NET Framework, but not .Net Core
 		/// </summary>
@@ -225,7 +225,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected abstract void InstantiateReceiving();
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 		/// <summary>
 		/// Creates a new instance of <see cref="ManagementClient"/> with the <see cref="ConnectionString"/>.
 		/// </summary>
@@ -250,7 +250,7 @@ namespace Cqrs.Azure.ServiceBus
 		{
 			get
 			{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 				RetryManager retryManager = RetryManager.Instance;
 #else
 				RetryManager retryManager = EnterpriseLibraryContainer.Current.GetInstance<RetryManager>();
@@ -320,7 +320,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected abstract void TriggerSettingsChecking();
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 		/// <summary>
 		/// Sets the handler on <see cref="IReceiverClient.RegisterMessageHandler(Func{Message, System.Threading.CancellationToken, Task}, MessageHandlerOptions)"/>.
 		/// </summary>

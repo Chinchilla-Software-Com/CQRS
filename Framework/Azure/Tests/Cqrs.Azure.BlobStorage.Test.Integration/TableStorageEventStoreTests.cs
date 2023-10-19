@@ -44,7 +44,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			var eventStore = CreateEventStore(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, new TableStorageEventStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			var eventStore = CreateEventStore(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, new TableStorageEventStoreConnectionStringFactory(new Configuration.ConfigurationManager(), logger));
 
 			var event1 = new TestEvent
 			{

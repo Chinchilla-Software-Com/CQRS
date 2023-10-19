@@ -22,7 +22,7 @@ using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 using Manager = Microsoft.Azure.ServiceBus.Management.ManagementClient;
@@ -167,7 +167,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			Func<PartitionContext, EventData, Task>
 #else
 			Action<PartitionContext, EventData>
@@ -357,7 +357,7 @@ namespace Cqrs.Azure.ServiceBus
 			Manager manager;
 			string connectionString = ConnectionString;
 			AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				manager = new Manager(ConnectionString);
 			else
@@ -373,7 +373,7 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPrivateHubExists(manager);
 			CheckPublicHubExists(manager);
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				EventHubPublisher = EventHubClient.CreateFromConnectionString(connectionString);
 			else
@@ -406,7 +406,7 @@ namespace Cqrs.Azure.ServiceBus
 			Manager manager;
 			string connectionString = ConnectionString;
 			AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				manager = new Manager(ConnectionString);
 			else
@@ -423,7 +423,7 @@ namespace Cqrs.Azure.ServiceBus
 			CheckPrivateHubExists(manager);
 			CheckPublicHubExists(manager);
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			if (!string.IsNullOrWhiteSpace(connectionString))
 				EventHubReceiver = new EventProcessorHost(PublicEventHubName, PublicEventHubConsumerGroupName, ConnectionString, StorageConnectionString, "Cqrs");
 			else
@@ -471,7 +471,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		protected virtual void CheckHubExists(Manager manager, string hubName, string consumerGroupNames)
 		{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			/*
 			// Configure Queue Settings
 			var eventHubDescription = new EventHubDescription(hubName)
@@ -565,7 +565,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Registers the provided <paramref name="receiverMessageHandler"/> with the provided <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
 		protected virtual void RegisterReceiverMessageHandler(
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			Func<PartitionContext, EventData, Task>
 #else
 			Action<PartitionContext, EventData>
@@ -581,7 +581,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Stores the provided <paramref name="receiverMessageHandler"/> and <paramref name="receiverMessageHandlerOptions"/>.
 		/// </summary>
 		protected virtual void StoreReceiverMessageHandler(
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			Func<PartitionContext, EventData, Task>
 #else
 			Action<PartitionContext, EventData>

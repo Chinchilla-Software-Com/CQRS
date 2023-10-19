@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Chinchilla.Logging;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
 #else
@@ -28,7 +28,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		protected
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			Func<PartitionContext, EventData, Task>
 #else
 			Action<PartitionContext, EventData>
@@ -40,7 +40,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// </summary>
 		public DefaultEventProcessor(ILogger logger,
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			Func<PartitionContext, EventData, Task>
 #else
 			Action<PartitionContext, EventData>

@@ -45,7 +45,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			TableStorageDataStore<TestEvent> dataStore = CreateDataStore<TestEvent>(logger, new ConfigurationManager());
+			TableStorageDataStore<TestEvent> dataStore = CreateDataStore<TestEvent>(logger, new Configuration.ConfigurationManager());
 
 			var event1 = new TestEvent
 			{
@@ -82,7 +82,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			TableStorageDataStore<TestEntity> dataStore = CreateDataStore<TestEntity>(logger, new ConfigurationManager());
+			TableStorageDataStore<TestEntity> dataStore = CreateDataStore<TestEntity>(logger, new Configuration.ConfigurationManager());
 
 			var event1 = new TestEntity
 			{
@@ -117,7 +117,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			TableStorageDataStore<TestEntity> dataStore = CreateDataStore<TestEntity>(logger, new ConfigurationManager());
+			TableStorageDataStore<TestEntity> dataStore = CreateDataStore<TestEntity>(logger, new Configuration.ConfigurationManager());
 
 			var event1 = new TestEntity
 			{
@@ -127,7 +127,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			dataStore.Add(event1);
 
 			// The repo disposes the datastore, so a copy is needed.
-			TableStorageDataStore<TestEntity> repoDataStore = CreateDataStore<TestEntity>(logger, new ConfigurationManager());
+			TableStorageDataStore<TestEntity> repoDataStore = CreateDataStore<TestEntity>(logger, new Configuration.ConfigurationManager());
 			// DO NOT REMOVE/REFACTOR Closure modifier access thingee stuff...
 			var store = repoDataStore;
 			var repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder<TestEntity>, TestEntity>(() => store, null);
@@ -141,7 +141,7 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 			var timer = new Stopwatch();
 			timer.Start();
 			// Refresh the data store due to disposal.
-			repoDataStore = CreateDataStore<TestEntity>(logger, new ConfigurationManager());
+			repoDataStore = CreateDataStore<TestEntity>(logger, new Configuration.ConfigurationManager());
 			repository = new TableStorageRepository<TestQueryStrategy, TestQueryBuilder<TestEntity>, TestEntity>(() => repoDataStore, null);
 			view = repository.Load(event1.Rsn);
 			timer.Stop();

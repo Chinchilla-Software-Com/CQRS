@@ -19,7 +19,7 @@ using Cqrs.Configuration;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 using System.Threading.Tasks;
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
@@ -37,7 +37,7 @@ namespace Cqrs.Azure.ServiceBus
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureCommandBusReceiver<TAuthenticationToken>
 		: AzureCommandBus<TAuthenticationToken>
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 		, IAsyncCommandHandlerRegistrar
 		, IAsyncCommandReceiver<TAuthenticationToken>
 #else
@@ -78,7 +78,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// In many cases the <paramref name="targetedType"/> will be the handler class itself, what you actually want is the target of what is being updated.
 		/// </remarks>
 		public virtual
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			async Task RegisterHandlerAsync<TMessage>(Func<TMessage, Task>
 #else
 			void RegisterHandler<TMessage>(Action<TMessage>
@@ -86,7 +86,7 @@ namespace Cqrs.Azure.ServiceBus
 				handler, Type targetedType, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			await AzureBusHelper.RegisterHandlerAsync
 #else
 			AzureBusHelper.RegisterHandler
@@ -98,7 +98,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Register a command handler that will listen and respond to commands.
 		/// </summary>
 		public virtual
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 		async Task RegisterHandlerAsync<TMessage>(Func<TMessage, Task>
 #else
 			void RegisterHandler<TMessage>(Action<TMessage>
@@ -106,7 +106,7 @@ namespace Cqrs.Azure.ServiceBus
 			handler, bool holdMessageLock = true)
 			where TMessage : IMessage
 		{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			await RegisterHandlerAsync
 #else
 			RegisterHandler
@@ -118,7 +118,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Receives <see cref="EventData"/> from the command bus.
 		/// </summary>
 		protected virtual
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			async Task ReceiveCommandAsync
 #else
 			void ReceiveCommand
@@ -130,7 +130,7 @@ namespace Cqrs.Azure.ServiceBus
 			string responseCode = "200";
 			// Null means it was skipped
 			bool? wasSuccessfull = true;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			string telemetryName = string.Format("Cqrs/Handle/Command/{0}", eventData.SystemProperties.SequenceNumber);
 #else
 			string telemetryName = string.Format("Cqrs/Handle/Command/{0}", eventData.SequenceNumber);
@@ -150,19 +150,19 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				try
 				{
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 					Logger.LogDebug(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
 #else
 					Logger.LogDebug(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
 #endif
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 					string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
 #else
 					string messageBody = Encoding.UTF8.GetString(eventData.GetBytes());
 #endif
 
 					ICommand<TAuthenticationToken> command = AzureBusHelper.ReceiveCommand(null, messageBody,
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 					ReceiveCommandAsync, string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset),
 #else
 					ReceiveCommand, string.Format("partition key '{0}', sequence number '{1}' and offset '{2}'", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset),
@@ -172,7 +172,7 @@ namespace Cqrs.Azure.ServiceBus
 						() =>
 						{
 							wasSuccessfull = null;
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 							telemetryName = string.Format("Cqrs/Handle/Command/Skipped/{0}", eventData.SystemProperties.SequenceNumber);
 #else
 							telemetryName = string.Format("Cqrs/Handle/Command/Skipped/{0}", eventData.SequenceNumber);
@@ -180,7 +180,7 @@ namespace Cqrs.Azure.ServiceBus
 							responseCode = "204";
 							// Remove message from queue
 							context.CheckpointAsync(eventData);
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 							Logger.LogDebug(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but processing was skipped due to command settings.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
 #else
 							Logger.LogDebug(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but processing was skipped due to command settings.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
@@ -210,12 +210,12 @@ namespace Cqrs.Azure.ServiceBus
 						}
 						// Remove message from queue
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 						await
 #endif
 							context.CheckpointAsync(eventData);
 					}
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 					Logger.LogDebug(string.Format("A command message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
 #else
 					Logger.LogDebug(string.Format("A command message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
@@ -229,7 +229,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					TelemetryHelper.TrackException(exception, null, telemetryProperties);
 					// Indicates a problem, unlock message in queue
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but was not authorised.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
 #else
 					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but was not authorised.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
@@ -243,7 +243,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					TelemetryHelper.TrackException(exception, null, telemetryProperties);
 					// Indicates a problem, unlock message in queue
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handlers were found to process it.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
 #else
 					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handlers were found to process it.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
@@ -257,7 +257,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					TelemetryHelper.TrackException(exception, null, telemetryProperties);
 					// Indicates a problem, unlock message in queue
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handler was found to process it.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
 #else
 					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but no handler was found to process it.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
@@ -270,7 +270,7 @@ namespace Cqrs.Azure.ServiceBus
 				catch (Exception exception)
 				{
 					// Indicates a problem, unlock message in queue
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
 #else
 					Logger.LogError(string.Format("A command message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
@@ -311,7 +311,7 @@ namespace Cqrs.Azure.ServiceBus
 				{
 					// Eventually just accept it
 
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 					await
 #endif
 						context.CheckpointAsync(eventData);
@@ -373,7 +373,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// Receives a <see cref="ICommand{TAuthenticationToken}"/> from the command bus.
 		/// </summary>
 		public virtual
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 			async Task<bool?> ReceiveCommandAsync
 #else
 			bool? ReceiveCommand
@@ -381,7 +381,7 @@ namespace Cqrs.Azure.ServiceBus
 			(ICommand<TAuthenticationToken> command)
 		{
 			return
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 				await AzureBusHelper.DefaultReceiveCommandAsync
 #else
 				AzureBusHelper.DefaultReceiveCommand
@@ -400,7 +400,7 @@ namespace Cqrs.Azure.ServiceBus
 
 			// Callback to handle received messages
 			RegisterReceiverMessageHandler(
-#if NETSTANDARD2_0 || NET5_0_OR_GREATER
+#if NETSTANDARD2_0 || NET6_0
 				ReceiveCommandAsync
 #else
 				ReceiveCommand
