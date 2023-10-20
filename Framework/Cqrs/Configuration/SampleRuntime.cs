@@ -114,7 +114,7 @@ namespace Cqrs.Configuration
 
 			private ICorrelationIdHelper CorrelationIdHelper { get; set; }
 
-			private IConfigurationManager ConfigurationManager { get; set; }
+			private new IConfigurationManager ConfigurationManager { get; set; }
 
 			private ILogger Logger { get; set; }
 

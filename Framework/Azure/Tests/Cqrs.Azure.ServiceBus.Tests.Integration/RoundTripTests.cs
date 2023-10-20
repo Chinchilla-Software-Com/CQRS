@@ -20,16 +20,17 @@ using Cqrs.Events;
 using NUnit.Framework;
 
 #if NET472
+using Cqrs.Azure.ConfigurationManager;
 using Manager = Microsoft.ServiceBus.NamespaceManager;
 using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 using Microsoft.Identity.Client;
 using Microsoft.ServiceBus;
 #else
+using Azure.Identity;
 using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusReceivedMessage;
 using Manager = Azure.Messaging.ServiceBus.Administration.ServiceBusAdministrationClient;
 using TopicClient = Azure.Messaging.ServiceBus.ServiceBusSender;
 using TopicDescription = Azure.Messaging.ServiceBus.Administration.CreateTopicOptions;
-using Azure.Identity;
 #endif
 
 #if NET472_OR_GREATER
@@ -420,9 +421,10 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			var credentials = new ClientSecretCredential(tenantId, applicationId, clientKey);
 			manager = new Manager(endpoint, credentials);
 #else
-		manager = new Manager(endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetToken, new Uri(endpoint), authority));
+			getTokenConfigurationManager = new CloudConfigurationManager();
+			manager = new Manager(endpoint, TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetToken, new Uri(endpoint), authority));
 #endif
-		return manager;
+			return manager;
 		}
 	}
 }

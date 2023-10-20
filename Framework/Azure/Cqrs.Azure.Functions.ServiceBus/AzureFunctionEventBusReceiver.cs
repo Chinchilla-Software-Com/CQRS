@@ -60,10 +60,5 @@ namespace Cqrs.Azure.Functions.ServiceBus
 
 			await ReceiveEventAsync(processMessageEventArgs);
 		}
-
-		protected override async Task InstantiatePublishingAsync()
-		{
-			await base.InstantiatePublishingAsync();
-		}
 	}
 }
