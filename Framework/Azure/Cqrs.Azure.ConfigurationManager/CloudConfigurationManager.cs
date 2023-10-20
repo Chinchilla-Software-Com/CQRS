@@ -52,7 +52,10 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// <param name="connectionStringName">The name (or key) of the connection string to read.</param>
 		public override string GetConnectionString(string connectionStringName)
 		{
-			return Configuration.GetConnectionString(connectionStringName);
+			var section = Configuration?.GetSection("ConnectionStrings");
+			var result = section?[connectionStringName.Replace(".", ":")];
+			result = result ?? section?[connectionStringName];
+			return result;
 		}
 #endif
 

@@ -80,7 +80,7 @@ namespace Cqrs.Configuration
 		/// <param name="connectionStringName">The name (or key) of the connection string to read.</param>
 		public virtual string GetConnectionString(string connectionStringName)
 		{
-			return System.Configuration.ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+			return System.Configuration.ConfigurationManager.ConnectionStrings[connectionStringName]?.ConnectionString;
 		}
 
 		/// <summary>

@@ -81,5 +81,22 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 			Assert.AreEqual("MyCompany", value1);
 			Assert.IsTrue(value2);
 		}
+
+		[TestMethod]
+		public void GetConnectionString_AppInSightsKey_ReturnsExpectedFullyQualifiedValue()
+		{
+			// Arrange
+			IConfigurationRoot config = new ConfigurationBuilder()
+				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables()
+				.Build();
+			IConfigurationManager configurationManager = new CloudConfigurationManager(config);
+
+			// Act
+			string value = configurationManager.GetConnectionString("Cqrs.Hosts.ApplicationInsights.ConnectionString");
+
+			// Assert
+			Assert.AreEqual("Application Insights Connection string from fully-qualified connection strings", value);
+		}
 	}
 }

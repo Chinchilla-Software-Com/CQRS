@@ -76,9 +76,15 @@ namespace Cqrs.Azure.ConfigurationManager
 		/// </summary>
 		protected override void ConfigureTelemetry()
 		{
-			string applicationInsightsInstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsights.InstrumentationKey");
-			if (string.IsNullOrWhiteSpace(applicationInsightsInstrumentationKey))
-				applicationInsightsInstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsightsInstrumentationKey");
+			string applicationInsightsConnectionString = ConfigurationManager.GetConnectionString("Cqrs.Hosts.ApplicationInsights.ConnectionString") ?? ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsights.ConnectionString");
+			if (string.IsNullOrWhiteSpace(applicationInsightsConnectionString))
+			{
+				string applicationInsightsInstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsights.InstrumentationKey");
+				if (string.IsNullOrWhiteSpace(applicationInsightsInstrumentationKey))
+					applicationInsightsInstrumentationKey = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsightsInstrumentationKey");
+				if (!string.IsNullOrWhiteSpace(applicationInsightsInstrumentationKey))
+					applicationInsightsConnectionString = $"InstrumentationKey={applicationInsightsInstrumentationKey}";
+			}
 
 			string enabledApplicationInsightsDeveloperModeSetting = ConfigurationManager.GetSetting("Cqrs.Hosts.ApplicationInsights.EnableDeveloperMode");
 			if (string.IsNullOrWhiteSpace(enabledApplicationInsightsDeveloperModeSetting))
@@ -88,10 +94,9 @@ namespace Cqrs.Azure.ConfigurationManager
 			TelemetryConfiguration config = GetTelemetryConfigurationDelegate == null
 				? TelemetryConfiguration.CreateDefault()
 				: GetTelemetryConfigurationDelegate() ?? TelemetryConfiguration.CreateDefault();
-			config.InstrumentationKey = applicationInsightsInstrumentationKey;
-#endif
-#if NET472
-			TelemetryConfiguration.Active.InstrumentationKey = applicationInsightsInstrumentationKey;
+			config.ConnectionString = applicationInsightsConnectionString;
+#else
+			TelemetryConfiguration.Active.ConnectionString = applicationInsightsConnectionString;
 #endif
 			bool enabledApplicationInsightsDeveloperMode;
 			if (!bool.TryParse(enabledApplicationInsightsDeveloperModeSetting, out enabledApplicationInsightsDeveloperMode))
@@ -99,17 +104,16 @@ namespace Cqrs.Azure.ConfigurationManager
 #if NETSTANDARD2_0
 			config.TelemetryChannel.DeveloperMode = enabledApplicationInsightsDeveloperMode;
 			TelemetryClient = new TelemetryClient (config);
-#endif
-#if NET472
+#else
 			TelemetryConfiguration.Active.TelemetryChannel.DeveloperMode = enabledApplicationInsightsDeveloperMode;
 			if (ConfigurationManager.TryGetSetting("Cqrs.Hosts.ApplicationInsights.OperationName", out string operationName) && !string.IsNullOrWhiteSpace(operationName))
 				TelemetryConfiguration.Active.TelemetryInitializers.Add(new OperationNameTelemetryInitializer(operationName));
 			if (ConfigurationManager.TryGetSetting("Cqrs.Hosts.ApplicationInsights.CloudRoleName", out string cloudRoleName) && !string.IsNullOrWhiteSpace(cloudRoleName))
 				TelemetryConfiguration.Active.TelemetryInitializers.Add(new CloudRoleNameTelemetryInitializer(cloudRoleName));
-			TelemetryClient = new TelemetryClient {InstrumentationKey = applicationInsightsInstrumentationKey };
+			TelemetryClient = new TelemetryClient(TelemetryConfiguration.Active);
 #endif
 
-			TelemetryClient.TrackEvent(string.Format("{0}/Instantiating", TelemetryName));
+			TelemetryClient.TrackEvent($"{TelemetryName}/Instantiating");
 			TelemetryClient.Flush();
 		}
 
@@ -119,7 +123,7 @@ namespace Cqrs.Azure.ConfigurationManager
 		public override void Run(Action handlerRegistation = null)
 		{
 			base.Run(handlerRegistation);
-			TelemetryClient.TrackEvent(string.Format("{0}/Ran", TelemetryName));
+			TelemetryClient.TrackEvent($"{TelemetryName}/Ran");
 			TelemetryClient.Flush();
 		}
 
@@ -139,7 +143,7 @@ namespace Cqrs.Azure.ConfigurationManager
 		{
 			base.Prepare();
 
-			TelemetryClient.TrackEvent(string.Format("{0}/Prepared", TelemetryName));
+			TelemetryClient.TrackEvent($"{TelemetryName}/Prepared");
 		}
 
 		/// <summary>
@@ -149,7 +153,7 @@ namespace Cqrs.Azure.ConfigurationManager
 		{
 			base.Start();
 
-			TelemetryClient.TrackEvent(string.Format("{0}/Started", TelemetryName));
+			TelemetryClient.TrackEvent($"{TelemetryName}/Started");
 		}
 
 		#endregion
