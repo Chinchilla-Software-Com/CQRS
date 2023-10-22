@@ -14,6 +14,7 @@ using Chinchilla.Logging;
 using Cqrs.Entities;
 using Cqrs.DataStores;
 using Cqrs.Repositories.Queries;
+using System.Threading.Tasks;
 
 namespace Cqrs.Repositories
 {
@@ -58,19 +59,41 @@ namespace Cqrs.Repositories
 		/// <summary>
 		/// Create the newly provided <paramref name="data"/> to storage.
 		/// </summary>
-		public virtual void Create(TData data)
+		public virtual
+#if NET40
+			void Create
+#else
+			async Task CreateAsync
+#endif
+			(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
-				dataStore.Add(data);
+#if NET40
+				dataStore.Add
+#else
+				await dataStore.AddAsync
+#endif
+					(data);
 		}
 
 		/// <summary>
 		/// Create the newly provided <paramref name="data"/> to storage.
 		/// </summary>
-		public virtual void Create(IEnumerable<TData> data)
+		public virtual
+#if NET40
+			void Create
+#else
+			async Task CreateAsync
+#endif
+			(IEnumerable<TData> data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
-				dataStore.Add(data);
+#if NET40
+				dataStore.Add
+#else
+				await dataStore.AddAsync
+#endif
+					(data);
 		}
 
 		/// <summary>
@@ -148,37 +171,81 @@ namespace Cqrs.Repositories
 		/// <summary>
 		/// Update the provided <paramref name="data"/> in storage.
 		/// </summary>
-		public virtual void Update(TData data)
+		public virtual
+#if NET40
+			void Update
+#else
+			async Task UpdateAsync
+#endif
+			(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
-				dataStore.Update(data);
+#if NET40
+				dataStore.Update
+#else
+				await dataStore.UpdateAsync
+#endif
+					(data);
 		}
 
 		/// <summary>
 		/// Will mark the <paramref name="data"/> as logically (or soft).
 		/// </summary>
-		public virtual void Delete(TData data)
+		public virtual
+#if NET40
+			void Delete
+#else
+			async Task DeleteAsync
+#endif
+			(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
-				dataStore.Remove(data);
+#if NET40
+				dataStore.Remove
+#else
+				await dataStore.RemoveAsync
+#endif
+					(data);
 		}
 
 		/// <summary>
 		/// Delete all contents (normally by use of a truncate operation) in storage.
 		/// </summary>
-		public virtual void DeleteAll()
+		public virtual
+#if NET40
+			void DeleteAll
+#else
+			async Task DeleteAllAsync
+#endif
+			()
 		{
 			using (var dataStore = CreateDataStoreFunction())
-				dataStore.RemoveAll();
+#if NET40
+				dataStore.RemoveAll
+#else
+				await dataStore.RemoveAllAsync
+#endif
+					();
 		}
 
 		/// <summary>
 		/// Remove the provided <paramref name="data"/> from storage.
 		/// </summary>
-		public void Destroy(TData data)
+		public
+#if NET40
+			void Destroy
+#else
+			async Task DestroyAsync
+#endif
+			(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
-				dataStore.Destroy(data);
+#if NET40
+				dataStore.Destroy
+#else
+				await dataStore.DestroyAsync
+#endif
+					(data);
 		}
 
 		/// <summary>
@@ -186,7 +253,13 @@ namespace Cqrs.Repositories
 		/// </summary>
 		/// <param name="rsn">The identifier if the <typeparamref name="TData"/> to load.</param>
 		/// <param name="throwExceptionOnMissingEntity">If true will throw an <see cref="Exception"/> if no data is found in storage.</param>
-		public virtual TData Load(Guid rsn, bool throwExceptionOnMissingEntity = true)
+		public virtual
+#if NET40
+			TData Load
+#else
+			async Task<TData> LoadAsync
+#endif
+				(Guid rsn, bool throwExceptionOnMissingEntity = true)
 		{
 			using (IDataStore<TData> dataStore = CreateDataStoreFunction())
 			{
@@ -206,16 +279,21 @@ namespace Cqrs.Repositories
 
 				try
 				{
-					return result;
+					return
+#if NET40
+						result;
+#else
+						await Task.FromResult(result);
+#endif
 				}
 				finally
 				{
-					TelemetryHelper.TrackMetric(string.Format("Cqrs/Repository/Load/{0}", typeof(TData).Name), finalResultCount);
+					TelemetryHelper.TrackMetric($"Cqrs/Repository/Load/{typeof(TData).Name}", finalResultCount);
 				}
 			}
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
 		/// Calls <see cref="CreateDataStoreFunction"/> passing the <paramref name="predicate"/>.

@@ -15,6 +15,7 @@ using System.Data.Entity.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 #endif
 using System.Linq;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Domain;
@@ -47,7 +48,13 @@ namespace Cqrs.Events
 		/// Get the latest <see cref="Snapshot"/> from storage.
 		/// </summary>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
-		protected override Snapshot Get(Type aggregateRootType, string streamName)
+		protected override
+#if NET40
+			Snapshot Get
+#else
+			async Task<Snapshot> GetAsync
+#endif
+				(Type aggregateRootType, string streamName)
 		{
 			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
 			{
@@ -58,9 +65,15 @@ namespace Cqrs.Events
 					.Take(1)
 					.SingleOrDefault();
 
-				if (query == null)
-					return null;
-				return EventDeserialiser.Deserialise(query);
+				Snapshot result = null;
+				if (query != null)
+					result = EventDeserialiser.Deserialise(query);
+
+#if NET40
+				return result;
+#else
+				return await Task.FromResult(result);
+#endif
 			}
 		}
 
@@ -68,10 +81,21 @@ namespace Cqrs.Events
 		/// Saves the provided <paramref name="snapshot"/> into storage.
 		/// </summary>
 		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>
-		public override void Save(Snapshot snapshot)
+		public override
+#if NET40
+			void Save
+#else
+			async Task SaveAsync
+#endif
+				(Snapshot snapshot)
 		{
 			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(snapshot.GetType().Name))
 				Add(dbDataContext, snapshot);
+
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		#endregion

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using System.Transactions;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
@@ -244,7 +245,7 @@ namespace Cqrs.DataStores
 
 		#endregion
 
-		#region Implementation of IDisposable
+#region Implementation of IDisposable
 #pragma warning disable CA1063 // Implement IDisposable Correctly
 
 		/// <summary>
@@ -273,14 +274,20 @@ namespace Cqrs.DataStores
 		}
 
 #pragma warning restore CA1063 // Implement IDisposable Correctly
-		#endregion
+#endregion
 
-		#region Implementation of IDataStore<TData>
+#region Implementation of IDataStore<TData>
 
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		public virtual void Add(TData data)
+		public virtual
+#if NET40
+			void Add
+#else
+			async Task AddAsync
+#endif
+			(TData data)
 		{
 			Logger.LogDebug("Adding data to the SQL database", "LinqToSqlDataStore\\Add");
 			try
@@ -306,12 +313,22 @@ namespace Cqrs.DataStores
 			{
 				Logger.LogDebug("Adding data to the SQL database... Done", "LinqToSqlDataStore\\Add");
 			}
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		public virtual void Add(IEnumerable<TData> data)
+		public virtual
+#if NET40
+			void Add
+#else
+			async Task AddAsync
+#endif
+			(IEnumerable<TData> data)
 		{
 			Logger.LogDebug("Adding data collection to the SQL database", "LinqToSqlDataStore\\Add\\Collection");
 			try
@@ -339,19 +356,34 @@ namespace Cqrs.DataStores
 			{
 				Logger.LogDebug("Adding data collection to the SQL database... Done", "LinqToSqlDataStore\\Add\\Collection");
 			}
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsDeleted"/> to true in the data store and persist the change.
 		/// </summary>
-		public virtual void Remove(TData data)
+		public virtual
+#if NET40
+			void Remove
+#else
+			async Task RemoveAsync
+#endif
+			(TData data)
 		{
 			Logger.LogDebug("Removing data from the Sql database", "LinqToSqlDataStore\\Remove");
 			try
 			{
 				DateTime start = DateTime.Now;
 				data.IsDeleted = true;
-				Update(data);
+#if NET40
+				Update
+#else
+				await UpdateAsync
+#endif
+					(data);
 				DateTime end = DateTime.Now;
 				Logger.LogDebug(string.Format("Removing data from the Sql database took {0}.", end - start), "LinqToSqlDataStore\\Remove");
 			}
@@ -359,12 +391,22 @@ namespace Cqrs.DataStores
 			{
 				Logger.LogDebug("Removing data from the Sql database... Done", "LinqToSqlDataStore\\Remove");
 			}
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
 		/// </summary>
-		public void Destroy(TData data)
+		public virtual
+#if NET40
+			void Destroy
+#else
+			async Task DestroyAsync
+#endif
+			(TData data)
 		{
 			Logger.LogDebug("Removing data from the SQL database", "LinqToSqlDataStore\\Destroy");
 			try
@@ -416,12 +458,22 @@ namespace Cqrs.DataStores
 			{
 				Logger.LogDebug("Removing data from the SQL database... Done", "LinqToSqlDataStore\\Destroy");
 			}
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
 		/// </summary>
-		public virtual void RemoveAll()
+		public virtual
+#if NET40
+			void RemoveAll
+#else
+			async Task RemoveAllAsync
+#endif
+			()
 		{
 			Logger.LogDebug("Removing all from the SQL database", "LinqToSqlDataStore\\RemoveAll");
 			try
@@ -444,12 +496,22 @@ namespace Cqrs.DataStores
 			{
 				Logger.LogDebug("Removing all from the SQL database... Done", "LinqToSqlDataStore\\RemoveAll");
 			}
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Update the provided <paramref name="data"/> in the data store and persist the change.
 		/// </summary>
-		public virtual void Update(TData data)
+		public virtual
+#if NET40
+			void Update
+#else
+			async Task UpdateAsync
+#endif
+			(TData data)
 		{
 			Logger.LogDebug("Updating data in the SQL database", "LinqToSqlDataStore\\Update");
 			try
@@ -483,9 +545,13 @@ namespace Cqrs.DataStores
 			{
 				Logger.LogDebug("Updating data to the SQL database... Done", "LinqToSqlDataStore\\Update");
 			}
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
-#endregion
+		#endregion
 	}
 }
 #endif

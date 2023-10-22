@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Events;
 
@@ -55,7 +56,13 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Add an item into the <see cref="IUnitOfWork{TAuthenticationToken}"/> ready to be committed.
 		/// </summary>
-		public virtual void Add<TAggregateRoot>(TAggregateRoot aggregate, bool useSnapshots = false)
+		public virtual
+#if NET40
+			void Add
+#else
+			async Task AddAsync
+#endif
+				<TAggregateRoot>(TAggregateRoot aggregate, bool useSnapshots = false)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			if (!IsTracked(aggregate.Id))
@@ -70,12 +77,22 @@ namespace Cqrs.Domain
 			}
 			else if (((TrackedAggregates[aggregate.Id]).Aggregate) != (IAggregateRoot<TAuthenticationToken>)aggregate)
 				throw new ConcurrencyException(aggregate.Id);
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded or get it from the <see cref="IAggregateRepository{TAuthenticationToken}"/>.
 		/// </summary>
-		public virtual TAggregateRoot Get<TAggregateRoot>(Guid id, int? expectedVersion = null, bool useSnapshots = false)
+		public virtual
+#if NET40
+			TAggregateRoot Get
+#else
+			async Task<TAggregateRoot> GetAsync
+#endif
+				<TAggregateRoot>(Guid id, int? expectedVersion = null, bool useSnapshots = false)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			if(IsTracked(id))
@@ -86,10 +103,21 @@ namespace Cqrs.Domain
 				return trackedAggregate;
 			}
 
-			var aggregate = (useSnapshots ? SnapshotRepository : Repository).Get<TAggregateRoot>(id);
+			var aggregate =
+#if NET40
+				(useSnapshots ? SnapshotRepository : Repository).Get
+#else
+				await (useSnapshots ? SnapshotRepository : Repository).GetAsync
+#endif
+					<TAggregateRoot>(id);
 			if (expectedVersion != null && aggregate.Version != expectedVersion)
 				throw new ConcurrencyException(id);
-			Add(aggregate, useSnapshots);
+#if NET40
+			Add
+#else
+			await AddAsync
+#endif
+				(aggregate, useSnapshots);
 
 			return aggregate;
 		}
@@ -100,10 +128,22 @@ namespace Cqrs.Domain
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
-		public virtual TAggregateRoot GetToVersion<TAggregateRoot>(Guid id, int version)
+		public virtual
+#if NET40
+			TAggregateRoot GetToVersion
+#else
+			async Task<TAggregateRoot> GetToVersionAsync
+#endif
+				<TAggregateRoot>(Guid id, int version)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			var aggregate = Repository.GetToVersion<TAggregateRoot>(id, version);
+			var aggregate =
+#if NET40
+				Repository.GetToVersion
+#else
+				await Repository.GetToVersionAsync
+#endif
+					<TAggregateRoot>(id, version);
 
 			return aggregate;
 		}
@@ -114,10 +154,22 @@ namespace Cqrs.Domain
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-		public virtual TAggregateRoot GetToDate<TAggregateRoot>(Guid id, DateTime versionedDate)
+		public virtual
+#if NET40
+			TAggregateRoot GetToDate
+#else
+			async Task<TAggregateRoot> GetToDateAsync
+#endif
+				<TAggregateRoot>(Guid id, DateTime versionedDate)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			var aggregate = Repository.GetToDate<TAggregateRoot>(id, versionedDate);
+			var aggregate =
+#if NET40
+				Repository.GetToDate
+#else
+				await Repository.GetToDateAsync
+#endif
+					<TAggregateRoot>(id, versionedDate);
 
 			return aggregate;
 		}
@@ -128,14 +180,26 @@ namespace Cqrs.Domain
 		}
 
 		/// <summary>
-		/// Commit any changed <see cref="AggregateRoot{TAuthenticationToken}"/> added to this <see cref="IUnitOfWork{TAuthenticationToken}"/> via <see cref="Add{T}"/>
+		/// Commit any changed <see cref="AggregateRoot{TAuthenticationToken}"/> added to this <see cref="IUnitOfWork{TAuthenticationToken}"/> via Add
 		/// into the <see cref="IAggregateRepository{TAuthenticationToken}"/>
 		/// </summary>
-		public virtual void Commit()
+		public virtual
+
+#if NET40
+			void Commit
+#else
+			async Task CommitAsync
+#endif
+				()
 		{
 			foreach (IAggregateDescriptor<TAuthenticationToken> descriptor in TrackedAggregates.Values)
 			{
-				(descriptor.UseSnapshots ? SnapshotRepository : Repository).Save(descriptor.Aggregate, descriptor.Version);
+#if NET40
+				(descriptor.UseSnapshots ? SnapshotRepository : Repository).Save
+#else
+				await (descriptor.UseSnapshots ? SnapshotRepository : Repository).SaveAsync
+#endif
+					(descriptor.Aggregate, descriptor.Version);
 			}
 			TrackedAggregates.Clear();
 		}

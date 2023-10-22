@@ -1,22 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net472;net48;netstandard2.0</TargetFrameworks>
 		<title>Microsoft Azure Blob and Table Storage for CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
-		<Description>Use Azure Blob and Table Storage as the read store and data store in CQRS.NET. This version is targeted at .net 4.5 using WindowsAzure.Storage version 8.0.0</Description>
-		<Copyright>Copyright © 2022</Copyright>
+		<Description>Use Azure Blob and Table Storage as the read store and data store in CQRS.NET. This version is targeted at .net 4.7.2 using Azure.Data.Tables and Azure.Storage.Blobs version 12</Description>
+		<Copyright>Copyright © 2023</Copyright>
 		<PackageLicenseFile></PackageLicenseFile>
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
 		<PackageReleaseNotes>
-			Version 2.4
+			Version 5.0
 
-			* Added support for snapshots.
-
-			Version 2.0
-
-			* New, utilising WindowsAzure.Storage version 8.0.0
+			- Upgraded to Azure.Data.Tables and Azure.Storage.Blobs version 12
 		</PackageReleaseNotes>
 		<PackageIcon>images\icon.png</PackageIcon>
 
@@ -28,10 +24,11 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net45</TargetFrameworks>
+		<TargetFrameworks>net472;net48;netstandard2.0</TargetFrameworks>
 		<DocumentationFile>Cqrs.Azure.Storage.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<LangVersion>8</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -64,10 +61,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Azure.Data.Tables" Version="12.8.1" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.18.0" />
 		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.11" />
 		<PackageReference Include="Chinchilla.Logging" Version="4.5.34" />
-		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-		<PackageReference Include="WindowsAzure.Storage" Version="8.0.0" />
+		<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -82,7 +80,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
-		<ProjectReference Include="..\Cqrs.Azure.BlobStorage\Cqrs.Azure.BlobStorage.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

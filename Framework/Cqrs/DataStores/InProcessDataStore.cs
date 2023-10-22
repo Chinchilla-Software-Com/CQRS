@@ -11,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Cqrs.Entities;
 using Cqrs.Repositories;
 
@@ -40,7 +41,7 @@ namespace Cqrs.DataStores
 		/// <returns>
 		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
 		/// </returns>
-		public IEnumerator<TData> GetEnumerator()
+		public virtual IEnumerator<TData> GetEnumerator()
 		{
 			return InMemoryDatabase.GetAll<TData>().GetEnumerator();
 		}
@@ -66,7 +67,7 @@ namespace Cqrs.DataStores
 		/// <returns>
 		/// The <see cref="T:System.Linq.Expressions.Expression"/> that is associated with this instance of <see cref="T:System.Linq.IQueryable"/>.
 		/// </returns>
-		public Expression Expression
+		public virtual Expression Expression
 		{
 			get { return InMemoryDatabase.GetAll<TData>().AsQueryable().Expression; }
 		}
@@ -77,7 +78,7 @@ namespace Cqrs.DataStores
 		/// <returns>
 		/// A <see cref="T:System.Type"/> that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
 		/// </returns>
-		public Type ElementType
+		public virtual Type ElementType
 		{
 			get { return InMemoryDatabase.GetAll<TData>().AsQueryable().ElementType; }
 		}
@@ -88,7 +89,7 @@ namespace Cqrs.DataStores
 		/// <returns>
 		/// The <see cref="T:System.Linq.IQueryProvider"/> that is associated with this data source.
 		/// </returns>
-		public IQueryProvider Provider
+		public virtual IQueryProvider Provider
 		{
 			get { return InMemoryDatabase.GetAll<TData>().AsQueryable().Provider; }
 		}
@@ -100,7 +101,7 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
-		public void Dispose()
+		public virtual void Dispose()
 		{
 		}
 
@@ -111,50 +112,110 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		public void Add(TData data)
+		public virtual
+#if NET40
+			void Add
+#else
+			async Task AddAsync
+#endif
+			(TData data)
 		{
 			InMemoryDatabase.Get<TData>().Add(data.Rsn, data);
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		public void Add(IEnumerable<TData> data)
+		public virtual
+#if NET40
+			void Add
+#else
+			async Task AddAsync
+#endif
+			(IEnumerable<TData> data)
 		{
 			foreach (TData dataItem in data)
+#if NET40
 				Add(dataItem);
+#else
+				await AddAsync(dataItem);
+#endif
 		}
 
 		/// <summary>
 		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsDeleted"/> to true in the data store and persist the change.
 		/// </summary>
-		public void Remove(TData data)
+		public virtual
+#if NET40
+			void Remove
+#else
+			async Task RemoveAsync
+#endif
+			(TData data)
 		{
 			InMemoryDatabase.Get<TData>()[data.Rsn].IsDeleted = true;
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
 		/// </summary>
-		public void Destroy(TData data)
+		public virtual
+#if NET40
+			void Destroy
+#else
+			async Task DestroyAsync
+#endif
+			(TData data)
 		{
 			InMemoryDatabase.Get<TData>().Remove(data.Rsn);
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
 		/// </summary>
-		public void RemoveAll()
+		public virtual
+#if NET40
+			void RemoveAll
+#else
+			async Task RemoveAllAsync
+#endif
+			()
 		{
 			InMemoryDatabase.Get<TData>().Clear();
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Update the provided <paramref name="data"/> in the data store and persist the change.
 		/// </summary>
-		public void Update(TData data)
+		public virtual
+#if NET40
+			void Update
+#else
+			async Task UpdateAsync
+#endif
+			(TData data)
 		{
 			InMemoryDatabase.Get<TData>()[data.Rsn] = data;
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		#endregion

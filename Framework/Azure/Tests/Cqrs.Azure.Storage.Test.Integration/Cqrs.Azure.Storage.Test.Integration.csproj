@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net472</TargetFramework>
+		<TargetFrameworks>net472;net48;net6.0</TargetFrameworks>
 
 		<IsPackable>false</IsPackable>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
@@ -20,8 +20,7 @@
 	<ItemGroup>
 		<PackageReference Include="nunit" Version="3.12.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
-		<PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
-		<PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -30,11 +29,17 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Cqrs.Azure.Storage\Cqrs.Azure.Storage.csproj" />
-		<ProjectReference Include="..\Cqrs.Azure.BlobStorage.Test.Integration\Cqrs.Azure.BlobStorage.Test.Integration.csproj" />
+		<ProjectReference Include="..\Cqrs.Azure.ServiceBus.Tests.Unit\Cqrs.Azure.ServiceBus.Tests.Unit.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="cqrs.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)app.config&quot; ECHO ^&lt;^?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;^?^&gt;^&lt;configuration^&gt;^&lt;^/configuration^&gt; &gt; &quot;$(ProjectDir)app.config&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration.app.config&quot; copy /Y &quot;$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration.app.config&quot; &quot;$(ProjectDir)app.config&quot;" />
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)app.config&quot; ECHO ^&lt;^?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;^?^&gt;^&lt;configuration^&gt;^&lt;^/configuration^&gt; &gt; &quot;$(ProjectDir)app.config&quot;&#xD;&#xA;IF NOT EXIST &quot;$(ProjectDir)cqrs.json&quot; ECHO ^{ &quot;Cqrs&quot;: ^{ ^} ^} &gt; &quot;$(ProjectDir)cqrs.json&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration.app.config&quot; copy /Y &quot;$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration.app.config&quot; &quot;$(ProjectDir)app.config&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration-settings.json&quot; copy /Y &quot;$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration-settings.json&quot; &quot;cqrs.json&quot;&#xD;&#xA;" />
 	</Target>
 
 </Project>

@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Domain.Exceptions;
@@ -68,7 +69,13 @@ namespace Cqrs.Domain
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="aggregate">The <see cref="IAggregateRoot{TAuthenticationToken}"/> to save and persist.</param>
 		/// <param name="expectedVersion">The version number the <see cref="IAggregateRoot{TAuthenticationToken}"/> is expected to be at.</param>
-		public virtual void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
+		public virtual
+#if NET40
+			void Save
+#else
+			async Task SaveAsync
+#endif
+				<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			IList<IEvent<TAuthenticationToken>> uncommittedChanges = aggregate.GetUncommittedChanges().ToList();
@@ -77,7 +84,12 @@ namespace Cqrs.Domain
 
 			if (expectedVersion != null)
 			{
-				IEnumerable<IEvent<TAuthenticationToken>> eventStoreResults = EventStore.Get(aggregate.GetType(), aggregate.Id, false, expectedVersion.Value);
+				IEnumerable<IEvent<TAuthenticationToken>> eventStoreResults = null;
+#if NET40
+				eventStoreResults = EventStore.Get(aggregate.GetType(), aggregate.Id, false, expectedVersion.Value);
+#else
+				eventStoreResults = await EventStore.GetAsync(aggregate.GetType(), aggregate.Id, false, expectedVersion.Value);
+#endif
 				if (eventStoreResults.Any())
 					throw new ConcurrencyException(aggregate.Id);
 			}
@@ -110,7 +122,13 @@ namespace Cqrs.Domain
 				@event.Version = version;
 				@event.TimeStamp = DateTimeOffset.UtcNow;
 				@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-				EventStore.Save(aggregate.GetType(), @event);
+
+#if NET40
+				EventStore.Save
+#else
+				await EventStore.SaveAsync
+#endif
+					(aggregate.GetType(), @event);
 				eventsToPublish.Add(@event);
 			}
 
@@ -136,10 +154,22 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		public virtual TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
+		public virtual
+#if NET40
+			TAggregateRoot Get
+#else
+			async Task<TAggregateRoot> GetAsync
+#endif
+				<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			return LoadAggregate<TAggregateRoot>(aggregateId, events);
+			return
+#if NET40
+				LoadAggregate
+#else
+				await LoadAggregateAsync
+#endif
+					<TAggregateRoot>(aggregateId, events);
 		}
 
 		/// <summary>
@@ -152,10 +182,22 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		public virtual TAggregateRoot GetToVersion<TAggregateRoot>(Guid aggregateId, int version, IList<IEvent<TAuthenticationToken>> events = null)
+		public virtual
+#if NET40
+			TAggregateRoot GetToVersion
+#else
+			async Task<TAggregateRoot> GetToVersionAsync
+#endif
+				<TAggregateRoot>(Guid aggregateId, int version, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			return LoadAggregateToVersion<TAggregateRoot>(aggregateId, version, events);
+			return
+#if NET40
+				LoadAggregateToVersion
+#else
+				await LoadAggregateToVersionAsync
+#endif
+					<TAggregateRoot>(aggregateId, version, events);
 		}
 
 		/// <summary>
@@ -168,10 +210,22 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		public virtual TAggregateRoot GetToDate<TAggregateRoot>(Guid aggregateId, DateTime versionedDate, IList<IEvent<TAuthenticationToken>> events = null)
+		public virtual
+#if NET40
+			TAggregateRoot GetToDate
+#else
+			async Task<TAggregateRoot> GetToDateAsync
+#endif
+				<TAggregateRoot>(Guid aggregateId, DateTime versionedDate, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			return LoadAggregateToDate<TAggregateRoot>(aggregateId, versionedDate, events);
+			return
+#if NET40
+				LoadAggregateToDate
+#else
+				await LoadAggregateToDateAsync
+#endif
+					<TAggregateRoot>(aggregateId, versionedDate, events);
 		}
 
 		/// <summary>
@@ -188,7 +242,7 @@ namespace Cqrs.Domain
 		}
 
 		/// <summary>
-		/// Calls <see cref="IAggregateFactory.Create"/> to get a, <typeparamref name="TAggregateRoot"/> and then calls <see cref="LoadAggregateHistory{TAggregateRoot}"/>.
+		/// Calls <see cref="IAggregateFactory.Create"/> to get a, <typeparamref name="TAggregateRoot"/> and then calls LoadAggregateHistory{TAggregateRoot}.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="id">The id of the <typeparamref name="TAggregateRoot"/> to create.</param>
@@ -196,21 +250,32 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		protected virtual TAggregateRoot LoadAggregate<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
+		protected virtual
+#if NET40
+			TAggregateRoot LoadAggregate
+#else
+			async Task<TAggregateRoot> LoadAggregateAsync
+#endif
+				<TAggregateRoot>(Guid id, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			bool tryDependencyResolutionFirst;
-			if (!ConfigurationManager.TryGetSetting(string.Format("Cqrs.AggregateFactory.TryDependencyResolutionFirst.{0}", typeof(TAggregateRoot).FullName), out tryDependencyResolutionFirst))
+			if (!ConfigurationManager.TryGetSetting($"Cqrs.AggregateFactory.TryDependencyResolutionFirst.{typeof(TAggregateRoot).FullName}", out tryDependencyResolutionFirst))
 				if (!ConfigurationManager.TryGetSetting("Cqrs.AggregateFactory.TryDependencyResolutionFirst", out tryDependencyResolutionFirst))
 					tryDependencyResolutionFirst = false;
 			var aggregate = AggregateFactory.Create<TAggregateRoot>(id, tryDependencyResolutionFirst);
 
-			LoadAggregateHistory(aggregate, events);
+#if NET40
+			LoadAggregateHistory
+#else
+			await LoadAggregateHistoryAsync
+#endif
+				(aggregate, events);
 			return aggregate;
 		}
 
 		/// <summary>
-		/// Calls <see cref="IAggregateFactory.Create"/> to get a, <typeparamref name="TAggregateRoot"/> and then calls <see cref="LoadAggregateHistory{TAggregateRoot}"/>.
+		/// Calls <see cref="IAggregateFactory.Create"/> to get a, <typeparamref name="TAggregateRoot"/> and then calls LoadAggregateHistory{TAggregateRoot}.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="id">The id of the <typeparamref name="TAggregateRoot"/> to create.</param>
@@ -219,7 +284,13 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		protected virtual TAggregateRoot LoadAggregateToVersion<TAggregateRoot>(Guid id, int version, IList<IEvent<TAuthenticationToken>> events = null)
+		protected virtual
+#if NET40
+			TAggregateRoot LoadAggregateToVersion
+#else
+			async Task<TAggregateRoot> LoadAggregateToVersionAsync
+#endif
+				<TAggregateRoot>(Guid id, int version, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			bool tryDependencyResolutionFirst;
@@ -228,12 +299,17 @@ namespace Cqrs.Domain
 					tryDependencyResolutionFirst = false;
 			var aggregate = AggregateFactory.Create<TAggregateRoot>(id, tryDependencyResolutionFirst);
 
-			LoadAggregateHistoryToVersion(aggregate, version, events);
+#if NET40
+			LoadAggregateHistoryToVersion
+#else
+			await LoadAggregateHistoryToVersionAsync
+#endif
+				(aggregate, version, events);
 			return aggregate;
 		}
 
 		/// <summary>
-		/// Calls <see cref="IAggregateFactory.Create"/> to get a, <typeparamref name="TAggregateRoot"/> and then calls <see cref="LoadAggregateHistory{TAggregateRoot}"/>.
+		/// Calls <see cref="IAggregateFactory.Create"/> to get a, <typeparamref name="TAggregateRoot"/> and then calls LoadAggregateHistory{TAggregateRoot}.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="id">The id of the <typeparamref name="TAggregateRoot"/> to create.</param>
@@ -242,7 +318,13 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		protected virtual TAggregateRoot LoadAggregateToDate<TAggregateRoot>(Guid id, DateTime versionedDate, IList<IEvent<TAuthenticationToken>> events = null)
+		protected virtual
+#if NET40
+			TAggregateRoot LoadAggregateToDate
+#else
+			async Task<TAggregateRoot> LoadAggregateToDateAsync
+#endif
+				<TAggregateRoot>(Guid id, DateTime versionedDate, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			bool tryDependencyResolutionFirst;
@@ -251,7 +333,12 @@ namespace Cqrs.Domain
 					tryDependencyResolutionFirst = false;
 			var aggregate = AggregateFactory.Create<TAggregateRoot>(id, tryDependencyResolutionFirst);
 
-			LoadAggregateHistoryToDate(aggregate, versionedDate, events);
+#if NET40
+			LoadAggregateHistoryToDate
+#else
+			await LoadAggregateHistoryToDateAsync
+#endif
+				(aggregate, versionedDate, events);
 			return aggregate;
 		}
 
@@ -266,10 +353,26 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		/// <param name="throwExceptionOnNoEvents">If true will throw an instance of <see cref="AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
-		public virtual void LoadAggregateHistory<TAggregateRoot>(TAggregateRoot aggregate, IList<IEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
+		public virtual
+#if NET40
+			void LoadAggregateHistory
+#else
+			async Task LoadAggregateHistoryAsync
+#endif
+				<TAggregateRoot>(TAggregateRoot aggregate, IList<IEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			IList<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get<TAggregateRoot>(aggregate.Id).ToList();
+			IList<IEvent<TAuthenticationToken>> theseEvents = events;
+			if (theseEvents == null)
+			{
+				theseEvents = (
+#if NET40
+					EventStore.Get
+#else
+					await EventStore.GetAsync
+#endif
+						<TAggregateRoot>(aggregate.Id)).ToList();
+			}
 			if (!theseEvents.Any())
 			{
 				if (throwExceptionOnNoEvents)
@@ -299,10 +402,26 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		/// <param name="throwExceptionOnNoEvents">If true will throw an instance of <see cref="AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
-		public virtual void LoadAggregateHistoryToVersion<TAggregateRoot>(TAggregateRoot aggregate, int version, IList<IEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
+		public virtual
+#if NET40
+			void LoadAggregateHistoryToVersion
+#else
+			async Task LoadAggregateHistoryToVersionAsync
+#endif
+				<TAggregateRoot>(TAggregateRoot aggregate, int version, IList<IEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			IList<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.GetToVersion<TAggregateRoot>(aggregate.Id, version).ToList();
+			IList<IEvent<TAuthenticationToken>> theseEvents = events;
+			if (theseEvents == null)
+			{
+				theseEvents = (
+#if NET40
+					EventStore.GetToVersion
+#else
+					await EventStore.GetToVersionAsync
+#endif
+						<TAggregateRoot>(aggregate.Id, version)).ToList();
+			}
 			if (!theseEvents.Any())
 			{
 				if (throwExceptionOnNoEvents)
@@ -332,10 +451,26 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		/// <param name="throwExceptionOnNoEvents">If true will throw an instance of <see cref="AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
-		public virtual void LoadAggregateHistoryToDate<TAggregateRoot>(TAggregateRoot aggregate, DateTime versionedDate, IList<IEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
+		public virtual
+#if NET40
+			void LoadAggregateHistoryToDate
+#else
+			async Task LoadAggregateHistoryToDateAsync
+#endif
+				<TAggregateRoot>(TAggregateRoot aggregate, DateTime versionedDate, IList<IEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			IList<IEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.GetToDate<TAggregateRoot>(aggregate.Id, versionedDate).ToList();
+			IList<IEvent<TAuthenticationToken>> theseEvents = events;
+			if (theseEvents == null)
+			{
+				theseEvents = (
+#if NET40
+					EventStore.GetToDate
+#else
+					await EventStore.GetToDateAsync
+#endif
+						<TAggregateRoot>(aggregate.Id, versionedDate)).ToList();
+			}
 			if (!theseEvents.Any())
 			{
 				if (throwExceptionOnNoEvents)

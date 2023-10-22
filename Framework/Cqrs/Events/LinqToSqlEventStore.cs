@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Domain;
@@ -55,7 +56,13 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersion">Load events starting from this version</param>
-		public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		public override
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> Get
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
@@ -69,9 +76,15 @@ namespace Cqrs.Events
 				if (useLastEventOnly)
 					query = query.AsQueryable().Take(1);
 
-				return query
+				var results = query
 					.Select(EventDeserialiser.Deserialise)
 					.ToList();
+				return
+#if NET40
+					results;
+#else
+					await Task.FromResult(results);
+#endif
 			}
 		}
 
@@ -81,7 +94,13 @@ namespace Cqrs.Events
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
-		public override IEnumerable<IEvent<TAuthenticationToken>> GetToVersion(Type aggregateRootType, Guid aggregateId, int version)
+		public override
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, int version)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
@@ -92,9 +111,15 @@ namespace Cqrs.Events
 					.Where(eventData => eventData.AggregateId == streamName && eventData.Version <= version)
 					.OrderByDescending(eventData => eventData.Version);
 
-				return query
+				var results = query
 					.Select(EventDeserialiser.Deserialise)
 					.ToList();
+				return
+#if NET40
+					results;
+#else
+					await Task.FromResult(results);
+#endif
 			}
 		}
 
@@ -104,7 +129,13 @@ namespace Cqrs.Events
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-		public override IEnumerable<IEvent<TAuthenticationToken>> GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+		public override
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetToDate
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
@@ -115,9 +146,15 @@ namespace Cqrs.Events
 					.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp <= versionedDate)
 					.OrderByDescending(eventData => eventData.Version);
 
-				return query
+				var results = query
 					.Select(EventDeserialiser.Deserialise)
 					.ToList();
+				return
+#if NET40
+					results;
+#else
+					await Task.FromResult(results);
+#endif
 			}
 		}
 
@@ -128,7 +165,13 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
 		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-		public override IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		public override
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
@@ -139,9 +182,15 @@ namespace Cqrs.Events
 					.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp >= fromVersionedDate && eventData.Timestamp <= toVersionedDate)
 					.OrderByDescending(eventData => eventData.Version);
 
-				return query
+				var results = query
 					.Select(EventDeserialiser.Deserialise)
 					.ToList();
+				return
+#if NET40
+					results;
+#else
+					await Task.FromResult(results);
+#endif
 			}
 		}
 
@@ -149,7 +198,13 @@ namespace Cqrs.Events
 		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
 		/// </summary>
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
-		public override IEnumerable<EventData> Get(Guid correlationId)
+		public override
+#if NET40
+			IEnumerable<EventData> Get
+#else
+			async Task<IEnumerable<EventData>> GetAsync
+#endif
+				(Guid correlationId)
 		{
 			using (DataContext dbDataContext = CreateDbDataContext())
 			{
@@ -164,7 +219,13 @@ namespace Cqrs.Events
 					.Where(eventData => eventData.CorrelationId == correlationId)
 					.OrderBy(eventData => eventData.Timestamp);
 
-				return query.ToList();
+				var results = query.ToList();
+				return
+#if NET40
+					results;
+#else
+					await Task.FromResult(results);
+#endif
 			}
 		}
 
@@ -172,11 +233,22 @@ namespace Cqrs.Events
 		/// Persist the provided <paramref name="eventData"/> into SQL Server.
 		/// </summary>
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
-		protected override void PersistEvent(EventData eventData)
+		protected override
+#if NET40
+			void PersistEvent
+#else
+			async Task PersistEventAsync
+#endif
+				(EventData eventData)
 		{
 			using (DataContext dbDataContext = CreateDbDataContext(eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf("/", StringComparison.InvariantCultureIgnoreCase))))
 			{
-				Add(dbDataContext, eventData);
+#if NET40
+				Add
+#else
+				await AddAsync
+#endif
+					(dbDataContext, eventData);
 			}
 		}
 
@@ -216,7 +288,13 @@ namespace Cqrs.Events
 		/// <summary>
 		/// Persist the provided <paramref name="data"/> into SQL Server using the provided <paramref name="dbDataContext"/>.
 		/// </summary>
-		protected virtual void Add(DataContext dbDataContext, EventData data)
+		protected virtual
+#if NET40
+			void Add
+#else
+			async Task AddAsync
+#endif
+				(DataContext dbDataContext, EventData data)
 		{
 			Logger.LogDebug("Adding data to the SQL eventstore database", "SqlEventStore\\Add");
 			try
@@ -235,6 +313,10 @@ namespace Cqrs.Events
 			finally
 			{
 				Logger.LogDebug("Adding data to the SQL eventstore database... Done", "SqlEventStore\\Add");
+#if NET40
+#else
+				await Task.CompletedTask;
+#endif
 			}
 		}
 	}

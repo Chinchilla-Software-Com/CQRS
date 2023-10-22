@@ -1,4 +1,5 @@
-﻿// -----------------------------------------------------------------------------------------
+﻿/*
+// -----------------------------------------------------------------------------------------
 // <copyright file="EntityPropertyConverter.cs" company="Microsoft">
 //    Copyright 2013 Microsoft Corporation
 //
@@ -812,3 +813,4 @@ namespace Microsoft.WindowsAzure.Storage.Table
 		public const string ALinqQueryOptionsOnlyAllowedOnLeafNodes = "Can only specify query options (orderby, where, take, skip) after last navigation.";
 	}
 }
+*/

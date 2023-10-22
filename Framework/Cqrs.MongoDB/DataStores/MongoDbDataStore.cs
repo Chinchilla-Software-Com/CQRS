@@ -15,6 +15,7 @@ using Cqrs.DataStores;
 using Chinchilla.Logging;
 using MongoDB.Driver;
 using Cqrs.Entities;
+using System.Threading.Tasks;
 
 namespace Cqrs.MongoDB.DataStores
 {
@@ -54,7 +55,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
 		/// </returns>
 		/// <filterpriority>1</filterpriority>
-		public IEnumerator<TData> GetEnumerator()
+		public virtual IEnumerator<TData> GetEnumerator()
 		{
 			return MongoCollection.AsQueryable().GetEnumerator();
 		}
@@ -81,7 +82,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// <returns>
 		/// The <see cref="T:System.Linq.Expressions.Expression"/> that is associated with this instance of <see cref="T:System.Linq.IQueryable"/>.
 		/// </returns>
-		public Expression Expression
+		public virtual Expression Expression
 		{
 			get { return MongoCollection.AsQueryable().Expression; }
 		}
@@ -92,7 +93,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// <returns>
 		/// A <see cref="T:System.Type"/> that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
 		/// </returns>
-		public Type ElementType
+		public virtual Type ElementType
 		{
 			get { return MongoCollection.AsQueryable().ElementType; }
 		}
@@ -103,7 +104,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// <returns>
 		/// The <see cref="T:System.Linq.IQueryProvider"/> that is associated with this data source.
 		/// </returns>
-		public IQueryProvider Provider
+		public virtual IQueryProvider Provider
 		{
 			get { return MongoCollection.AsQueryable().Provider; }
 		}
@@ -115,15 +116,26 @@ namespace Cqrs.MongoDB.DataStores
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		public virtual void Add(TData data)
+		public virtual
+#if NET45
+			void Add
+#else
+			async Task AddAsync
+#endif
+				(TData data)
 		{
 			Logger.LogDebug("Adding data to the Mongo database", "MongoDbDataStore\\Add");
 			try
 			{
 				DateTime start = DateTime.Now;
-				MongoCollection.InsertOne(data);
+#if NET45
+				MongoCollection.InsertOne
+#else
+				await MongoCollection.InsertOneAsync
+#endif
+					(data);
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Adding data in the Mongo database took {0}.", end - start), "MongoDbDataStore\\Add");
+				Logger.LogDebug($"Adding data in the Mongo database took {end - start}.", "MongoDbDataStore\\Add");
 			}
 			finally
 			{
@@ -134,12 +146,23 @@ namespace Cqrs.MongoDB.DataStores
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		public virtual void Add(IEnumerable<TData> data)
+		public virtual
+#if NET45
+			void Add
+#else
+			async Task AddAsync
+#endif
+				(IEnumerable<TData> data)
 		{
 			Logger.LogDebug("Adding data collection to the Mongo database", "MongoDbDataStore\\Add");
 			try
 			{
-				MongoCollection.InsertMany(data);
+#if NET45
+				MongoCollection.InsertMany
+#else
+				await MongoCollection.InsertManyAsync
+#endif
+					(data);
 			}
 			finally
 			{
@@ -150,13 +173,24 @@ namespace Cqrs.MongoDB.DataStores
 		/// <summary>
 		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsDeleted"/> to true
 		/// </summary>
-		public virtual void Remove(TData data)
+		public virtual
+#if NET45
+			void Remove
+#else
+			async Task RemoveAsync
+#endif
+				(TData data)
 		{
 			Logger.LogDebug("Removing data from the Mongo database", "MongoDbDataStore\\Remove");
 			try
 			{
 				data.IsDeleted = true;
-				Update(data);
+#if NET45
+				Update
+#else
+				await UpdateAsync
+#endif
+					(data);
 			}
 			finally
 			{
@@ -167,13 +201,24 @@ namespace Cqrs.MongoDB.DataStores
 		/// <summary>
 		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
 		/// </summary>
-		public virtual void Destroy(TData data)
+		public virtual
+#if NET45
+			void Destroy
+#else
+			async Task DestroyAsync
+#endif
+				(TData data)
 		{
 			Logger.LogDebug("Removing data from the Mongo database", "MongoDbDataStore\\Destroy");
 			try
 			{
 				DateTime start = DateTime.Now;
-				MongoCollection.DeleteOne(x => x.Rsn == data.Rsn);
+#if NET45
+				MongoCollection.DeleteOne
+#else
+				await MongoCollection.DeleteOneAsync
+#endif
+					(x => x.Rsn == data.Rsn);
 				DateTime end = DateTime.Now;
 				Logger.LogDebug(string.Format("Updating data in the Mongo database took {0}.", end - start), "MongoDbDataStore\\Update");
 			}
@@ -186,12 +231,23 @@ namespace Cqrs.MongoDB.DataStores
 		/// <summary>
 		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
 		/// </summary>
-		public virtual void RemoveAll()
+		public virtual
+#if NET45
+			void RemoveAll
+#else
+			async Task RemoveAllAsync
+#endif
+				()
 		{
 			Logger.LogDebug("Removing all from the Mongo database", "MongoDbDataStore\\RemoveAll");
 			try
 			{
-				MongoCollection.DeleteMany(x => true);
+#if NET45
+				MongoCollection.DeleteMany
+#else
+				await MongoCollection.DeleteManyAsync
+#endif
+					(x => true);
 			}
 			finally
 			{
@@ -202,15 +258,26 @@ namespace Cqrs.MongoDB.DataStores
 		/// <summary>
 		/// Update the provided <paramref name="data"/> in the data store and persist the change.
 		/// </summary>
-		public virtual void Update(TData data)
+		public virtual
+#if NET45
+			void Update
+#else
+			async Task UpdateAsync
+#endif
+				(TData data)
 		{
 			Logger.LogDebug("Updating data in the Mongo database", "MongoDbDataStore\\Update");
 			try
 			{
 				DateTime start = DateTime.Now;
-				MongoCollection.ReplaceOne(x => x.Rsn == data.Rsn, data);
+#if NET45
+				MongoCollection.ReplaceOne
+#else
+				await MongoCollection.ReplaceOneAsync
+#endif
+					(x => x.Rsn == data.Rsn, data);
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Updating data in the Mongo database took {0}.", end - start), "MongoDbDataStore\\Update");
+				Logger.LogDebug($"Updating data in the Mongo database took {end - start}.", "MongoDbDataStore\\Update");
 			}
 			finally
 			{
@@ -235,7 +302,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// <summary>
 		/// Executes the "repairDatabase" command on the current database.
 		/// </summary>
-		public void Repair()
+		public virtual void Repair()
 		{
 			Logger.LogDebug("Repairing the Mongo database", "MongoDbDataStore\\Repair");
 			try
@@ -243,7 +310,7 @@ namespace Cqrs.MongoDB.DataStores
 				DateTime start = DateTime.Now;
 				MongoCollection.Database.RunCommand(new JsonCommand<object>("{ repairDatabase: 1 }"));
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Repairing the Mongo database took {0}.", end - start), "MongoDbDataStore\\Repair");
+				Logger.LogDebug($"Repairing the Mongo database took {end - start}.", "MongoDbDataStore\\Repair");
 			}
 			finally
 			{

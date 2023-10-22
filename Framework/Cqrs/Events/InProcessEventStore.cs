@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Cqrs.Domain;
 using Cqrs.Messages;
 
@@ -40,7 +41,13 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to be saved.</param>
-		public virtual void Save(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
+		public virtual
+#if NET40
+			void Save
+#else
+			async Task SaveAsync
+#endif
+				(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
 		{
 			IList<IEvent<TAuthenticationToken>> list;
 			InMemoryDb.TryGetValue(@event.GetIdentity(), out list);
@@ -50,6 +57,10 @@ namespace Cqrs.Events
 				InMemoryDb.Add(@event.GetIdentity(), list);
 			}
 			list.Add(@event);
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
@@ -59,9 +70,21 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersion">Load events starting from this version</param>
-		public virtual IEnumerable<IEvent<TAuthenticationToken>> Get<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		public virtual
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> Get
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
+#endif
+				<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
-			return Get(typeof(T), aggregateId, useLastEventOnly, fromVersion);
+			return
+#if NET40
+				Get
+#else
+				await GetAsync
+#endif
+					(typeof(T), aggregateId, useLastEventOnly, fromVersion);
 		}
 
 		/// <summary>
@@ -71,13 +94,25 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersion">Load events starting from this version</param>
-		public virtual IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		public virtual
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> Get
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
+#endif
+				(Type aggregateType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			IList<IEvent<TAuthenticationToken>> events;
 			InMemoryDb.TryGetValue(aggregateId, out events);
-			return events != null
+			var results = events != null
 				? events.Where(x => x.Version > fromVersion)
 				: new List<IEvent<TAuthenticationToken>>();
+			return
+#if NET40
+				results;
+#else
+				await Task.FromResult(results);
+#endif
 		}
 
 		/// <summary>
@@ -86,13 +121,25 @@ namespace Cqrs.Events
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
-		public virtual IEnumerable<IEvent<TAuthenticationToken>> GetToVersion(Type aggregateRootType, Guid aggregateId, int version)
+		public virtual
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, int version)
 		{
 			IList<IEvent<TAuthenticationToken>> events;
 			InMemoryDb.TryGetValue(aggregateId, out events);
-			return events != null
+			var results = events != null
 				? events.Where(x => x.Version <= version)
 				: new List<IEvent<TAuthenticationToken>>();
+			return
+#if NET40
+				results;
+#else
+				await Task.FromResult(results);
+#endif
 		}
 
 		/// <summary>
@@ -101,9 +148,21 @@ namespace Cqrs.Events
 		/// <typeparam name="T">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
-		public virtual IEnumerable<IEvent<TAuthenticationToken>> GetToVersion<T>(Guid aggregateId, int version)
+		public virtual
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
+#endif
+				<T>(Guid aggregateId, int version)
 		{
-			return GetToVersion(typeof(T), aggregateId, version);
+			return
+#if NET40
+				GetToVersion
+#else
+				await GetToVersionAsync
+#endif
+					(typeof(T), aggregateId, version);
 		}
 
 		/// <summary>
@@ -112,13 +171,25 @@ namespace Cqrs.Events
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-		public virtual IEnumerable<IEvent<TAuthenticationToken>> GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+		public virtual
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetToDate
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
 		{
 			IList<IEvent<TAuthenticationToken>> events;
 			InMemoryDb.TryGetValue(aggregateId, out events);
-			return events != null
+			var results= events != null
 				? events.Where(x => x.TimeStamp <= versionedDate)
 				: new List<IEvent<TAuthenticationToken>>();
+			return
+#if NET40
+				results;
+#else
+				await Task.FromResult(results);
+#endif
 		}
 
 		/// <summary>
@@ -127,9 +198,21 @@ namespace Cqrs.Events
 		/// <typeparam name="T">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-		public virtual IEnumerable<IEvent<TAuthenticationToken>> GetToDate<T>(Guid aggregateId, DateTime versionedDate)
+		public virtual
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetToDate
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
+#endif
+				<T>(Guid aggregateId, DateTime versionedDate)
 		{
-			return GetToDate(typeof(T), aggregateId, versionedDate);
+			return
+#if NET40
+				GetToDate
+#else
+				await GetToDateAsync
+#endif
+					(typeof(T), aggregateId, versionedDate);
 		}
 
 		/// <summary>
@@ -139,14 +222,26 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
 		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-		public IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate,
+		public virtual
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate,
 			DateTime toVersionedDate)
 		{
 			IList<IEvent<TAuthenticationToken>> events;
 			InMemoryDb.TryGetValue(aggregateId, out events);
-			return events != null
+			var results = events != null
 				? events.Where(eventData => eventData.TimeStamp >= fromVersionedDate && eventData.TimeStamp <= toVersionedDate)
 				: new List<IEvent<TAuthenticationToken>>();
+			return
+#if NET40
+				results;
+#else
+				await Task.FromResult(results);
+#endif
 		}
 
 		/// <summary>
@@ -156,18 +251,42 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
 		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-		public IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates<T>(Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		public virtual
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
+#endif
+				<T>(Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
 		{
-			return GetBetweenDates(typeof(T), aggregateId, fromVersionedDate, toVersionedDate);
+			return
+#if NET40
+				GetBetweenDates
+#else
+				await GetBetweenDatesAsync
+#endif
+					(typeof(T), aggregateId, fromVersionedDate, toVersionedDate);
 		}
 
 		/// <summary>
 		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
 		/// </summary>
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
-		public virtual IEnumerable<EventData> Get(Guid correlationId)
+		public virtual
+#if NET40
+			IEnumerable<EventData> Get
+#else
+			async Task<IEnumerable<EventData>> GetAsync
+#endif
+				(Guid correlationId)
 		{
-			return Enumerable.Empty<EventData>();
+			var result = Enumerable.Empty<EventData>();
+			return
+#if NET40
+				result;
+#else
+				await Task.FromResult(result);
+#endif
 		}
 
 		/// <summary>
@@ -175,9 +294,20 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <typeparam name="T">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to be saved.</param>
-		public virtual void Save<T>(IEvent<TAuthenticationToken> @event)
+		public virtual
+#if NET40
+			void Save
+#else
+			async Task SaveAsync
+#endif
+				<T>(IEvent<TAuthenticationToken> @event)
 		{
-			Save(typeof(T), @event);
+#if NET40
+			Save
+#else
+			await SaveAsync
+#endif
+				(typeof(T), @event);
 		}
 	}
 }

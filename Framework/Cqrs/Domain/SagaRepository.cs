@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Commands;
 using Cqrs.Domain.Exceptions;
@@ -66,7 +67,13 @@ namespace Cqrs.Domain
 		/// <typeparam name="TSaga">The <see cref="Type"/> of the <see cref="ISaga{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="saga">The <see cref="ISaga{TAuthenticationToken}"/> to save and persist.</param>
 		/// <param name="expectedVersion">The version number the <see cref="ISaga{TAuthenticationToken}"/> is expected to be at.</param>
-		public virtual void Save<TSaga>(TSaga saga, int? expectedVersion = null)
+		public virtual
+#if NET40
+			void Save
+#else
+			async Task SaveAsync
+#endif
+				<TSaga>(TSaga saga, int? expectedVersion = null)
 			where TSaga : ISaga<TAuthenticationToken>
 		{
 			IList<ISagaEvent<TAuthenticationToken>> uncommittedChanges = saga.GetUncommittedChanges().ToList();
@@ -79,7 +86,13 @@ namespace Cqrs.Domain
 
 			if (expectedVersion != null)
 			{
-				IEnumerable<IEvent<TAuthenticationToken>> eventStoreResults = EventStore.Get(saga.GetType(), saga.Id, false, expectedVersion.Value);
+				IEnumerable<IEvent<TAuthenticationToken>> eventStoreResults =
+#if NET40
+					EventStore.Get
+#else
+					await EventStore.GetAsync
+#endif
+						(saga.GetType(), saga.Id, false, expectedVersion.Value);
 				if (eventStoreResults.Any())
 					throw new ConcurrencyException(saga.Id);
 			}
@@ -101,7 +114,12 @@ namespace Cqrs.Domain
 				@event.Version = version;
 				@event.TimeStamp = DateTimeOffset.UtcNow;
 				@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-				EventStore.Save(saga.GetType(), @event);
+#if NET40
+				EventStore.Save
+#else
+				await EventStore.SaveAsync
+#endif
+					(saga.GetType(), @event);
 				eventsToPublish.Add(@event);
 			}
 
@@ -137,10 +155,22 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="ISaga{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		public virtual TSaga Get<TSaga>(Guid sagaId, IList<ISagaEvent<TAuthenticationToken>> events = null)
+		public virtual
+#if NET40
+			TSaga Get
+#else
+			async Task<TSaga> GetAsync
+#endif
+				 <TSaga>(Guid sagaId, IList<ISagaEvent<TAuthenticationToken>> events = null)
 			where TSaga : ISaga<TAuthenticationToken>
 		{
-			return LoadSaga<TSaga>(sagaId, events);
+			return
+#if NET40
+				LoadSaga
+#else
+				await LoadSagaAsync
+#endif
+					<TSaga>(sagaId, events);
 		}
 
 		/// <summary>
@@ -157,7 +187,7 @@ namespace Cqrs.Domain
 		}
 
 		/// <summary>
-		/// Calls <see cref="IAggregateFactory.Create"/> to get a, <typeparamref name="TSaga"/> and then calls <see cref="LoadSagaHistory{TSaga}"/>.
+		/// Calls <see cref="IAggregateFactory.Create"/> to get a, <typeparamref name="TSaga"/> and then calls LoadSagaHistory.
 		/// </summary>
 		/// <typeparam name="TSaga">The <see cref="Type"/> of <see cref="ISaga{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="id">The id of the <typeparamref name="TSaga"/> to create.</param>
@@ -165,12 +195,23 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="ISaga{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		protected virtual TSaga LoadSaga<TSaga>(Guid id, IList<ISagaEvent<TAuthenticationToken>> events = null)
+		protected virtual
+#if NET40
+			TSaga LoadSaga
+#else
+			async Task<TSaga> LoadSagaAsync
+#endif
+				 <TSaga>(Guid id, IList<ISagaEvent<TAuthenticationToken>> events = null)
 			where TSaga : ISaga<TAuthenticationToken>
 		{
 			var saga = SagaFactory.Create<TSaga>(id, false);
 
-			LoadSagaHistory(saga, events);
+#if NET40
+			LoadSagaHistory
+#else
+			await LoadSagaHistoryAsync
+#endif
+				(saga, events);
 			return saga;
 		}
 
@@ -185,10 +226,24 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		/// <param name="throwExceptionOnNoEvents">If true will throw an instance of <see cref="SagaNotFoundException{TSaga,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
-		public virtual void LoadSagaHistory<TSaga>(TSaga saga, IList<ISagaEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
+		public virtual
+#if NET40
+			void LoadSagaHistory
+#else
+			async Task LoadSagaHistoryAsync
+#endif
+				<TSaga>(TSaga saga, IList<ISagaEvent<TAuthenticationToken>> events = null, bool throwExceptionOnNoEvents = true)
 			where TSaga : ISaga<TAuthenticationToken>
 		{
-			IList<ISagaEvent<TAuthenticationToken>> theseEvents = events ?? EventStore.Get<TSaga>(saga.Id).Cast<ISagaEvent<TAuthenticationToken>>().ToList();
+			IList<ISagaEvent<TAuthenticationToken>> theseEvents = events ?? 
+			(
+#if NET40
+				EventStore.Get
+#else
+				await EventStore.GetAsync
+#endif
+					<TSaga>(saga.Id)
+			).Cast<ISagaEvent<TAuthenticationToken>>().ToList();
 			if (!theseEvents.Any())
 			{
 				if (throwExceptionOnNoEvents)

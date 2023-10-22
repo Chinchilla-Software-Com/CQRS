@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using Cqrs.Events;
 
 namespace Cqrs.Domain
@@ -20,14 +21,24 @@ namespace Cqrs.Domain
 		/// Add an item into the <see cref="IUnitOfWork{TAuthenticationToken}"/> ready to be committed.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
-		void Add<TAggregateRoot>(TAggregateRoot aggregate, bool useSnapshots = false)
+#if NET40
+		void Add
+#else
+		Task AddAsync
+#endif
+			<TAggregateRoot>(TAggregateRoot aggregate, bool useSnapshots = false)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;
 
 		/// <summary>
 		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
-		TAggregateRoot Get<TAggregateRoot>(Guid id, int? expectedVersion = null, bool useSnapshots = false)
+#if NET40
+		TAggregateRoot Get
+#else
+		Task<TAggregateRoot> GetAsync
+#endif
+			<TAggregateRoot>(Guid id, int? expectedVersion = null, bool useSnapshots = false)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;
 
 		/// <summary>
@@ -36,7 +47,12 @@ namespace Cqrs.Domain
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
-		TAggregateRoot GetToVersion<TAggregateRoot>(Guid id, int version)
+#if NET40
+		TAggregateRoot GetToVersion
+#else
+		Task<TAggregateRoot> GetToVersionAsync
+#endif
+			<TAggregateRoot>(Guid id, int version)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;
 
 		/// <summary>
@@ -45,12 +61,24 @@ namespace Cqrs.Domain
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-		TAggregateRoot GetToDate<TAggregateRoot>(Guid id, DateTime versionedDate)
+#if NET40
+		TAggregateRoot GetToDate
+#else
+		Task<TAggregateRoot> GetToDateAsync
+#endif
+			<TAggregateRoot>(Guid id, DateTime versionedDate)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>;
 
 		/// <summary>
-		/// Commit any changed <see cref="AggregateRoot{TAuthenticationToken}"/> added to this <see cref="IUnitOfWork{TAuthenticationToken}"/> via <see cref="Add{T}"/>
+		/// Commit any changed <see cref="AggregateRoot{TAuthenticationToken}"/> added to this <see cref="IUnitOfWork{TAuthenticationToken}"/> via Add
 		/// </summary>
-		void Commit();
+
+
+#if NET40
+		void Commit
+#else
+		Task CommitAsync
+#endif
+			();
 	}
 }

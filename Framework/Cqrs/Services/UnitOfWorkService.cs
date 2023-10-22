@@ -7,6 +7,7 @@
 #endregion
 
 using Cqrs.Domain;
+using System.Threading.Tasks;
 
 namespace Cqrs.Services
 {
@@ -40,7 +41,7 @@ namespace Cqrs.Services
 		/// <returns>
 		/// true if the provided <paramref name="commiter"/> is accepted as the committer, false otherwise.
 		/// </returns>
-		public bool SetCommitter(object commiter)
+		public virtual bool SetCommitter(object commiter)
 		{
 			if (Committer != null)
 				return false;
@@ -55,12 +56,22 @@ namespace Cqrs.Services
 		/// <returns>
 		/// true if the provided <paramref name="commiter"/> is the <see cref="Committer"/>, false otherwise.
 		/// </returns>
-		public bool Commit(object commiter)
+		public virtual
+#if NET40
+		bool Commit
+#else
+		async Task<bool> CommitAsync
+#endif
+			(object commiter)
 		{
 			if (Committer != commiter)
 				return false;
 
+#if NET40
 			UnitOfWork.Commit();
+#else
+			await UnitOfWork.CommitAsync();
+#endif
 			return true;
 		}
 	}

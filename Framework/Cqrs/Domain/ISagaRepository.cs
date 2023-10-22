@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cqrs.Events;
 
 namespace Cqrs.Domain
@@ -24,7 +25,12 @@ namespace Cqrs.Domain
 		/// <typeparam name="TSaga">The <see cref="Type"/> of the <see cref="ISaga{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="saga">The <see cref="ISaga{TAuthenticationToken}"/> to save and persist.</param>
 		/// <param name="expectedVersion">The version number the <see cref="ISaga{TAuthenticationToken}"/> is expected to be at.</param>
-		void Save<TSaga>(TSaga saga, int? expectedVersion = null)
+#if NET40
+		void Save
+#else
+		Task SaveAsync
+#endif
+			<TSaga>(TSaga saga, int? expectedVersion = null)
 			where TSaga : ISaga<TAuthenticationToken>;
 
 		/// <summary>
@@ -36,7 +42,12 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="ISaga{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		TSaga Get<TSaga>(Guid sagaId, IList<ISagaEvent<TAuthenticationToken>> events = null)
+#if NET40
+		TSaga Get
+#else
+		Task<TSaga> GetAsync
+#endif
+			<TSaga>(Guid sagaId, IList<ISagaEvent<TAuthenticationToken>> events = null)
 			where TSaga : ISaga<TAuthenticationToken>;
 	}
 }

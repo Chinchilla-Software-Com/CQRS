@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
+using Cqrs.Exceptions;
 
 namespace Cqrs.Events
 {
@@ -37,7 +38,7 @@ namespace Cqrs.Events
 
 			string connectionStringkey;
 			if (!ConfigurationManager.TryGetSetting(SqlEventStoreConnectionNameApplicationKey, out connectionStringkey) || string.IsNullOrEmpty(connectionStringkey))
-				throw new NullReferenceException(string.Format("No application setting named '{0}' was found in the configuration file with the name of a connection string to look for.", SqlEventStoreConnectionNameApplicationKey));
+				throw new MissingApplicationSettingException(SqlEventStoreConnectionNameApplicationKey);
 			string connectionString;
 			int writeIndex = 1;
 			while (!string.IsNullOrWhiteSpace(connectionStringkey))
@@ -48,10 +49,10 @@ namespace Cqrs.Events
 				}
 				catch (NullReferenceException exception)
 				{
-					throw new NullReferenceException(string.Format("No connection string setting named '{0}' was found in the configuration file with the SQL Event Store connection string.", connectionStringkey), exception);
+					throw new MissingConnectionStringException(connectionStringkey, exception);
 				}
 				writableConnectionStrings.Add(connectionString);
-				if (!ConfigurationManager.TryGetSetting(string.Format("{0}.{1}", SqlEventStoreConnectionNameApplicationKey, writeIndex), out connectionStringkey) || string.IsNullOrEmpty(connectionStringkey))
+				if (!ConfigurationManager.TryGetSetting($"{SqlEventStoreConnectionNameApplicationKey}.{writeIndex}", out connectionStringkey) || string.IsNullOrEmpty(connectionStringkey))
 					connectionStringkey = null;
 				writeIndex++;
 			}
@@ -64,7 +65,13 @@ namespace Cqrs.Events
 		/// A single <see cref="TransactionScope"/> wraps all SQL servers, so all must complete successfully, or they will ALL roll back.
 		/// </summary>
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
-		protected override void PersistEvent(EventData eventData)
+		protected override
+#if NET40
+			void PersistEvent
+#else
+			async Task PersistEventAsync
+#endif
+				(EventData eventData)
 		{
 			try
 			{
@@ -85,7 +92,13 @@ namespace Cqrs.Events
 								using (TransactionScope ts = new TransactionScope(subTrx))
 								{
 									using (SqlEventStoreDataContext dbDataContext = new SqlEventStoreDataContext(safeConnectionString))
+#if NET40
 										Add(dbDataContext, eventData);
+#else
+										Task.Run(async () => {
+											await AddAsync(dbDataContext, eventData);
+										}).Wait();
+#endif
 
 									//Call complete on the transaction scope
 									ts.Complete();
@@ -118,6 +131,10 @@ namespace Cqrs.Events
 				Logger.LogError("There was an issue persisting data to the SQL event store.", exception: exception);
 				throw;
 			}
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 	}
 }
