@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using Cqrs.Events;
 using Cqrs.Messages;
 
@@ -28,6 +29,11 @@ namespace Cqrs.Services
 		/// </summary>
 		/// <param name="serviceRequest">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}">events</see> to find.</param>
 		[OperationContract]
-		IServiceResponseWithResultData<IEnumerable<EventData>> GetEventData(IServiceRequestWithData<TAuthenticationToken, Guid> serviceRequest);
+#if NET40
+		IServiceResponseWithResultData<IEnumerable<EventData>> GetEventData
+#else
+		Task<IServiceResponseWithResultData<IEnumerable<EventData>>> GetEventDataAsync
+#endif
+			(IServiceRequestWithData<TAuthenticationToken, Guid> serviceRequest);
 	}
 }

@@ -7,15 +7,14 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Azure.Data.Tables;
 using Chinchilla.Logging;
-using Cqrs.Azure.BlobStorage;
 using Cqrs.Configuration;
+using Cqrs.Domain;
 using Cqrs.Events;
 using Cqrs.Snapshots;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Cqrs.Azure.Storage.Events
 {
@@ -23,14 +22,27 @@ namespace Cqrs.Azure.Storage.Events
 	/// An Azure Storage based <see cref="SnapshotStore"/>.
 	/// </summary>
 	public class TableStorageSnapshotStore
-		: BlobStorage.Events.TableStorageSnapshotStore
+		: SnapshotStore
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="TableStorageSnapshotStore"/> class using the specified container.
+		/// The pattern used to generate the stream name.
 		/// </summary>
-		public TableStorageSnapshotStore(IConfigurationManager configurationManager, ISnapshotDeserialiser eventDeserialiser, ILogger logger, ICorrelationIdHelper correlationIdHelper, ISnapshotBuilder snapshotBuilder, ITableStorageSnapshotStoreConnectionStringFactory tableStorageSnapshotStoreConnectionStringFactory)
-			: base(configurationManager, eventDeserialiser, logger, correlationIdHelper, snapshotBuilder, tableStorageSnapshotStoreConnectionStringFactory, (logger1, tableStorageSnapshotStoreConnectionStringFactory1) => new RawTableStorageSnapshotStorer(logger1, tableStorageSnapshotStoreConnectionStringFactory1))
+		protected const string TableCqrsSnapshotStoreStreamNamePattern = "{0}.{1}";
+
+		/// <summary>
+		/// Gets or sets the underlying <see cref="TableStorageStore"/> used for persisting and reading <see cref="Snapshot"/> data.
+		/// </summary>
+		protected RawTableStorageSnapshotStore TableStorageStore { get; set; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TableStorageEventStore{TAuthenticationToken}"/> class using the specified container.
+		/// </summary>
+		public TableStorageSnapshotStore(IConfigurationManager configurationManager, ISnapshotDeserialiser eventDeserialiser, ILogger logger, ICorrelationIdHelper correlationIdHelper, ISnapshotBuilder snapshotBuilder, ITableStorageSnapshotStoreConnectionStringFactory tableStorageSnapshotStoreConnectionStringFactory, Func<ILogger, ITableStorageSnapshotStoreConnectionStringFactory, RawTableStorageSnapshotStore> createRawTableStorageSnapshotStoreFunction = null)
+			: base(configurationManager, eventDeserialiser, snapshotBuilder, logger, correlationIdHelper)
 		{
+			if (createRawTableStorageSnapshotStoreFunction == null)
+				createRawTableStorageSnapshotStoreFunction = (logger1, tableStorageSnapshotStoreConnectionStringFactory1) => new RawTableStorageSnapshotStore(logger1, tableStorageSnapshotStoreConnectionStringFactory1);
+			TableStorageStore = createRawTableStorageSnapshotStoreFunction(logger, tableStorageSnapshotStoreConnectionStringFactory);
 		}
 
 		#region Overrides of SnapshotStore
@@ -39,31 +51,65 @@ namespace Cqrs.Azure.Storage.Events
 		/// Get the latest <see cref="Snapshot"/> from storage.
 		/// </summary>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
-		protected override Snapshot Get(Type aggregateRootType, string streamName)
+		protected override
+#if NET472
+			Snapshot Get
+#else
+			async Task<Snapshot> GetAsync
+#endif
+				(Type aggregateRootType, string streamName)
 		{
-			// Create the table query.
-			var rangeQuery = new TableQuery<DynamicTableEntity>().Where
-			(
-				TableQuery.CombineFilters
-				(
-					TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, StorageStore<object, object>.GetSafeStorageKey(streamName)),
-					TableOperators.And,
-					TableQuery.GenerateFilterCondition("AggregateId", QueryComparisons.Equal, streamName)
-				)
-			);
-
-			var operationContext = new OperationContext();
-			Snapshot result = TableStorageStore.ReadableSource.ExecuteQuery(rangeQuery)
-#pragma warning disable 0436
-				.Select(eventData => EntityPropertyConverter.ConvertBack<EventData>(eventData.Properties, operationContext))
-#pragma warning restore 0436
-.Where(eventData => eventData.AggregateId == streamName)
+			string partitionKey = StorageStore<object, object, object>.GetSafeStorageKey(streamName);
+			var query = TableStorageStore.Collection.Cast<ITableEntity>()
+				.Where(e => e.PartitionKey == partitionKey)
+				.Cast<EventDataTableEntity<EventData>>()
+				.Select(eventData => eventData.EventData)
+				.Where(eventData => eventData.AggregateId == streamName)
 				.OrderByDescending(eventData => eventData.Version)
 				.Take(1)
-				.Select(EventDeserialiser.Deserialise)
+				.Select(EventDeserialiser.Deserialise);
+
+			var result = query
 				.SingleOrDefault();
 
-			return result;
+			return
+#if NET472
+				result;
+#else
+				await Task.FromResult(result);
+#endif
+		}
+
+		/// <summary>
+		/// Saves the provided <paramref name="snapshot"/> into storage.
+		/// </summary>
+		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>
+		public override
+#if NET472
+			void Save
+#else
+			async Task SaveAsync
+#endif
+				(Snapshot snapshot)
+		{
+			Logger.LogDebug("Adding data to the table storage snapshot-store aggregate folder", "TableStorageStore\\Add");
+#if NET472
+			TableStorageStore.Add
+#else
+			await TableStorageStore.AddAsync
+#endif
+				(BuildEventData(snapshot));
+			Logger.LogDebug("Added data to the table storage snapshot-store aggregate folder", "TableStorageStore\\Save");
+		}
+
+		/// <summary>
+		/// Generate a unique stream name based on the provided <paramref name="aggregateRootType"/> and the <paramref name="aggregateId"/>.
+		/// </summary>
+		/// <param name="aggregateRootType">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="aggregateId">The ID of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		protected override string GenerateStreamName(Type aggregateRootType, Guid aggregateId)
+		{
+			return string.Format(TableCqrsSnapshotStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 		}
 
 		#endregion
@@ -71,28 +117,41 @@ namespace Cqrs.Azure.Storage.Events
 		/// <summary>
 		/// An Azure Storage based <see cref="TableStorageStore{TData,TCollectionItemData}"/>.
 		/// </summary>
-		public class RawTableStorageSnapshotStorer
-			: RawTableStorageSnapshotStore
+		public class RawTableStorageSnapshotStore
+			: TableStorageStore<EventDataTableEntity<EventData>, EventData>
 		{
+			private string TableName { get; set; }
+
 			/// <summary>
-			/// Initializes a new instance of the RawTableStorageSnapshotStorer class using the specified container.
+			/// Initializes a new instance of the <see cref="RawTableStorageSnapshotStore"/> class using the specified container.
 			/// </summary>
-			public RawTableStorageSnapshotStorer(ILogger logger, ITableStorageSnapshotStoreConnectionStringFactory tableStorageSnapshotStoreConnectionStringFactory)
-				: base(logger, tableStorageSnapshotStoreConnectionStringFactory)
+			public RawTableStorageSnapshotStore(ILogger logger, ITableStorageSnapshotStoreConnectionStringFactory tableStorageSnapshotStoreConnectionStringFactory)
+				: base(logger)
 			{
+				GetContainerName = tableStorageSnapshotStoreConnectionStringFactory.GetBaseContainerName;
+				IsContainerPublic = () => false;
+
+				TableName = "SnapshotStore";
+
+#if NET472
+				Initialise(tableStorageSnapshotStoreConnectionStringFactory);
+#else
+				SafeTask.RunSafelyAsync(async () => {
+					await InitialiseAsync(tableStorageSnapshotStoreConnectionStringFactory);
+				}).Wait();
+#endif
 			}
 
 			#region Overrides of StorageStore<EventData,CloudTable>
 
 			/// <summary>
-			/// The value differs from RawTableStorageEventStore.GetSafeSourceName(string) in that it appends "V2" to the end of the name.
+			/// Returns <see cref="TableName"/>.
 			/// </summary>
+			/// <param name="sourceName">Is not used.</param>
+			/// <returns><see cref="TableName"/></returns>
 			protected override string GetSafeSourceName(string sourceName)
 			{
-				string tableName = base.GetSafeSourceName(sourceName);
-				if (tableName.Length > 34)
-					tableName = tableName.Substring(tableName.Length - 34);
-				return string.Format("{0}V2", tableName);
+				return TableName;
 			}
 
 			#endregion
@@ -100,24 +159,41 @@ namespace Cqrs.Azure.Storage.Events
 			#region Overrides of TableStorageStore<EventData>
 
 			/// <summary>
-			/// Creates a new <see cref="DynamicTableEntity"/> copying the provided <paramref name="data"/>
-			/// into <see cref="DynamicTableEntity.Properties"/>.
+			/// Creates a new <see cref="EventDataTableEntity{TEventData}"/>.
 			/// </summary>
 			protected override ITableEntity CreateTableEntity(EventData data)
 			{
-				var tableEntity = new EventDataTableEntity<EventData>(data);
-				//Flatten object of type TData and convert it to EntityProperty Dictionary
-#pragma warning disable 0436
-				Dictionary<string, EntityProperty> flattenedProperties = EntityPropertyConverter.Flatten(data, new OperationContext());
-#pragma warning restore 0436
+				return new EventDataTableEntity<EventData>(data);
+			}
 
-				// Create a DynamicTableEntity and set its PK and RK
-				DynamicTableEntity dynamicTableEntity = new DynamicTableEntity(tableEntity.PartitionKey, tableEntity.RowKey)
-				{
-					Properties = flattenedProperties
-				};
+			/// <summary>
+			/// Will mark the <paramref name="data"/> as logically (or soft).
+			/// </summary>
+			public override
+#if NET472
+				void Remove
+#else
+				Task RemoveAsync
+#endif
+					(EventData data)
+			{
+				throw new InvalidOperationException("Snapshot store entries are not deletable.");
+			}
 
-				return dynamicTableEntity;
+			/// <summary>
+			/// Will throw an <see cref="InvalidOperationException"/> as this is not supported.
+			/// </summary>
+			protected override (string PartitionKey, string RowKey) GetUpdatableTableEntity(EventData data)
+			{
+				throw new InvalidOperationException("Snapshot store entries are not updateable.");
+			}
+
+			/// <summary>
+			/// Will throw an <see cref="InvalidOperationException"/> as this is not supported.
+			/// </summary>
+			protected override (string PartitionKey, string RowKey) GetUpdatableTableEntity(EventDataTableEntity<EventData> data)
+			{
+				return GetUpdatableTableEntity(data.EventData);
 			}
 
 			#endregion

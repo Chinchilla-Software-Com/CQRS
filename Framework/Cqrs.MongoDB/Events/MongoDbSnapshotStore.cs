@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Domain;
@@ -154,23 +155,51 @@ namespace Cqrs.MongoDB.Events
 		/// Get the latest <see cref="Snapshot"/> from storage.
 		/// </summary>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
-		protected override Snapshot Get(Type aggregateRootType, string streamName)
+		protected override
+#if NET45
+			Snapshot Get
+#else
+			async Task<Snapshot> GetAsync
+#endif
+				(Type aggregateRootType, string streamName)
 		{
-			MongoDbEventData query = MongoCollection
-				.AsQueryable()
-				.Where(snapshot => snapshot.AggregateId == streamName)
-				.OrderByDescending(eventData => eventData.Version)
-				.Take(1)
-				.SingleOrDefault();
+			MongoDbEventData query =
+#if NET45
+#else
+			await
+#endif
+				MongoCollection
+					.AsQueryable()
+					.Where(snapshot => snapshot.AggregateId == streamName)
+					.OrderByDescending(eventData => eventData.Version)
+					.Take(1)
+#if NET45
+					.SingleOrDefault();
+#else
+					.SingleOrDefaultAsync();
+#endif
 
-			return EventDeserialiser.Deserialise(query);
+			var result = EventDeserialiser.Deserialise(query);
+
+			return
+#if NET45
+				result;
+#else
+				await Task.FromResult(result);
+#endif
 		}
 
 		/// <summary>
 		/// Saves the provided <paramref name="snapshot"/> into storage.
 		/// </summary>
 		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>
-		public override void Save(Snapshot snapshot)
+		public override
+#if NET45
+			void Save
+#else
+			async Task SaveAsync
+#endif
+				(Snapshot snapshot)
 		{
 			EventData eventData = BuildEventData(snapshot);
 			var safeEventData = new MongoDbEventData(eventData);
@@ -179,7 +208,12 @@ namespace Cqrs.MongoDB.Events
 			try
 			{
 				DateTime start = DateTime.Now;
-				MongoCollection.InsertOne(safeEventData);
+#if NET45
+				MongoCollection.InsertOne
+#else
+				await MongoCollection.InsertOneAsync
+#endif
+					(safeEventData);
 				DateTime end = DateTime.Now;
 				Logger.LogDebug(string.Format("Adding data in the MongoDB database took {0}.", end - start), "MongoDbSnapshotStore\\Save");
 			}

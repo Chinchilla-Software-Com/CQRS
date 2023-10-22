@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Events;
@@ -58,9 +59,21 @@ namespace Cqrs.Domain
 		/// Gets the <typeparamref name="TSaga"/> from the <see cref="SagaUnitOfWork"/>.
 		/// </summary>
 		/// <param name="id">The identifier of the <typeparamref name="TSaga"/> to get.</param>
-		protected virtual TSaga GetSaga(Guid id)
+		protected virtual
+#if NET40
+			TSaga GetSaga
+#else
+			async Task<TSaga> GetSaga
+#endif
+				(Guid id)
 		{
-			return SagaUnitOfWork.Get<TSaga>(id);
+			return
+#if NET40
+			SagaUnitOfWork.Get
+#else
+			await SagaUnitOfWork.GetAsync
+#endif
+				<TSaga>(id);
 		}
 	}
 }

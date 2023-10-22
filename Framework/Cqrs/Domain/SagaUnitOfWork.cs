@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Events;
 
@@ -40,7 +41,13 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Add an item into the <see cref="IUnitOfWork{TAuthenticationToken}"/> ready to be committed.
 		/// </summary>
-		public void Add<TSaga>(TSaga saga)
+		public virtual
+#if NET40
+			void Add
+#else
+			async Task AddAsync
+#endif
+				<TSaga>(TSaga saga)
 			where TSaga : ISaga<TAuthenticationToken>
 		{
 			if (!IsTracked(saga.Id))
@@ -54,12 +61,22 @@ namespace Cqrs.Domain
 			}
 			else if (((TrackedSagas[saga.Id]).Saga) != (ISaga<TAuthenticationToken>)saga)
 				throw new ConcurrencyException(saga.Id);
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
 		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded or get it from the <see cref="ISagaRepository{TAuthenticationToken}"/>.
 		/// </summary>
-		public TSaga Get<TSaga>(Guid id, int? expectedVersion = null)
+		public virtual
+#if NET40
+			TSaga Get
+#else
+			async Task<TSaga> GetAsync
+#endif
+				<TSaga>(Guid id, int? expectedVersion = null)
 			where TSaga : ISaga<TAuthenticationToken>
 		{
 			if(IsTracked(id))
@@ -70,10 +87,21 @@ namespace Cqrs.Domain
 				return trackedSaga;
 			}
 
-			var saga = Repository.Get<TSaga>(id);
+			var saga =
+#if NET40
+				Repository.Get
+#else
+				await Repository.GetAsync
+#endif
+					<TSaga>(id);
 			if (expectedVersion != null && saga.Version != expectedVersion)
 				throw new ConcurrencyException(id);
-			Add(saga);
+#if NET40
+			Add
+#else
+			await AddAsync
+#endif
+				(saga);
 
 			return saga;
 		}
@@ -84,14 +112,26 @@ namespace Cqrs.Domain
 		}
 
 		/// <summary>
-		/// Commit any changed <see cref="Saga{TAuthenticationToken}"/> added to this <see cref="IUnitOfWork{TAuthenticationToken}"/> via <see cref="Add{T}"/>
+		/// Commit any changed <see cref="Saga{TAuthenticationToken}"/> added to this <see cref="IUnitOfWork{TAuthenticationToken}"/> via Add
 		/// into the <see cref="ISagaRepository{TAuthenticationToken}"/>
 		/// </summary>
-		public void Commit()
+		public virtual
+
+#if NET40
+			void Commit
+#else
+			async Task CommitAsync
+#endif
+				()
 		{
 			foreach (ISagaDescriptor<TAuthenticationToken> descriptor in TrackedSagas.Values)
 			{
-				Repository.Save(descriptor.Saga, descriptor.Version);
+#if NET40
+				Repository.Save
+#else
+				await Repository.SaveAsync
+#endif
+					(descriptor.Saga, descriptor.Version);
 			}
 			TrackedSagas.Clear();
 		}

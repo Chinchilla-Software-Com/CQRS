@@ -11,6 +11,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
+using System.Threading;
+using System.Threading.Tasks;
 using Cqrs.Domain;
 using Cqrs.Events;
 
@@ -40,7 +42,19 @@ namespace Cqrs.Cache
 
 		private Func<CacheItemPolicy> PolicyFactory { get; set; }
 
-		private static readonly ConcurrentDictionary<string, object> Locks = new ConcurrentDictionary<string, object>();
+		private static readonly ConcurrentDictionary<string,
+#if NET40
+		object
+#else
+		SemaphoreSlim
+#endif
+		> Locks = new ConcurrentDictionary<string,
+#if NET40
+		object
+#else
+		SemaphoreSlim
+#endif
+		>();
 
 		/// <summary>
 		/// Instantiates a new instance of <see cref="CacheRepository{TAuthenticationToken}"/>.
@@ -60,45 +74,76 @@ namespace Cqrs.Cache
 					SlidingExpiration = new TimeSpan(0,0,15,0),
 					RemovedCallback = x =>
 					{
-						object o;
+#if NET40
+						object
+#else
+						SemaphoreSlim
+#endif
+						o;
 						Locks.TryRemove(x.CacheItem.Key, out o);
 					}
 				};
 		}
 
 		/// <summary>
-		/// Locks the cache, adds the provided <paramref name="aggregate"/> to the cache if not already in it, then calls <see cref="IAggregateRepository{TAuthenticationToken}.Save{TAggregateRoot}"/> on <see cref="Repository"/>.
+		/// Locks the cache, adds the provided <paramref name="aggregate"/> to the cache if not already in it, then calls IAggregateRepository{TAuthenticationToken}.Save on <see cref="Repository"/>.
 		/// In the event of an <see cref="Exception"/> the <paramref name="aggregate"/> is always ejected out of the <see cref="Cache"/>.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="aggregate">The <see cref="IAggregateRoot{TAuthenticationToken}"/> to save and persist.</param>
 		/// <param name="expectedVersion">The version number the <see cref="IAggregateRoot{TAuthenticationToken}"/> is expected to be at.</param>
-		public virtual void Save<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
+		public virtual
+#if NET40
+			void Save
+#else
+			async Task SaveAsync
+#endif
+				<TAggregateRoot>(TAggregateRoot aggregate, int? expectedVersion = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			var idstring = aggregate.Id.ToString();
+			var idString = aggregate.Id.ToString();
 			try
 			{
-				lock (Locks.GetOrAdd(idstring, x => new object()))
+#if NET40
+				lock (Locks.GetOrAdd(idString, x => new object()))
+#else
+				var lockObject = Locks.GetOrAdd(idString, x => new SemaphoreSlim(1, 1));
+				await lockObject.WaitAsync();
+				try
+#endif
 				{
 					if (aggregate.Id != Guid.Empty && !IsTracked(aggregate.Id))
-						Cache.Add(idstring, aggregate, PolicyFactory.Invoke());
-					Repository.Save(aggregate, expectedVersion);
+					Cache.Add(idString, aggregate, PolicyFactory.Invoke());
+#if NET40
+					Repository.Save
+#else
+					await Repository.SaveAsync
+#endif
+						(aggregate, expectedVersion);
 				}
+#if NET40
+#else
+				finally
+				{
+					//When the task is ready, release the semaphore. It is vital to ALWAYS release the semaphore when we are ready, or else we will end up with a Semaphore that is forever locked.
+					//This is why it is important to do the Release within a try...finally clause; program execution may crash or take a different path, this way you are guaranteed execution
+					lockObject.Release();
+				}
+#endif
 			}
 			catch (Exception)
 			{
-				Cache.Remove(idstring);
+				Cache.Remove(idString);
 				throw;
 			}
 		}
 
 		/// <summary>
 		/// Locks the cache, checks if the aggregate is tracked in the <see cref="Cache"/>, if it is
-		/// retrieves the aggregate from the <see cref="Cache"/> and then uses either the provided <paramref name="events"/> or makes a call <see cref="IEventStore{TAuthenticationToken}.Get(System.Type,System.Guid,bool,int)"/> on the <see cref="EventStore"/>
+		/// retrieves the aggregate from the <see cref="Cache"/> and then uses either the provided <paramref name="events"/> or makes a call IEventStore{TAuthenticationToken}.Get on the <see cref="EventStore"/>
 		/// and rehydrates the cached aggregate with any new events from it's cached version.
 		/// If the aggregate is not in the <see cref="Cache"/>
-		/// <see cref="IAggregateRepository{TAuthenticationToken}.Get{TAggregateRoot}"/> is called on the <see cref="Repository"/>.
+		/// IAggregateRepository{TAuthenticationToken}.Get is called on the <see cref="Repository"/>.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="aggregateId">The ID of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get.</param>
@@ -106,23 +151,43 @@ namespace Cqrs.Cache
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		public virtual TAggregateRoot Get<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
+		public virtual
+#if NET40
+			TAggregateRoot Get
+#else
+			async Task<TAggregateRoot> GetAsync
+#endif
+				<TAggregateRoot>(Guid aggregateId, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
-			string idstring = aggregateId.ToString();
+			string idString = aggregateId.ToString();
 			try
 			{
 				IList<IEvent<TAuthenticationToken>> theseEvents = null;
-				lock (Locks.GetOrAdd(idstring, _ => new object()))
+#if NET40
+				lock (Locks.GetOrAdd(idString, x => new object()))
+#else
+				var lockObject = Locks.GetOrAdd(idString, x => new SemaphoreSlim(1, 1));
+				await lockObject.WaitAsync();
+				try
+#endif
 				{
 					TAggregateRoot aggregate;
 					if (IsTracked(aggregateId))
 					{
-						aggregate = (TAggregateRoot)Cache.Get(idstring);
-						theseEvents = events ?? EventStore.Get<TAggregateRoot>(aggregateId, false, aggregate.Version).ToList();
+						aggregate = (TAggregateRoot)Cache.Get(idString);
+						theseEvents = events;
+						if (theseEvents == null)
+						{
+#if NET40
+							theseEvents = EventStore.Get<TAggregateRoot>(aggregateId, false, aggregate.Version).ToList();
+#else
+							theseEvents = (await EventStore.GetAsync<TAggregateRoot>(aggregateId, false, aggregate.Version)).ToList();
+#endif
+						}
 						if (theseEvents.Any() && theseEvents.First().Version != aggregate.Version + 1)
 						{
-							Cache.Remove(idstring);
+							Cache.Remove(idString);
 						}
 						else
 						{
@@ -131,14 +196,27 @@ namespace Cqrs.Cache
 						}
 					}
 
+#if NET40
 					aggregate = Repository.Get<TAggregateRoot>(aggregateId, theseEvents);
+#else
+					aggregate = await Repository.GetAsync<TAggregateRoot>(aggregateId, theseEvents);
+#endif
 					Cache.Add(aggregateId.ToString(), aggregate, PolicyFactory.Invoke());
 					return aggregate;
 				}
+#if NET40
+#else
+				finally
+				{
+					//When the task is ready, release the semaphore. It is vital to ALWAYS release the semaphore when we are ready, or else we will end up with a Semaphore that is forever locked.
+					//This is why it is important to do the Release within a try...finally clause; program execution may crash or take a different path, this way you are guaranteed execution
+					lockObject.Release();
+				}
+#endif
 			}
 			catch (Exception)
 			{
-				Cache.Remove(idstring);
+				Cache.Remove(idString);
 				throw;
 			}
 		}
@@ -153,7 +231,13 @@ namespace Cqrs.Cache
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		public TAggregateRoot GetToVersion<TAggregateRoot>(Guid aggregateId, int version, IList<IEvent<TAuthenticationToken>> events = null)
+		public
+#if NET40
+		TAggregateRoot GetToVersion
+#else
+		Task<TAggregateRoot> GetToVersionAsync
+#endif
+			<TAggregateRoot>(Guid aggregateId, int version, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			throw new InvalidOperationException("Verion replay is not appriopriate with caching.");
@@ -169,7 +253,13 @@ namespace Cqrs.Cache
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-		public TAggregateRoot GetToDate<TAggregateRoot>(Guid aggregateId, DateTime versionedDate, IList<IEvent<TAuthenticationToken>> events = null)
+		public
+#if NET40
+		TAggregateRoot GetToDate
+#else
+		Task<TAggregateRoot> GetToDateAsync
+#endif
+			<TAggregateRoot>(Guid aggregateId, DateTime versionedDate, IList<IEvent<TAuthenticationToken>> events = null)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			throw new InvalidOperationException("Verion replay is not appriopriate with caching.");

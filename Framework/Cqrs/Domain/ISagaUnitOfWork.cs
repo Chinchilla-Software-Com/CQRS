@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 
 namespace Cqrs.Domain
 {
@@ -18,18 +19,34 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Add an item into the <see cref="ISagaUnitOfWork{TAuthenticationToken}"/> ready to be committed.
 		/// </summary>
-		void Add<TSaga>(TSaga saga)
+#if NET40
+		void Add
+#else
+		Task AddAsync
+#endif
+			<TSaga>(TSaga saga)
 			where TSaga : ISaga<TAuthenticationToken>;
 
 		/// <summary>
 		/// Get an item from the <see cref="ISagaUnitOfWork{TAuthenticationToken}"/> if it has already been loaded.
 		/// </summary>
-		TSaga Get<TSaga>(Guid id, int? expectedVersion = null)
+#if NET40
+		TSaga Get
+#else
+		Task<TSaga> GetAsync
+#endif
+		<TSaga>(Guid id, int? expectedVersion = null)
 			where TSaga : ISaga<TAuthenticationToken>;
 
 		/// <summary>
-		/// Commit any changed <see cref="Saga{TAuthenticationToken}"/> added to this <see cref="ISagaUnitOfWork{TAuthenticationToken}"/> via <see cref="Add{T}"/>
+		/// Commit any changed <see cref="Saga{TAuthenticationToken}"/> added to this <see cref="ISagaUnitOfWork{TAuthenticationToken}"/> via Add
 		/// </summary>
-		void Commit();
+
+#if NET40
+		void Commit
+#else
+		Task CommitAsync
+#endif
+			();
 	}
 }

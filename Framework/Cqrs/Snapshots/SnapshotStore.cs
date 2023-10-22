@@ -7,6 +7,7 @@
 #endregion
 
 using System;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Domain;
@@ -70,10 +71,22 @@ namespace Cqrs.Snapshots
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/> to find a snapshot for.</typeparam>
 		/// <param name="id">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get the most recent <see cref="Snapshot"/> of.</param>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
-		public virtual Snapshot Get<TAggregateRoot>(Guid id)
+		public virtual
+#if NET40
+			Snapshot Get
+#else
+			async Task<Snapshot> GetAsync
+#endif
+				<TAggregateRoot>(Guid id)
 		{
 			Type aggregateRootType = typeof (TAggregateRoot);
-			return Get(aggregateRootType, id);
+			return
+#if NET40
+				Get
+#else
+				await GetAsync
+#endif
+					(aggregateRootType, id);
 		}
 
 		/// <summary>
@@ -82,7 +95,13 @@ namespace Cqrs.Snapshots
 		/// <param name="aggregateRootType">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/> to find a snapshot for.</param>
 		/// <param name="id">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get the most recent <see cref="Snapshot"/> of.</param>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
-		public Snapshot Get(Type aggregateRootType, Guid id)
+		public virtual
+#if NET40
+			Snapshot Get
+#else
+			async Task<Snapshot> GetAsync
+#endif
+				(Type aggregateRootType, Guid id)
 		{
 			while (aggregateRootType != null && !aggregateRootType.IsGenericType && aggregateRootType.GetGenericArguments().Length != 2)
 				aggregateRootType = aggregateRootType.BaseType;
@@ -95,20 +114,38 @@ namespace Cqrs.Snapshots
 
 			string streamName = string.Format(CqrsSnapshotStoreStreamNamePattern, aggregateRootType.FullName, id);
 
-			return Get(aggregateRootType, streamName);
+			return
+#if NET40
+				Get
+#else
+				await GetAsync
+#endif
+					(aggregateRootType, streamName);
 		}
 
 		/// <summary>
 		/// Get the latest <see cref="Snapshot"/> from storage.
 		/// </summary>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
-		protected abstract Snapshot Get(Type aggregateRootType, string streamName);
+		protected abstract
+#if NET40
+			Snapshot Get
+#else
+			Task<Snapshot> GetAsync
+#endif
+				(Type aggregateRootType, string streamName);
 
 		/// <summary>
 		/// Saves the provided <paramref name="snapshot"/> into storage.
 		/// </summary>
 		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>
-		public abstract void Save(Snapshot snapshot);
+		public abstract
+#if NET40
+			void Save
+#else
+			Task SaveAsync
+#endif
+				(Snapshot snapshot);
 
 		#endregion
 
@@ -138,7 +175,7 @@ namespace Cqrs.Snapshots
 				eventData.Version = snapshot.Version;
 				eventData.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Building the snapshot event data took {0}.", end - start), "SnapshotStore\\BuildEventData");
+				Logger.LogDebug($"Building the snapshot event data took {end - start}.", "SnapshotStore\\BuildEventData");
 				return eventData;
 			}
 			catch (Exception exception)

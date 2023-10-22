@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Cqrs.Entities;
 
 namespace Cqrs.DataStores
@@ -21,31 +22,62 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		void Add(TData data);
+
+#if NET40
+		void Add
+#else
+		Task AddAsync
+#endif
+			(TData data);
 
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		void Add(IEnumerable<TData> data);
+#if NET40
+		void Add
+#else
+		Task AddAsync
+#endif
+			(IEnumerable<TData> data);
 
 		/// <summary>
 		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsDeleted"/> to true in the data store and persist the change.
 		/// </summary>
-		void Remove(TData data);
+#if NET40
+		void Remove
+#else
+		Task RemoveAsync
+#endif
+			(TData data);
 
 		/// <summary>
 		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
 		/// </summary>
-		void Destroy(TData data);
+#if NET40
+		void Destroy
+#else
+		Task DestroyAsync
+#endif
+			(TData data);
 
 		/// <summary>
 		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
 		/// </summary>
-		void RemoveAll();
+#if NET40
+		void RemoveAll
+#else
+		Task RemoveAllAsync
+#endif
+			();
 
 		/// <summary>
 		/// Update the provided <paramref name="data"/> in the data store and persist the change.
 		/// </summary>
-		void Update(TData data);
+#if NET40
+		void Update
+#else
+		Task UpdateAsync
+#endif
+			(TData data);
 	}
 }

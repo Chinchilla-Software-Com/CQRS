@@ -58,8 +58,8 @@ namespace Cqrs.Events
 		{
 			Guid id = Guid.NewGuid();
 			ConfigurationManager = configurationManager;
-			EventStoreByType = new MemoryCache(string.Format("EventStoreByType-{0:N}", id));
-			EventStoreByCorrelationId = new MemoryCache(string.Format("EventStoreByCorrelationId-{0:N}", id));
+			EventStoreByType = new MemoryCache($"EventStoreByType-{id:N}");
+			EventStoreByCorrelationId = new MemoryCache($"EventStoreByCorrelationId-{id:N}");
 
 			StartRefreshSlidingExpirationValue();
 		}
@@ -73,20 +73,26 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersion">Load events starting from this version</param>
-		public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		public override
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> Get
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
 			if (!EventStoreByType.Contains(streamName))
 			{
-				Logger.LogDebug(string.Format("The event store has no items '{0}'.", streamName));
+				Logger.LogDebug($"The event store has no items '{streamName}'.");
 				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
 			}
 
 			CacheItem item = EventStoreByType.GetCacheItem(streamName);
 			if (item == null)
 			{
-				Logger.LogDebug(string.Format("The event store had an item '{0}' but doesn't now.", streamName));
+				Logger.LogDebug($"The event store had an item '{streamName}' but doesn't now.");
 				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
 			}
 
@@ -94,9 +100,9 @@ namespace Cqrs.Events
 			if (events == null)
 			{
 				if (item.Value == null)
-					Logger.LogDebug(string.Format("The event store had an item '{0}' but it was null.", streamName));
+					Logger.LogDebug($"The event store had an item '{streamName}' but it was null.");
 				else
-					Logger.LogWarning(string.Format("The event store had an item '{0}' but it was of type {1}.", streamName, item.Value.GetType()));
+					Logger.LogWarning($"The event store had an item '{streamName}' but it was of type {item.Value.GetType()}.");
 				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
 			}
 			IEnumerable<EventData> query = events
@@ -106,9 +112,15 @@ namespace Cqrs.Events
 			if (useLastEventOnly)
 				query = query.AsQueryable().Take(1);
 
-			return query
+			var results = query
 				.Select(EventDeserialiser.Deserialise)
 				.ToList();
+			return
+#if NET40
+				results;
+#else
+				await Task.FromResult(results);
+#endif
 		}
 
 		/// <summary>
@@ -117,20 +129,26 @@ namespace Cqrs.Events
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
-		public override IEnumerable<IEvent<TAuthenticationToken>> GetToVersion(Type aggregateRootType, Guid aggregateId, int version)
+		public override
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, int version)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
 			if (!EventStoreByType.Contains(streamName))
 			{
-				Logger.LogDebug(string.Format("The event store has no items '{0}'.", streamName));
+				Logger.LogDebug($"The event store has no items '{streamName}'.");
 				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
 			}
 
 			CacheItem item = EventStoreByType.GetCacheItem(streamName);
 			if (item == null)
 			{
-				Logger.LogDebug(string.Format("The event store had an item '{0}' but doesn't now.", streamName));
+				Logger.LogDebug($"The event store had an item '{streamName}' but doesn't now.");
 				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
 			}
 
@@ -138,18 +156,24 @@ namespace Cqrs.Events
 			if (events == null)
 			{
 				if (item.Value == null)
-					Logger.LogDebug(string.Format("The event store had an item '{0}' but it was null.", streamName));
+					Logger.LogDebug($"The event store had an item '{streamName}' but it was null.");
 				else
-					Logger.LogWarning(string.Format("The event store had an item '{0}' but it was of type {1}.", streamName, item.Value.GetType()));
+					Logger.LogWarning($"The event store had an item '{streamName}' but it was of type {item.Value.GetType()}.");
 				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
 			}
 			IEnumerable<EventData> query = events
 				.Where(eventData => eventData.Version <= version)
 				.OrderByDescending(eventData => eventData.Version);
 
-			return query
+			var results = query
 				.Select(EventDeserialiser.Deserialise)
 				.ToList();
+			return
+#if NET40
+				results;
+#else
+				await Task.FromResult(results);
+#endif
 		}
 
 		/// <summary>
@@ -158,20 +182,26 @@ namespace Cqrs.Events
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-		public override IEnumerable<IEvent<TAuthenticationToken>> GetToDate(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+		public override
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetToDate
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
 			if (!EventStoreByType.Contains(streamName))
 			{
-				Logger.LogDebug(string.Format("The event store has no items '{0}'.", streamName));
+				Logger.LogDebug($"The event store has no items '{streamName}'.");
 				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
 			}
 
 			CacheItem item = EventStoreByType.GetCacheItem(streamName);
 			if (item == null)
 			{
-				Logger.LogDebug(string.Format("The event store had an item '{0}' but doesn't now.", streamName));
+				Logger.LogDebug($"The event store had an item '{streamName}' but doesn't now.");
 				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
 			}
 
@@ -179,18 +209,24 @@ namespace Cqrs.Events
 			if (events == null)
 			{
 				if (item.Value == null)
-					Logger.LogDebug(string.Format("The event store had an item '{0}' but it was null.", streamName));
+					Logger.LogDebug($"The event store had an item '{streamName}' but it was null.");
 				else
-					Logger.LogWarning(string.Format("The event store had an item '{0}' but it was of type {1}.", streamName, item.Value.GetType()));
+					Logger.LogWarning($"The event store had an item '{streamName}' but it was of type {item.Value.GetType()}.");
 				return Enumerable.Empty<IEvent<TAuthenticationToken>>();
 			}
 			IEnumerable<EventData> query = events
 				.Where(eventData => eventData.Timestamp <= versionedDate)
 				.OrderByDescending(eventData => eventData.Version);
 
-			return query
+			var results = query
 				.Select(EventDeserialiser.Deserialise)
 				.ToList();
+			return
+#if NET40
+				results;
+#else
+				await Task.FromResult(results);
+#endif
 		}
 
 		/// <summary>
@@ -200,7 +236,13 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
 		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-		public override IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		public override
+#if NET40
+			IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
+#else
+			Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
 		{
 			throw new NotImplementedException();
 		}
@@ -209,18 +251,24 @@ namespace Cqrs.Events
 		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
 		/// </summary>
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
-		public override IEnumerable<EventData> Get(Guid correlationId)
+		public override
+#if NET40
+			IEnumerable<EventData> Get
+#else
+			async Task<IEnumerable<EventData>> GetAsync
+#endif
+				(Guid correlationId)
 		{
 			if (!EventStoreByCorrelationId.Contains(correlationId.ToString("N")))
 			{
-				Logger.LogDebug(string.Format("The event store has no items by the correlationId '{0:N}'.", correlationId));
+				Logger.LogDebug($"The event store has no items by the correlationId '{correlationId:N}'.");
 				return Enumerable.Empty<EventData>();
 			}
 
 			CacheItem item = EventStoreByCorrelationId.GetCacheItem(correlationId.ToString("N"));
 			if (item == null)
 			{
-				Logger.LogDebug(string.Format("The event store had some items by the correlationId '{0:N}' but doesn't now.", correlationId));
+				Logger.LogDebug($"The event store had some items by the correlationId '{correlationId:N}' but doesn't now.");
 				return Enumerable.Empty<EventData>();
 			}
 
@@ -228,21 +276,33 @@ namespace Cqrs.Events
 			if (events == null)
 			{
 				if (item.Value == null)
-					Logger.LogDebug(string.Format("The event store had some items by the correlationId '{0:N}' but it was null.", correlationId));
+					Logger.LogDebug($"The event store had some items by the correlationId '{correlationId:N}' but it was null.");
 				else
-					Logger.LogWarning(string.Format("The event store had some items by the correlationId '{0:N}' but it was of type {1}.", correlationId, item.Value.GetType()));
+					Logger.LogWarning($"The event store had some items by the correlationId '{correlationId:N}' but it was of type {item.Value.GetType()}.");
 				return Enumerable.Empty<EventData>();
 			}
 			IEnumerable<EventData> query = events.OrderBy(eventData => eventData.Timestamp);
 
-			return query.ToList();
+			var results = query.ToList();
+			return
+#if NET40
+				results;
+#else
+				await Task.FromResult(results);
+#endif
 		}
 
 		/// <summary>
 		/// Persist the provided <paramref name="eventData"/> into storage.
 		/// </summary>
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
-		protected override void PersistEvent(EventData eventData)
+		protected override
+#if NET40
+			void PersistEvent
+#else
+			async Task PersistEventAsync
+#endif
+				(EventData eventData)
 		{
 			IList<EventData> events = new List<EventData>();
 
@@ -254,8 +314,8 @@ namespace Cqrs.Events
 				events = item as IList<EventData>;
 				if (events == null)
 				{
-					Logger.LogWarning(string.Format("The event store had some items by the correlationId '{0:N}' but it doesn't now.", correlationId));
-					throw new Exception(string.Format("The event store had some items by the correlationId '{0:N}' but it doesn't now.", correlationId));
+					Logger.LogWarning($"The event store had some items by the correlationId '{correlationId:N}' but it doesn't now.");
+					throw new Exception($"The event store had some items by the correlationId '{correlationId:N}' but it doesn't now.");
 				}
 			}
 
@@ -271,12 +331,16 @@ namespace Cqrs.Events
 				events = item as IList<EventData>;
 				if (events == null)
 				{
-					Logger.LogWarning(string.Format("The event store had an item by id '{0}' but it doesn't now.", streamName));
-					throw new Exception(string.Format("The event store had an item by id '{0}' but it doesn't now.", streamName));
+					Logger.LogWarning($"The event store had an item by id '{streamName}' but it doesn't now.");
+					throw new Exception($"The event store had an item by id '{streamName}' but it doesn't now.");
 				}
 			}
 
 			events.Add(eventData);
+#if NET40
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		#endregion

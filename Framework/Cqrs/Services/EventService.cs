@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Events;
@@ -59,13 +60,25 @@ namespace Cqrs.Services
 		/// raised with the same <see cref="IMessage.CorrelationId"/>.
 		/// </summary>
 		/// <param name="serviceRequest">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}">events</see> to find.</param>
-		public virtual IServiceResponseWithResultData<IEnumerable<EventData>> GetEventData(IServiceRequestWithData<TAuthenticationToken, Guid> serviceRequest)
+		public virtual
+#if NET40
+			IServiceResponseWithResultData<IEnumerable<EventData>> GetEventData
+#else
+			async Task<IServiceResponseWithResultData<IEnumerable<EventData>>> GetEventDataAsync
+#endif
+				(IServiceRequestWithData<TAuthenticationToken, Guid> serviceRequest)
 		{
 			AuthenticationTokenHelper.SetAuthenticationToken(serviceRequest.AuthenticationToken);
 			CorrelationIdHelper.SetCorrelationId(serviceRequest.CorrelationId);
 
 			OnGetEventData(serviceRequest);
-			IEnumerable<EventData> results = EventStore.Get(serviceRequest.Data);
+			IEnumerable<EventData> results =
+#if NET40
+				EventStore.Get
+#else
+				await EventStore.GetAsync
+#endif
+					(serviceRequest.Data);
 			results = OnGotEventData(serviceRequest, results);
 
 			return CompleteResponse
@@ -79,15 +92,15 @@ namespace Cqrs.Services
 		}
 
 		/// <summary>
-		/// Executed before calling the <see cref="IEventStore{TAuthenticationToken}.Get(System.Type,System.Guid,bool,int)"/> method on <see cref="EventStore"/>
-		/// in <see cref="GetEventData"/>.
+		/// Executed before calling the IEventStore{TAuthenticationToken}.Get method on <see cref="EventStore"/>
+		/// in GetEventData.
 		/// </summary>
 		/// <param name="serviceRequest">The original <see cref="IServiceRequestWithData{TAuthenticationToken,Guid}"/>.</param>
 		protected virtual void OnGetEventData(IServiceRequestWithData<TAuthenticationToken, Guid> serviceRequest) { }
 
 		/// <summary>
-		/// Executed after calling the <see cref="IEventStore{TAuthenticationToken}.Get(System.Type,System.Guid,bool,int)"/> method on <see cref="EventStore"/>
-		/// in <see cref="GetEventData"/>.
+		/// Executed after calling the IEventStore{TAuthenticationToken}.Get method on <see cref="EventStore"/>
+		/// in GetEventData.
 		/// </summary>
 		/// <param name="serviceRequest">The original <see cref="IServiceRequestWithData{TAuthenticationToken,Guid}"/>.</param>
 		/// <param name="results">The collection of <see cref="IEvent{TAuthenticationToken}">events</see> from the <see cref="EventStore"/>.</param>

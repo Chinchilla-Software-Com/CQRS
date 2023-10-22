@@ -45,12 +45,13 @@ namespace Cqrs.Commands
 			(DtoCommand<TAuthenticationToken, TDto> message)
 		{
 			var item = new DtoAggregateRoot<TAuthenticationToken, TDto>(message.Id, message.Original, message.New);
-			UnitOfWork.Add(item);
-			UnitOfWork.Commit();
 
 #if NET40
+			UnitOfWork.Add(item);
+			UnitOfWork.Commit();
 #else
-			await Task.CompletedTask;
+			await UnitOfWork.AddAsync(item);
+			await UnitOfWork.CommitAsync();
 #endif
 		}
 
