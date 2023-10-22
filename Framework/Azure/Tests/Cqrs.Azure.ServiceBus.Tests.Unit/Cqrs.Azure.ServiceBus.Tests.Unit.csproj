@@ -64,8 +64,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="local.settings.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <None Update="cqrs.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="IF NOT EXIST &quot;$(ProjectDir)cqrs.json&quot; ECHO ^{ &quot;Cqrs&quot;: ^{ &quot;Secrets&quot;: ^{ &quot;TestKey&quot;: &quot;TestKey&quot; ^} ^} ^} &gt; &quot;$(ProjectDir)cqrs.json&quot;&#xD;&#xA;" />
+	</Target>
 </Project>

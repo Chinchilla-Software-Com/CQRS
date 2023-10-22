@@ -52,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -85,7 +85,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables()
 				.Build();
 

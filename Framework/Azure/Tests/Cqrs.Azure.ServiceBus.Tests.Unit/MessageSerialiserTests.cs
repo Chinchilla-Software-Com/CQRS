@@ -52,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -82,7 +82,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -109,6 +109,18 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public void SerialiseCommand_TestCommand_ExpectedSerialisedData()
 		{
 			// Arrange
+			IConfigurationManager configurationManager;
+#if NET472_OR_GREATER
+			configurationManager = new Configuration.ConfigurationManager();
+#else
+			IConfigurationRoot config = new ConfigurationBuilder()
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables()
+				.Build();
+
+			configurationManager = new CloudConfigurationManager(config);
+#endif
+			DependencyResolver.ConfigurationManager = configurationManager;
 			var commandSerialiser = new MessageSerialiser<Guid>();
 
 			// Act
@@ -127,6 +139,18 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public void DeserialiseCommand_TestCommandData_ExpectedCommand()
 		{
 			// Arrange
+			IConfigurationManager configurationManager;
+#if NET472_OR_GREATER
+			configurationManager = new Configuration.ConfigurationManager();
+#else
+			IConfigurationRoot config = new ConfigurationBuilder()
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddEnvironmentVariables()
+				.Build();
+
+			configurationManager = new CloudConfigurationManager(config);
+#endif
+			DependencyResolver.ConfigurationManager = configurationManager;
 			var commandSerialiser = new MessageSerialiser<Guid>();
 
 			// Act

@@ -65,12 +65,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="cqrs.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	  <None Update="local.settings.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 
 	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	  <Exec Command="IF NOT EXIST &quot;$(ProjectDir)app.config&quot; ECHO ^&lt;^?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;^?^&gt;^&lt;configuration^&gt;^&lt;^/configuration^&gt; &lt; &quot;$(ProjectDir)app.config&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Code\Cqrs.Azure.ServiceBus.Tests.Integration.app.config&quot; copy /Y &quot;$(SolutionDir)Code\Cqrs.Azure.ServiceBus.Tests.Integration.app.config&quot; &quot;$(ProjectDir)app.config&quot;" />
+	  <Exec Command="IF NOT EXIST &quot;$(ProjectDir)app.config&quot; ECHO ^&lt;^?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;^?^&gt;^&lt;configuration^&gt;^&lt;^/configuration^&gt; &lt; &quot;$(ProjectDir)app.config&quot;&#xD;&#xA;IF NOT EXIST &quot;$(ProjectDir)cqrs.json&quot; ECHO ^{ &quot;Cqrs&quot;: ^{ &quot;Secrets&quot;: ^{ &quot;TestKey&quot;: &quot;TestKey&quot; ^} ^} ^} &gt; &quot;$(ProjectDir)cqrs.json&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Code\Cqrs.Azure.ServiceBus.Tests.Integration.app.config&quot; copy /Y &quot;$(SolutionDir)Code\Cqrs.Azure.ServiceBus.Tests.Integration.app.config&quot; &quot;$(ProjectDir)app.config&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Code\Cqrs.Azure.ServiceBus.Tests.Integration-settings.json&quot; copy /Y &quot;$(SolutionDir)Code\Cqrs.Azure.ServiceBus.Tests.Integration-settings.json&quot; &quot;$(ProjectDir)cqrs.json&quot;&#xD;&#xA;" />
 	</Target>
 </Project>
