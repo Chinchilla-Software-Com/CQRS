@@ -8,7 +8,7 @@
 
 using System;
 
-#if NET452
+#if NET472
 using System.Threading.Tasks;
 
 using Microsoft.Azure.KeyVault;
@@ -66,7 +66,7 @@ namespace Cqrs.Azure.KeyVault
 			if (string.IsNullOrWhiteSpace(clientKey))
 				throw new MissingApplicationSettingException(ClientSecretKeyName);
 
-#if NET452
+#if NET472
 			ClientCredential clientCredential;
 			async Task<string> getToken(string authority, string resource, string scope)
 			{
@@ -96,7 +96,7 @@ namespace Cqrs.Azure.KeyVault
 		/// </summary>
 		protected string KeyVaultUri { get; set; }
 
-#if NET452
+#if NET472
 		/// <summary>
 		/// The <see cref="Microsoft.Azure.KeyVault.KeyVaultClient"/> used interally to access the KayVault
 		/// </summary>
@@ -116,7 +116,7 @@ namespace Cqrs.Azure.KeyVault
 		public string GetSecret(string secretName)
 		{
 			string secret = null;
-#if NET452
+#if NET472
 			Task keyVaultSecretTask = Task.Factory.StartNew(() => {
 				Task<SecretBundle> getKeyVaultSecretTask = Client.GetSecretAsync(KeyVaultUri, secretName);
 				getKeyVaultSecretTask.Wait();

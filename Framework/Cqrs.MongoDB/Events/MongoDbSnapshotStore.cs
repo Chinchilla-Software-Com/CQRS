@@ -133,12 +133,15 @@ namespace Cqrs.MongoDB.Events
 			{
 				MongoCollection.Indexes.CreateOne
 				(
-					indexKey,
-					new CreateIndexOptions
-					{
-						Unique = mongoIndex.IsUnique,
-						Name = mongoIndex.Name
-					}
+					new CreateIndexModel<MongoDbEventData>
+					(
+						indexKey,
+						new CreateIndexOptions
+						{
+							Unique = mongoIndex.IsUnique,
+							Name = mongoIndex.Name
+						}
+					)
 				);
 
 			}
@@ -156,7 +159,7 @@ namespace Cqrs.MongoDB.Events
 		/// </summary>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
 		protected override
-#if NET45
+#if NET472
 			Snapshot Get
 #else
 			async Task<Snapshot> GetAsync
@@ -164,7 +167,7 @@ namespace Cqrs.MongoDB.Events
 				(Type aggregateRootType, string streamName)
 		{
 			MongoDbEventData query =
-#if NET45
+#if NET472
 #else
 			await
 #endif
@@ -173,7 +176,7 @@ namespace Cqrs.MongoDB.Events
 					.Where(snapshot => snapshot.AggregateId == streamName)
 					.OrderByDescending(eventData => eventData.Version)
 					.Take(1)
-#if NET45
+#if NET472
 					.SingleOrDefault();
 #else
 					.SingleOrDefaultAsync();
@@ -182,7 +185,7 @@ namespace Cqrs.MongoDB.Events
 			var result = EventDeserialiser.Deserialise(query);
 
 			return
-#if NET45
+#if NET472
 				result;
 #else
 				await Task.FromResult(result);
@@ -194,7 +197,7 @@ namespace Cqrs.MongoDB.Events
 		/// </summary>
 		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>
 		public override
-#if NET45
+#if NET472
 			void Save
 #else
 			async Task SaveAsync
@@ -208,7 +211,7 @@ namespace Cqrs.MongoDB.Events
 			try
 			{
 				DateTime start = DateTime.Now;
-#if NET45
+#if NET472
 				MongoCollection.InsertOne
 #else
 				await MongoCollection.InsertOneAsync

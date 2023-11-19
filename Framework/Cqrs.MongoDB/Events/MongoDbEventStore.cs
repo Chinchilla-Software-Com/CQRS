@@ -140,12 +140,14 @@ namespace Cqrs.MongoDB.Events
 			{
 				MongoCollection.Indexes.CreateOne
 				(
-					indexKey,
-					new CreateIndexOptions
-					{
-						Unique = mongoIndex.IsUnique,
-						Name = mongoIndex.Name
-					}
+					new CreateIndexModel<MongoDbEventData>
+					(
+						indexKey, new CreateIndexOptions
+						{
+							Unique = mongoIndex.IsUnique,
+							Name = mongoIndex.Name
+						}
+					)
 				);
 
 			}
@@ -166,7 +168,7 @@ namespace Cqrs.MongoDB.Events
 		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersion">Load events starting from this version</param>
 		public override
-#if NET45
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> Get
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
@@ -188,7 +190,7 @@ namespace Cqrs.MongoDB.Events
 				.ToList();
 
 			return
-#if NET45
+#if NET472
 				results;
 #else
 				await Task.FromResult(results);
@@ -202,7 +204,7 @@ namespace Cqrs.MongoDB.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
 		public override
-#if NET45
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
@@ -221,7 +223,7 @@ namespace Cqrs.MongoDB.Events
 				.ToList();
 
 			return
-#if NET45
+#if NET472
 				results;
 #else
 				await Task.FromResult(results);
@@ -235,7 +237,7 @@ namespace Cqrs.MongoDB.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="System.DateTime"/></param>
 		public override
-#if NET45
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetToDate
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
@@ -254,7 +256,7 @@ namespace Cqrs.MongoDB.Events
 				.ToList();
 
 			return
-#if NET45
+#if NET472
 				results;
 #else
 				await Task.FromResult(results);
@@ -269,7 +271,7 @@ namespace Cqrs.MongoDB.Events
 		/// <param name="fromVersionedDate">Load events from and including from this <see cref="System.DateTime"/></param>
 		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="System.DateTime"/></param>
 		public override
-#if NET45
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
@@ -288,7 +290,7 @@ namespace Cqrs.MongoDB.Events
 				.ToList();
 
 			return
-#if NET45
+#if NET472
 				results;
 #else
 				await Task.FromResult(results);
@@ -300,7 +302,7 @@ namespace Cqrs.MongoDB.Events
 		/// </summary>
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
 		public override
-#if NET45
+#if NET472
 			IEnumerable<EventData> Get
 #else
 			async Task<IEnumerable<EventData>> GetAsync
@@ -315,7 +317,7 @@ namespace Cqrs.MongoDB.Events
 			var results = query.ToList();
 
 			return
-#if NET45
+#if NET472
 				results;
 #else
 				await Task.FromResult(results);
@@ -327,7 +329,7 @@ namespace Cqrs.MongoDB.Events
 		/// </summary>
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected override
-#if NET45
+#if NET472
 			void PersistEvent
 #else
 			async Task PersistEventAsync
@@ -341,7 +343,7 @@ namespace Cqrs.MongoDB.Events
 			try
 			{
 				DateTime start = DateTime.Now;
-#if NET45
+#if NET472
 				MongoCollection.InsertOne
 #else
 				await MongoCollection.InsertOneAsync

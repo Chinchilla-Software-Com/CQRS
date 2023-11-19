@@ -163,12 +163,15 @@ namespace Cqrs.MongoDB.Factories
 
 					collection.Indexes.CreateOne
 					(
-						indexKey,
-						new CreateIndexOptions
-						{
-							Unique = mongoIndex.IsUnique,
-							Name = mongoIndex.Name
-						}
+						new CreateIndexModel<TEntity>
+						(
+							indexKey,
+							new CreateIndexOptions
+							{
+								Unique = mongoIndex.IsUnique,
+								Name = mongoIndex.Name
+							}
+						)
 					);
 				}
 			}

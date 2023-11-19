@@ -117,7 +117,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET45
+#if NET472
 			void Add
 #else
 			async Task AddAsync
@@ -128,7 +128,7 @@ namespace Cqrs.MongoDB.DataStores
 			try
 			{
 				DateTime start = DateTime.Now;
-#if NET45
+#if NET472
 				MongoCollection.InsertOne
 #else
 				await MongoCollection.InsertOneAsync
@@ -147,7 +147,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET45
+#if NET472
 			void Add
 #else
 			async Task AddAsync
@@ -157,7 +157,7 @@ namespace Cqrs.MongoDB.DataStores
 			Logger.LogDebug("Adding data collection to the Mongo database", "MongoDbDataStore\\Add");
 			try
 			{
-#if NET45
+#if NET472
 				MongoCollection.InsertMany
 #else
 				await MongoCollection.InsertManyAsync
@@ -174,7 +174,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsDeleted"/> to true
 		/// </summary>
 		public virtual
-#if NET45
+#if NET472
 			void Remove
 #else
 			async Task RemoveAsync
@@ -185,7 +185,7 @@ namespace Cqrs.MongoDB.DataStores
 			try
 			{
 				data.IsDeleted = true;
-#if NET45
+#if NET472
 				Update
 #else
 				await UpdateAsync
@@ -202,7 +202,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET45
+#if NET472
 			void Destroy
 #else
 			async Task DestroyAsync
@@ -213,7 +213,7 @@ namespace Cqrs.MongoDB.DataStores
 			try
 			{
 				DateTime start = DateTime.Now;
-#if NET45
+#if NET472
 				MongoCollection.DeleteOne
 #else
 				await MongoCollection.DeleteOneAsync
@@ -232,7 +232,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET45
+#if NET472
 			void RemoveAll
 #else
 			async Task RemoveAllAsync
@@ -242,7 +242,7 @@ namespace Cqrs.MongoDB.DataStores
 			Logger.LogDebug("Removing all from the Mongo database", "MongoDbDataStore\\RemoveAll");
 			try
 			{
-#if NET45
+#if NET472
 				MongoCollection.DeleteMany
 #else
 				await MongoCollection.DeleteManyAsync
@@ -259,7 +259,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// Update the provided <paramref name="data"/> in the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET45
+#if NET472
 			void Update
 #else
 			async Task UpdateAsync
@@ -270,7 +270,7 @@ namespace Cqrs.MongoDB.DataStores
 			try
 			{
 				DateTime start = DateTime.Now;
-#if NET45
+#if NET472
 				MongoCollection.ReplaceOne
 #else
 				await MongoCollection.ReplaceOneAsync
