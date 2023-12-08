@@ -230,7 +230,7 @@ namespace Cqrs.Azure.Functions.Isolated
 
 			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
 
-			Cqrs.Configuration.ConfigurationExtensions.GetExecutionPath = () => Path.Combine(actualRoot);
+			Cqrs.Configuration.ConfigurationExtensions.GetExecutionPath = () => Path.Combine(actualRoot, "bin");
 			HasSetExecutionPath = true;
 		}
 

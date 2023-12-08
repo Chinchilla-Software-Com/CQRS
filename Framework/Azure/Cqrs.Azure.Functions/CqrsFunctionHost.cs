@@ -142,7 +142,7 @@ namespace Cqrs.Azure.Functions
 			SetConfigurationManager(config);
 #endif
 
-			Cqrs.Configuration.ConfigurationExtensions.GetExecutionPath = () => Path.Combine(rootPath);
+			Cqrs.Configuration.ConfigurationExtensions.GetExecutionPath = () => Path.Combine(rootPath, "bin");
 			HasSetExecutionPath = true;
 		}
 
