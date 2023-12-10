@@ -479,6 +479,7 @@ namespace Cqrs.Azure.ServiceBus
 			Guid? guidAuthenticationToken = null;
 			string stringAuthenticationToken = null;
 			int? intAuthenticationToken = null;
+			string eventType = null;
 
 			IDictionary<string, string> telemetryProperties = ExtractTelemetryProperties(message, "Azure/Servicebus");
 			TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles++, telemetryProperties);
@@ -572,7 +573,8 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						if (@event != null)
 						{
-							telemetryName = $"{@event.GetType().FullName}/{@event.GetIdentity()}/{@event.Id}";
+							eventType = @event.GetType().FullName;
+							telemetryName = $"{eventType}/{@event.GetIdentity()}/{@event.Id}";
 							authenticationToken = @event.AuthenticationToken as ISingleSignOnToken;
 							if (AuthenticationTokenIsGuid)
 								guidAuthenticationToken = @event.AuthenticationToken as Guid?;
@@ -766,6 +768,22 @@ namespace Cqrs.Azure.ServiceBus
 				TelemetryHelper.TrackMetric("Cqrs/Handle/Event", CurrentHandles--, telemetryProperties);
 
 				mainStopWatch.Stop();
+
+				TelemetryHelper.TrackProcessFlow
+				(
+					telemetryName,
+					new Uri(string.Format("cqrs://{0}", telemetryName)),
+					"Event",
+					eventType,
+					GetType().Name,
+					null,
+					mainStopWatch.Elapsed,
+					responseCode,
+					wasSuccessfull == null || wasSuccessfull.Value,
+					null,
+					telemetryProperties
+				);
+
 				if (guidAuthenticationToken != null)
 					TelemetryHelper.TrackRequest
 					(

@@ -467,6 +467,7 @@ namespace Cqrs.Azure.ServiceBus
 			Guid? guidAuthenticationToken = null;
 			string stringAuthenticationToken = null;
 			int? intAuthenticationToken = null;
+			string commandType = null;
 
 			IDictionary<string, string> telemetryProperties = ExtractTelemetryProperties(message, "Azure/Servicebus");
 			TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles++, telemetryProperties);
@@ -498,7 +499,7 @@ namespace Cqrs.Azure.ServiceBus
 #endif
 						() =>
 						{
-						wasSuccessfull = null;
+							wasSuccessfull = null;
 							telemetryName = $"Cqrs/Handle/Command/Skipped/{message.MessageId}";
 							responseCode = "204";
 							// Remove message from queue
@@ -560,7 +561,8 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						if (command != null)
 						{
-							telemetryName = $"{command.GetType().FullName}/{command.Id}";
+							commandType = command.GetType().FullName;
+							telemetryName = $"{commandType}/{command.Id}";
 							authenticationToken = command.AuthenticationToken as ISingleSignOnToken;
 							if (AuthenticationTokenIsGuid)
 								guidAuthenticationToken = command.AuthenticationToken as Guid?;
@@ -750,6 +752,22 @@ namespace Cqrs.Azure.ServiceBus
 				TelemetryHelper.TrackMetric("Cqrs/Handle/Command", CurrentHandles--, telemetryProperties);
 
 				mainStopWatch.Stop();
+
+				TelemetryHelper.TrackProcessFlow
+				(
+					telemetryName,
+					new Uri(string.Format("cqrs://{0}", telemetryName)),
+					"Command",
+					commandType,
+					GetType().Name,
+					null,
+					mainStopWatch.Elapsed,
+					responseCode,
+					wasSuccessfull == null || wasSuccessfull.Value,
+					null,
+					telemetryProperties
+				);
+
 				if (guidAuthenticationToken != null)
 					TelemetryHelper.TrackRequest
 					(

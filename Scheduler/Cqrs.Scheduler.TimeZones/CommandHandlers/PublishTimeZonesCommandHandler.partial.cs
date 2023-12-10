@@ -40,9 +40,10 @@ namespace Cqrs.Scheduler.CommandHandlers
 
 			DateTimeOffset processDate = GetNowToTheNearestPrevious15Minutes();
 
-			Logger.LogDebug(string.Format("The calculated time is: '{0}' and the actual time is: '{1}'", processDate, actualDateTime));
+			string logMessage = $"The calculated time is: '{processDate}' and the actual time is: '{actualDateTime}'";
+			Logger.LogDebug(logMessage);
 			// We Console.WriteLine as this is a WebJob and that will send output to the diagnostic Azure WebJob portal.
-			Console.WriteLine("The calculated time is: '{0}' and the actual time is: '{1}'", processDate, actualDateTime);
+			Console.WriteLine(logMessage);
 
 			await FindAndPublishTimeZones(null, processDate);
 			await FindAndPublishTimeZones(0, processDate);

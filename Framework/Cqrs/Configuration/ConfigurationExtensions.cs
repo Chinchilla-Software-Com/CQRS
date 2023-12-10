@@ -7,9 +7,11 @@
 #endregion
 
 using System;
-using Chinchilla.Logging;
+using System.IO;
 using System.Reflection;
+using Chinchilla.Logging;
 using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement;
 
 namespace Cqrs.Configuration
 {
@@ -45,23 +47,53 @@ namespace Cqrs.Configuration
 
 			if (useApplicationInsightTelemetryHelper)
 			{
-				ITelemetryHelper helper;
+				string assemblyFile = Path.Combine(GetExecutionPath(), "Chinchilla.Logging.Azure.ApplicationInsights.dll");
+				ITelemetryHelper helper = null;
+				Action action = () => {
+					try
+					{
+#if NETSTANDARD2_0
+						helper = (ITelemetryHelper)DotNetStandard2Helper.CreateInstanceFrom(assemblyFile, "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>(), DependencyResolver.Current.Resolve<IContextItemCollectionFactory>(), false }, null, null);
+#else
+						helper = (ITelemetryHelper)Activator.CreateInstanceFrom(assemblyFile, "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>(), DependencyResolver.Current.Resolve<IContextItemCollectionFactory>(), false }, null, null).Unwrap();
+#endif
+					}
+					catch (FileNotFoundException)
+					{
+						throw;
+					}
+					catch
+					{
+#if NETSTANDARD2_0
+						helper = (ITelemetryHelper)DotNetStandard2Helper.CreateInstanceFrom(assemblyFile, "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, null, DependencyResolver.Current.Resolve<IContextItemCollectionFactory>(), false }, null, null);
+#else
+						helper = (ITelemetryHelper)Activator.CreateInstanceFrom(assemblyFile, "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, null, DependencyResolver.Current.Resolve<IContextItemCollectionFactory>(), false }, null, null).Unwrap();
+#endif
+					}
+				};
 				try
 				{
-#if NETSTANDARD2_0
-					helper = (ITelemetryHelper)DotNetStandard2Helper.CreateInstanceFrom(string.Format("{0}\\Chinchilla.Logging.Azure.ApplicationInsights.dll", GetExecutionPath()), "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>() }, null, null);
-#else
-					helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\Chinchilla.Logging.Azure.ApplicationInsights.dll", GetExecutionPath()), "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>() }, null, null).Unwrap();
-#endif
+					action();
 				}
-				catch
+				catch (FileNotFoundException)
 				{
-#if NETSTANDARD2_0
-					helper = (ITelemetryHelper)DotNetStandard2Helper.CreateInstanceFrom(string.Format("{0}\\Chinchilla.Logging.Azure.ApplicationInsights.dll", GetExecutionPath()), "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null);
-#else
-					helper = (ITelemetryHelper)Activator.CreateInstanceFrom(string.Format("{0}\\Chinchilla.Logging.Azure.ApplicationInsights.dll", GetExecutionPath()), "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper }, null, null).Unwrap();
-#endif
+					assemblyFile = Path.Combine(GetExecutionPath(), "..", "Chinchilla.Logging.Azure.ApplicationInsights.dll");
+					action();
 				}
+
+				if (configurationManager.TryGetSetting("Cqrs.Hosts.ApplicationInsights.CloudRoleName", out string cloudRoleName) && !string.IsNullOrWhiteSpace(cloudRoleName))
+				{
+					PropertyInfo getCloudRoleNameProperty = helper.GetType().GetProperty("GetCloudRoleName", BindingFlags.Instance | BindingFlags.Public);
+					if (getCloudRoleNameProperty != null)
+						getCloudRoleNameProperty.SetValue(helper, (Func<string>)(() => { return cloudRoleName; }), null);
+				}
+				if (configurationManager.TryGetSetting("Cqrs.Hosts.ApplicationInsights.OperationName", out string operationName) && !string.IsNullOrWhiteSpace(operationName))
+				{
+					PropertyInfo getOperationNameProperty = helper.GetType().GetProperty("GetOperationName", BindingFlags.Instance | BindingFlags.Public);
+					if (getOperationNameProperty != null)
+						getOperationNameProperty.SetValue(helper, (Func<string>)(() => { return operationName; }), null);
+				}
+
 				return helper;
 			}
 			return new NullTelemetryHelper();

@@ -19,6 +19,8 @@ using Cqrs.Configuration;
 using Cqrs.Services;
 using Cqrs.DependencyInjection.Modules;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 
 #if NET6_0
 using Microsoft.Extensions.Configuration;
@@ -38,10 +40,10 @@ namespace Cqrs.Azure.Functions.Isolated.Configuration
 		/// </summary>
 		public override void Load(IServiceCollection services)
 		{
-			RegisterBasicHelpers(services);
 			RegisterAzureConfigurations(services);
 			RegisterBasicServices(services);
 			RegisterWebBit(services);
+			RegisterBasicHelpers(services);
 		}
 
 		#endregion
@@ -87,21 +89,52 @@ namespace Cqrs.Azure.Functions.Isolated.Configuration
 		{
 			RegisterContextItemCollectionFactory(services);
 
+			bool isTelemetryClientBound = IsRegistered<TelemetryClient>(services);
+			if (!isTelemetryClientBound)
+			{
+				services.AddSingleton
+				(
+					new TelemetryClient(new TelemetryConfiguration()
+					{
+						ConnectionString = DependencyResolver.ConfigurationManager.GetConnectionString("Cqrs.Hosts.ApplicationInsights.ConnectionString")
+					})
+				);
+			}
+
 			bool isTelemetryHelperBound = IsRegistered<ITelemetryHelper>(services);
+			TelemetryHelper helper = null;
 			if (!isTelemetryHelperBound)
 			{
-				services.AddSingleton<ITelemetryHelper, TelemetryHelper>();
+				services.AddSingleton<ITelemetryHelper>(p => {
+					var telemetryHelper = new TelemetryHelper
+					(
+						Resolve<TelemetryClient>(services),
+						Resolve<ICorrelationIdHelper>(services),
+						Resolve<ILoggerSettings>(services)
+					);
+
+					if (DependencyResolver.ConfigurationManager.TryGetSetting("Cqrs.Hosts.ApplicationInsights.CloudRoleName", out string cloudRoleName) && !string.IsNullOrWhiteSpace(cloudRoleName))
+						telemetryHelper.GetCloudRoleName = () => { return cloudRoleName; };
+					if (DependencyResolver.ConfigurationManager.TryGetSetting("Cqrs.Hosts.ApplicationInsights.OperationName", out string operationName) && !string.IsNullOrWhiteSpace(operationName))
+						telemetryHelper.GetOperationName = () => { return operationName; };
+
+					return telemetryHelper;
+				});
 			}
 			else
 			{
 				var obj = Resolve<ITelemetryHelper>(services);
-				if (!(obj is TelemetryHelper))
+				helper = obj as TelemetryHelper;
+				if (helper == null)
 				{
 					Unbind<ITelemetryHelper>(services);
 					services.AddSingleton<ITelemetryHelper, TelemetryHelper>();
+					obj = Resolve<ITelemetryHelper>(services);
+					helper = obj as TelemetryHelper;
 				}
 			}
 		}
+
 		/// <summary>
 		/// Registers the <see cref="IContextItemCollectionFactory"/> required.
 		/// </summary>
