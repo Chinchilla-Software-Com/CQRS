@@ -8,6 +8,7 @@
 
 using Cqrs.Configuration;
 using Cqrs.Exceptions;
+using System.Threading.Tasks;
 
 namespace Cqrs.Azure.KeyVault
 {
@@ -44,6 +45,30 @@ namespace Cqrs.Azure.KeyVault
 			if (string.IsNullOrWhiteSpace(result))
 				throw new MissingApplicationSettingException(key);
 			return result;
+		}
+
+		/// <summary>
+		/// Get the specified secret as identified by the provided <paramref name="secretName"/> from the <see cref="IConfigurationManager"/>.
+		/// </summary>
+		/// <param name="secretName">The name of the secret.</param>
+		/// <returns>The secret</returns>
+		/// <exception cref="MissingApplicationSettingException">If the secret isn't found by the <see cref="IConfigurationManager"/></exception>
+		public
+#if NET40
+#else
+			async
+#endif
+			Task<string> GetSecretAsync(string secretName)
+		{
+			string secret = GetSecret(secretName);
+#if NET40
+			TaskCompletionSource<string> tcs1 = new TaskCompletionSource<string>();
+			Task<string> task = tcs1.Task;
+			tcs1.SetResult(secret);
+			return task;
+#else
+			return await Task.FromResult(secret);
+#endif
 		}
 	}
 }

@@ -7,10 +7,9 @@
 #endregion
 
 using System;
-
-#if NET472
 using System.Threading.Tasks;
 
+#if NET472
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.KeyVault.Models;
 using Microsoft.Azure.Services.AppAuthentication;
@@ -113,19 +112,31 @@ namespace Cqrs.Azure.KeyVault
 		/// </summary>
 		/// <param name="secretName">The name of the secret.</param>
 		/// <returns>The secret</returns>
-		public string GetSecret(string secretName)
+		public virtual string GetSecret(string secretName)
+		{
+			string secret = null;
+
+			Task keyVaultSecretTask = Task.Run(async () => {
+				secret = await GetSecretAsync(secretName);
+			});
+			keyVaultSecretTask.Wait();
+
+			return secret;
+		}
+
+		/// <summary>
+		/// Get the specified secret as identified by the provided <paramref name="secretName"/> from Azure KeyVault.
+		/// </summary>
+		/// <param name="secretName">The name of the secret.</param>
+		/// <returns>The secret</returns>
+		public virtual async Task<string> GetSecretAsync(string secretName)
 		{
 			string secret = null;
 #if NET472
-			Task keyVaultSecretTask = Task.Factory.StartNew(() => {
-				Task<SecretBundle> getKeyVaultSecretTask = Client.GetSecretAsync(KeyVaultUri, secretName);
-				getKeyVaultSecretTask.Wait();
-				SecretBundle keyVaultSecret = getKeyVaultSecretTask.Result;
-				secret = keyVaultSecret.Value;
-			});
-			keyVaultSecretTask.Wait();
+			SecretBundle keyVaultSecret = await Client.GetSecretAsync(KeyVaultUri, secretName);
+			secret = keyVaultSecret.Value;
 #else
-			secret = Client.GetSecret(secretName).Value.Value;
+			secret = (await Client.GetSecretAsync(secretName)).Value.Value;
 #endif
 			return secret;
 		}

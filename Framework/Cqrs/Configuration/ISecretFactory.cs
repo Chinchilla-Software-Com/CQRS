@@ -6,6 +6,8 @@
 // // -----------------------------------------------------------------------
 #endregion
 
+using System.Threading.Tasks;
+
 namespace Cqrs.Configuration
 {
 	/// <summary>
@@ -19,5 +21,12 @@ namespace Cqrs.Configuration
 		/// <param name="secretName">The name of the secret.</param>
 		/// <returns>The secret</returns>
 		string GetSecret(string secretName);
+
+		/// <summary>
+		/// Get the specified secret as identified by the provided <paramref name="secretName"/>.
+		/// </summary>
+		/// <param name="secretName">The name of the secret.</param>
+		/// <returns>The secret</returns>
+		Task<string> GetSecretAsync(string secretName);
 	}
 }

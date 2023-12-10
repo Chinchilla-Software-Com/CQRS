@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net472;net6.0;net48</TargetFrameworks>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+		<PackageReference Include="nunit" Version="3.12.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="3.15.1" />
+		<PackageReference Include="coverlet.collector" Version="3.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
+		<ProjectReference Include="..\..\Cqrs.Azure.KeyVault\Cqrs.Azure.KeyVault.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="cqrs.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>
