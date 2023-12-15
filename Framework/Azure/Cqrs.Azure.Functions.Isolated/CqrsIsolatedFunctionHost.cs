@@ -99,7 +99,7 @@ namespace Cqrs.Azure.Functions.Isolated
 			string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
 			string azureRoot = Environment.GetEnvironmentVariable("HOME");
 			azureRoot = string.IsNullOrWhiteSpace(azureRoot)
-				? string.Empty
+				? null
 				: $"{azureRoot}/site/wwwroot";
 
 			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
@@ -149,7 +149,7 @@ namespace Cqrs.Azure.Functions.Isolated
 					string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
 					string azureRoot = Environment.GetEnvironmentVariable("HOME");
 					azureRoot = string.IsNullOrWhiteSpace(azureRoot)
-						? string.Empty
+						? null
 						: $"{azureRoot}/site/wwwroot";
 
 					string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
@@ -225,7 +225,7 @@ namespace Cqrs.Azure.Functions.Isolated
 			string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
 			string azureRoot = Environment.GetEnvironmentVariable("HOME");
 			azureRoot = string.IsNullOrWhiteSpace(azureRoot)
-				? string.Empty
+				? null
 				: $"{azureRoot}/site/wwwroot";
 
 			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
