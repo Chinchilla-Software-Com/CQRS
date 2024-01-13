@@ -4,6 +4,7 @@ using System.Linq;
 using Cqrs.Authentication;
 using Cqrs.Azure.Functions.Isolated;
 using Cqrs.Azure.Functions.Isolated.Configuration;
+using Cqrs.Azure.ServiceBus;
 using Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus;
 using Cqrs.DependencyInjection.Azure.ServiceBus.EventBus;
 using Cqrs.DependencyInjection.Modules;
@@ -52,7 +53,7 @@ public class Program
 		if (!ConfigurationManager.TryGetSetting("Cqrs.Hosts.EnableCommandReceiving", out setting))
 			setting = true;
 		if (setting)
-			list.Add(new AzureCommandBusReceiverModule<Guid>());
+			list.Add(new AzureCommandBusReceiverModule<Guid, AzureCommandBusReceiver<Guid>>());
 
 		return list;
 	}
@@ -70,7 +71,7 @@ public class Program
 		if (!ConfigurationManager.TryGetSetting("Cqrs.Hosts.EnableEventReceiving", out setting))
 			setting = true;
 		if (setting)
-			list.Add(new AzureEventBusReceiverModule<Guid>());
+			list.Add(new AzureEventBusReceiverModule<Guid, AzureEventBusReceiver<Guid>>());
 
 		return list;
 	}
