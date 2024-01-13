@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net462;net48;netstandard2.0</TargetFrameworks>
-		<title>Microsoft Azure ServiceBus event bus with CQRS.NET and MS DI</title>
+		<TargetFrameworks>net472;net48;netstandard2.0</TargetFrameworks>
+		<title>Microsoft Azure Blob and Table Storage for CQRS.NET and MS DI</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
-		<Description>Use MS DI as your IoC container of choice when using Microsoft Azure ServiceBus for CQRS.NET as your event bus</Description>
+		<Description>Use MS DI as your IoC container of choice when using Azure Blob and Table Storage in CQRS.NET.</Description>
 		<Copyright>Copyright ©  2023</Copyright>
 		<PackageLicenseFile></PackageLicenseFile>
 		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
@@ -19,16 +19,15 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
-		<PackageTags>CQRS;CQRS.NET;Pub/Sub;Azure;ServiceBus</PackageTags>
+		<PackageTags>CQRS;CQRS.NET;Azure Blob Storage;BlobStorage;Table Storage;TableStorage</PackageTags>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Properties\AssemblyInfo.cs" />
+		<Compile Remove="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Remove="Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus.xml" />
-	  <None Remove="Cqrs.DependencyInjection.Azure.ServiceBus.EventBus.xml" />
-	  <None Remove="Tools\Create-Log-Table.sql" />
+		<None Remove="Cqrs.DependencyInjection.Azure.Storage.xml" />
+		<None Remove="Tools\Create-Log-Table.sql" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -51,21 +50,27 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<DocumentationFile>Cqrs.DependencyInjection.Azure.ServiceBus.EventBus.xml</DocumentationFile>
+		<DocumentationFile>Cqrs.DependencyInjection.Azure.Storage.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-		<PackageReference Include="cdmdotnet.AutoMapper" Version="1.0.16.9" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Cqrs\Cqrs.csproj" />
-		<ProjectReference Include="..\..\..\Azure\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj" />
+		<ProjectReference Include="..\..\..\Azure\Cqrs.Azure.Storage\Cqrs.Azure.Storage.csproj" />
 		<ProjectReference Include="..\..\Cqrs.DependencyInjection\Cqrs.DependencyInjection.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Properties\" />
+		<PackageReference Include="Chinchilla.Logging.Azure" Version="5.1.39" />
+		<PackageReference Include="Chinchilla.Logging.Azure.ApplicationInsights" Version="5.1.39" />
+		<PackageReference Include="Chinchilla.Logging.Azure.Storage" Version="5.1.39" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+	</Target>
 </Project>

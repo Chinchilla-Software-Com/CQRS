@@ -78,7 +78,7 @@ namespace Cqrs.DependencyInjection.Modules
 		/// <param name="configurationManager">The <see cref="IConfigurationManager"/> to use, if one isn't provided then <see cref="ConfigurationManager"/> is instantiate, used and then disposed.</param>
 		public CqrsModule(IConfigurationManager configurationManager = null)
 		{
-			configurationManager = configurationManager ?? new ConfigurationManager();
+			configurationManager = configurationManager ?? Cqrs.Configuration.DependencyResolver.ConfigurationManager ?? new ConfigurationManager();
 			if (configurationManager.TryGetSetting("Cqrs.SetupForWeb", out bool setupForWeb))
 				SetupForWeb = setupForWeb;
 			if (configurationManager.TryGetSetting("Cqrs.SetupForSqlLogging", out bool setupForSqlLogging))
