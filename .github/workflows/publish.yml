@@ -96,6 +96,7 @@ jobs:
         .nuget\NuGet.exe setapikey ${{ secrets.NUGET_PUBLISH_TOKEN }} -Source "https://nuget.pkg.github.com/cdmdotnet/index.json"
         dotnet nuget push Packaged\*.nupkg -k ${{ secrets.NUGET_PUBLISH_TOKEN }} -s https://api.nuget.org/v3/index.json
   tag:
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
