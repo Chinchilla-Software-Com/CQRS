@@ -85,8 +85,18 @@ namespace Cqrs.DependencyInjection.Azure.Storage.Configuration
 			if (isLoggerBound)
 				services.RemoveAll<ILogger>();
 
-			TTableStorageLogger logger = Resolve<TTableStorageLogger>(services);
+			TTableStorageLogger logger = InstantiateLogger(services);
 			services.AddSingleton<ILogger>(logger);
+		}
+
+		/// <summary>
+		/// Creates a new instance of the <typeparamref name="TTableStorageLogger"/>
+		/// </summary>
+		protected virtual TTableStorageLogger InstantiateLogger(IServiceCollection services)
+		{
+			TTableStorageLogger logger = Resolve<TTableStorageLogger>(services);
+
+			return logger;
 		}
 	}
 
@@ -96,7 +106,6 @@ namespace Cqrs.DependencyInjection.Azure.Storage.Configuration
 	public class AzureTableStorageLoggerModule
 		: AzureTableStorageLoggerModule<TableStorageLogger>
 	{
-
 		/// <summary>
 		/// Instantiate a new instance of the <see cref="AzureTableStorageLoggerModule"/> that uses the provided <paramref name="configurationManager"/>
 		/// to read the following configuration settings:
