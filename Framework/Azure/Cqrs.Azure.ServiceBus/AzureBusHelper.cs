@@ -602,7 +602,7 @@ namespace Cqrs.Azure.ServiceBus
 				if (!ConfigurationManager.TryGetSetting(DefaultMessagesShouldRefreshConfigurationKey, out canRefresh))
 					canRefresh = false;
 
-			if (canRefresh)
+			if (canRefresh && serviceBusReceiver != null)
 			{
 				if (lockRefreshAction == null)
 					Logger.LogWarning($"An event message arrived with the {messageId} was of type {eventTypeName} and was destined to support lock renewal, but no action was provided.");
@@ -651,7 +651,7 @@ namespace Cqrs.Azure.ServiceBus
 			CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
 		{
 #if NETSTANDARD2_0 || NET48_OR_GREATER
-			if (client != null)
+			if (client == null)
 				return;
 #else
 			Task.Factory.StartNewSafely(() =>
