@@ -89,7 +89,7 @@ namespace Cqrs.Azure.Functions.Isolated
 		/// <summary>
 		/// Prepares the <see cref="Cqrs.Configuration.IConfigurationManager"/>
 		/// </summary>
-		protected static void PrepareConfigurationManager()
+		protected static void PrepareConfigurationManager(ConfigurationBuilder configBuilder = null)
 		{
 			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET48
@@ -105,7 +105,7 @@ namespace Cqrs.Azure.Functions.Isolated
 			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
 
 			// C# ConfigurationBuilder example for Azure Functions v2 runtime
-			IConfigurationRoot config = new ConfigurationBuilder()
+			IConfigurationRoot config = (configBuilder ?? new ConfigurationBuilder())
 				.SetBasePath(actualRoot)
 				.AddCommandLine(Environment.GetCommandLineArgs())
 				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
