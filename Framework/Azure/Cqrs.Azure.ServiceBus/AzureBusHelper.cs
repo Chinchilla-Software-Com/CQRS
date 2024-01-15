@@ -651,6 +651,8 @@ namespace Cqrs.Azure.ServiceBus
 			CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = "message")
 		{
 #if NETSTANDARD2_0 || NET48_OR_GREATER
+			if (client != null)
+				return;
 #else
 			Task.Factory.StartNewSafely(() =>
 #endif
