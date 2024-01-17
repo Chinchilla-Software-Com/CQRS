@@ -312,7 +312,7 @@ namespace Cqrs.Azure.ServiceBus
 			if (!ConfigurationManager.TryGetSetting($"{commandTypeName}.ShouldRefresh", out canRefresh))
 				canRefresh = false;
 
-			if (canRefresh)
+			if (canRefresh && serviceBusReceiver != null)
 			{
 				if (lockRefreshAction == null)
 					Logger.LogWarning($"A command message arrived with the {messageId} was of type {commandTypeName} and was destined to support lock renewal, but no action was provided.");
