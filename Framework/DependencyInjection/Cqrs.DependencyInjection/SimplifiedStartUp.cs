@@ -40,6 +40,15 @@ namespace Cqrs.DependencyInjection
 		/// </summary>
 		public virtual void SetupModulesToLoad(IServiceCollection services)
 		{
+			// default values for backwards compatibility
+			bool setupForWeb = true;
+			bool setupForSqlLogging = false;
+			if (ConfigurationManager.TryGetSetting("Cqrs.SetupForWeb", out bool _setupForWeb))
+				setupForWeb = _setupForWeb;
+			if (ConfigurationManager.TryGetSetting("Cqrs.SetupForSqlLogging", out bool _setupForSqlLogging))
+				setupForSqlLogging = _setupForSqlLogging;
+
+
 			DependencyResolver.ModulesToLoad.Insert(0, new THostModule());
 
 			string authenticationType;
@@ -47,29 +56,29 @@ namespace Cqrs.DependencyInjection
 				authenticationType = "Guid";
 
 			if (authenticationType.ToLowerInvariant() == "int" || authenticationType.ToLowerInvariant() == "integer")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<int, DefaultAuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<int, DefaultAuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 			else if (authenticationType.ToLowerInvariant() == "guid")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<Guid, DefaultAuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<Guid, DefaultAuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 			else if (authenticationType.ToLowerInvariant() == "string" || authenticationType.ToLowerInvariant() == "text")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<string, DefaultAuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<string, DefaultAuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 
 			else if (authenticationType == "SingleSignOnToken")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnToken, DefaultAuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnToken, DefaultAuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 			else if (authenticationType == "SingleSignOnTokenWithUserRsn")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnTokenWithUserRsn, DefaultAuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnTokenWithUserRsn, DefaultAuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 			else if (authenticationType == "SingleSignOnTokenWithCompanyRsn")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnTokenWithCompanyRsn, DefaultAuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnTokenWithCompanyRsn, DefaultAuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 			else if (authenticationType == "SingleSignOnTokenWithUserRsnAndCompanyRsn")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnTokenWithUserRsnAndCompanyRsn, DefaultAuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<SingleSignOnTokenWithUserRsnAndCompanyRsn, DefaultAuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 
 			else if (authenticationType == "ISingleSignOnToken")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnToken, AuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnToken, AuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 			else if (authenticationType == "ISingleSignOnTokenWithUserRsn")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnTokenWithUserRsn, AuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnTokenWithUserRsn, AuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 			else if (authenticationType == "ISingleSignOnTokenWithCompanyRsn")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnTokenWithCompanyRsn, AuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnTokenWithCompanyRsn, AuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 			else if (authenticationType == "ISingleSignOnTokenWithUserRsnAndCompanyRsn")
-				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnTokenWithUserRsnAndCompanyRsn, AuthenticationTokenHelper>(true, false));
+				DependencyResolver.ModulesToLoad.Insert(1, new CqrsModule<ISingleSignOnTokenWithUserRsnAndCompanyRsn, AuthenticationTokenHelper>(setupForWeb, setupForSqlLogging));
 
 			AddSupplementryModules(services);
 		}

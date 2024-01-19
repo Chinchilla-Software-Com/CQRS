@@ -3,8 +3,8 @@ name: Build Core Framework
 on: [push]
 
 env:
-  nuGetVersionNumber: 5.0.0
-  nuGetFullVersionNumber: 5.0.0.${{ github.run_number }}
+  nuGetVersionNumber: 5.1.0
+  nuGetFullVersionNumber: 5.1.0.${{ github.run_number }}
 
 jobs:
   build:
@@ -91,6 +91,16 @@ jobs:
       with:
         name: dotnet-net7-results-${{ matrix.dotnet-version }}
         path: TestResults-net7-${{ matrix.dotnet-version }}
+      # Use always() to always run this step to publish test results when there are test failures
+      if: ${{ always() }}
+
+    - name: Test Dependency Resolver with dotnet (.NET Core 7.0)
+      run: dotnet test -f net7.0 --logger trx --collect "Code Coverage" --results-directory "DependencyResolver-TestResults-net7-${{ matrix.dotnet-version }}" Framework\DependencyInjection\Tests\Cqrs.DependencyInjection.Tests.Unit\Cqrs.DependencyInjection.Tests.Unit.csproj
+    - name: Upload dotnet test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: dotnet-net7-results-${{ matrix.dotnet-version }}
+        path: DependencyResolver-TestResults-net7-${{ matrix.dotnet-version }}
       # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
 

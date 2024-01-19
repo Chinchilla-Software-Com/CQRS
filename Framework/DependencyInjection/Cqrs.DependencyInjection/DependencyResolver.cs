@@ -9,11 +9,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceModel.Channels;
 using Cqrs.Configuration;
 using Cqrs.DependencyInjection.Modules;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Cqrs.DependencyInjection
 {
@@ -114,22 +112,7 @@ namespace Cqrs.DependencyInjection
 
 			if (result == null && type.IsClass)
 			{
-				try
-				{
-					var tempBindings = new ServiceCollection();
-					foreach (ServiceDescriptor binding in Bindings)
-						tempBindings.Add(binding);
-					if (!tempBindings.Any(x => x.ServiceType == type))
-						tempBindings.AddSingleton(type, type);
-					using (ServiceProvider tempProvider = tempBindings.BuildServiceProvider())
-					{
-						result = tempProvider.GetService(type);
-					}
-				}
-				catch (ArgumentException)
-				{
-					return result;
-				}
+				result = ActivatorUtilities.CreateInstance(Kernel, type);
 			}
 
 			return result;
