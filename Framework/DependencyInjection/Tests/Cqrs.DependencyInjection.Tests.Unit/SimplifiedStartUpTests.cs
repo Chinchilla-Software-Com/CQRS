@@ -263,8 +263,8 @@ namespace Cqrs.DependencyInjection.Tests.Unit
 			public int ExpectedVersion { get; set; }
 			public Guid AuthenticationToken { get; set; }
 			public Guid CorrelationId { get; set; }
-			public string OriginatingFramework { get; set; }
-			public IEnumerable<string> Frameworks { get; set; }
+			public string? OriginatingFramework { get; set; }
+			public IEnumerable<string>? Frameworks { get; set; }
 		}
 	}
 }
