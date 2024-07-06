@@ -32,12 +32,24 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Gets or sets the Publisher used to publish events on once saved into the <see cref="EventStore"/>.
 		/// </summary>
-		protected IEventPublisher<TAuthenticationToken> Publisher { get; private set; }
+		protected
+#if NET40
+			IEventPublisher
+#else
+			IAsyncEventPublisher
+#endif
+				<TAuthenticationToken> EventPublisher { get; private set; }
 
 		/// <summary>
 		/// Gets or sets the Publisher used to publish an <see cref="ICommand{TAuthenticationToken}"/>
 		/// </summary>
-		protected ICommandPublisher<TAuthenticationToken> CommandPublisher { get; private set; }
+		protected
+#if NET40
+			ICommandPublisher
+#else
+			IAsyncCommandPublisher
+#endif
+				<TAuthenticationToken> CommandPublisher { get; private set; }
 
 		/// <summary>
 		/// Gets or set the <see cref="IAggregateFactory"/>.
@@ -52,10 +64,22 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Instantiates a new instance of <see cref="SagaRepository{TAuthenticationToken}"/>
 		/// </summary>
-		public SagaRepository(IAggregateFactory sagaFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICommandPublisher<TAuthenticationToken> commandPublisher, ICorrelationIdHelper correlationIdHelper)
+		public SagaRepository(IAggregateFactory sagaFactory, IEventStore<TAuthenticationToken> eventStore,
+#if NET40
+			IEventPublisher
+#else
+			IAsyncEventPublisher
+#endif
+				<TAuthenticationToken> eventPublisher,
+#if NET40
+			ICommandPublisher
+#else
+			IAsyncCommandPublisher
+#endif
+				<TAuthenticationToken> commandPublisher, ICorrelationIdHelper correlationIdHelper)
 		{
 			EventStore = eventStore;
-			Publisher = publisher;
+			EventPublisher = eventPublisher;
 			CorrelationIdHelper = correlationIdHelper;
 			CommandPublisher = commandPublisher;
 			SagaFactory = sagaFactory;
@@ -80,7 +104,12 @@ namespace Cqrs.Domain
 			IEnumerable<ICommand<TAuthenticationToken>> commandsToPublish = saga.GetUnpublishedCommands();
 			if (!uncommittedChanges.Any())
 			{
-				PublishCommand(commandsToPublish);
+#if NET40
+				PublishCommand
+#else
+				await PublishCommandAsync
+#endif
+					(commandsToPublish);
 				return;
 			}
 
@@ -125,25 +154,57 @@ namespace Cqrs.Domain
 
 			saga.MarkChangesAsCommitted();
 			foreach (ISagaEvent<TAuthenticationToken> @event in eventsToPublish)
-				PublishEvent(@event);
+#if NET40
+				PublishEvent
+#else
+				await PublishEventAsync
+#endif
+					(@event);
 
-			PublishCommand(commandsToPublish);
+#if NET40
+			PublishCommand
+#else
+			await PublishCommandAsync
+#endif
+				(commandsToPublish);
 		}
 
 		/// <summary>
 		/// Publish the saved <paramref name="event"/>.
 		/// </summary>
-		protected virtual void PublishEvent(ISagaEvent<TAuthenticationToken> @event)
+		protected virtual
+#if NET40
+			void PublishEvent
+#else
+			async Task PublishEventAsync
+#endif
+			(ISagaEvent<TAuthenticationToken> @event)
 		{
-			Publisher.Publish(@event);
+#if NET40
+			EventPublisher.Publish
+#else
+			await EventPublisher.PublishAsync
+#endif
+				(@event);
 		}
 
 		/// <summary>
 		/// Publish the <paramref name="commands"/>.
 		/// </summary>
-		protected virtual void PublishCommand(IEnumerable<ICommand<TAuthenticationToken>> commands)
+		protected virtual
+#if NET40
+			void PublishCommand
+#else
+			async Task PublishCommandAsync
+#endif
+				(IEnumerable<ICommand<TAuthenticationToken>> commands)
 		{
-			CommandPublisher.Publish(commands);
+#if NET40
+			CommandPublisher.Publish
+#else
+			await CommandPublisher.PublishAsync
+#endif
+				(commands);
 		}
 
 		/// <summary>

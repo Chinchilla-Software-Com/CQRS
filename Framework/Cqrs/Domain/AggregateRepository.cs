@@ -34,7 +34,13 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Gets or sets the Publisher used to publish events on once saved into the <see cref="EventStore"/>.
 		/// </summary>
-		protected IEventPublisher<TAuthenticationToken> Publisher { get; private set; }
+		protected
+#if NET40
+			IEventPublisher
+#else
+			IAsyncEventPublisher
+#endif
+				<TAuthenticationToken> Publisher { get; private set; }
 
 		/// <summary>
 		/// Gets or set the <see cref="IAggregateFactory"/>.
@@ -54,7 +60,13 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AggregateRepository{TAuthenticationToken}"/>
 		/// </summary>
-		public AggregateRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore, IEventPublisher<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager)
+		public AggregateRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore,
+#if NET40
+			IEventPublisher
+#else
+			IAsyncEventPublisher
+#endif
+				<TAuthenticationToken> publisher, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager)
 		{
 			EventStore = eventStore;
 			Publisher = publisher;
@@ -134,15 +146,31 @@ namespace Cqrs.Domain
 
 			aggregate.MarkChangesAsCommitted();
 			foreach (IEvent<TAuthenticationToken> @event in eventsToPublish)
-				PublishEvent(@event);
+#if NET40
+				PublishEvent
+#else
+				await PublishEventAsync
+#endif
+				(@event);
 		}
 
 		/// <summary>
 		/// Publish the saved <paramref name="event"/>.
 		/// </summary>
-		protected virtual void PublishEvent(IEvent<TAuthenticationToken> @event)
+		protected virtual
+#if NET40
+			void PublishEvent
+#else
+			async Task PublishEventAsync
+#endif
+				(IEvent<TAuthenticationToken> @event)
 		{
-			Publisher.Publish(@event);
+#if NET40
+			Publisher.Publish
+#else
+			await Publisher.PublishAsync
+#endif
+				(@event);
 		}
 
 		/// <summary>

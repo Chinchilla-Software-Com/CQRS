@@ -63,9 +63,9 @@ namespace Cqrs.DependencyInjection.Modules
 			else
 				inProcessBus = Resolve<InProcessBus<TAuthenticationToken>>(services);
 
-			services.AddSingleton<IEventPublisher<TAuthenticationToken>>(inProcessBus);
+			services.AddSingleton<IAsyncEventPublisher<TAuthenticationToken>>(inProcessBus);
 
-			services.AddSingleton<IEventReceiver<TAuthenticationToken>>(inProcessBus);
+			services.AddSingleton<IAsyncEventReceiver<TAuthenticationToken>>(inProcessBus);
 
 			bool isHandlerRegistrationBound = IsRegistered<IEventHandlerRegistrar>(services);
 			if (!isHandlerRegistrationBound)

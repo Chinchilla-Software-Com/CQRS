@@ -205,21 +205,23 @@ namespace Cqrs.Configuration
 					return CorrelationIdHelper;
 				if (type == typeof(IConfigurationManager))
 					return ConfigurationManager;
-				if (type == typeof(IEventHandlerRegistrar))
-					return Bus;
-				if (type == typeof(ICommandHandlerRegistrar))
-					return Bus;
-				if (type == typeof(IEventPublisher<TAuthenticationToken>))
-					return Bus;
-				if (type == typeof(ICommandPublisher<TAuthenticationToken>))
-					return Bus;
-				if (type == typeof(IEventReceiver<TAuthenticationToken>))
-					return Bus;
-				if (type == typeof(ICommandReceiver<TAuthenticationToken>))
-					return Bus;
-				if (type == typeof(IEventReceiver))
-					return Bus;
-				if (type == typeof(ICommandReceiver))
+				if
+				(
+					type == typeof(IAsyncEventHandlerRegistrar) ||
+					type == typeof(IEventHandlerRegistrar) ||
+					type == typeof(IAsyncCommandHandlerRegistrar) ||
+					type == typeof(ICommandHandlerRegistrar) ||
+					type == typeof(IAsyncEventPublisher<TAuthenticationToken>) ||
+					type == typeof(IEventPublisher<TAuthenticationToken>) ||
+					type == typeof(IAsyncCommandPublisher<TAuthenticationToken>) ||
+					type == typeof(ICommandPublisher<TAuthenticationToken>) ||
+					type == typeof(IAsyncEventReceiver<TAuthenticationToken>) ||
+					type == typeof(IEventReceiver<TAuthenticationToken>) ||
+					type == typeof(IAsyncCommandReceiver<TAuthenticationToken>) ||
+					type == typeof(ICommandReceiver<TAuthenticationToken>) ||
+					type == typeof(IEventReceiver) ||
+					type == typeof(ICommandReceiver)
+				)
 					return Bus;
 				if (type == typeof(ILogger))
 					return Logger;

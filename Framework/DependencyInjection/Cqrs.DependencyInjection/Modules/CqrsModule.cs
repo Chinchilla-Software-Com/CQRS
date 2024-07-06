@@ -7,10 +7,13 @@
 #endregion
 
 using System;
+using System.Reflection;
+
 #if NET462
 using cdmdotnet.AutoMapper;
 #endif
 using Chinchilla.Logging;
+using Chinchilla.Logging.Azure.Configuration;
 using Chinchilla.Logging.Configuration;
 using Chinchilla.StateManagement;
 using Chinchilla.StateManagement.Threaded;
@@ -174,7 +177,7 @@ namespace Cqrs.DependencyInjection.Modules
 			bool isLoggerSettingsBound = IsRegistered<ILoggerSettings>(services);
 			if (!isLoggerSettingsBound)
 			{
-				services.AddSingleton<ILoggerSettings, LoggerSettings>();
+				services.AddSingleton<ILoggerSettings, AzureLoggerSettingsConfiguration>();
 			}
 
 			bool isTelemetryHelperBound = IsRegistered<ITelemetryHelper>(services);
@@ -261,6 +264,29 @@ namespace Cqrs.DependencyInjection.Modules
 			{
 				services.AddSingleton<IConfigurationManager, ConfigurationManager>();
 				Configuration.DependencyResolver.ConfigurationManager = Resolve<IConfigurationManager>(services);
+			}
+			else if (Configuration.DependencyResolver.ConfigurationManager != null)
+			{
+				if (!IsRegistered<IConfigurationManager>(services))
+				{
+					services.AddSingleton(Configuration.DependencyResolver.ConfigurationManager);
+				}
+				if (!IsRegistered<Microsoft.Extensions.Configuration.IConfiguration>(services))
+				{
+					Type configurationManagerType = Configuration.DependencyResolver.ConfigurationManager.GetType();
+					if (configurationManagerType.FullName == "Cqrs.Azure.ConfigurationManager.CloudConfigurationManager")
+					{
+						PropertyInfo propertyInfo = configurationManagerType.GetProperty("Configuration", BindingFlags.Instance | BindingFlags.NonPublic);
+						if (propertyInfo != null)
+						{
+							var config = propertyInfo.GetValue(Configuration.DependencyResolver.ConfigurationManager) as Microsoft.Extensions.Configuration.IConfiguration;
+							if (config != null)
+							{
+								services.AddSingleton(config);
+							}
+						}
+					}
+				}
 			}
 
 			if (RegisterDefaultSnapshotStrategy)

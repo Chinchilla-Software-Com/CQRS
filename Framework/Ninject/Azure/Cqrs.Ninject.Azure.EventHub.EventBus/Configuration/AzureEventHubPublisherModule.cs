@@ -46,7 +46,11 @@ namespace Cqrs.Azure.EventHub.EventBus.Configuration
 		/// </summary>
 		public virtual void RegisterEventPublisher()
 		{
+#if NETSTANDARD2_0
+			Bind<IAsyncEventPublisher<TAuthenticationToken>>()
+#else
 			Bind<IEventPublisher<TAuthenticationToken>>()
+#endif
 				.To<AzureEventBusPublisher<TAuthenticationToken>>()
 				.InSingletonScope();
 		}

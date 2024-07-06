@@ -66,11 +66,19 @@ namespace Cqrs.Ninject.Configuration
 			else
 				inProcessBus = Kernel.Get<InProcessBus<TAuthenticationToken>>();
 
+#if NET40
 			Bind<IEventPublisher<TAuthenticationToken>>()
+#else
+			Bind<IAsyncEventPublisher<TAuthenticationToken>>()
+#endif
 				.ToConstant(inProcessBus)
 				.InSingletonScope();
 
+#if NET40
 			Bind<IEventReceiver<TAuthenticationToken>>()
+#else
+			Bind<IAsyncEventReceiver<TAuthenticationToken>>()
+#endif
 				.ToConstant(inProcessBus)
 				.InSingletonScope();
 

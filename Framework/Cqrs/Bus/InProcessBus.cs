@@ -11,6 +11,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Authentication;
@@ -31,17 +33,21 @@ namespace Cqrs.Bus
 	/// </summary>
 	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class InProcessBus<TAuthenticationToken>
+#if NET40
 		: IPublishAndWaitCommandPublisher<TAuthenticationToken>
 		, IEventPublisher<TAuthenticationToken>
-#if NET40
 		, IEventHandlerRegistrar
 		, ICommandHandlerRegistrar
-#else
-		, IAsyncEventHandlerRegistrar
-		, IAsyncCommandHandlerRegistrar
-#endif
 		, ICommandReceiver<TAuthenticationToken>
 		, IEventReceiver<TAuthenticationToken>
+#else
+		: IAsyncPublishAndWaitCommandPublisher<TAuthenticationToken>
+		, IAsyncEventPublisher<TAuthenticationToken>
+		, IAsyncEventHandlerRegistrar
+		, IAsyncCommandHandlerRegistrar
+		, IAsyncCommandReceiver<TAuthenticationToken>
+		, IAsyncEventReceiver<TAuthenticationToken>
+#endif
 	{
 		/// <summary>
 		/// Gets or sets the Route Manager
@@ -78,9 +84,15 @@ namespace Cqrs.Bus
 		/// </summary>
 		protected IBusHelper BusHelper { get; private set; }
 
+#if NET40
 		/// <summary>
 		/// Gets or sets the current list of events waiting to be evaluated for <see cref="PublishAndWait{TCommand,TEvent}(TCommand,Cqrs.Events.IEventReceiver{TAuthenticationToken})"/>
 		/// </summary>
+#else
+		/// <summary>
+		/// Gets or sets the current list of events waiting to be evaluated for <see cref="PublishAndWaitAsync{TCommand,TEvent}(TCommand,Cqrs.Events.IEventReceiver{TAuthenticationToken})"/>
+		/// </summary>
+#endif
 		protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; private set; }
 
 		/// <summary>
@@ -106,6 +118,8 @@ namespace Cqrs.Bus
 			BusHelper = busHelper;
 			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
 			TelemetryHelper = configurationManager.CreateTelemetryHelper("Cqrs.InProcessBus.UseApplicationInsightTelemetryHelper", correlationIdHelper);
+
+			Logger.LogDebug("Instantiating InProcessBus");
 		}
 
 		/// <summary>
@@ -193,15 +207,31 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Publishes the provided <paramref name="command"/> on the command bus.
 		/// </summary>
-		void ICommandPublisher<TAuthenticationToken>.Publish<TCommand>(TCommand command)
+#if NET40
+		void ICommandPublisher<TAuthenticationToken>.Publish
+#else
+		async Task IAsyncCommandPublisher<TAuthenticationToken>.PublishAsync
+#endif
+				<TCommand>(TCommand command)
 		{
-			Send(command);
+#if NET40
+			Send
+#else
+			await SendAsync
+#endif
+				(command);
 		}
 
 		/// <summary>
 		/// Publishes the provided <paramref name="command"/> on the command bus.
 		/// </summary>
-		public virtual void Send<TCommand>(TCommand command)
+		public virtual
+#if NET40
+			void Send
+#else
+			async Task SendAsync
+#endif
+				<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
@@ -210,11 +240,11 @@ namespace Cqrs.Bus
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "InProcessBus" } };
-			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			string telemetryName = $"{command.GetType().FullName}/{command.Id}";
 			var telemeteredCommand = command as ITelemeteredMessage;
 			if (telemeteredCommand != null)
 				telemetryName = telemeteredCommand.TelemetryName;
-			telemetryName = string.Format("Command/{0}", telemetryName);
+			telemetryName = $"Command/{telemetryName}";
 
 			try
 			{
@@ -225,12 +255,12 @@ namespace Cqrs.Bus
 				try
 				{
 #if NET40
-					Action<IMessage>
-#else
-					Func<IMessage, Task>
-#endif
-						handler = commandHandler.Delegate;
+					Action<IMessage> handler = commandHandler.Delegate;
 					handler(command);
+#else
+					Func<IMessage, Task> handler = commandHandler.Delegate;
+					await handler(command);
+#endif
 				}
 				catch (Exception exception)
 				{
@@ -239,7 +269,7 @@ namespace Cqrs.Bus
 					throw;
 				}
 
-				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+				Logger.LogInfo($"A command was sent of type {command.GetType().FullName}.");
 				wasSuccessfull = true;
 			}
 			finally
@@ -252,15 +282,31 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Publishes the provided <paramref name="commands"/> on the command bus.
 		/// </summary>
-		void ICommandPublisher<TAuthenticationToken>.Publish<TCommand>(IEnumerable<TCommand> commands)
+#if NET40
+		void ICommandPublisher<TAuthenticationToken>.Publish
+#else
+		async Task IAsyncCommandPublisher<TAuthenticationToken>.PublishAsync
+#endif
+			<TCommand>(IEnumerable<TCommand> commands)
 		{
-			Send(commands);
+#if NET40
+			Send
+#else
+			await SendAsync
+#endif
+				(commands);
 		}
 
 		/// <summary>
 		/// Publishes the provided <paramref name="commands"/> on the command bus.
 		/// </summary>
-		public virtual void Send<TCommand>(IEnumerable<TCommand> commands)
+		public virtual
+#if NET40
+			void Send
+#else
+			async Task SendAsync
+#endif
+				<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			IEnumerable<TCommand> sourceCommands = commands.ToList();
@@ -275,11 +321,11 @@ namespace Cqrs.Bus
 			string telemetryNames = string.Empty;
 			foreach (TCommand command in sourceCommands)
 			{
-				string subTelemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+				string subTelemetryName = $"{command.GetType().FullName}/{command.Id}";
 				var telemeteredCommand = command as ITelemeteredMessage;
 				if (telemeteredCommand != null)
 					subTelemetryName = telemeteredCommand.TelemetryName;
-				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);
+				telemetryNames = $"{telemetryNames}{subTelemetryName},";
 			}
 			if (telemetryNames.Length > 0)
 				telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
@@ -288,7 +334,12 @@ namespace Cqrs.Bus
 			try
 			{
 				foreach (TCommand command in sourceCommands)
-					Send(command);
+#if NET40
+					Send
+#else
+					await SendAsync
+#endif
+						(command);
 
 				responseCode = "200";
 				wasSuccessfull = true;
@@ -309,10 +360,22 @@ namespace Cqrs.Bus
 		/// </summary>
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NET40
+			TEvent SendAndWait
+#else
+			async Task<TEvent> SendAndWaitAsync
+#endif
+				<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return SendAndWait<TCommand, TEvent>(command, -1, eventReceiver);
+			return
+#if NET40
+				SendAndWait
+#else
+				await SendAndWaitAsync
+#endif
+				<TCommand, TEvent>(command, -1, eventReceiver);
 		}
 
 		/// <summary>
@@ -321,10 +384,22 @@ namespace Cqrs.Bus
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NET40
+			TEvent SendAndWait
+#else
+			async Task<TEvent> SendAndWaitAsync
+#endif
+				<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return SendAndWait(command, events => (TEvent)events.SingleOrDefault(@event => @event is TEvent), millisecondsTimeout, eventReceiver);
+			return
+#if NET40
+				SendAndWait
+#else
+				await SendAndWaitAsync
+#endif
+					(command, events => (TEvent)events.SingleOrDefault(@event => @event is TEvent), millisecondsTimeout, eventReceiver);
 		}
 
 		/// <summary>
@@ -333,13 +408,25 @@ namespace Cqrs.Bus
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NET40
+			TEvent SendAndWait
+#else
+			async Task<TEvent> SendAndWaitAsync
+#endif
+				<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
 			if (num < -1L || num > int.MaxValue)
 				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
-			return SendAndWait<TCommand, TEvent>(command, (int)timeout.TotalMilliseconds, eventReceiver);
+			return
+#if NET40
+				SendAndWait
+#else
+				await SendAndWaitAsync
+#endif
+					<TCommand, TEvent>(command, (int)timeout.TotalMilliseconds, eventReceiver);
 		}
 
 		/// <summary>
@@ -348,10 +435,22 @@ namespace Cqrs.Bus
 		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NET40
+			TEvent SendAndWait
+#else
+			async Task<TEvent> SendAndWaitAsync
+#endif
+				<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return PublishAndWait(command, condition, eventReceiver);
+			return
+#if NET40
+				PublishAndWait
+#else
+				await PublishAndWaitAsync
+#endif
+					(command, condition, eventReceiver);
 		}
 
 		/// <summary>
@@ -361,10 +460,22 @@ namespace Cqrs.Bus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NET40
+			TEvent SendAndWait
+#else
+			async Task<TEvent> SendAndWaitAsync
+#endif
+				<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return PublishAndWait(command, condition, millisecondsTimeout, eventReceiver);
+			return
+#if NET40
+				PublishAndWait
+#else
+				await PublishAndWaitAsync
+#endif
+					(command, condition, millisecondsTimeout, eventReceiver);
 		}
 
 		/// <summary>
@@ -374,10 +485,22 @@ namespace Cqrs.Bus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual
+#if NET40
+			TEvent SendAndWait
+#else
+			async Task<TEvent> SendAndWaitAsync
+#endif
+				<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return PublishAndWait(command, condition, timeout, eventReceiver);
+			return
+#if NET40
+				PublishAndWait
+#else
+				await PublishAndWaitAsync
+#endif
+					(command, condition, timeout, eventReceiver);
 		}
 
 		#endregion
@@ -387,14 +510,20 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Publishes the provided <paramref name="event"/> on the event bus.
 		/// </summary>
-		public virtual void Publish<TEvent>(TEvent @event)
+		public virtual
+#if NET40
+			void Publish
+#else
+			async Task PublishAsync
+#endif
+				<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			Type eventType = @event.GetType();
 			string eventName = eventType.FullName;
 			ISagaEvent<TAuthenticationToken> sagaEvent = @event as ISagaEvent<TAuthenticationToken>;
 			if (sagaEvent != null)
-				eventName = string.Format("Cqrs.Events.SagaEvent[{0}]", sagaEvent.Event.GetType().FullName);
+				eventName = $"Cqrs.Events.SagaEvent[{sagaEvent.Event.GetType().FullName}]";
 
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -402,17 +531,17 @@ namespace Cqrs.Bus
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "InProcessBus" } };
-			string telemetryName = string.Format("{0}/{1}/{2}", eventName, @event.GetIdentity(), @event.Id);
+			string telemetryName = $"{eventName}/{@event.GetIdentity()}/{@event.Id}";
 			var telemeteredEvent = @event as ITelemeteredMessage;
 			if (telemeteredEvent != null)
 				telemetryName = telemeteredEvent.TelemetryName;
-			telemetryName = string.Format("Event/{0}", telemetryName);
+			telemetryName = $"Event/{telemetryName}";
 
 			try
 			{
 				if (@event.Frameworks != null && @event.Frameworks.Contains("Built-In"))
 				{
-					Logger.LogInfo("The provided event has already been processed by the Built-In bus.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, eventType.FullName));
+					Logger.LogInfo("The provided event has already been processed by the Built-In bus.", $"{GetType().FullName}\\PrepareAndValidateEvent({eventType.FullName})");
 					return;
 				}
 
@@ -433,7 +562,7 @@ namespace Cqrs.Bus
 				@event.Frameworks = frameworks;
 
 				bool isRequired;
-				if (!ConfigurationManager.TryGetSetting(string.Format("{0}.IsRequired", eventName), out isRequired))
+				if (!ConfigurationManager.TryGetSetting($"{eventName}.IsRequired", out isRequired))
 					isRequired = true;
 
 #if NET40
@@ -444,17 +573,22 @@ namespace Cqrs.Bus
 					handlers = Routes.GetHandlers(@event, isRequired).Select(x => x.Delegate).ToList();
 				// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 				if (!handlers.Any())
-					Logger.LogDebug(string.Format("An event handler for '{0}' is not required.", eventName));
+					Logger.LogDebug($"An event handler for '{eventName}' is not required.");
 
 				foreach (var handler in handlers)
 				{
 					IList<IEvent<TAuthenticationToken>> events;
 					if (EventWaits.TryGetValue(@event.CorrelationId, out events))
 						events.Add(@event);
-					handler(@event);
+#if NET40
+					handler
+#else
+					await handler
+#endif
+						(@event);
 				}
 
-				Logger.LogInfo(string.Format("An event was sent of type {0}.", eventName));
+				Logger.LogInfo($"An event was sent of type {eventName}.");
 				wasSuccessfull = true;
 			}
 			catch (Exception exception)
@@ -473,7 +607,13 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Publishes the provided <paramref name="events"/> on the event bus.
 		/// </summary>
-		public virtual void Publish<TEvent>(IEnumerable<TEvent> events)
+		public virtual
+#if NET40
+			void Publish
+#else
+			async Task PublishAsync
+#endif
+				<TEvent>(IEnumerable<TEvent> events)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
 			IEnumerable<TEvent> sourceEvents = events.ToList();
@@ -488,11 +628,11 @@ namespace Cqrs.Bus
 			string telemetryNames = string.Empty;
 			foreach (TEvent @event in sourceEvents)
 			{
-				string subTelemetryName = string.Format("{0}/{1}/{2}", @event.GetType().FullName, @event.GetIdentity(), @event.Id);
+				string subTelemetryName = $"{@event.GetType().FullName}/{@event.GetIdentity()}/{@event.Id}";
 				var telemeteredCommand = @event as ITelemeteredMessage;
 				if (telemeteredCommand != null)
 					subTelemetryName = telemeteredCommand.TelemetryName;
-				telemetryNames = string.Format("{0}{1},", telemetryNames, subTelemetryName);
+				telemetryNames = $"{telemetryNames}{subTelemetryName},";
 			}
 			if (telemetryNames.Length > 0)
 				telemetryNames = telemetryNames.Substring(0, telemetryNames.Length - 1);
@@ -501,7 +641,12 @@ namespace Cqrs.Bus
 			try
 			{
 				foreach (TEvent @event in sourceEvents)
-					Publish(@event);
+#if NET40
+					Publish
+#else
+					await PublishAsync
+#endif
+						(@event);
 
 				responseCode = "200";
 				wasSuccessfull = true;
@@ -522,9 +667,21 @@ namespace Cqrs.Bus
 		/// </summary>
 		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
+		public virtual
+#if NET40
+			TEvent PublishAndWait
+#else
+			async Task<TEvent> PublishAndWaitAsync
+#endif
+			<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
-			return PublishAndWait<TCommand, TEvent>(command, -1, eventReceiver);
+			return
+#if NET40
+				PublishAndWait
+#else
+				await PublishAndWaitAsync
+#endif
+				<TCommand, TEvent>(command, -1, eventReceiver);
 		}
 
 		/// <summary>
@@ -533,9 +690,21 @@ namespace Cqrs.Bus
 		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
+		public virtual
+#if NET40
+			TEvent PublishAndWait
+#else
+			async Task<TEvent> PublishAndWaitAsync
+#endif
+			<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
-			return PublishAndWait(command, events => (TEvent)events.SingleOrDefault(@event => @event is TEvent), millisecondsTimeout, eventReceiver);
+			return
+#if NET40
+				PublishAndWait
+#else
+				await PublishAndWaitAsync
+#endif
+					(command, events => (TEvent)events.SingleOrDefault(@event => @event is TEvent), millisecondsTimeout, eventReceiver);
 		}
 
 		/// <summary>
@@ -544,12 +713,24 @@ namespace Cqrs.Bus
 		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
+		public virtual
+#if NET40
+			TEvent PublishAndWait
+#else
+			async Task<TEvent> PublishAndWaitAsync
+#endif
+			<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
 			if (num < -1L || num > int.MaxValue)
 				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
-			return PublishAndWait<TCommand, TEvent>(command, (int)timeout.TotalMilliseconds, eventReceiver);
+			return
+#if NET40
+				PublishAndWait
+#else
+				await PublishAndWaitAsync
+#endif
+					<TCommand, TEvent>(command, (int)timeout.TotalMilliseconds, eventReceiver);
 		}
 
 		/// <summary>
@@ -558,9 +739,21 @@ namespace Cqrs.Bus
 		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
+		public virtual
+#if NET40
+			TEvent PublishAndWait
+#else
+			async Task<TEvent> PublishAndWaitAsync
+#endif
+			<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
 		{
-			return PublishAndWait(command, condition, -1, eventReceiver);
+			return
+#if NET40
+				PublishAndWait
+#else
+				await PublishAndWaitAsync
+#endif
+					(command, condition, -1, eventReceiver);
 		}
 
 		/// <summary>
@@ -570,8 +763,14 @@ namespace Cqrs.Bus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout,
-			IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
+		public virtual
+#if NET40
+			TEvent PublishAndWait
+#else
+			async Task<TEvent> PublishAndWaitAsync
+#endif
+			<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+			where TCommand : ICommand<TAuthenticationToken>
 		{
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
@@ -579,11 +778,11 @@ namespace Cqrs.Bus
 			bool wasSuccessfull = false;
 
 			IDictionary<string, string> telemetryProperties = new Dictionary<string, string> { { "Type", "InProcessBus" } };
-			string telemetryName = string.Format("{0}/{1}", command.GetType().FullName, command.Id);
+			string telemetryName = $"{command.GetType().FullName}/{command.Id}";
 			var telemeteredCommand = command as ITelemeteredMessage;
 			if (telemeteredCommand != null)
 				telemetryName = telemeteredCommand.TelemetryName;
-			telemetryName = string.Format("Command/{0}", telemetryName);
+			telemetryName = $"Command/{telemetryName}";
 
 			TEvent result;
 
@@ -604,8 +803,13 @@ namespace Cqrs.Bus
 				Func<IMessage, Task>
 #endif
 					handler = commandHandler.Delegate;
-				handler(command);
-				Logger.LogInfo(string.Format("A command was sent of type {0}.", command.GetType().FullName));
+#if NET40
+				handler
+#else
+				await handler
+#endif
+					(command);
+				Logger.LogInfo($"A command was sent of type {command.GetType().FullName}.");
 				wasSuccessfull = true;
 			}
 			finally
@@ -623,7 +827,7 @@ namespace Cqrs.Bus
 				return result != null;
 			}, millisecondsTimeout, SpinWait.DefaultSleepInMilliseconds);
 
-			TelemetryHelper.TrackDependency("InProcessBus/CommandBus", "Command/AndWait", string.Format("Command/AndWait{0}", telemetryName.Substring(7)), null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
+			TelemetryHelper.TrackDependency("InProcessBus/CommandBus", "Command/AndWait", $"Command/AndWait{telemetryName.Substring(7)}", null, startedAt, mainStopWatch.Elapsed, responseCode, wasSuccessfull, telemetryProperties);
 			return result;
 		}
 
@@ -634,13 +838,25 @@ namespace Cqrs.Bus
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout,
-			IEventReceiver<TAuthenticationToken> eventReceiver = null) where TCommand : ICommand<TAuthenticationToken>
+		public virtual
+#if NET40
+			TEvent PublishAndWait
+#else
+			async Task<TEvent> PublishAndWaitAsync
+#endif
+			<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
 			if (num < -1L || num > int.MaxValue)
 				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
-			return PublishAndWait(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
+			return
+#if NET40
+				PublishAndWait
+#else
+				await PublishAndWaitAsync
+#endif
+					(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
 		}
 
 		#endregion
@@ -751,18 +967,40 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Receives a <see cref="ICommand{TAuthenticationToken}"/> from the command bus.
 		/// </summary>
-		public virtual bool? ReceiveCommand(ICommand<TAuthenticationToken> command)
+		public virtual
+#if NET40
+			bool? ReceiveCommand
+#else
+			async Task<bool?> ReceiveCommandAsync
+#endif
+			(ICommand<TAuthenticationToken> command)
 		{
-			Send(command);
+#if NET40
+			Send
+#else
+			await SendAsync
+#endif
+				(command);
 			return true;
 		}
 
 		/// <summary>
 		/// Receives an <see cref="IEvent{TAuthenticationToken}"/> from the event bus.
 		/// </summary>
-		public virtual bool? ReceiveEvent(IEvent<TAuthenticationToken> @event)
+		public virtual
+#if NET40
+			bool? ReceiveEvent
+#else
+			async Task<bool?> ReceiveEventAsync
+#endif
+			(IEvent<TAuthenticationToken> @event)
 		{
-			Publish(@event);
+#if NET40
+			Publish
+#else
+			await PublishAsync
+#endif
+				(@event);
 			return true;
 		}
 

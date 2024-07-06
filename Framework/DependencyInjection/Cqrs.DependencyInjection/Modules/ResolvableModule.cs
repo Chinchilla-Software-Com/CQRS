@@ -45,13 +45,15 @@ namespace Cqrs.DependencyInjection.Modules
 
 				object result = tempProvider.GetService(type);
 
+				if (result == null)
+					result = ActivatorUtilities.CreateInstance(tempProvider, type);
+
 				// resolve the Kernel back to null
 				if (setTemporaryKernel)
 					di.SetKernel(null);
 
 				return result;
 			}
-
 		}
 	}
 }

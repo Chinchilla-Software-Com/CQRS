@@ -65,11 +65,11 @@ namespace Cqrs.DependencyInjection.Modules
 			else
 				inProcessBus = Resolve<InProcessBus<TAuthenticationToken>>(services);
 
-			services.AddSingleton<ICommandPublisher<TAuthenticationToken>>(inProcessBus);
+			services.AddSingleton<IAsyncCommandPublisher<TAuthenticationToken>>(inProcessBus);
 
-			services.AddSingleton<IPublishAndWaitCommandPublisher<TAuthenticationToken>>(inProcessBus);
+			services.AddSingleton<IAsyncPublishAndWaitCommandPublisher<TAuthenticationToken>>(inProcessBus);
 
-			services.AddSingleton<ICommandReceiver<TAuthenticationToken>>(inProcessBus);
+			services.AddSingleton<IAsyncCommandReceiver<TAuthenticationToken>>(inProcessBus);
 
 			bool isHandlerRegistrationBound = IsRegistered<ICommandHandlerRegistrar>(services);
 			if (!isHandlerRegistrationBound)
