@@ -22,6 +22,7 @@ using Cqrs.Messages;
 #if NETSTANDARD2_0 || NET6_0
 using Microsoft.Azure.EventHubs;
 using Microsoft.Azure.EventHubs.Processor;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using EventData = Microsoft.Azure.EventHubs.EventData;
 #else
 using Microsoft.ServiceBus.Messaging;
@@ -53,6 +54,42 @@ namespace Cqrs.Azure.ServiceBus
 		/// Publishes the provided <paramref name="command"/> on the command bus.
 		/// </summary>
 		public virtual void Publish<TCommand>(TCommand command)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(command, null);
+		}
+
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus.
+		/// </summary>
+		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(commands, null);
+		}
+
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus with a delay.
+		/// </summary>
+		public virtual void Publish<TCommand>(TCommand command, TimeSpan delay)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(command, delay);
+		}
+
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus with a delay.
+		/// </summary>
+		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands, TimeSpan delay)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			Publish(commands, delay);
+		}
+
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus with a delay.
+		/// </summary>
+		protected virtual void Publish<TCommand>(TCommand command, TimeSpan? delay = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (command == null)
@@ -104,9 +141,9 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
-		/// Publishes the provided <paramref name="commands"/> on the command bus.
+		/// Publishes the provided <paramref name="commands"/> on the command bus with a delay.
 		/// </summary>
-		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
+		protected virtual void Publish<TCommand>(IEnumerable<TCommand> commands, TimeSpan? delay = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (commands == null)

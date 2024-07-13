@@ -205,6 +205,43 @@ namespace Cqrs.Bus
 		#region Implementation of ICommandPublisher<TAuthenticationToken>
 
 		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus with a delay
+		/// </summary>
+#if NET40
+		void ICommandPublisher<TAuthenticationToken>.Publish
+#else
+		async Task IAsyncCommandPublisher<TAuthenticationToken>.PublishAsync
+#endif
+				<TCommand>(TCommand command, TimeSpan delay)
+		{
+#if NET40
+			Send
+#else
+			await SendAsync
+#endif
+				(command, delay);
+		}
+
+
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus.with a delay
+		/// </summary>
+#if NET40
+		void ICommandPublisher<TAuthenticationToken>.Publish
+#else
+		async Task IAsyncCommandPublisher<TAuthenticationToken>.PublishAsync
+#endif
+			<TCommand>(IEnumerable<TCommand> commands, TimeSpan delay)
+		{
+#if NET40
+			Send
+#else
+			await SendAsync
+#endif
+				(commands, delay);
+		}
+
+		/// <summary>
 		/// Publishes the provided <paramref name="command"/> on the command bus.
 		/// </summary>
 #if NET40
@@ -231,9 +268,14 @@ namespace Cqrs.Bus
 #else
 			async Task SendAsync
 #endif
-				<TCommand>(TCommand command)
+				<TCommand>(TCommand command, TimeSpan? delay = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (delay != null)
+			{
+				DateTime ready = DateTime.UtcNow.Add(delay.Value);
+				SpinWait.SpinUntil(() => { return DateTime.UtcNow > ready; } , 1000);
+			}
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;
 			Stopwatch mainStopWatch = Stopwatch.StartNew();
 			string responseCode = "200";
@@ -306,9 +348,15 @@ namespace Cqrs.Bus
 #else
 			async Task SendAsync
 #endif
-				<TCommand>(IEnumerable<TCommand> commands)
+				<TCommand>(IEnumerable<TCommand> commands, TimeSpan? delay = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+			if (delay != null)
+			{
+				DateTime ready = DateTime.UtcNow.Add(delay.Value);
+				SpinWait.SpinUntil(() => { return DateTime.UtcNow > ready; }, 1000);
+			}
+
 			IEnumerable<TCommand> sourceCommands = commands.ToList();
 
 			DateTimeOffset startedAt = DateTimeOffset.UtcNow;

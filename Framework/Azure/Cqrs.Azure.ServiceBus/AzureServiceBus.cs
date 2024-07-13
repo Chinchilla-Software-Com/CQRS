@@ -1341,7 +1341,11 @@ namespace Cqrs.Azure.ServiceBus
 #else
 			BrokeredMessage CreateBrokeredMessage
 #endif
-			<TMessage>(Func<TMessage, string> serialiserFunction, Type messageType, TMessage message)
+			<TMessage>(Func<TMessage, string> serialiserFunction, Type messageType, TMessage message
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				, TimeSpan? delay = null
+#endif
+			)
 		{
 			string messageBody = serialiserFunction(message);
 #if NETSTANDARD2_0 || NET48_OR_GREATER
@@ -1365,8 +1369,8 @@ namespace Cqrs.Azure.ServiceBus
 			brokeredMessage.AddUserProperty("Type", messageType.FullName);
 			brokeredMessage.AddUserProperty("Source", $"{Logger.LoggerSettings.ModuleName}/{Logger.LoggerSettings.Instance}/{Logger.LoggerSettings.Environment}/{Logger.LoggerSettings.EnvironmentInstance}");
 			brokeredMessage.AddUserProperty("Framework",
-			// this compiler directive is intentionally .NET Core and not 4.8
-#if NETSTANDARD2_0
+				// this compiler directive is intentionally .NET Core and not 4.8
+#if NETSTANDARD2_0 || NET48_OR_GREATER
 				".NET Core"
 #else
 				".NET Framework"
@@ -1415,6 +1419,13 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				// Just move on
 			}
+
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			if (brokeredMessage != null && delay != null)
+			{
+				brokeredMessage.ScheduledEnqueueTime = DateTimeOffset.Now.Add(delay.Value);
+			}
+#endif
 
 #if NETSTANDARD2_0 || NET48_OR_GREATER
 			return await Task.FromResult(brokeredMessage);

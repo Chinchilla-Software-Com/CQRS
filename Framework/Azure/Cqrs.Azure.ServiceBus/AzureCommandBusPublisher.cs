@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
@@ -21,6 +20,7 @@ using Cqrs.Infrastructure;
 using Cqrs.Messages;
 
 #if NETSTANDARD2_0 || NET48_OR_GREATER
+using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusMessage;
 #else
@@ -101,6 +101,86 @@ namespace Cqrs.Azure.ServiceBus
 			<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await PublishAsync
+#else
+			Publish
+#endif
+				(command, null);
+		}
+
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus.
+		/// </summary>
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			async Task PublishAsync
+#else
+			void Publish
+#endif
+			<TCommand>(IEnumerable<TCommand> commands)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await PublishAsync
+#else
+			Publish
+#endif
+				(commands, null);
+		}
+
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus with a delay.
+		/// </summary>
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			async Task PublishAsync
+#else
+			void Publish
+#endif
+			<TCommand>(TCommand command, TimeSpan delay)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await PublishAsync
+#else
+			Publish
+#endif
+				(command, delay);
+		}
+
+		/// <summary>
+		/// Publishes the provided <paramref name="commands"/> on the command bus with a delay.
+		/// </summary>
+		public virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			async Task PublishAsync
+#else
+			void Publish
+#endif
+			<TCommand>(IEnumerable<TCommand> commands, TimeSpan delay)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			await PublishAsync
+#else
+			Publish
+#endif
+				(commands, delay);
+		}
+
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus with a delay.
+		/// </summary>
+		protected virtual
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+			async Task PublishAsync
+#else
+			void Publish
+#endif
+			<TCommand>(TCommand command, TimeSpan? delay = null)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
 			if (command == null)
 			{
 				Logger.LogDebug("No command to publish.");
@@ -154,7 +234,12 @@ namespace Cqrs.Azure.ServiceBus
 #else
 							CreateBrokeredMessage
 #endif
-							(MessageSerialiser.SerialiseCommand, commandType, command);
+							(
+								MessageSerialiser.SerialiseCommand, commandType, command
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+							, delay
+#endif
+							);
 						int count = 1;
 						do
 						{
@@ -215,7 +300,12 @@ namespace Cqrs.Azure.ServiceBus
 #else
 							CreateBrokeredMessage
 #endif
-							(MessageSerialiser.SerialiseCommand, commandType, command);
+							(
+								MessageSerialiser.SerialiseCommand, commandType, command
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+								, delay
+#endif
+							);
 						int count = 1;
 						do
 						{
@@ -276,7 +366,12 @@ namespace Cqrs.Azure.ServiceBus
 #else
 							CreateBrokeredMessage
 #endif
-							(MessageSerialiser.SerialiseCommand, commandType, command);
+							(
+								MessageSerialiser.SerialiseCommand, commandType, command
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+								, delay
+#endif
+							);
 						int count = 1;
 						do
 						{
@@ -336,15 +431,15 @@ namespace Cqrs.Azure.ServiceBus
 		}
 
 		/// <summary>
-		/// Publishes the provided <paramref name="commands"/> on the command bus.
+		/// Publishes the provided <paramref name="commands"/> on the command bus with a delay.
 		/// </summary>
-		public virtual
+		protected virtual
 #if NETSTANDARD2_0 || NET48_OR_GREATER
 			async Task PublishAsync
 #else
 			void Publish
 #endif
-			<TCommand>(IEnumerable<TCommand> commands)
+			<TCommand>(IEnumerable<TCommand> commands, TimeSpan? delay = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (commands == null)
@@ -404,7 +499,12 @@ namespace Cqrs.Azure.ServiceBus
 #else
 						CreateBrokeredMessage
 #endif
-						(MessageSerialiser.SerialiseCommand, commandType, command);
+						(
+							MessageSerialiser.SerialiseCommand, commandType, command
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+							, delay
+#endif
+						);
 
 					bool? isPublicBusRequired = BusHelper.IsPublicBusRequired(commandType);
 					bool? isPrivateBusRequired = BusHelper.IsPrivateBusRequired(commandType);
