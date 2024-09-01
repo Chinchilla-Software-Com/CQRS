@@ -707,7 +707,8 @@ namespace Cqrs.Azure.ServiceBus
 				DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
 				EnablePartitioning = true,
 				EnableBatchedOperations = true,
-				SupportOrdering = true
+				// forcing this requires an ability to set session ids which will need to be built into the framework
+				// SupportOrdering = true
 			};
 
 #if NETSTANDARD2_0 || NET48_OR_GREATER
