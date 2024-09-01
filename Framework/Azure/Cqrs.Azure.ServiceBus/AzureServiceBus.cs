@@ -1366,6 +1366,10 @@ namespace Cqrs.Azure.ServiceBus
 			{
 				CorrelationId = CorrelationIdHelper.GetCorrelationId().ToString("N")
 			};
+			if (message is IMessageWithOrderingKey messageWithOrderingKey)
+			{
+				brokeredMessage.SessionId = messageWithOrderingKey.OrderKey;
+			}
 			brokeredMessage.AddUserProperty("CorrelationId", brokeredMessage.CorrelationId);
 			brokeredMessage.AddUserProperty("Type", messageType.FullName);
 			brokeredMessage.AddUserProperty("Source", $"{Logger.LoggerSettings.ModuleName}/{Logger.LoggerSettings.Instance}/{Logger.LoggerSettings.Environment}/{Logger.LoggerSettings.EnvironmentInstance}");
