@@ -6,9 +6,6 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using System;
-using System.Collections.Generic;
-
 namespace Cqrs.Messages
 {
 	/// <summary>
