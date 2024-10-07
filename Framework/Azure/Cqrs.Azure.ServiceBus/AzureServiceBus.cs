@@ -665,6 +665,10 @@ namespace Cqrs.Azure.ServiceBus
 			CheckTopicExists
 #endif
 			(manager, PrivateTopicName = ConfigurationManager.GetSetting(PrivateTopicNameConfigurationKey) ?? DefaultPrivateTopicName, PrivateTopicSubscriptionName = ConfigurationManager.GetSetting(PrivateTopicSubscriptionNameConfigurationKey) ?? DefaultPrivateTopicSubscriptionName, createSubscriptionIfNotExists);
+			Logger.LogSensitive($"Private topic settings set.", metaData: new Dictionary<string, object> {
+				{ "PrivateTopicName", PrivateTopicName },
+				{ "PrivateTopicSubscriptionName", PrivateTopicSubscriptionName }
+			});
 		}
 
 		/// <summary>
@@ -686,6 +690,10 @@ namespace Cqrs.Azure.ServiceBus
 			CheckTopicExists
 #endif
 			(manager, PublicTopicName = ConfigurationManager.GetSetting(PublicTopicNameConfigurationKey) ?? DefaultPublicTopicName, PublicTopicSubscriptionName = ConfigurationManager.GetSetting(PublicTopicSubscriptionNameConfigurationKey) ?? DefaultPublicTopicSubscriptionName, createSubscriptionIfNotExists);
+			Logger.LogSensitive($"Public topic settings set.", metaData: new Dictionary<string, object> {
+				{ "PublicTopicName", PublicTopicName },
+				{ "PublicTopicSubscriptionName", PublicTopicSubscriptionName }
+			});
 		}
 
 		/// <summary>
