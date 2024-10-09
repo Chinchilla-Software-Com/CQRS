@@ -64,7 +64,7 @@ namespace Cqrs.Scheduler.Trigger
 				authenticationTokenHelper,
 				CorrelationIdHelper,
 				Logger,
-				new AzureBusHelper<Guid>(authenticationTokenHelper, CorrelationIdHelper, Logger, messageSerialiser, busHelper, hashAlgorithmFactory, configurationManager, DependencyResolver.Current),
+				new AzureBusHelper<Guid>(authenticationTokenHelper, CorrelationIdHelper, Logger, messageSerialiser, busHelper, hashAlgorithmFactory, configurationManager, DependencyResolver.Current, contextItemCollectionFactory),
 				busHelper,
 				hashAlgorithmFactory
 			);
