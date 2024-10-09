@@ -12,12 +12,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Security;
-using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Bus;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Cqrs.Messages;
+
+#if NET472
+#else
+using System.Threading.Tasks;
+#endif
 
 namespace Cqrs.Configuration
 {
@@ -52,6 +56,11 @@ namespace Cqrs.Configuration
 		public static Func<Type, Type, IHandlerRegistrar> GetCommandHandlerRegistrar { get; set; }
 
 		/// <summary>
+		/// A <see cref="ILogger"/> used for logging.
+		/// </summary>
+		protected virtual ILogger Logger { get; private set; }
+
+		/// <summary>
 		/// Instantiates a new instance of <see cref="BusRegistrar"/>.
 		/// </summary>
 		public BusRegistrar(IDependencyResolver dependencyResolver)
@@ -60,6 +69,7 @@ namespace Cqrs.Configuration
 				throw new ArgumentNullException("dependencyResolver");
 
 			DependencyResolver = dependencyResolver;
+			Logger = dependencyResolver.Resolve<ILogger>();
 
 			if (GetAsyncEventHandlerRegistrar == null)
 				GetAsyncEventHandlerRegistrar = (messageType, handlerDelegateTargetedType) => DependencyResolver.Resolve<IAsyncEventHandlerRegistrar>();
@@ -96,8 +106,10 @@ namespace Cqrs.Configuration
 		/// <param name="typesFromAssemblyContainingMessages">A collection of <see cref="Type"/> to track back to their containing <see cref="Assembly"/> and scan.</param>
 		public virtual void Register(bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, bool skipCommandHandlers, params Type[] typesFromAssemblyContainingMessages)
 		{
+			Logger.LogDebug($"Scanning for { (trueForEventsFalseForCommands ? "event" : "command") } handlers.");
 			foreach (Type typesFromAssemblyContainingMessage in typesFromAssemblyContainingMessages)
 			{
+				Logger.LogDebug($"Scanning based on type {typesFromAssemblyContainingMessage.FullName} for {(trueForEventsFalseForCommands ? "event" : "command")} handlers.");
 				Assembly executorsAssembly = typesFromAssemblyContainingMessage.Assembly;
 				HandlerTypeInformation[] executorTypes = executorsAssembly
 					.GetTypes()
@@ -134,19 +146,24 @@ namespace Cqrs.Configuration
 		/// <param name="executorTypes">A collection of <see cref="Type"/> to register.</param>
 		public virtual void Register(bool trueForEventsFalseForCommands, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface, bool skipCommandHandlers, params HandlerTypeInformation[] executorTypes)
 		{
-			foreach (var executorType in executorTypes)
+			foreach (HandlerTypeInformation executorType in executorTypes)
 			{
 				foreach (Type @interface in executorType.Interfaces)
 				{
+					Logger.LogDebug($"Preparing {(trueForEventsFalseForCommands ? "event" : "command")} handler {@interface.FullName} for registration");
 					Type safeExecutorType = executorType.Type;
 					if (safeExecutorType.IsGenericType && safeExecutorType.Name == typeof(DtoCommandHandler<,>).Name)
 					{
 						if (skipCommandHandlers)
+						{
+							Logger.LogDebug($"Skipping registering {(trueForEventsFalseForCommands ? "event" : "command")} handler {@interface.FullName} as we are skipping command handlers");
 							continue;
+						}
 						Type[] genericArguments = safeExecutorType.GetGenericArguments().Take(2).ToArray();
 						safeExecutorType = safeExecutorType.MakeGenericType(genericArguments.Take(2).ToArray());
 					}
 					InvokeHandler(@interface, trueForEventsFalseForCommands, resolveMessageHandlerInterface, safeExecutorType);
+					Logger.LogInfo($"{(trueForEventsFalseForCommands ? "event" : "command")} handler {@interface.FullName} registered");
 				}
 			}
 		}

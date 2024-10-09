@@ -28,6 +28,9 @@ using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.Exceptions;
 using Cqrs.Messages;
+using Chinchilla.StateManagement;
+using Newtonsoft.Json;
+
 #if NETSTANDARD2_0 || NET48_OR_GREATER
 using Azure.Messaging.ServiceBus;
 using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusReceivedMessage;
@@ -36,7 +39,6 @@ using IMessageReceiver = Azure.Messaging.ServiceBus.ServiceBusReceiver;
 using Microsoft.ServiceBus.Messaging;
 using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
-using Newtonsoft.Json;
 
 namespace Cqrs.Azure.ServiceBus
 {
@@ -50,7 +52,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <summary>
 		/// Instantiates a new instance of <see cref="AzureBusHelper{TAuthenticationToken}"/>.
 		/// </summary>
-		public AzureBusHelper(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory, IConfigurationManager configurationManager, IDependencyResolver dependencyResolver)
+		public AzureBusHelper(IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory, IConfigurationManager configurationManager, IDependencyResolver dependencyResolver, IContextItemCollectionFactory contextItemCollectionFactory)
 		{
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
@@ -60,6 +62,7 @@ namespace Cqrs.Azure.ServiceBus
 			DependencyResolver = dependencyResolver;
 			ConfigurationManager = configurationManager;
 			Signer = hashAlgorithmFactory;
+			BackChannel = contextItemCollectionFactory.GetCurrentContext();
 		}
 
 		/// <summary>
@@ -106,6 +109,11 @@ namespace Cqrs.Azure.ServiceBus
 		/// The <see cref="IHashAlgorithmFactory"/> to use to sign messages.
 		/// </summary>
 		protected IHashAlgorithmFactory Signer { get; private set; }
+
+		/// <summary>
+		/// The <see cref="IContextItemCollection"/> to use to get access to back channel data
+		/// </summary>
+		protected IContextItemCollection BackChannel { get; private set; }
 
 		/// <summary>
 		/// Prepares a <see cref="ICommand{TAuthenticationToken}"/> to be sent specifying the framework it is sent via.
@@ -295,11 +303,8 @@ namespace Cqrs.Azure.ServiceBus
 			var identifiedEvent = command as ICommandWithIdentity<TAuthenticationToken>;
 			if (identifiedEvent != null)
 				identifyMessage = $" for aggregate {identifiedEvent.Rsn}";
-#if NETSTANDARD2_0 || NET48_OR_GREATER
-			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.EntityPath;
-#else
-			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
-#endif
+
+			string topicPath = GetTopicPath(serviceBusReceiver);
 			Logger.LogInfo($"A command message arrived from topic {topicPath} with the {messageId} was of type {commandTypeName}{identifyMessage}.");
 
 #if NETSTANDARD2_0 || NET48_OR_GREATER
@@ -347,6 +352,41 @@ namespace Cqrs.Azure.ServiceBus
 #else
 			return command;
 #endif
+		}
+
+		/// <summary>
+		/// Gets the topic path for the message.
+		/// </summary>
+		protected virtual string GetTopicPath(IMessageReceiver serviceBusReceiver)
+		{
+			string topicPath = null;
+
+			if (serviceBusReceiver == null)
+			{
+				try
+				{
+					Logger.LogDebug("Trying to obtain topic path from the BackChannel");
+					topicPath = BackChannel.GetData<string>("Cqrs.Azure.FunctionName");
+				}
+				catch (Exception ex)
+				{
+					Logger.LogDebug("Trying to obtain topic path from the BackChannel FAILED", exception: ex);
+				}
+				if (string.IsNullOrWhiteSpace(topicPath))
+					topicPath = "UNKNOWN";
+			}
+			else
+			{
+				Logger.LogDebug("Obtaining topic path from the receiver");
+				topicPath =
+#if NETSTANDARD2_0 || NET48_OR_GREATER
+				serviceBusReceiver.EntityPath;
+#else
+				serviceBusReceiver.TopicPath;
+#endif
+			}
+
+			return topicPath;
 		}
 
 		/// <summary>
@@ -584,11 +624,7 @@ namespace Cqrs.Azure.ServiceBus
 			var identifiedEvent = @event as IEventWithIdentity<TAuthenticationToken>;
 			if (identifiedEvent != null)
 				identifyMessage = " for aggregate {identifiedEvent.Rsn}";
-#if NETSTANDARD2_0 || NET48_OR_GREATER
-			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.EntityPath;
-#else
-			string topicPath = serviceBusReceiver == null ? "UNKNOWN" : serviceBusReceiver.TopicPath;
-#endif
+			string topicPath = GetTopicPath(serviceBusReceiver);
 			Logger.LogInfo($"An event message arrived from topic {topicPath} with the {messageId} was of type {eventTypeName}{identifyMessage}.");
 
 #if NETSTANDARD2_0 || NET48_OR_GREATER
