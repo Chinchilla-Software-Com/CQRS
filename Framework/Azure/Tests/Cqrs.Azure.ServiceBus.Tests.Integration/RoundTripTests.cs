@@ -80,7 +80,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			DependencyResolver.ConfigurationManager = configurationManager;
 #endif
 
-			var azureEventBusReceiver = new AzureEventBusReceiver<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());
+			var azureEventBusReceiver = new AzureEventBusReceiver<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null, new ContextItemCollectionFactory()), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());
 			var handler = new TestEventSuccessHandler(testResponse);
 #if NET472
 			azureEventBusReceiver.RegisterHandler
@@ -96,7 +96,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 				, handler.GetType());
 			azureEventBusReceiver.Start();
 
-			var azureEventBusPublisher = new AzureEventBusPublisher<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());
+			var azureEventBusPublisher = new AzureEventBusPublisher<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null, new ContextItemCollectionFactory()), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());
 
 			// Act
 #if NET472
@@ -145,7 +145,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			DependencyResolver.ConfigurationManager = configurationManager;
 #endif
 
-			var azureCommandBusReceiver = new AzureCommandBusReceiver<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());
+			var azureCommandBusReceiver = new AzureCommandBusReceiver<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null, new ContextItemCollectionFactory()), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());
 			var handler = new TestCommandSuccessHandler(testResponse);
 #if NET472
 			azureCommandBusReceiver.RegisterHandler
@@ -161,7 +161,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 				, handler.GetType());
 			azureCommandBusReceiver.Start();
 
-			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());
+			var azureCommandBusPublisher = new AzureCommandBusPublisher<Guid>(configurationManager, new MessageSerialiser<Guid>(), new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new AzureBusHelper<Guid>(new GuidAuthenticationTokenHelper(), new NullCorrelationIdHelper(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new MessageSerialiser<Guid>(), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory(), configurationManager, null, new ContextItemCollectionFactory()), new BusHelper(configurationManager, new ContextItemCollectionFactory()), new BuiltInHashAlgorithmFactory());
 
 			// Act
 #if NET472
