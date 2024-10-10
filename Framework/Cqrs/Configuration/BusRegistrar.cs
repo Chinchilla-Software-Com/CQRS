@@ -163,7 +163,7 @@ namespace Cqrs.Configuration
 						safeExecutorType = safeExecutorType.MakeGenericType(genericArguments.Take(2).ToArray());
 					}
 					InvokeHandler(@interface, trueForEventsFalseForCommands, resolveMessageHandlerInterface, safeExecutorType);
-					Logger.LogInfo($"{(trueForEventsFalseForCommands ? "event" : "command")} handler {@interface.FullName} registered");
+					Logger.LogInfo($"{(trueForEventsFalseForCommands ? "Event" : "Command")} handler {@interface.FullName} registered");
 				}
 			}
 		}
@@ -307,6 +307,7 @@ namespace Cqrs.Configuration
 #endif
 				x =>
 			{
+				var logger = DependencyResolver.Resolve<ILogger>();
 				Stopwatch stopWatch = Stopwatch.StartNew();
 				var telemetryHelper = DependencyResolver.Resolve<ITelemetryHelper>();
 				string succeeded = "Failed";
@@ -322,17 +323,19 @@ namespace Cqrs.Configuration
 #endif
 
 					succeeded = "Succeeded";
+					logger.LogInfo($"An event message arrived of the type '{x.GetType().FullName}' went to a handler of type '{handlerName}' and processed successfully.");
 				}
 				catch (NotImplementedException exception)
 				{
-					var logger = DependencyResolver.Resolve<ILogger>();
 					logger.LogInfo($"An event message arrived of the type '{x.GetType().FullName}' went to a handler of type '{handlerName}' but was not implemented.", exception: exception);
 					telemetryHelper.TrackTrace($"Handler '{handlerName}' does not implement the handle method for a '{x.GetType().FullName}' message", 1);
 					telemetryHelper.TrackException(exception);
 				}
 				catch(Exception exception)
 				{
+					logger.LogError($"An event message arrived of the type '{x.GetType().FullName}' went to a handler of type '{handlerName}' but failed to be process.", exception: exception);
 					telemetryHelper.TrackException(exception);
+					throw;
 				}
 				finally
 				{
