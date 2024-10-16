@@ -45,6 +45,8 @@ namespace Cqrs.Domain
 
 		private ICollection<ICommand<TAuthenticationToken>> Commands { get; set; }
 
+		private ICollection<IEvent<TAuthenticationToken>> NonSagaEvents { get; set; }
+
 		/// <summary>
 		/// The identifier of this <see cref="ISaga{TAuthenticationToken}"/>.
 		/// </summary>
@@ -95,6 +97,7 @@ namespace Cqrs.Domain
 			Lock = new ReaderWriterLockSlim();
 			Changes = new ReadOnlyCollection<ISagaEvent<TAuthenticationToken>>(new List<ISagaEvent<TAuthenticationToken>>());
 			Commands = new ReadOnlyCollection<ICommand<TAuthenticationToken>>(new List<ICommand<TAuthenticationToken>>());
+			NonSagaEvents = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new List<IEvent<TAuthenticationToken>>());
 			Initialise();
 		}
 
@@ -189,7 +192,7 @@ namespace Cqrs.Domain
 			Lock.EnterWriteLock();
 			try
 			{
-				Commands = new ReadOnlyCollection<ICommand<TAuthenticationToken>>(Commands.Concat(new []{command}).ToList());
+				Commands = new ReadOnlyCollection<ICommand<TAuthenticationToken>>(Commands.Concat(new[] { command }).ToList());
 			}
 			finally
 			{
@@ -206,6 +209,46 @@ namespace Cqrs.Domain
 			try
 			{
 				Commands = new ReadOnlyCollection<ICommand<TAuthenticationToken>>(new List<ICommand<TAuthenticationToken>>());
+			}
+			finally
+			{
+				Lock.ExitWriteLock();
+			}
+		}
+
+		/// <summary>
+		/// Get all pending non-saga events that haven't yet been published yet.
+		/// </summary>
+		public virtual IEnumerable<IEvent<TAuthenticationToken>> GetUnpublishedNonSagaEvents()
+		{
+			return NonSagaEvents;
+		}
+
+		/// <summary>
+		/// Queue the provided <paramref name="event"/> for publishing.
+		/// </summary>
+		protected virtual void QueueNonSagaEvent(IEvent<TAuthenticationToken> @event)
+		{
+			Lock.EnterWriteLock();
+			try
+			{
+				NonSagaEvents = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(NonSagaEvents.Concat(new []{ @event }).ToList());
+			}
+			finally
+			{
+				Lock.ExitWriteLock();
+			}
+		}
+
+		/// <summary>
+		/// Mark all published non-saga events as published and flush the internal collection of non-saga events.
+		/// </summary>
+		public virtual void MarkNonSagaEventsAsPublished()
+		{
+			Lock.EnterWriteLock();
+			try
+			{
+				NonSagaEvents = new ReadOnlyCollection<IEvent<TAuthenticationToken>>(new List<IEvent<TAuthenticationToken>>());
 			}
 			finally
 			{

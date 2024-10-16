@@ -15,7 +15,13 @@ using Azure;
 using Chinchilla.Logging;
 using Cqrs.Domain;
 using Cqrs.Events;
+using Cqrs.Infrastructure;
 using Cqrs.Messages;
+#if NET472
+#else
+using System.Threading.Tasks;
+#endif
+
 #if NET472
 #else
 using System.Threading.Tasks;
@@ -198,6 +204,45 @@ namespace Cqrs.Azure.Storage.Events
 		}
 
 		/// <summary>
+		/// Saves the provided <paramref name="event"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to be saved.</param>
+		public override
+#if NET472
+			void Save
+#else
+			async Task SaveAsync
+#endif
+				(Type aggregateRootType, IEvent<TAuthenticationToken> @event)
+		{
+#if NET472
+			base.Save
+#else
+			await base.SaveAsync
+#endif
+			(aggregateRootType, @event);
+
+			// now verify it's available by a load as blob can be delayed, and fast actions can cause missing event errors.
+			IEnumerable<IEvent<TAuthenticationToken>> events;
+#if NET472
+			SpinWait.SpinUntil(() =>
+#else
+			await SpinWait.SpinUntilAsync(async () =>
+#endif
+			{
+				events =
+#if NET472
+					Get
+#else
+					await GetAsync
+#endif
+						(aggregateRootType, @event.GetIdentity(), fromVersion: @event.Version - 1);
+				return events.Any();
+			}, 5000);
+		}
+
+		/// <summary>
 		/// Persist the provided <paramref name="eventData"/> into storage.
 		/// </summary>
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
@@ -216,6 +261,7 @@ namespace Cqrs.Azure.Storage.Events
 			await BlobStorageStore.AddAsync
 #endif
 				(eventData);
+
 			Logger.LogDebug("Adding data to the blob storage event-store by-correlation folder", "BlobStorageStore\\Add");
 #if NET472
 			BlobStorageStore.AddToCorrelationFolder

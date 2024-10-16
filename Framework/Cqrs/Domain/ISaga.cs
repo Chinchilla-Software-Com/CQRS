@@ -69,5 +69,15 @@ namespace Cqrs.Domain
 		/// Mark all published commands as published and flush the internal collection of commands.
 		/// </summary>
 		void MarkCommandsAsPublished();
+
+		/// <summary>
+		/// Get all pending non-saga events that haven't yet been published yet.
+		/// </summary>
+		IEnumerable<IEvent<TAuthenticationToken>> GetUnpublishedNonSagaEvents();
+
+		/// <summary>
+		/// Mark all published non-saga events as published and flush the internal collection of non-saga events.
+		/// </summary>
+		void MarkNonSagaEventsAsPublished();
 	}
 }

@@ -106,14 +106,22 @@ namespace Cqrs.Domain
 		{
 			IList<ISagaEvent<TAuthenticationToken>> uncommittedChanges = saga.GetUncommittedChanges().ToList();
 			IEnumerable<ICommand<TAuthenticationToken>> commandsToPublish = saga.GetUnpublishedCommands();
+			IEnumerable<IEvent<TAuthenticationToken>> nonSagaEventsToPublish = saga.GetUnpublishedNonSagaEvents();
 			if (!uncommittedChanges.Any())
 			{
 #if NET40
-				PublishCommand
+				PublishCommands
 #else
-				await PublishCommandAsync
+				await PublishCommandsAsync
 #endif
 					(commandsToPublish);
+
+#if NET40
+				PublishEvents
+#else
+				await PublishEventsAsync
+#endif
+					(nonSagaEventsToPublish);
 				return;
 			}
 
@@ -158,19 +166,28 @@ namespace Cqrs.Domain
 
 			saga.MarkChangesAsCommitted();
 			foreach (ISagaEvent<TAuthenticationToken> @event in eventsToPublish)
+			{
 #if NET40
 				PublishEvent
 #else
 				await PublishEventAsync
 #endif
 					(@event);
+			}
 
 #if NET40
-			PublishCommand
+			PublishCommands
 #else
-			await PublishCommandAsync
+				await PublishCommandsAsync
 #endif
 				(commandsToPublish);
+
+#if NET40
+			PublishEvents
+#else
+				await PublishEventsAsync
+#endif
+				(nonSagaEventsToPublish);
 		}
 
 		/// <summary>
@@ -197,9 +214,9 @@ namespace Cqrs.Domain
 		/// </summary>
 		protected virtual
 #if NET40
-			void PublishCommand
+			void PublishCommands
 #else
-			async Task PublishCommandAsync
+			async Task PublishCommandsAsync
 #endif
 				(IEnumerable<ICommand<TAuthenticationToken>> commands)
 		{
@@ -209,6 +226,25 @@ namespace Cqrs.Domain
 			await CommandPublisher.PublishAsync
 #endif
 				(commands);
+		}
+
+		/// <summary>
+		/// Publish the <paramref name="events"/>.
+		/// </summary>
+		protected virtual
+#if NET40
+			void PublishEvents
+#else
+			async Task PublishEventsAsync
+#endif
+				(IEnumerable<IEvent<TAuthenticationToken>> events)
+		{
+#if NET40
+			EventPublisher.Publish
+#else
+			await EventPublisher.PublishAsync
+#endif
+				(events);
 		}
 
 		/// <summary>

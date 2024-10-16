@@ -278,14 +278,14 @@ namespace Cqrs.Azure.Storage
 #else
 			await
 #endif
-				AsyncSaveData
+			AsyncSaveData
 			(
 				data,
 #if NET472
 #else
 				async
 #endif
-					(taskData, cloudBlockBlob) =>
+				(taskData, cloudBlockBlob) =>
 				{
 					try
 					{
@@ -296,6 +296,7 @@ namespace Cqrs.Azure.Storage
 							await cloudBlockBlob.UploadAsync
 #endif
 								(Serialise(taskData), new BlobHttpHeaders { ContentType = "application/json" });
+
 						return cloudBlockBlob.Uri;
 					}
 					catch (Exception exception)

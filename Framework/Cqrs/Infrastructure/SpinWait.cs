@@ -1,6 +1,7 @@
 using System;
 using System.Security.Permissions;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Cqrs.Infrastructure
 {
@@ -81,6 +82,20 @@ namespace Cqrs.Infrastructure
 			SpinUntil(condition, -1, sleepInMilliseconds);
 		}
 
+#if NET40
+#else
+		/// <summary>
+		/// Spins until the specified condition is satisfied.
+		/// </summary>
+		/// <param name="condition">A delegate to be executed over and over until it returns true.</param>
+		/// <param name="sleepInMilliseconds">The amount of milliseconds the thread will sleep for.</param>
+		/// <exception cref="T:System.ArgumentNullException">The <paramref name="condition"/> argument is null.</exception>
+		public static async Task SpinUntilAsync(Func<Task<bool>> condition, short sleepInMilliseconds = 0)
+		{
+			await SpinUntilAsync(condition, -1, sleepInMilliseconds);
+		}
+#endif
+
 		/// <summary>
 		/// Spins until the specified condition is satisfied or until the specified timeout is expired.
 		/// </summary>
@@ -133,6 +148,42 @@ namespace Cqrs.Infrastructure
 			}
 			return true;
 		}
+
+#if NET40
+#else
+		/// <summary>
+		/// Spins until the specified condition is satisfied or until the specified timeout is expired.
+		/// </summary>
+		/// 
+		/// <returns>
+		/// True if the condition is satisfied within the timeout; otherwise, false
+		/// </returns>
+		/// <param name="condition">A delegate to be executed over and over until it returns true.</param>
+		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
+		/// <param name="sleepInMilliseconds">The amount of milliseconds the thread will sleep for.</param>
+		/// <exception cref="T:System.ArgumentNullException">The <paramref name="condition"/> argument is null.</exception>
+		/// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout"/> is a negative number other than -1, which represents an infinite time-out.</exception>
+		public static async Task<bool> SpinUntilAsync(Func<Task<bool>> condition, int millisecondsTimeout, short sleepInMilliseconds = 0)
+		{
+			if (millisecondsTimeout < -1)
+				throw new ArgumentOutOfRangeException("millisecondsTimeout", millisecondsTimeout, "SpinWait_SpinUntil_TimeoutWrong");
+			if (condition == null)
+				throw new ArgumentNullException("condition", "SpinWait_SpinUntil_ArgumentNull");
+			uint num = 0U;
+			if (millisecondsTimeout != 0 && millisecondsTimeout != -1)
+				num = TimeoutHelper.GetTime();
+			SpinWait spinWait = new SpinWait();
+			while (!await condition())
+			{
+				if (millisecondsTimeout == 0)
+					return false;
+				spinWait.SpinOnce(sleepInMilliseconds);
+				if (millisecondsTimeout != -1 && spinWait.NextSpinWillYield && millisecondsTimeout <= (TimeoutHelper.GetTime() - num))
+					return false;
+			}
+			return true;
+		}
+#endif
 
 		internal static class TimeoutHelper
 		{

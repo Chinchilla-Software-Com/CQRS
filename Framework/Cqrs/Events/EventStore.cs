@@ -9,10 +9,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Chinchilla.Logging;
 using Cqrs.Domain;
 using Cqrs.Messages;
+
+#if NET40
+#else
+using System.Threading.Tasks;
+#endif
 
 namespace Cqrs.Events
 {

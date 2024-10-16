@@ -8,9 +8,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cqrs.Domain.Exceptions;
 using Cqrs.Events;
+
+#if NET40
+#else
+using System.Threading.Tasks;
+#endif
 
 namespace Cqrs.Domain
 {
