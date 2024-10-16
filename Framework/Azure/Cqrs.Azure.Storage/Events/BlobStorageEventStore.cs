@@ -10,13 +10,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Azure.Storage.Blobs.Models;
 using Azure;
 using Chinchilla.Logging;
 using Cqrs.Domain;
 using Cqrs.Events;
 using Cqrs.Messages;
+#if NET472
+#else
+using System.Threading.Tasks;
+#endif
 
 namespace Cqrs.Azure.Storage.Events
 {

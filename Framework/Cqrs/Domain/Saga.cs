@@ -69,7 +69,13 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Gets or set the <see cref="ICommandPublisher{TAuthenticationToken}"/>.
 		/// </summary>
-		protected ICommandPublisher<TAuthenticationToken> CommandPublisher { get; private set; }
+		protected
+#if NET40
+			ICommandPublisher
+#else
+			IAsyncCommandPublisher
+#endif
+			<TAuthenticationToken> CommandPublisher { get; private set; }
 
 		/// <summary>
 		/// Gets or set the <see cref="IDependencyResolver"/>.
@@ -107,7 +113,15 @@ namespace Cqrs.Domain
 		{
 			DependencyResolver = dependencyResolver;
 			Logger = logger;
-			CommandPublisher = DependencyResolver.Resolve<ICommandPublisher<TAuthenticationToken>>();
+			CommandPublisher = DependencyResolver.Resolve
+			<
+#if NET40
+				ICommandPublisher
+#else
+				IAsyncCommandPublisher
+#endif
+				<TAuthenticationToken>
+			>();
 		}
 
 		/// <summary>
