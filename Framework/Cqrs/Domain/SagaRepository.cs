@@ -109,19 +109,25 @@ namespace Cqrs.Domain
 			IEnumerable<IEvent<TAuthenticationToken>> nonSagaEventsToPublish = saga.GetUnpublishedNonSagaEvents();
 			if (!uncommittedChanges.Any())
 			{
+				if (commandsToPublish.Any())
+				{
 #if NET40
-				PublishCommands
+					PublishCommands
 #else
-				await PublishCommandsAsync
+					await PublishCommandsAsync
 #endif
-					(commandsToPublish);
+						(commandsToPublish);
+				}
 
+				if (nonSagaEventsToPublish.Any())
+				{
 #if NET40
-				PublishEvents
+					PublishEvents
 #else
-				await PublishEventsAsync
+					await PublishEventsAsync
 #endif
-					(nonSagaEventsToPublish);
+						(nonSagaEventsToPublish);
+				}
 				return;
 			}
 
@@ -175,19 +181,25 @@ namespace Cqrs.Domain
 					(@event);
 			}
 
+			if (commandsToPublish.Any())
+			{
 #if NET40
-			PublishCommands
+				PublishCommands
 #else
-				await PublishCommandsAsync
+					await PublishCommandsAsync
 #endif
-				(commandsToPublish);
+					(commandsToPublish);
+			}
 
+			if (nonSagaEventsToPublish.Any())
+			{
 #if NET40
-			PublishEvents
+				PublishEvents
 #else
-				await PublishEventsAsync
+					await PublishEventsAsync
 #endif
-				(nonSagaEventsToPublish);
+					(nonSagaEventsToPublish);
+			}
 		}
 
 		/// <summary>
