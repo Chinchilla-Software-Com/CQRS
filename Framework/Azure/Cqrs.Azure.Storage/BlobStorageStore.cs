@@ -447,11 +447,12 @@ namespace Cqrs.Azure.Storage
 				).Wait();
 #endif
 
-				IEnumerable<BlobItem> source;
+				IEnumerable<BlobItem> sourceQuery;
 				if (predicate != null)
-					source = query.Values.Where(predicate);
+					sourceQuery = query.Values.Where(predicate);
 				else
-					source = query.Values;
+					sourceQuery = query.Values;
+				IList<BlobItem> source = sourceQuery.ToList();
 
 				results = new List<Stream>();
 				IList<Task> downloadTasks = new List<Task>();
@@ -486,7 +487,7 @@ namespace Cqrs.Azure.Storage
 				}
 
 				// We discovered that sometimes getting blobs can return null streams... not helpful. Seems to be a race condition
-				if (!results.Any(x => x == null))
+				if (results.Count == source.Count && !results.Any(x => x == null))
 					break;
 				results = null;
 			}
