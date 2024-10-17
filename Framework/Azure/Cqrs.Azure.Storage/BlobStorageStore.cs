@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Core;
@@ -428,7 +429,7 @@ namespace Cqrs.Azure.Storage
 				(Func<BlobItem, bool> predicate = null, string blobPrefix = null, string folderName = null)
 		{
 			IList<Stream> results = null;
-			for(int i = 0; i < 3; i++)
+			for(int i = 0; i < 10; i++)
 			{
 				AsyncPageable<BlobItem> blobs;
 				if (!string.IsNullOrWhiteSpace(folderName))
@@ -438,13 +439,12 @@ namespace Cqrs.Azure.Storage
 				var query = new Dictionary<string, BlobItem>();
 #if NET472
 				Task.Run(async () =>
-#endif
 				{
+#endif
 					await foreach (BlobItem blob in blobs)
 						query.Add(blob.Name, blob);
-				}
 #if NET472
-				).Wait();
+				}).Wait();
 #endif
 
 				IEnumerable<BlobItem> sourceQuery;
@@ -458,37 +458,41 @@ namespace Cqrs.Azure.Storage
 				IList<Task> downloadTasks = new List<Task>();
 				foreach (BlobItem x in source)
 				{
+#if NET472
 					downloadTasks.Add
 					(
 						Task.Run(async () =>
 						{
+#endif
 							BlobClient blobClient = ReadableSource.GetBlobClient(x.Name);
-							BlobDownloadResult downloadResult = await blobClient.DownloadContentAsync();
-							BinaryData as1 = downloadResult.Content;
-							results.Add(as1.ToStream());
+								BlobDownloadResult downloadResult = await blobClient.DownloadContentAsync();
+								BinaryData as1 = downloadResult.Content;
+								results.Add(as1.ToStream());
+#if NET472
 						})
 					);
+#endif
 				}
 
-				bool hasFinished = false;
 #if NET472
+				bool hasFinished = false;
 				Task.Run(async () =>
-#endif
 				{
 					await Task.WhenAll(downloadTasks).ContinueWith(state => { hasFinished = !state.IsFaulted; });
 				}
-#if NET472
 				).Wait();
-#endif
+
 				if (!hasFinished)
 				{
 					Logger.LogError("Loading streams faulted.");
 					throw new Exception("Did not read all blobs.");
 				}
+#endif
 
 				// We discovered that sometimes getting blobs can return null streams... not helpful. Seems to be a race condition
 				if (results.Count == source.Count && !results.Any(x => x == null))
 					break;
+				Thread.Sleep(150);
 				results = null;
 			}
 			if (results == null)
