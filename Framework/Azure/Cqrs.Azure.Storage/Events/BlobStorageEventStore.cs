@@ -233,7 +233,7 @@ namespace Cqrs.Azure.Storage.Events
 #else
 					await GetAsync
 #endif
-						(aggregateRootType, @event.GetIdentity(), fromVersion: @event.Version - 1);
+						(aggregateRootType, @event.GetIdentity(), true, @event.Version - 1);
 				return events.Any();
 			}, 5000);
 		}

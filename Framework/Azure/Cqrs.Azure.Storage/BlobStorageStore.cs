@@ -427,58 +427,71 @@ namespace Cqrs.Azure.Storage
 #endif
 				(Func<BlobItem, bool> predicate = null, string blobPrefix = null, string folderName = null)
 		{
-			AsyncPageable<BlobItem> blobs;
-			if (!string.IsNullOrWhiteSpace(folderName))
-				blobs = ReadableSource.GetBlobsAsync(prefix: folderName);
-			else
-				blobs = ReadableSource.GetBlobsAsync(prefix: blobPrefix);
-			var query = new Dictionary<string, BlobItem>();
-#if NET472
-			Task.Run(async () =>
-#endif
+			IList<Stream> results = null;
+			for(int i = 0; i < 3; i++)
 			{
-				await foreach (BlobItem blob in blobs)
-					query.Add(blob.Name, blob);
-			}
+				AsyncPageable<BlobItem> blobs;
+				if (!string.IsNullOrWhiteSpace(folderName))
+					blobs = ReadableSource.GetBlobsAsync(prefix: folderName);
+				else
+					blobs = ReadableSource.GetBlobsAsync(prefix: blobPrefix);
+				var query = new Dictionary<string, BlobItem>();
 #if NET472
-			).Wait();
+				Task.Run(async () =>
+#endif
+				{
+					await foreach (BlobItem blob in blobs)
+						query.Add(blob.Name, blob);
+				}
+#if NET472
+				).Wait();
 #endif
 
-			IEnumerable<BlobItem> source;
-			if (predicate != null)
-				source = query.Values.Where(predicate);
-			else
-				source = query.Values;
+				IEnumerable<BlobItem> source;
+				if (predicate != null)
+					source = query.Values.Where(predicate);
+				else
+					source = query.Values;
 
-			var results = new List<Stream>();
-			IList<Task> downloadTasks = new List<Task>();
-			foreach (var x in source)
-			{
-				downloadTasks.Add
-				(
-					Task.Run(async () =>
-					{
-						BlobClient blobClient = ReadableSource.GetBlobClient(x.Name);
-						BlobDownloadResult downloadResult = await blobClient.DownloadContentAsync();
-						BinaryData as1 = downloadResult.Content;
-						results.Add(as1.ToStream());
-					})
-				);
-			}
+				results = new List<Stream>();
+				IList<Task> downloadTasks = new List<Task>();
+				foreach (BlobItem x in source)
+				{
+					downloadTasks.Add
+					(
+						Task.Run(async () =>
+						{
+							BlobClient blobClient = ReadableSource.GetBlobClient(x.Name);
+							BlobDownloadResult downloadResult = await blobClient.DownloadContentAsync();
+							BinaryData as1 = downloadResult.Content;
+							results.Add(as1.ToStream());
+						})
+					);
+				}
 
-			bool hasFinished = false;
+				bool hasFinished = false;
 #if NET472
-			Task.Run(async () =>
+				Task.Run(async () =>
 #endif
-			{
-				await Task.WhenAll(downloadTasks).ContinueWith(state => { hasFinished = !state.IsFaulted; });
-			}
+				{
+					await Task.WhenAll(downloadTasks).ContinueWith(state => { hasFinished = !state.IsFaulted; });
+				}
 #if NET472
-			).Wait();
+				).Wait();
 #endif
-			if (!hasFinished)
-				throw new Exception("Did not read all blobs.");
+				if (!hasFinished)
+				{
+					Logger.LogError("Loading streams faulted.");
+					throw new Exception("Did not read all blobs.");
+				}
 
+				// We discovered that sometimes getting blobs can return null streams... not helpful. Seems to be a race condition
+				if (!results.Any(x => x == null))
+					break;
+				results = null;
+			}
+			if (results == null)
+				throw new InvalidOperationException("Opening streams returned null objects when none should be returned.");
 			return results;
 		}
 

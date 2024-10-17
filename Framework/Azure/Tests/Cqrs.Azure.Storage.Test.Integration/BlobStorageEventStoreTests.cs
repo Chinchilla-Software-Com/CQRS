@@ -10,12 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 using Chinchilla.Logging;
 using Chinchilla.Logging.Configuration;
 using Chinchilla.StateManagement.Threaded;
-using Cqrs.Azure.ConfigurationManager;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Azure.Storage.Events;
 using Cqrs.Configuration;
@@ -27,9 +25,17 @@ using TestMethod = NUnit.Framework.TestAttribute;
 using TestInitialize = NUnit.Framework.SetUpAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
 using TestContext = System.Object;
+using NUnit.Framework.Internal.Execution;
+
+
+#if NET472
+#else
+using System.Threading.Tasks;
+#endif
 
 #if NET472_OR_GREATER
 #else
+using Cqrs.Azure.ConfigurationManager;
 using Microsoft.Extensions.Configuration;
 #endif
 
@@ -74,31 +80,31 @@ namespace Cqrs.Azure.Storage.Test.Integration
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
 			var eventStore = new BlobStorageEventStore<Guid>(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, new BlobStorageEventStoreConnectionStringFactory(configurationManager, logger));
 
-			var event1 = new TestEvent
+			IList<TestEvent> eventsToSend = new List<TestEvent>();
+			var id1 = Guid.NewGuid();
+			var id2 = Guid.NewGuid();
+			for (int i = 0; i < 40; i++)
 			{
-				Rsn = Guid.NewGuid(),
-				Id = Guid.NewGuid(),
-				CorrelationId = correlationIdHelper.GetCorrelationId(),
-				Frameworks = new List<string> { "Test 1" },
-				TimeStamp = DateTimeOffset.UtcNow
-			};
-			var event2 = new TestEvent
-			{
-				Rsn = Guid.NewGuid(),
-				Id = Guid.NewGuid(),
-				CorrelationId = correlationIdHelper.GetCorrelationId(),
-				Frameworks = new List<string> { "Test 2" },
-				TimeStamp = DateTimeOffset.UtcNow
-			};
+				var event1 = new TestEvent
+				{
+					Rsn = i % 2 == 1 ? id1 : id2,
+					Id = i % 2 == 1 ? id1 : id2,
+					CorrelationId = correlationIdHelper.GetCorrelationId(),
+					Frameworks = new List<string> { $"Test {i}" },
+					TimeStamp = DateTimeOffset.UtcNow
+				};
+				eventsToSend.Add(event1);
+			}
 
 			// Act
+			foreach(var @event in eventsToSend)
+			{
 #if NET472
-			eventStore.Save<TestEvent>(event1);
-			eventStore.Save<TestEvent>(event2);
+				eventStore.Save<TestEvent>(@event);
 #else
-			await eventStore.SaveAsync<TestEvent>(event1);
-			await eventStore.SaveAsync<TestEvent>(event2);
+				await eventStore.SaveAsync<TestEvent>(@event);
 #endif
+			}
 
 			// Assert
 			var timer = new Stopwatch();
@@ -109,13 +115,12 @@ namespace Cqrs.Azure.Storage.Test.Integration
 #else
 				await eventStore.GetAsync
 #endif
-					<TestEvent>(event1.Id)
+					<TestEvent>(id1)
 			).ToList();
 			timer.Stop();
 			Console.WriteLine("Load one operation took {0}", timer.Elapsed);
-			Assert.AreEqual(1, events.Count);
-			Assert.AreEqual(event1.Id, events.Single().Id);
-			Assert.AreEqual(event1.Frameworks.Single(), events.Single().Frameworks.Single());
+			Assert.AreEqual(20, events.Count);
+			Assert.IsTrue(events.All(x => x.Id == id1));
 
 			timer.Restart();
 			events =
@@ -125,13 +130,12 @@ namespace Cqrs.Azure.Storage.Test.Integration
 #else
 				await eventStore.GetAsync
 #endif
-					<TestEvent>(event2.Id)
+					<TestEvent>(id2)
 			).ToList();
 			timer.Stop();
 			Console.WriteLine("Load one operation took {0}", timer.Elapsed);
-			Assert.AreEqual(1, events.Count);
-			Assert.AreEqual(event2.Id, events.Single().Id);
-			Assert.AreEqual(event2.Frameworks.Single(), events.Single().Frameworks.Single());
+			Assert.AreEqual(20, events.Count);
+			Assert.IsTrue(events.All(x => x.Id == id2));
 
 			timer.Restart();
 			IList<EventData> correlatedEvents =
@@ -141,11 +145,11 @@ namespace Cqrs.Azure.Storage.Test.Integration
 #else
 				await eventStore.GetAsync
 #endif
-					(event1.CorrelationId)
+					(correlationIdHelper.GetCorrelationId())
 			).ToList();
 			timer.Stop();
 			Console.WriteLine("Load several correlated operation took {0}", timer.Elapsed);
-			Assert.AreEqual(2, correlatedEvents.Count);
+			Assert.AreEqual(40, correlatedEvents.Count);
 		}
 	}
 }
