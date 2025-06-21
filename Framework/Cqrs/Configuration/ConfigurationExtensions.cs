@@ -52,7 +52,7 @@ namespace Cqrs.Configuration
 				Action action = () => {
 					try
 					{
-#if NETSTANDARD2_0
+#if NETSTANDARD
 						helper = (ITelemetryHelper)DotNetStandard2Helper.CreateInstanceFrom(assemblyFile, "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>(), DependencyResolver.Current.Resolve<IContextItemCollectionFactory>(), false }, null, null);
 #else
 						helper = (ITelemetryHelper)Activator.CreateInstanceFrom(assemblyFile, "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, DependencyResolver.Current.Resolve<ILoggerSettings>(), DependencyResolver.Current.Resolve<IContextItemCollectionFactory>(), false }, null, null).Unwrap();
@@ -64,7 +64,7 @@ namespace Cqrs.Configuration
 					}
 					catch
 					{
-#if NETSTANDARD2_0
+#if NETSTANDARD
 						helper = (ITelemetryHelper)DotNetStandard2Helper.CreateInstanceFrom(assemblyFile, "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, null, DependencyResolver.Current.Resolve<IContextItemCollectionFactory>(), false }, null, null);
 #else
 						helper = (ITelemetryHelper)Activator.CreateInstanceFrom(assemblyFile, "Chinchilla.Logging.Azure.ApplicationInsights.TelemetryHelper", false, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.CreateInstance, null, new object[] { correlationIdHelper, null, DependencyResolver.Current.Resolve<IContextItemCollectionFactory>(), false }, null, null).Unwrap();
