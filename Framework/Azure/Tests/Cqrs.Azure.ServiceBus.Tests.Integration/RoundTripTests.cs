@@ -72,7 +72,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -136,7 +136,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -199,7 +199,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -235,7 +235,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 					{
 						DefaultMessageTimeToLive = new TimeSpan(0, 25, 0),
 						EnableBatchedOperations = true,
-						EnableDeadLetteringOnFilterEvaluationExceptions = true
+						EnableDeadLetteringOnFilterEvaluationExceptions = false
 					}
 				);
 
@@ -308,7 +308,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 

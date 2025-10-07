@@ -25,7 +25,7 @@ public class FunctionStartup
 		builder.ConfigurationBuilder
 			.SetBasePath(context.ApplicationRootPath)
 			.AddCommandLine(Environment.GetCommandLineArgs())
-			.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
+			.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
 			.AddEnvironmentVariables();
 #endif
 

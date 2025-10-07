@@ -6,10 +6,7 @@
 // // -----------------------------------------------------------------------
 #endregion
 
-using Chinchilla.Logging;
-using Cqrs.Configuration;
 using Cqrs.Domain;
-using System;
 
 namespace Cqrs.Snapshots
 {

@@ -7,7 +7,10 @@
 #endregion
 
 using Cqrs.Domain;
+#if NET40
+#else
 using System.Threading.Tasks;
+#endif
 
 namespace Cqrs.Services
 {

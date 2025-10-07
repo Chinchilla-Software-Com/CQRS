@@ -108,7 +108,7 @@ namespace Cqrs.Azure.Functions.Isolated
 			IConfigurationRoot config = (configBuilder ?? new ConfigurationBuilder())
 				.SetBasePath(actualRoot)
 				.AddCommandLine(Environment.GetCommandLineArgs())
-				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 			configurationManager = new CloudConfigurationManager(config);
@@ -158,7 +158,7 @@ namespace Cqrs.Azure.Functions.Isolated
 					config
 						.SetBasePath(actualRoot)
 						.AddCommandLine(Environment.GetCommandLineArgs())
-						.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
+						.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
 						.AddEnvironmentVariables();
 #endif
 					/*
