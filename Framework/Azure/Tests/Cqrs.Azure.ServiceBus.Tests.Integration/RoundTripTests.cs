@@ -417,7 +417,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 		protected virtual Manager GetManager(string tenantId, string applicationId, string clientKey, string endpoint, string authority)
 		{
 			Manager manager;
-#if NETSTANDARD2_0 || NET48_OR_GREATER || NET6_0
+#if NETSTANDARD2_0 || NET48_OR_GREATER || NET6_0_OR_GREATER
 			var credentials = new ClientSecretCredential(tenantId, applicationId, clientKey);
 			manager = new Manager(endpoint, credentials);
 #else

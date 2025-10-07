@@ -48,7 +48,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		public virtual void RegisterEventPublisher()
 		{
 			Bind<
-#if NETSTANDARD || NET6_0
+#if NETSTANDARD || NET6_0_OR_GREATER
 				IAsyncEventPublisher
 #else
 				IEventPublisher

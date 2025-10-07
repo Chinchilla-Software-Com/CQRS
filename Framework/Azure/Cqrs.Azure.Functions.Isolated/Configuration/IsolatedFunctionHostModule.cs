@@ -22,7 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 
-#if NET6_0
+#if NET6_0_OR_GREATER
 using Microsoft.Extensions.Configuration;
 #endif
 
@@ -68,7 +68,7 @@ namespace Cqrs.Azure.Functions.Isolated.Configuration
 				}
 			}
 
-#if NET6_0
+#if NET6_0_OR_GREATER
 			services.AddSingleton<IConfiguration>(Cqrs.Configuration.ConfigurationManager.BaseConfiguration);
 #endif
 			if (DependencyResolver.ConfigurationManager == null)

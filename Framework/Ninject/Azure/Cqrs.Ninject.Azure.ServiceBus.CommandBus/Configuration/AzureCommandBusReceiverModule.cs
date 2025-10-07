@@ -54,7 +54,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
 		public virtual TBus GetOrCreateBus<TBus>()
 			where TBus : class,
-#if NETSTANDARD || NET6_0
+#if NETSTANDARD || NET6_0_OR_GREATER
 				IAsyncCommandReceiver<TAuthenticationToken>, IAsyncCommandHandlerRegistrar
 #else
 				ICommandReceiver<TAuthenticationToken>, ICommandHandlerRegistrar
@@ -78,7 +78,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// <summary>
 		/// Register the CQRS command receiver
 		/// </summary>
-#if NETSTANDARD || NET6_0
+#if NETSTANDARD || NET6_0_OR_GREATER
 		public virtual void RegisterCommandReceiver(IAsyncCommandReceiver<TAuthenticationToken> bus)
 #else
 		public virtual void RegisterCommandReceiver<TBus>(TBus bus)
@@ -86,7 +86,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 #endif
 		{
 			Bind<
-#if NETSTANDARD || NET6_0
+#if NETSTANDARD || NET6_0_OR_GREATER
 				IAsyncCommandReceiver
 #else
 				ICommandReceiver
@@ -99,7 +99,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		/// <summary>
 		/// Register the CQRS command handler registrar
 		/// </summary>
-#if NETSTANDARD || NET6_0
+#if NETSTANDARD || NET6_0_OR_GREATER
 		public virtual void RegisterCommandHandlerRegistrar(IAsyncCommandHandlerRegistrar bus)
 #else
 		public virtual void RegisterCommandHandlerRegistrar<TBus>(TBus bus)
@@ -107,7 +107,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 #endif
 		{
 			Bind<
-#if NETSTANDARD || NET6_0
+#if NETSTANDARD || NET6_0_OR_GREATER
 				IAsyncCommandHandlerRegistrar
 #else
 				ICommandHandlerRegistrar

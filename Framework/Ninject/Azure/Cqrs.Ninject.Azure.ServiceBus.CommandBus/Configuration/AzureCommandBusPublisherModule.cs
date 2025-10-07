@@ -48,7 +48,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 		public virtual void RegisterCommandSender()
 		{
 			Bind<
-#if NETSTANDARD || NET6_0
+#if NETSTANDARD || NET6_0_OR_GREATER
 				IAsyncCommandPublisher
 #else
 				ICommandPublisher
@@ -58,7 +58,7 @@ namespace Cqrs.Ninject.Azure.ServiceBus.CommandBus.Configuration
 				.InSingletonScope();
 
 			Bind<
-#if NETSTANDARD || NET6_0
+#if NETSTANDARD || NET6_0_OR_GREATER
 				IAsyncPublishAndWaitCommandPublisher
 #else
 				IPublishAndWaitCommandPublisher
