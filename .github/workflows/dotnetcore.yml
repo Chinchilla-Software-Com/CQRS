@@ -15,14 +15,10 @@ jobs:
         # dotnet-version: [ '3.1.x', '5.0.x', '6.0.x', '7.0.x' ]
         dotnet-version: [ '8.0.x' ]
     steps:
-    - name: Install DNF 4.0 packs
-      shell: pwsh
-      working-directory: "C:\\Program Files (x86)\\Microsoft Visual Studio\\Installer"
+    - name: Install .NET Framework 4.0 Developer Pack
       run: |
-        $InstallPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
-        $WorkLoads = '--add Microsoft.Net.Component.4.0.SDK --add Microsoft.Net.Component.4.0.TargetingPack --add Microsoft.Net.ComponentGroup.4.0.DeveloperTools'
-        $Arguments = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$InstallPath`"", $WorkLoads, $WorkLoads, '--norestart', '--nocache')
-        $process = Start-Process -FilePath cmd.exe -ArgumentList $Arguments -Wait -PassThru -WindowStyle Hidden
+        Invoke-WebRequest -Uri "https://archive.org/download/framework-pack/NDP452-KB2901907-x86-x64-AllOS-ENU.exe" -OutFile "ndp40.exe"
+        Start-Process -FilePath "ndp40.exe" -ArgumentList "/quiet" -Wait
 
     - name: Install DNF 4.8 packs
       shell: pwsh
