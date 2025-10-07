@@ -21,7 +21,7 @@ jobs:
       run: |
         $InstallPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
         $WorkLoads = '--add Microsoft.Net.Component.4.0.SDK --add Microsoft.Net.Component.4.0.TargetingPack --add Microsoft.Net.ComponentGroup.4.0.DeveloperTools'
-        $Arguments = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$InstallPath`"", $WorkLoads, $WorkLoads, '--quiet', '--norestart', '--nocache')
+        $Arguments = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$InstallPath`"", $WorkLoads, $WorkLoads, '--norestart', '--nocache')
         $process = Start-Process -FilePath cmd.exe -ArgumentList $Arguments -Wait -PassThru -WindowStyle Hidden
 
     - name: Install DNF 4.8 packs
@@ -30,7 +30,7 @@ jobs:
       run: |
         $InstallPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
         $WorkLoads = '--add Microsoft.Net.Component.4.8.SDK --add Microsoft.Net.Component.4.8.TargetingPack --add Microsoft.Net.ComponentGroup.4.8.DeveloperTools'
-        $Arguments = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$InstallPath`"", $WorkLoads, $WorkLoads, '--quiet', '--norestart', '--nocache')
+        $Arguments = ('/c', "vs_installer.exe", 'modify', '--installPath', "`"$InstallPath`"", $WorkLoads, $WorkLoads, '--norestart', '--nocache')
         $process = Start-Process -FilePath cmd.exe -ArgumentList $Arguments -Wait -PassThru -WindowStyle Hidden
 
     - name: Checkout Code
