@@ -13,10 +13,15 @@ jobs:
       matrix:
         os: [windows-latest]
         # dotnet-version: [ '3.1.x', '5.0.x', '6.0.x', '7.0.x' ]
-        dotnet-version: [ '7.0.x' ]
+        dotnet-version: [ '8.0.x' ]
     steps:
+    - name: Install .NET Framework 4.0 Developer Pack
+      run: |
+        Invoke-WebRequest -Uri "https://download.microsoft.com/download/1/5/7/157F3F3E-3E3B-4F6E-9F3C-3D3E3F3E3F3E/NDP40-DevPack-KB2600211-x86-x64.exe" -OutFile "ndp40.exe"
+        Start-Process -FilePath "ndp40.exe" -ArgumentList "/quiet" -Wait
+
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup dotnet CLI
       uses: actions/setup-dotnet@v3.2.0
@@ -24,6 +29,7 @@ jobs:
         dotnet-version: | 
           6.0.x
           7.0.x
+          8.0.x
 
     - name: Setup dependencies caching
       uses: actions/cache@v3
@@ -84,8 +90,8 @@ jobs:
       # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
 
-    - name: Test with dotnet (.NET Core 7.0)
-      run: dotnet test -f net7.0 --logger trx --collect "Code Coverage" --results-directory "TestResults-net7-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
+    - name: Test with dotnet (.NET Core 8.0)
+      run: dotnet test -f net8.0 --logger trx --collect "Code Coverage" --results-directory "TestResults-net7-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v4
       with:
@@ -94,8 +100,8 @@ jobs:
       # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
 
-    - name: Test Dependency Resolver with dotnet (.NET Core 7.0)
-      run: dotnet test -f net7.0 --logger trx --collect "Code Coverage" --results-directory "DependencyResolver-TestResults-net7-${{ matrix.dotnet-version }}" Framework\DependencyInjection\Tests\Cqrs.DependencyInjection.Tests.Unit\Cqrs.DependencyInjection.Tests.Unit.csproj
+    - name: Test Dependency Resolver with dotnet (.NET Core 8.0)
+      run: dotnet test -f net8.0 --logger trx --collect "Code Coverage" --results-directory "DependencyResolver-TestResults-net7-${{ matrix.dotnet-version }}" Framework\DependencyInjection\Tests\Cqrs.DependencyInjection.Tests.Unit\Cqrs.DependencyInjection.Tests.Unit.csproj
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v4
       with:

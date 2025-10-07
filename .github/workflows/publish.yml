@@ -17,10 +17,15 @@ jobs:
       matrix:
         os: [windows-latest]
         # this is fixed to just one version so we only run the push operation once
-        dotnet-version: [ '7.0.x' ]
+        dotnet-version: [ '8.0.x' ]
     steps:
+    - name: Install .NET Framework 4.0 Developer Pack
+      run: |
+        Invoke-WebRequest -Uri "https://download.microsoft.com/download/1/5/7/157F3F3E-3E3B-4F6E-9F3C-3D3E3F3E3F3E/NDP40-DevPack-KB2600211-x86-x64.exe" -OutFile "ndp40.exe"
+        Start-Process -FilePath "ndp40.exe" -ArgumentList "/quiet" -Wait
+
     - name: Checkout Code
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
 
     - name: Setup dotnet CLI
       uses: actions/setup-dotnet@v3.2.0
@@ -30,6 +35,7 @@ jobs:
           5.0.x
           6.0.x
           7.0.x
+          8.0.x
 
     - name: Setup dependencies caching
       uses: actions/cache@v3
