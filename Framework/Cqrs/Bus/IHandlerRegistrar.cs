@@ -27,7 +27,7 @@ namespace Cqrs.Bus
 		/// </remarks>
 		[OperationContract]
 		void RegisterHandler<TMessage>(
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>
@@ -40,7 +40,7 @@ namespace Cqrs.Bus
 		/// </summary>
 		[OperationContract]
 		void RegisterHandler<TMessage>(
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>

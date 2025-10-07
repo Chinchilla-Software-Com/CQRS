@@ -74,7 +74,7 @@ namespace Cqrs.Events
 		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersion">Load events starting from this version</param>
 		public override
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> Get
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
@@ -116,7 +116,7 @@ namespace Cqrs.Events
 				.Select(EventDeserialiser.Deserialise)
 				.ToList();
 			return
-#if NET40
+#if NET472
 				results;
 #else
 				await Task.FromResult(results);
@@ -130,7 +130,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
 		public override
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
@@ -169,7 +169,7 @@ namespace Cqrs.Events
 				.Select(EventDeserialiser.Deserialise)
 				.ToList();
 			return
-#if NET40
+#if NET472
 				results;
 #else
 				await Task.FromResult(results);
@@ -183,7 +183,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
 		public override
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetToDate
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
@@ -222,7 +222,7 @@ namespace Cqrs.Events
 				.Select(EventDeserialiser.Deserialise)
 				.ToList();
 			return
-#if NET40
+#if NET472
 				results;
 #else
 				await Task.FromResult(results);
@@ -237,7 +237,7 @@ namespace Cqrs.Events
 		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
 		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
 		public override
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
 #else
 			Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
@@ -252,7 +252,7 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
 		public override
-#if NET40
+#if NET472
 			IEnumerable<EventData> Get
 #else
 			async Task<IEnumerable<EventData>> GetAsync
@@ -285,7 +285,7 @@ namespace Cqrs.Events
 
 			var results = query.ToList();
 			return
-#if NET40
+#if NET472
 				results;
 #else
 				await Task.FromResult(results);
@@ -297,7 +297,7 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected override
-#if NET40
+#if NET472
 			void PersistEvent
 #else
 			async Task PersistEventAsync
@@ -337,7 +337,7 @@ namespace Cqrs.Events
 			}
 
 			events.Add(eventData);
-#if NET40
+#if NET472
 #else
 			await Task.CompletedTask;
 #endif

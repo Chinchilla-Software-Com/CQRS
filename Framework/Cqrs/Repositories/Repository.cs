@@ -60,7 +60,7 @@ namespace Cqrs.Repositories
 		/// Create the newly provided <paramref name="data"/> to storage.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void Create
 #else
 			async Task CreateAsync
@@ -68,7 +68,7 @@ namespace Cqrs.Repositories
 			(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
-#if NET40
+#if NET472
 				dataStore.Add
 #else
 				await dataStore.AddAsync
@@ -80,7 +80,7 @@ namespace Cqrs.Repositories
 		/// Create the newly provided <paramref name="data"/> to storage.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void Create
 #else
 			async Task CreateAsync
@@ -88,7 +88,7 @@ namespace Cqrs.Repositories
 			(IEnumerable<TData> data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
-#if NET40
+#if NET472
 				dataStore.Add
 #else
 				await dataStore.AddAsync
@@ -172,7 +172,7 @@ namespace Cqrs.Repositories
 		/// Update the provided <paramref name="data"/> in storage.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void Update
 #else
 			async Task UpdateAsync
@@ -180,7 +180,7 @@ namespace Cqrs.Repositories
 			(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
-#if NET40
+#if NET472
 				dataStore.Update
 #else
 				await dataStore.UpdateAsync
@@ -192,7 +192,7 @@ namespace Cqrs.Repositories
 		/// Will mark the <paramref name="data"/> as logically (or soft).
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void Delete
 #else
 			async Task DeleteAsync
@@ -200,7 +200,7 @@ namespace Cqrs.Repositories
 			(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
-#if NET40
+#if NET472
 				dataStore.Remove
 #else
 				await dataStore.RemoveAsync
@@ -212,7 +212,7 @@ namespace Cqrs.Repositories
 		/// Delete all contents (normally by use of a truncate operation) in storage.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void DeleteAll
 #else
 			async Task DeleteAllAsync
@@ -220,7 +220,7 @@ namespace Cqrs.Repositories
 			()
 		{
 			using (var dataStore = CreateDataStoreFunction())
-#if NET40
+#if NET472
 				dataStore.RemoveAll
 #else
 				await dataStore.RemoveAllAsync
@@ -232,7 +232,7 @@ namespace Cqrs.Repositories
 		/// Remove the provided <paramref name="data"/> from storage.
 		/// </summary>
 		public
-#if NET40
+#if NET472
 			void Destroy
 #else
 			async Task DestroyAsync
@@ -240,7 +240,7 @@ namespace Cqrs.Repositories
 			(TData data)
 		{
 			using (var dataStore = CreateDataStoreFunction())
-#if NET40
+#if NET472
 				dataStore.Destroy
 #else
 				await dataStore.DestroyAsync
@@ -254,7 +254,7 @@ namespace Cqrs.Repositories
 		/// <param name="rsn">The identifier if the <typeparamref name="TData"/> to load.</param>
 		/// <param name="throwExceptionOnMissingEntity">If true will throw an <see cref="Exception"/> if no data is found in storage.</param>
 		public virtual
-#if NET40
+#if NET472
 			TData Load
 #else
 			async Task<TData> LoadAsync
@@ -280,7 +280,7 @@ namespace Cqrs.Repositories
 				try
 				{
 					return
-#if NET40
+#if NET472
 						result;
 #else
 						await Task.FromResult(result);

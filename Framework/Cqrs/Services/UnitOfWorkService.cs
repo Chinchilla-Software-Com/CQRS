@@ -7,7 +7,7 @@
 #endregion
 
 using Cqrs.Domain;
-#if NET40
+#if NET472
 #else
 using System.Threading.Tasks;
 #endif
@@ -60,7 +60,7 @@ namespace Cqrs.Services
 		/// true if the provided <paramref name="commiter"/> is the <see cref="Committer"/>, false otherwise.
 		/// </returns>
 		public virtual
-#if NET40
+#if NET472
 		bool Commit
 #else
 		async Task<bool> CommitAsync
@@ -70,7 +70,7 @@ namespace Cqrs.Services
 			if (Committer != commiter)
 				return false;
 
-#if NET40
+#if NET472
 			UnitOfWork.Commit();
 #else
 			await UnitOfWork.CommitAsync();

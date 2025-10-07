@@ -13,7 +13,7 @@ using Chinchilla.Logging;
 using Cqrs.Domain;
 using Cqrs.Messages;
 
-#if NET40
+#if NET472
 #else
 using System.Threading.Tasks;
 #endif
@@ -69,14 +69,14 @@ namespace Cqrs.Events
 		/// <typeparam name="T">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to be saved.</param>
 		public virtual
-#if NET40
+#if NET472
 			void Save
 #else
 			async Task SaveAsync
 #endif
 				<T>(IEvent<TAuthenticationToken> @event)
 		{
-#if NET40
+#if NET472
 			Save
 #else
 			await SaveAsync
@@ -110,7 +110,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to be saved.</param>
 		public virtual
-#if NET40
+#if NET472
 			void Save
 #else
 			async Task SaveAsync
@@ -124,7 +124,7 @@ namespace Cqrs.Events
 			eventData.AggregateRsn = @event.GetIdentity();
 			eventData.Version = @event.Version;
 			eventData.CorrelationId = @event.CorrelationId;
-#if NET40
+#if NET472
 			PersistEvent
 #else
 			await PersistEventAsync
@@ -142,7 +142,7 @@ namespace Cqrs.Events
 		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersion">Load events starting from this version</param>
 		public virtual
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> Get
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
@@ -150,7 +150,7 @@ namespace Cqrs.Events
 				<T>(Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			IEnumerable<IEvent<TAuthenticationToken>> results = (
-#if NET40
+#if NET472
 			Get
 #else
 			await GetAsync
@@ -169,7 +169,7 @@ namespace Cqrs.Events
 		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersion">Load events starting from this version</param>
 		public abstract
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> Get
 #else
 			Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
@@ -183,7 +183,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
 		public abstract
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
 #else
 			Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
@@ -197,7 +197,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
 		public virtual
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
@@ -205,7 +205,7 @@ namespace Cqrs.Events
 				<T>(Guid aggregateId, int version)
 		{
 			IEnumerable<IEvent<TAuthenticationToken>> results = (
-#if NET40
+#if NET472
 			GetToVersion
 #else
 			await GetToVersionAsync
@@ -223,7 +223,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
 		public abstract
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetToDate
 #else
 			Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
@@ -237,7 +237,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
 		public virtual
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetToDate
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
@@ -245,7 +245,7 @@ namespace Cqrs.Events
 				<T>(Guid aggregateId, DateTime versionedDate)
 		{
 			IEnumerable<IEvent<TAuthenticationToken>> results = (
-#if NET40
+#if NET472
 			GetToDate
 #else
 			await GetToDateAsync
@@ -264,7 +264,7 @@ namespace Cqrs.Events
 		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
 		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
 		public abstract
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
 #else
 			Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
@@ -279,7 +279,7 @@ namespace Cqrs.Events
 		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
 		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
 		public virtual
-#if NET40
+#if NET472
 			IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
 #else
 			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
@@ -287,7 +287,7 @@ namespace Cqrs.Events
 				<T>(Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
 		{
 			IEnumerable<IEvent<TAuthenticationToken>> results = (
-#if NET40
+#if NET472
 			GetBetweenDates
 #else
 			await GetBetweenDatesAsync
@@ -303,7 +303,7 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
 		public abstract
-#if NET40
+#if NET472
 			IEnumerable<EventData> Get
 #else
 			Task<IEnumerable<EventData>> GetAsync
@@ -315,7 +315,7 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected abstract
-#if NET40
+#if NET472
 			void PersistEvent
 #else
 			Task PersistEventAsync

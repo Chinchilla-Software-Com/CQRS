@@ -39,7 +39,7 @@ namespace Cqrs.Domain
 		/// Gets or sets the Publisher used to publish events on once saved into the <see cref="EventStore"/>.
 		/// </summary>
 		protected
-#if NET40
+#if NET472
 			IEventPublisher
 #else
 			IAsyncEventPublisher
@@ -65,7 +65,7 @@ namespace Cqrs.Domain
 		/// Instantiates a new instance of <see cref="AggregateRepository{TAuthenticationToken}"/>
 		/// </summary>
 		public AggregateRepository(IAggregateFactory aggregateFactory, IEventStore<TAuthenticationToken> eventStore,
-#if NET40
+#if NET472
 			IEventPublisher
 #else
 			IAsyncEventPublisher
@@ -86,7 +86,7 @@ namespace Cqrs.Domain
 		/// <param name="aggregate">The <see cref="IAggregateRoot{TAuthenticationToken}"/> to save and persist.</param>
 		/// <param name="expectedVersion">The version number the <see cref="IAggregateRoot{TAuthenticationToken}"/> is expected to be at.</param>
 		public virtual
-#if NET40
+#if NET472
 			void Save
 #else
 			async Task SaveAsync
@@ -101,7 +101,7 @@ namespace Cqrs.Domain
 			if (expectedVersion != null)
 			{
 				IEnumerable<IEvent<TAuthenticationToken>> eventStoreResults = null;
-#if NET40
+#if NET472
 				eventStoreResults = EventStore.Get(aggregate.GetType(), aggregate.Id, false, expectedVersion.Value);
 #else
 				eventStoreResults = await EventStore.GetAsync(aggregate.GetType(), aggregate.Id, false, expectedVersion.Value);
@@ -139,7 +139,7 @@ namespace Cqrs.Domain
 				@event.TimeStamp = DateTimeOffset.UtcNow;
 				@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
-#if NET40
+#if NET472
 				EventStore.Save
 #else
 				await EventStore.SaveAsync
@@ -150,7 +150,7 @@ namespace Cqrs.Domain
 
 			aggregate.MarkChangesAsCommitted();
 			foreach (IEvent<TAuthenticationToken> @event in eventsToPublish)
-#if NET40
+#if NET472
 				PublishEvent
 #else
 				await PublishEventAsync
@@ -162,14 +162,14 @@ namespace Cqrs.Domain
 		/// Publish the saved <paramref name="event"/>.
 		/// </summary>
 		protected virtual
-#if NET40
+#if NET472
 			void PublishEvent
 #else
 			async Task PublishEventAsync
 #endif
 				(IEvent<TAuthenticationToken> @event)
 		{
-#if NET40
+#if NET472
 			Publisher.Publish
 #else
 			await Publisher.PublishAsync
@@ -187,7 +187,7 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		public virtual
-#if NET40
+#if NET472
 			TAggregateRoot Get
 #else
 			async Task<TAggregateRoot> GetAsync
@@ -196,7 +196,7 @@ namespace Cqrs.Domain
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			return
-#if NET40
+#if NET472
 				LoadAggregate
 #else
 				await LoadAggregateAsync
@@ -215,7 +215,7 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		public virtual
-#if NET40
+#if NET472
 			TAggregateRoot GetToVersion
 #else
 			async Task<TAggregateRoot> GetToVersionAsync
@@ -224,7 +224,7 @@ namespace Cqrs.Domain
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			return
-#if NET40
+#if NET472
 				LoadAggregateToVersion
 #else
 				await LoadAggregateToVersionAsync
@@ -243,7 +243,7 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		public virtual
-#if NET40
+#if NET472
 			TAggregateRoot GetToDate
 #else
 			async Task<TAggregateRoot> GetToDateAsync
@@ -252,7 +252,7 @@ namespace Cqrs.Domain
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			return
-#if NET40
+#if NET472
 				LoadAggregateToDate
 #else
 				await LoadAggregateToDateAsync
@@ -283,7 +283,7 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		protected virtual
-#if NET40
+#if NET472
 			TAggregateRoot LoadAggregate
 #else
 			async Task<TAggregateRoot> LoadAggregateAsync
@@ -297,7 +297,7 @@ namespace Cqrs.Domain
 					tryDependencyResolutionFirst = false;
 			var aggregate = AggregateFactory.Create<TAggregateRoot>(id, tryDependencyResolutionFirst);
 
-#if NET40
+#if NET472
 			LoadAggregateHistory
 #else
 			await LoadAggregateHistoryAsync
@@ -317,7 +317,7 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		protected virtual
-#if NET40
+#if NET472
 			TAggregateRoot LoadAggregateToVersion
 #else
 			async Task<TAggregateRoot> LoadAggregateToVersionAsync
@@ -331,7 +331,7 @@ namespace Cqrs.Domain
 					tryDependencyResolutionFirst = false;
 			var aggregate = AggregateFactory.Create<TAggregateRoot>(id, tryDependencyResolutionFirst);
 
-#if NET40
+#if NET472
 			LoadAggregateHistoryToVersion
 #else
 			await LoadAggregateHistoryToVersionAsync
@@ -351,7 +351,7 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		protected virtual
-#if NET40
+#if NET472
 			TAggregateRoot LoadAggregateToDate
 #else
 			async Task<TAggregateRoot> LoadAggregateToDateAsync
@@ -365,7 +365,7 @@ namespace Cqrs.Domain
 					tryDependencyResolutionFirst = false;
 			var aggregate = AggregateFactory.Create<TAggregateRoot>(id, tryDependencyResolutionFirst);
 
-#if NET40
+#if NET472
 			LoadAggregateHistoryToDate
 #else
 			await LoadAggregateHistoryToDateAsync
@@ -386,7 +386,7 @@ namespace Cqrs.Domain
 		/// </param>
 		/// <param name="throwExceptionOnNoEvents">If true will throw an instance of <see cref="AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
 		public virtual
-#if NET40
+#if NET472
 			void LoadAggregateHistory
 #else
 			async Task LoadAggregateHistoryAsync
@@ -398,7 +398,7 @@ namespace Cqrs.Domain
 			if (theseEvents == null)
 			{
 				theseEvents = (
-#if NET40
+#if NET472
 					EventStore.Get
 #else
 					await EventStore.GetAsync
@@ -435,7 +435,7 @@ namespace Cqrs.Domain
 		/// </param>
 		/// <param name="throwExceptionOnNoEvents">If true will throw an instance of <see cref="AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
 		public virtual
-#if NET40
+#if NET472
 			void LoadAggregateHistoryToVersion
 #else
 			async Task LoadAggregateHistoryToVersionAsync
@@ -447,7 +447,7 @@ namespace Cqrs.Domain
 			if (theseEvents == null)
 			{
 				theseEvents = (
-#if NET40
+#if NET472
 					EventStore.GetToVersion
 #else
 					await EventStore.GetToVersionAsync
@@ -484,7 +484,7 @@ namespace Cqrs.Domain
 		/// </param>
 		/// <param name="throwExceptionOnNoEvents">If true will throw an instance of <see cref="AggregateNotFoundException{TAggregateRoot,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
 		public virtual
-#if NET40
+#if NET472
 			void LoadAggregateHistoryToDate
 #else
 			async Task LoadAggregateHistoryToDateAsync
@@ -496,7 +496,7 @@ namespace Cqrs.Domain
 			if (theseEvents == null)
 			{
 				theseEvents = (
-#if NET40
+#if NET472
 					EventStore.GetToDate
 #else
 					await EventStore.GetToDateAsync

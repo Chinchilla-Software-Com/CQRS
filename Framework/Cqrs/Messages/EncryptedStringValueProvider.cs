@@ -43,7 +43,7 @@ namespace Cqrs.Messages
 
 		protected virtual object GetValue(PropertyInfo targetProperty, object target)
 		{
-#if NET40_OR_GREATER
+#if NET472_OR_GREATER
 			return targetProperty.GetValue(target, null);
 #else
 			return targetProperty.GetValue(target);
@@ -60,7 +60,7 @@ namespace Cqrs.Messages
 
 		protected virtual void SetValue(PropertyInfo targetProperty, object target, object value)
 		{
-#if NET40_OR_GREATER
+#if NET472_OR_GREATER
 			targetProperty.SetValue(target, value, null);
 #else
 			targetProperty.SetValue(target, value);

@@ -69,7 +69,7 @@ namespace Cqrs.Ninject.Configuration
 			else
 				inProcessBus = Kernel.Get<InProcessBus<TAuthenticationToken>>();
 
-#if NET40
+#if NET472
 			Bind<ICommandPublisher<TAuthenticationToken>>()
 #else
 			Bind<IAsyncCommandPublisher<TAuthenticationToken>>()
@@ -77,7 +77,7 @@ namespace Cqrs.Ninject.Configuration
 				.ToConstant(inProcessBus)
 				.InSingletonScope();
 
-#if NET40
+#if NET472
 			Bind<IPublishAndWaitCommandPublisher<TAuthenticationToken>>()
 #else
 			Bind<IAsyncPublishAndWaitCommandPublisher<TAuthenticationToken>>()
@@ -85,7 +85,7 @@ namespace Cqrs.Ninject.Configuration
 				.ToConstant(inProcessBus)
 				.InSingletonScope();
 
-#if NET40
+#if NET472
 			Bind<ICommandReceiver<TAuthenticationToken>>()
 #else
 			Bind<IAsyncCommandReceiver<TAuthenticationToken>>()
@@ -96,7 +96,7 @@ namespace Cqrs.Ninject.Configuration
 			bool isHandlerRegistrationBound = Kernel.GetBindings(typeof(ICommandHandlerRegistrar)).Any();
 			if (!isHandlerRegistrationBound)
 			{
-#if NET40
+#if NET472
 				Bind<ICommandHandlerRegistrar>()
 #else
 				Bind<IAsyncCommandHandlerRegistrar>()

@@ -8,7 +8,7 @@
 
 using System;
 using System.Linq;
-#if NET40
+#if NET472
 using cdmdotnet.AutoMapper;
 #endif
 using Cqrs.Authentication;
@@ -131,7 +131,7 @@ namespace Cqrs.Ninject.Configuration
 			RegisterQueryBuilders();
 			RegisterServices();
 			RegisterCqrsRequirements();
-#if NET40
+#if NET472
 			RegisterAutomapperComponents();
 #endif
 			RegisterLoggerComponents();
@@ -201,7 +201,7 @@ namespace Cqrs.Ninject.Configuration
 			}
 		}
 
-#if NET40
+#if NET472
 		/// <summary>
 		/// Register the all <see cref="IAutomapHelper"/>
 		/// </summary>

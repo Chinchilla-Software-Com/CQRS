@@ -29,7 +29,7 @@ namespace Cqrs.Domain
 		/// <typeparam name="TSaga">The <see cref="Type"/> of the <see cref="ISaga{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="saga">The <see cref="ISaga{TAuthenticationToken}"/> to save and persist.</param>
 		/// <param name="expectedVersion">The version number the <see cref="ISaga{TAuthenticationToken}"/> is expected to be at.</param>
-#if NET40
+#if NET472
 		void Save
 #else
 		Task SaveAsync
@@ -46,7 +46,7 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="ISaga{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-#if NET40
+#if NET472
 		TSaga Get
 #else
 		Task<TSaga> GetAsync

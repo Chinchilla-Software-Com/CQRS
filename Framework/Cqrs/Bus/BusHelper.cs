@@ -254,13 +254,13 @@ namespace Cqrs.Bus
 		/// Build a message handler that implements telemetry capturing as well as off thread handling.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>
 #endif
 				BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper,
-#if NET40
+#if NET472
 				Action<TMessage>
 #else
 				Func<TMessage, Task>
@@ -268,7 +268,7 @@ namespace Cqrs.Bus
 					handler, bool holdMessageLock, string source)
 			where TMessage : IMessage
 		{
-#if NET40
+#if NET472
 			Action<TMessage> registerableMessageHandler = 
 #else
 			Func<TMessage, Task> registerableMessageHandler = async
@@ -309,7 +309,7 @@ namespace Cqrs.Bus
 
 				try
 				{
-#if NET40
+#if NET472
 #else
 					await
 #endif
@@ -386,13 +386,13 @@ namespace Cqrs.Bus
 		/// Build a message handler that implements telemetry capturing as well as off thread handling.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>
 #endif
 				BuildActionHandler<TMessage>(
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>
@@ -400,14 +400,14 @@ namespace Cqrs.Bus
 			handler, bool holdMessageLock)
 			where TMessage : IMessage
 		{
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>
 #endif
 				registerableMessageHandler = handler;
 
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>
@@ -416,35 +416,35 @@ namespace Cqrs.Bus
 			if (!holdMessageLock)
 			{
 				registerableHandler =
-#if NET40
+#if NET472
 #else
 					async
 #endif
 					message =>
 					{
-#if NET40
+#if NET472
 #else
 						// attempt to get this to release quickly
 						await Task.CompletedTask;
 #endif
 						// runs off in a very async fashion... inner task runs while out workflow continues without waiting for completion
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-#if NET40
+#if NET472
 						Task.Factory.StartNewSafely(
 #else
 						Task.Factory.StartNewSafelyAsync(async
 #endif
 						() =>
 						{
-#if NET40
+#if NET472
 #else
-								// attempt to get this to release quickly
-								await Task.CompletedTask;
+							// attempt to get this to release quickly
+							await Task.CompletedTask;
 								await
 #endif
 									registerableMessageHandler(message);
 						})
-#if NET40
+#if NET472
 #else
 						.ConfigureAwait(false)
 #endif

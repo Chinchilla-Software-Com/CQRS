@@ -1,4 +1,4 @@
-﻿#if NET40_OR_GREATER
+﻿#if NET472_OR_GREATER
 
 #region Copyright
 // // -----------------------------------------------------------------------
@@ -46,7 +46,7 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
 		protected override
-#if NET40
+#if NET472
 			Snapshot Get
 #else
 			async Task<Snapshot> GetAsync
@@ -66,7 +66,7 @@ namespace Cqrs.Events
 				if (query != null)
 					result = EventDeserialiser.Deserialise(query);
 
-#if NET40
+#if NET472
 				return result;
 #else
 				return await Task.FromResult(result);
@@ -79,7 +79,7 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>
 		public override
-#if NET40
+#if NET472
 			void Save
 #else
 			async Task SaveAsync
@@ -89,7 +89,7 @@ namespace Cqrs.Events
 			using (DataContext dbDataContext = CreateDbDataContext(snapshot.GetType().Name))
 				Add(dbDataContext, snapshot);
 
-#if NET40
+#if NET472
 #else
 			await Task.CompletedTask;
 #endif

@@ -7,7 +7,7 @@
 #endregion
 
 using System;
-#if NET40
+#if NET472
 #else
 using System.Threading.Tasks;
 #endif
@@ -26,7 +26,7 @@ namespace Cqrs.Messages
 		/// Responds to the provided <paramref name="message"/>.
 		/// </summary>
 		/// <param name="message">The <typeparamref name="TMessage"/> to respond to or "handle"</param>
-#if NET40
+#if NET472
 		void Handle
 #else
 		Task HandleAsync

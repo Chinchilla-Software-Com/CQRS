@@ -23,7 +23,7 @@ namespace Cqrs.Repositories
 		/// <summary>
 		/// Create the newly provided <paramref name="data"/> to storage.
 		/// </summary>
-#if NET40
+#if NET472
 		void Create
 #else
 		Task CreateAsync
@@ -33,7 +33,7 @@ namespace Cqrs.Repositories
 		/// <summary>
 		/// Create the newly provided <paramref name="data"/> to storage.
 		/// </summary>
-#if NET40
+#if NET472
 		void Create
 #else
 		Task CreateAsync
@@ -56,7 +56,7 @@ namespace Cqrs.Repositories
 		/// <summary>
 		/// Update the provided <paramref name="data"/> in storage.
 		/// </summary>
-#if NET40
+#if NET472
 		void Update
 #else
 		Task UpdateAsync
@@ -66,7 +66,7 @@ namespace Cqrs.Repositories
 		/// <summary>
 		/// Will mark the <paramref name="data"/> as logically (or soft).
 		/// </summary>
-#if NET40
+#if NET472
 		void Delete
 #else
 		Task DeleteAsync
@@ -76,7 +76,7 @@ namespace Cqrs.Repositories
 		/// <summary>
 		/// Delete all contents (normally by use of a truncate operation) in storage.
 		/// </summary>
-#if NET40
+#if NET472
 		void DeleteAll
 #else
 		Task DeleteAllAsync
@@ -86,7 +86,7 @@ namespace Cqrs.Repositories
 		/// <summary>
 		/// Remove the provided <paramref name="data"/> from storage.
 		/// </summary>
-#if NET40
+#if NET472
 		void Destroy
 #else
 		Task DestroyAsync
@@ -99,7 +99,7 @@ namespace Cqrs.Repositories
 		/// <param name="rsn">The identifier if the <typeparamref name="TData"/> to load.</param>
 		/// <param name="throwExceptionOnMissingEntity">If true will throw an <see cref="Exception"/> if no data is found in storage.</param>
 
-#if NET40
+#if NET472
 		TData Load
 #else
 		Task<TData> LoadAsync

@@ -15,7 +15,7 @@ using Cqrs.Domain.Exceptions;
 using Cqrs.Domain.Factories;
 using Cqrs.Events;
 
-#if NET40
+#if NET472
 #else
 using System.Threading.Tasks;
 #endif
@@ -37,7 +37,7 @@ namespace Cqrs.Domain
 		/// Gets or sets the Publisher used to publish events on once saved into the <see cref="EventStore"/>.
 		/// </summary>
 		protected
-#if NET40
+#if NET472
 			IEventPublisher
 #else
 			IAsyncEventPublisher
@@ -48,7 +48,7 @@ namespace Cqrs.Domain
 		/// Gets or sets the Publisher used to publish an <see cref="ICommand{TAuthenticationToken}"/>
 		/// </summary>
 		protected
-#if NET40
+#if NET472
 			ICommandPublisher
 #else
 			IAsyncCommandPublisher
@@ -69,13 +69,13 @@ namespace Cqrs.Domain
 		/// Instantiates a new instance of <see cref="SagaRepository{TAuthenticationToken}"/>
 		/// </summary>
 		public SagaRepository(IAggregateFactory sagaFactory, IEventStore<TAuthenticationToken> eventStore,
-#if NET40
+#if NET472
 			IEventPublisher
 #else
 			IAsyncEventPublisher
 #endif
 				<TAuthenticationToken> eventPublisher,
-#if NET40
+#if NET472
 			ICommandPublisher
 #else
 			IAsyncCommandPublisher
@@ -96,7 +96,7 @@ namespace Cqrs.Domain
 		/// <param name="saga">The <see cref="ISaga{TAuthenticationToken}"/> to save and persist.</param>
 		/// <param name="expectedVersion">The version number the <see cref="ISaga{TAuthenticationToken}"/> is expected to be at.</param>
 		public virtual
-#if NET40
+#if NET472
 			void Save
 #else
 			async Task SaveAsync
@@ -111,7 +111,7 @@ namespace Cqrs.Domain
 			{
 				if (commandsToPublish.Any())
 				{
-#if NET40
+#if NET472
 					PublishCommands
 #else
 					await PublishCommandsAsync
@@ -121,7 +121,7 @@ namespace Cqrs.Domain
 
 				if (nonSagaEventsToPublish.Any())
 				{
-#if NET40
+#if NET472
 					PublishEvents
 #else
 					await PublishEventsAsync
@@ -134,7 +134,7 @@ namespace Cqrs.Domain
 			if (expectedVersion != null)
 			{
 				IEnumerable<IEvent<TAuthenticationToken>> eventStoreResults =
-#if NET40
+#if NET472
 					EventStore.Get
 #else
 					await EventStore.GetAsync
@@ -161,7 +161,7 @@ namespace Cqrs.Domain
 				@event.Version = version;
 				@event.TimeStamp = DateTimeOffset.UtcNow;
 				@event.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-#if NET40
+#if NET472
 				EventStore.Save
 #else
 				await EventStore.SaveAsync
@@ -173,7 +173,7 @@ namespace Cqrs.Domain
 			saga.MarkChangesAsCommitted();
 			foreach (ISagaEvent<TAuthenticationToken> @event in eventsToPublish)
 			{
-#if NET40
+#if NET472
 				PublishEvent
 #else
 				await PublishEventAsync
@@ -183,7 +183,7 @@ namespace Cqrs.Domain
 
 			if (commandsToPublish.Any())
 			{
-#if NET40
+#if NET472
 				PublishCommands
 #else
 					await PublishCommandsAsync
@@ -193,7 +193,7 @@ namespace Cqrs.Domain
 
 			if (nonSagaEventsToPublish.Any())
 			{
-#if NET40
+#if NET472
 				PublishEvents
 #else
 					await PublishEventsAsync
@@ -206,14 +206,14 @@ namespace Cqrs.Domain
 		/// Publish the saved <paramref name="event"/>.
 		/// </summary>
 		protected virtual
-#if NET40
+#if NET472
 			void PublishEvent
 #else
 			async Task PublishEventAsync
 #endif
 			(ISagaEvent<TAuthenticationToken> @event)
 		{
-#if NET40
+#if NET472
 			EventPublisher.Publish
 #else
 			await EventPublisher.PublishAsync
@@ -225,14 +225,14 @@ namespace Cqrs.Domain
 		/// Publish the <paramref name="commands"/>.
 		/// </summary>
 		protected virtual
-#if NET40
+#if NET472
 			void PublishCommands
 #else
 			async Task PublishCommandsAsync
 #endif
 				(IEnumerable<ICommand<TAuthenticationToken>> commands)
 		{
-#if NET40
+#if NET472
 			CommandPublisher.Publish
 #else
 			await CommandPublisher.PublishAsync
@@ -244,14 +244,14 @@ namespace Cqrs.Domain
 		/// Publish the <paramref name="events"/>.
 		/// </summary>
 		protected virtual
-#if NET40
+#if NET472
 			void PublishEvents
 #else
 			async Task PublishEventsAsync
 #endif
 				(IEnumerable<IEvent<TAuthenticationToken>> events)
 		{
-#if NET40
+#if NET472
 			EventPublisher.Publish
 #else
 			await EventPublisher.PublishAsync
@@ -269,7 +269,7 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		public virtual
-#if NET40
+#if NET472
 			TSaga Get
 #else
 			async Task<TSaga> GetAsync
@@ -278,7 +278,7 @@ namespace Cqrs.Domain
 			where TSaga : ISaga<TAuthenticationToken>
 		{
 			return
-#if NET40
+#if NET472
 				LoadSaga
 #else
 				await LoadSagaAsync
@@ -309,7 +309,7 @@ namespace Cqrs.Domain
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		protected virtual
-#if NET40
+#if NET472
 			TSaga LoadSaga
 #else
 			async Task<TSaga> LoadSagaAsync
@@ -319,7 +319,7 @@ namespace Cqrs.Domain
 		{
 			var saga = SagaFactory.Create<TSaga>(id, false);
 
-#if NET40
+#if NET472
 			LoadSagaHistory
 #else
 			await LoadSagaHistoryAsync
@@ -340,7 +340,7 @@ namespace Cqrs.Domain
 		/// </param>
 		/// <param name="throwExceptionOnNoEvents">If true will throw an instance of <see cref="SagaNotFoundException{TSaga,TAuthenticationToken}"/> if no aggregate events or provided or found in the <see cref="EventStore"/>.</param>
 		public virtual
-#if NET40
+#if NET472
 			void LoadSagaHistory
 #else
 			async Task LoadSagaHistoryAsync
@@ -350,7 +350,7 @@ namespace Cqrs.Domain
 		{
 			IList<ISagaEvent<TAuthenticationToken>> theseEvents = events ?? 
 			(
-#if NET40
+#if NET472
 				EventStore.Get
 #else
 				await EventStore.GetAsync
