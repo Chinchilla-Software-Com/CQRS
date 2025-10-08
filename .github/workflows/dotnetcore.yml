@@ -86,22 +86,22 @@ jobs:
       if: ${{ always() }}
 
     - name: Test with dotnet (.NET Core 8.0)
-      run: dotnet test -f net8.0 --logger trx --collect "Code Coverage" --results-directory "TestResults-net7-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
+      run: dotnet test -f net8.0 --logger trx --collect "Code Coverage" --results-directory "TestResults-net8-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v4
       with:
-        name: dotnet-net7-results-${{ matrix.dotnet-version }}
-        path: TestResults-net7-${{ matrix.dotnet-version }}
+        name: dotnet-net8-ninject-results-${{ matrix.dotnet-version }}
+        path: TestResults-net8-${{ matrix.dotnet-version }}
       # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
 
     - name: Test Dependency Resolver with dotnet (.NET Core 8.0)
-      run: dotnet test -f net8.0 --logger trx --collect "Code Coverage" --results-directory "DependencyResolver-TestResults-net7-${{ matrix.dotnet-version }}" Framework\DependencyInjection\Tests\Cqrs.DependencyInjection.Tests.Unit\Cqrs.DependencyInjection.Tests.Unit.csproj
+      run: dotnet test -f net8.0 --logger trx --collect "Code Coverage" --results-directory "DependencyResolver-TestResults-net8-${{ matrix.dotnet-version }}" Framework\DependencyInjection\Tests\Cqrs.DependencyInjection.Tests.Unit\Cqrs.DependencyInjection.Tests.Unit.csproj
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v4
       with:
-        name: dotnet-net7-results-${{ matrix.dotnet-version }}
-        path: DependencyResolver-TestResults-net7-${{ matrix.dotnet-version }}
+        name: dotnet-net8-di-results-${{ matrix.dotnet-version }}
+        path: DependencyResolver-TestResults-net8-${{ matrix.dotnet-version }}
       # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
 
