@@ -73,12 +73,12 @@ namespace Cqrs.Azure.Functions.Isolated.Configuration
 #endif
 			if (DependencyResolver.ConfigurationManager == null)
 			{
-				services.AddSingleton<IConfigurationManager, CloudConfigurationManager>();
-				DependencyResolver.ConfigurationManager = Resolve<IConfigurationManager>(services);
+				services.AddSingleton<Cqrs.Configuration.IConfigurationManager, CloudConfigurationManager>();
+				DependencyResolver.ConfigurationManager = Resolve<Cqrs.Configuration.IConfigurationManager>(services);
 			}
 			else
 			{
-				services.AddSingleton<IConfigurationManager>(DependencyResolver.ConfigurationManager);
+				services.AddSingleton<Cqrs.Configuration.IConfigurationManager>(DependencyResolver.ConfigurationManager);
 			}
 		}
 
