@@ -19,11 +19,6 @@ jobs:
         # this is fixed to just one version so we only run the push operation once
         dotnet-version: [ '8.0.x' ]
     steps:
-    - name: Install .NET Framework 4.0 Developer Pack
-      run: |
-        Invoke-WebRequest -Uri "https://archive.org/download/framework-pack/NDP452-KB2901907-x86-x64-AllOS-ENU.exe" -OutFile "ndp40.exe"
-        Start-Process -FilePath "ndp40.exe" -ArgumentList "/quiet" -Wait
-
     - name: Checkout Code
       uses: actions/checkout@v4
 
