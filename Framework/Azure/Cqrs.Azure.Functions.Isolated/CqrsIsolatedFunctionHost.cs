@@ -108,7 +108,7 @@ namespace Cqrs.Azure.Functions.Isolated
 			IConfigurationRoot config = (configBuilder ?? new ConfigurationBuilder())
 				.SetBasePath(actualRoot)
 				.AddCommandLine(Environment.GetCommandLineArgs())
-				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 			configurationManager = new CloudConfigurationManager(config);
@@ -158,7 +158,7 @@ namespace Cqrs.Azure.Functions.Isolated
 					config
 						.SetBasePath(actualRoot)
 						.AddCommandLine(Environment.GetCommandLineArgs())
-						.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
+						.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
 						.AddEnvironmentVariables();
 #endif
 					/*
@@ -213,12 +213,12 @@ namespace Cqrs.Azure.Functions.Isolated
 		/// </summary>
 		public static void SetExecutionPath
 		(
-#if NET6_0
+#if NET6_0_OR_GREATER
 			Microsoft.Extensions.Configuration.IConfigurationRoot config
 #endif
 		)
 		{
-#if NET6_0
+#if NET6_0_OR_GREATER
 			SetConfigurationManager(config);
 #endif
 
@@ -259,7 +259,7 @@ namespace Cqrs.Azure.Functions.Isolated
 			var results = new List<Module>
 			{
 				new TIsolatedFunctionHostModule(),
-#if NET6_0
+#if NET6_0_OR_GREATER
 				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(new CloudConfigurationManager(Cqrs.Configuration.ConfigurationManager.BaseConfiguration))
 #else
 				new CqrsModule<TAuthenticationToken, TAuthenticationTokenHelper>(new CloudConfigurationManager())

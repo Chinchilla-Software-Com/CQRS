@@ -9,7 +9,7 @@
 using System;
 using System.Reflection;
 
-#if NET462
+#if NET472
 using cdmdotnet.AutoMapper;
 #endif
 using Chinchilla.Logging;
@@ -145,7 +145,7 @@ namespace Cqrs.DependencyInjection.Modules
 			RegisterQueryBuilders(services);
 			RegisterServices(services);
 			RegisterCqrsRequirements(services);
-#if NET462
+#if NET472
 			RegisterAutomapperComponents(services);
 #endif
 			RegisterLoggerComponents(services);
@@ -199,7 +199,7 @@ namespace Cqrs.DependencyInjection.Modules
 			}
 		}
 
-#if NET462
+#if NET472
 		/// <summary>
 		/// Register the all <see cref="IAutomapHelper"/>
 		/// </summary>

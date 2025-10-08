@@ -168,7 +168,7 @@ namespace Cqrs.Configuration
 			}
 		}
 
-#if NET40
+#if NET472
 		/// <summary>
 		/// Extract the <see cref="IHandlerRegistrar.RegisterHandler{TMessage}(System.Action{TMessage},System.Type,bool)"/> method of <see cref="GetEventHandlerRegistrar"/> or <see cref="GetCommandHandlerRegistrar"/>.
 		/// Create an <see cref="Action"/> around the provided <paramref name="executorType"/>
@@ -300,7 +300,7 @@ namespace Cqrs.Configuration
 		/// <param name="resolveMessageHandlerInterface">Not used.</param>
 		protected virtual HandlerDelegate BuildDelegateAction(Type executorType, Func<Type, IEnumerable<Type>> resolveMessageHandlerInterface)
 		{
-#if NET40
+#if NET472
 			Action<dynamic> handlerDelegate = 
 #else
 			Func<dynamic, Task> handlerDelegate = async
@@ -316,7 +316,7 @@ namespace Cqrs.Configuration
 				telemetryHelper.TrackTrace($"Calling handler '{handlerName}'", 1);
 				try
 				{
-#if NET40
+#if NET472
 					handler.Handle(x);
 #else
 					await handler.HandleAsync(x);

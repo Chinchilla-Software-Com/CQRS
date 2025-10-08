@@ -29,7 +29,7 @@ namespace Cqrs.DependencyInjection.Tests.Unit
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 

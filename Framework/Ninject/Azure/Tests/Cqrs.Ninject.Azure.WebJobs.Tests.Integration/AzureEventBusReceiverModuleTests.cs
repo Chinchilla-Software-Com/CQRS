@@ -63,7 +63,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 #else
 			configuration = new ConfigurationBuilder()
 //				.SetBasePath(context.FunctionAppDirectory)
-				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 			.Build();
 

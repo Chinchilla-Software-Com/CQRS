@@ -12,7 +12,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 		{
 			// Arrange
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 			IConfigurationManager configurationManager = new CloudConfigurationManager(config);
@@ -29,7 +29,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 		{
 			// Arrange
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 			IConfigurationManager configurationManager = new CloudConfigurationManager(config);
@@ -52,7 +52,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 		{
 			// Arrange
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 			IConfigurationManager configurationManager = new CloudConfigurationManager(config);
@@ -69,7 +69,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 		{
 			// Arrange
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -87,7 +87,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 		{
 			// Arrange
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 			IConfigurationManager configurationManager = new CloudConfigurationManager(config);

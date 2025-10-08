@@ -73,7 +73,7 @@ namespace Cqrs.Messages
 				if (pi != null)
 				{
 					EncryptedAttribute encryptedAttribute =
-#if NET40_OR_GREATER
+#if NET472_OR_GREATER
 						pi.GetCustomAttributes(true).Where(ca => ca is EncryptedAttribute).FirstOrDefault()
 #else
 						pi.GetCustomAttribute(typeof(EncryptedAttribute), true)

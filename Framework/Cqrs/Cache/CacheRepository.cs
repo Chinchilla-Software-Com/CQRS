@@ -43,13 +43,13 @@ namespace Cqrs.Cache
 		private Func<CacheItemPolicy> PolicyFactory { get; set; }
 
 		private static readonly ConcurrentDictionary<string,
-#if NET40
+#if NET472
 		object
 #else
 		SemaphoreSlim
 #endif
 		> Locks = new ConcurrentDictionary<string,
-#if NET40
+#if NET472
 		object
 #else
 		SemaphoreSlim
@@ -74,7 +74,7 @@ namespace Cqrs.Cache
 					SlidingExpiration = new TimeSpan(0,0,15,0),
 					RemovedCallback = x =>
 					{
-#if NET40
+#if NET472
 						object
 #else
 						SemaphoreSlim
@@ -93,7 +93,7 @@ namespace Cqrs.Cache
 		/// <param name="aggregate">The <see cref="IAggregateRoot{TAuthenticationToken}"/> to save and persist.</param>
 		/// <param name="expectedVersion">The version number the <see cref="IAggregateRoot{TAuthenticationToken}"/> is expected to be at.</param>
 		public virtual
-#if NET40
+#if NET472
 			void Save
 #else
 			async Task SaveAsync
@@ -104,7 +104,7 @@ namespace Cqrs.Cache
 			var idString = aggregate.Id.ToString();
 			try
 			{
-#if NET40
+#if NET472
 				lock (Locks.GetOrAdd(idString, x => new object()))
 #else
 				var lockObject = Locks.GetOrAdd(idString, x => new SemaphoreSlim(1, 1));
@@ -114,14 +114,14 @@ namespace Cqrs.Cache
 				{
 					if (aggregate.Id != Guid.Empty && !IsTracked(aggregate.Id))
 					Cache.Add(idString, aggregate, PolicyFactory.Invoke());
-#if NET40
+#if NET472
 					Repository.Save
 #else
 					await Repository.SaveAsync
 #endif
 						(aggregate, expectedVersion);
 				}
-#if NET40
+#if NET472
 #else
 				finally
 				{
@@ -152,7 +152,7 @@ namespace Cqrs.Cache
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		public virtual
-#if NET40
+#if NET472
 			TAggregateRoot Get
 #else
 			async Task<TAggregateRoot> GetAsync
@@ -164,7 +164,7 @@ namespace Cqrs.Cache
 			try
 			{
 				IList<IEvent<TAuthenticationToken>> theseEvents = null;
-#if NET40
+#if NET472
 				lock (Locks.GetOrAdd(idString, x => new object()))
 #else
 				var lockObject = Locks.GetOrAdd(idString, x => new SemaphoreSlim(1, 1));
@@ -179,7 +179,7 @@ namespace Cqrs.Cache
 						theseEvents = events;
 						if (theseEvents == null)
 						{
-#if NET40
+#if NET472
 							theseEvents = EventStore.Get<TAggregateRoot>(aggregateId, false, aggregate.Version).ToList();
 #else
 							theseEvents = (await EventStore.GetAsync<TAggregateRoot>(aggregateId, false, aggregate.Version)).ToList();
@@ -196,7 +196,7 @@ namespace Cqrs.Cache
 						}
 					}
 
-#if NET40
+#if NET472
 					aggregate = Repository.Get<TAggregateRoot>(aggregateId, theseEvents);
 #else
 					aggregate = await Repository.GetAsync<TAggregateRoot>(aggregateId, theseEvents);
@@ -204,7 +204,7 @@ namespace Cqrs.Cache
 					Cache.Add(aggregateId.ToString(), aggregate, PolicyFactory.Invoke());
 					return aggregate;
 				}
-#if NET40
+#if NET472
 #else
 				finally
 				{
@@ -232,7 +232,7 @@ namespace Cqrs.Cache
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		public
-#if NET40
+#if NET472
 		TAggregateRoot GetToVersion
 #else
 		Task<TAggregateRoot> GetToVersionAsync
@@ -254,7 +254,7 @@ namespace Cqrs.Cache
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		public
-#if NET40
+#if NET472
 		TAggregateRoot GetToDate
 #else
 		Task<TAggregateRoot> GetToDateAsync

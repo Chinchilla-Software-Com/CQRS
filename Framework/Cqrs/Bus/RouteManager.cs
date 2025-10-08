@@ -59,7 +59,7 @@ namespace Cqrs.Bus
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
 		public virtual void RegisterHandler<TMessage>(
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>
@@ -90,7 +90,7 @@ namespace Cqrs.Bus
 		/// Register an event or command handler that will listen and respond to events or commands.
 		/// </summary>
 		public virtual void RegisterHandler<TMessage>(
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>
@@ -105,7 +105,7 @@ namespace Cqrs.Bus
 		/// Register an event handler that will listen and respond to all events.
 		/// </summary>
 		public virtual void RegisterGlobalEventHandler<TMessage>(
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>

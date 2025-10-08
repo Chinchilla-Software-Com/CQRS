@@ -7,7 +7,7 @@
 #endregion
 
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-#if NET6_0
+#if NET6_0_OR_GREATER
 using Microsoft.Extensions.Configuration;
 using System;
 #endif
@@ -48,7 +48,7 @@ namespace Cqrs.Scheduler.Trigger
 			builder.ConfigurationBuilder
 				.SetBasePath(context.ApplicationRootPath)
 				.AddCommandLine(Environment.GetCommandLineArgs())
-				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables();
 #endif
 		}

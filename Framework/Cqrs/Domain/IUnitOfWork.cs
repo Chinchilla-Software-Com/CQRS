@@ -25,7 +25,7 @@ namespace Cqrs.Domain
 		/// Add an item into the <see cref="IUnitOfWork{TAuthenticationToken}"/> ready to be committed.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
-#if NET40
+#if NET472
 		void Add
 #else
 		Task AddAsync
@@ -37,7 +37,7 @@ namespace Cqrs.Domain
 		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded.
 		/// </summary>
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
-#if NET40
+#if NET472
 		TAggregateRoot Get
 #else
 		Task<TAggregateRoot> GetAsync
@@ -51,7 +51,7 @@ namespace Cqrs.Domain
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
-#if NET40
+#if NET472
 		TAggregateRoot GetToVersion
 #else
 		Task<TAggregateRoot> GetToVersionAsync
@@ -65,7 +65,7 @@ namespace Cqrs.Domain
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-#if NET40
+#if NET472
 		TAggregateRoot GetToDate
 #else
 		Task<TAggregateRoot> GetToDateAsync
@@ -78,7 +78,7 @@ namespace Cqrs.Domain
 		/// </summary>
 
 
-#if NET40
+#if NET472
 		void Commit
 #else
 		Task CommitAsync

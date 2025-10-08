@@ -66,7 +66,7 @@ namespace Cqrs.Snapshots
 			SagaFactory = sagaFactory;
 		}
 
-#if NET40
+#if NET472
 		/// <summary>
 		/// Calls <see cref="TryMakeSnapshot"/> then ISagaRepository{TAuthenticationToken}.Save on <see cref="Repository"/>.
 		/// </summary>
@@ -82,7 +82,7 @@ namespace Cqrs.Snapshots
 		/// <param name="expectedVersion">The version number the <see cref="ISaga{TAuthenticationToken}"/> is expected to be at.</param>
 #endif
 		public virtual
-#if NET40
+#if NET472
 			void Save
 #else
 			async Task SaveAsync
@@ -93,14 +93,14 @@ namespace Cqrs.Snapshots
 			// We need to grab these first as the changes will have been commited already by the time we go to make the snapshot.
 			IEnumerable<ISagaEvent<TAuthenticationToken>> uncommittedChanges = saga.GetUncommittedChanges();
 			// Save the evets first then snapshot the system.
-#if NET40
+#if NET472
 			Repository.Save
 #else
 			await Repository.SaveAsync
 #endif
 				(saga, expectedVersion);
 
-#if NET40
+#if NET472
 			TryMakeSnapshot
 #else
 			await TryMakeSnapshotAsync
@@ -108,7 +108,7 @@ namespace Cqrs.Snapshots
 				(saga, uncommittedChanges);
 		}
 
-#if NET40
+#if NET472
 		/// <summary>
 		/// Retrieves an <see cref="ISaga{TAuthenticationToken}"/> of type <typeparamref name="TSaga"/>,
 		/// First using <see cref="TryRestoreSagaFromSnapshot{TSaga}"/>, otherwise via ISagaRepository{TAuthenticationToken}.Get on <see cref="Repository"/>
@@ -134,7 +134,7 @@ namespace Cqrs.Snapshots
 		/// </param>
 #endif
 		public virtual
-#if NET40
+#if NET472
 			TSaga Get
 #else
 			async Task<TSaga> GetAsync
@@ -144,7 +144,7 @@ namespace Cqrs.Snapshots
 		{
 			var saga = SagaFactory.Create<TSaga>();
 			int snapshotVersion =
-#if NET40
+#if NET472
 				TryRestoreSagaFromSnapshot
 #else
 				await TryRestoreSagaFromSnapshotAsync
@@ -153,7 +153,7 @@ namespace Cqrs.Snapshots
 			if (snapshotVersion == -1)
 			{
 				return
-#if NET40
+#if NET472
 					Repository.Get
 #else
 					await Repository.GetAsync
@@ -161,7 +161,7 @@ namespace Cqrs.Snapshots
 						<TSaga>(sagaId);
 			}
 			IEnumerable<ISagaEvent<TAuthenticationToken>> theseEvents = events ?? (
-#if NET40
+#if NET472
 				EventStore.Get
 #else
 				await EventStore.GetAsync
@@ -174,7 +174,7 @@ namespace Cqrs.Snapshots
 			return saga;
 		}
 
-#if NET40
+#if NET472
 		/// <summary>
 		/// Calls <see cref="ISnapshotStrategy{TAuthenticationToken}.IsSnapshotable"/> on <see cref="SnapshotStrategy"/>
 		/// If the <typeparamref name="TSaga"/> is snapshot-able <see cref="ISnapshotStore.Get{TSaga}"/> is called on <see cref="SnapshotStore"/>.
@@ -198,7 +198,7 @@ namespace Cqrs.Snapshots
 		/// <remarks>There may be more events after the snapshot that still need to rehydrated into the <typeparamref name="TSaga"/> after restoration.</remarks>
 #endif
 		protected virtual
-#if NET40
+#if NET472
 			int TryRestoreSagaFromSnapshot
 #else
 			async Task<int> TryRestoreSagaFromSnapshotAsync
@@ -209,7 +209,7 @@ namespace Cqrs.Snapshots
 			if (SnapshotStrategy.IsSnapshotable(typeof(TSaga)))
 			{
 				Snapshot snapshot =
-#if NET40
+#if NET472
 					SnapshotStore.Get
 #else
 					await SnapshotStore.GetAsync
@@ -224,7 +224,7 @@ namespace Cqrs.Snapshots
 			return version;
 		}
 
-#if NET40
+#if NET472
 		/// <summary>
 		/// Calls <see cref="ISnapshotStrategy{TAuthenticationToken}.ShouldMakeSnapShot(ISaga{TAuthenticationToken}, IEnumerable{ISagaEvent{TAuthenticationToken}})"/> on <see cref="SnapshotStrategy"/>
 		/// If the <see cref="ISaga{TAuthenticationToken}"/> is snapshot-able <see cref="SnapshotSaga{TAuthenticationToken,TSnapshot}.GetSnapshot"/> is called
@@ -242,7 +242,7 @@ namespace Cqrs.Snapshots
 		/// <param name="uncommittedChanges">A collection of uncommited changes to assess. If null the saga will be asked to provide them.</param>
 #endif
 		protected virtual
-#if NET40
+#if NET472
 			void TryMakeSnapshot
 #else
 			async Task TryMakeSnapshotAsync
@@ -256,7 +256,7 @@ namespace Cqrs.Snapshots
 			if (rSnapshot != null)
 			{
 				rSnapshot.Version = saga.Version;
-#if NET40
+#if NET472
 				SnapshotStore.Save
 #else
 				await SnapshotStore.SaveAsync
@@ -266,7 +266,7 @@ namespace Cqrs.Snapshots
 			else
 			{
 				snapshot.Version = saga.Version;
-#if NET40
+#if NET472
 				SnapshotStore.Save
 #else
 				await SnapshotStore.SaveAsync

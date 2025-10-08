@@ -32,15 +32,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019]
+        os: [windows-latest]
         language: [ 'csharp' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
         # this is fixed to just one version so we only run the analysis operation once, not once for each version of the runtime
-        dotnet-version: [ '7.0.x' ]
+        dotnet-version: [ '8.0.x' ]
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    - name: Install .NET Framework 4.0 Developer Pack
+      run: |
+        Invoke-WebRequest -Uri "https://archive.org/download/framework-pack/NDP452-KB2901907-x86-x64-AllOS-ENU.exe" -OutFile "ndp40.exe"
+        Start-Process -FilePath "ndp40.exe" -ArgumentList "/quiet" -Wait
+
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -63,6 +68,7 @@ jobs:
           5.0.x
           6.0.x
           7.0.x
+          8.0.x
 
     - name: Setup dependencies caching
       uses: actions/cache@v3

@@ -1,4 +1,4 @@
-﻿#if NET40_OR_GREATER
+﻿#if NET472_OR_GREATER
 
 #region Copyright
 // // -----------------------------------------------------------------------
@@ -69,7 +69,7 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
 		protected override
-#if NET40
+#if NET472
 			void PersistEvent
 #else
 			async Task PersistEventAsync
@@ -95,7 +95,7 @@ namespace Cqrs.Events
 								using (TransactionScope ts = new TransactionScope(subTrx))
 								{
 									using (DataContext dbDataContext = new DataContext(safeConnectionString))
-#if NET40
+#if NET472
 										Add(dbDataContext, eventData);
 #else
 										Task.Run(async () => {
@@ -134,7 +134,7 @@ namespace Cqrs.Events
 				Logger.LogError("There was an issue persisting data to the SQL event store.", exception: exception);
 				throw;
 			}
-#if NET40
+#if NET472
 #else
 			await Task.CompletedTask;
 #endif

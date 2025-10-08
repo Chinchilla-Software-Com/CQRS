@@ -61,7 +61,7 @@ namespace Cqrs.Services
 		/// </summary>
 		/// <param name="serviceRequest">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}">events</see> to find.</param>
 		public virtual
-#if NET40
+#if NET472
 			IServiceResponseWithResultData<IEnumerable<EventData>> GetEventData
 #else
 			async Task<IServiceResponseWithResultData<IEnumerable<EventData>>> GetEventDataAsync
@@ -73,7 +73,7 @@ namespace Cqrs.Services
 
 			OnGetEventData(serviceRequest);
 			IEnumerable<EventData> results =
-#if NET40
+#if NET472
 				EventStore.Get
 #else
 				await EventStore.GetAsync
