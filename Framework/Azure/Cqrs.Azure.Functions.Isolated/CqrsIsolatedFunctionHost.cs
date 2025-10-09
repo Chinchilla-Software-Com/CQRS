@@ -21,6 +21,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Functions.Worker.Builder;
 
 #if NET48
 #else
@@ -37,9 +38,20 @@ namespace Cqrs.Azure.Functions.Isolated
 		where TAuthenticationTokenHelper : class, IAuthenticationTokenHelper<TAuthenticationToken>
 		where TIsolatedFunctionHostModule : IsolatedFunctionHostModule, new()
 	{
-		IHostBuilder hostBuilder { get; set; }
+		/// <summary>
+		/// The <see cref="IHostBuilder"/> the <see cref="Host"/> is made from.
+		/// </summary>
+		protected IHostBuilder HostBuilder { get; set; }
 
-		IHost host { get; set; }
+		/// <summary>
+		/// The <see cref="IHostApplicationBuilder"/> the <see cref="Host"/> is made from.
+		/// </summary>
+		protected FunctionsApplicationBuilder HostApplicationBuilder { get; set; }
+
+		/// <summary>
+		/// The <see cref="IHost"/> that drives this function.
+		/// </summary>
+		protected IHost Host { get; set; }
 
 		/// <summary>
 		/// Indicates if the <see cref="SetExecutionPath"/> method has been called.
@@ -105,12 +117,24 @@ namespace Cqrs.Azure.Functions.Isolated
 			string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
 
 			// C# ConfigurationBuilder example for Azure Functions v2 runtime
-			IConfigurationRoot config = (configBuilder ?? new ConfigurationBuilder())
+			IConfigurationBuilder _configBuilder = (configBuilder ?? new ConfigurationBuilder())
 				.SetBasePath(actualRoot)
 				.AddCommandLine(Environment.GetCommandLineArgs())
 				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
-				.AddEnvironmentVariables()
-				.Build();
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: false)
+				.AddEnvironmentVariables();
+
+			// copied from Microsoft.Extensions.Hosting.WorkerHostBuilderExtensions
+			var switchMappings = new Dictionary<string, string>
+			{
+				{ "--functions-uri", "Functions:Worker:HostEndpoint" },
+				{ "--functions-request-id", "Functions:Worker:RequestId" },
+				{ "--functions-worker-id", "Functions:Worker:WorkerId" },
+				{ "--functions-grpc-max-message-length", "Functions:Worker:GrpcMaxMessageLength" },
+			};
+			_configBuilder.AddCommandLine(Environment.GetCommandLineArgs(), switchMappings);
+
+			IConfigurationRoot config = _configBuilder.Build();
 			configurationManager = new CloudConfigurationManager(config);
 			SetExecutionPath(config);
 #endif
@@ -129,6 +153,24 @@ namespace Cqrs.Azure.Functions.Isolated
 		}
 
 		/// <summary>
+		/// Creates the <see cref="IHostBuilder"/>.
+		/// </summary>
+		protected virtual void CreateHostBuilder()
+		{
+			HostBuilder = new HostBuilder();   
+		}
+
+		/// <summary>
+		/// Creates the <see cref="IHostApplicationBuilder"/>.
+		/// </summary>
+		protected virtual void CreateApplicationHostBuilder()
+		{
+			var _hostApplicationBuilder = FunctionsApplication.CreateBuilder(Environment.GetCommandLineArgs());
+			HostApplicationBuilder = _hostApplicationBuilder;
+
+		}
+
+		/// <summary>
 		/// Prepares the <see cref="IHost"/>.
 		/// </summary>
 		protected virtual void PrepareHost()
@@ -136,37 +178,43 @@ namespace Cqrs.Azure.Functions.Isolated
 #if NET48
 			FunctionsDebugger.Enable();
 #endif
-			hostBuilder = new HostBuilder()
-				.ConfigureFunctionsWorkerDefaults(builder => {
+			CreateHostBuilder();
+			CreateApplicationHostBuilder();
+
+			Func<IConfigurationBuilder, IConfigurationBuilder> cfgBuilder = (configBuilder) =>
+			{
+				string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
+				string azureRoot = Environment.GetEnvironmentVariable("HOME");
+				azureRoot = string.IsNullOrWhiteSpace(azureRoot)
+					? null
+					: $"{azureRoot}/site/wwwroot";
+
+				string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
+
+				(configBuilder ?? (configBuilder = new ConfigurationBuilder()))
+					.SetBasePath(actualRoot)
+					.AddCommandLine(Environment.GetCommandLineArgs())
+					.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
+					.AddJsonFile("local.settings.json", optional: true, reloadOnChange: false)
+					.AddEnvironmentVariables();
+
+				return configBuilder;
+			};
+				HostBuilder
+					.ConfigureFunctionsWorkerDefaults(builder => {
 				}, options =>
 				{
-					options.EnableUserCodeException = true;
 				})
-				.ConfigureAppConfiguration(config =>
+				.ConfigureAppConfiguration(configBuilder =>
 				{
 #if NET48
 #else
-					string localRoot = Environment.GetEnvironmentVariable("AzureWebJobsScriptRoot");
-					string azureRoot = Environment.GetEnvironmentVariable("HOME");
-					azureRoot = string.IsNullOrWhiteSpace(azureRoot)
-						? null
-						: $"{azureRoot}/site/wwwroot";
-
-					string actualRoot = localRoot ?? azureRoot ?? Environment.CurrentDirectory;
-
-					// C# ConfigurationBuilder example for Azure Functions v2 runtime
-					config
-						.SetBasePath(actualRoot)
-						.AddCommandLine(Environment.GetCommandLineArgs())
-						.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
-						.AddEnvironmentVariables();
+					cfgBuilder(configBuilder);
 #endif
-					/*
-					*/
 				})
 				.ConfigureServices(services =>
 				{
-					// ConfigureApplicationInsights(services);
+					ConfigureApplicationInsights(services);
 					ConfigureHostServices(services);
 				});
 		}
@@ -206,7 +254,7 @@ namespace Cqrs.Azure.Functions.Isolated
 		{
 			base.Start();
 
-			host.Run();
+			Host.Run();
 		}
 		/// <summary>
 		/// Sets the execution path
@@ -239,16 +287,25 @@ namespace Cqrs.Azure.Functions.Isolated
 		/// </summary>
 		protected override void ConfigureDefaultDependencyResolver()
 		{
-			host = hostBuilder
-				.ConfigureServices(services => {
-					foreach (Module supplementaryModule in GetSupplementaryModules(services))
-						DependencyResolver.ModulesToLoad.Add(supplementaryModule);
+			Action<IServiceCollection> configureDependencyResolver = (services) =>
+			{
+				foreach (Module supplementaryModule in GetSupplementaryModules(services))
+					DependencyResolver.ModulesToLoad.Add(supplementaryModule);
+				DependencyResolver.Start(services, prepareProvidedKernel: true);
+			};
 
-					DependencyResolver.Start(services, prepareProvidedKernel: true);
+			/*
+			var _host = HostBuilder
+				.ConfigureServices(services => {
+					configureDependencyResolver(services);
 				})
 				.Build();
+			*/
 
-			((DependencyResolver)Cqrs.Configuration.DependencyResolver.Current).SetKernel(host.Services);
+			configureDependencyResolver(HostApplicationBuilder.Services);
+			Host = HostApplicationBuilder.Build();
+
+			((DependencyResolver)Cqrs.Configuration.DependencyResolver.Current).SetKernel(Host.Services);
 		}
 
 		/// <summary>

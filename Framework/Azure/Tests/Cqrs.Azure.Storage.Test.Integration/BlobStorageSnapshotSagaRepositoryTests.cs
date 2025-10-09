@@ -62,7 +62,7 @@ namespace Cqrs.Azure.Storage.Test.Integration
 				Get_ValidEvent_EventCanBeRetreived()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
@@ -146,7 +146,7 @@ namespace Cqrs.Azure.Storage.Test.Integration
 
 			Mock<IDependencyResolver> mockDependencyResolver = mockRepository.Create<IDependencyResolver>();
 			mockDependencyResolver
-				.Setup(x => x.Resolve<IConfigurationManager>())
+				.Setup(x => x.Resolve<Cqrs.Configuration.IConfigurationManager>())
 				.Returns(configurationManager);
 			mockDependencyResolver
 				.Setup(x => x.Resolve<

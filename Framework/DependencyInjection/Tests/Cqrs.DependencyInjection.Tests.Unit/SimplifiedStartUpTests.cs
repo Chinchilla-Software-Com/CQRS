@@ -19,12 +19,13 @@ namespace Cqrs.DependencyInjection.Tests.Unit
 		public void DefaultCqrsModule_GetBusHelper_BusHelperIsRegisteredAsSignleton()
 		{
 			//Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
 				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -49,12 +50,13 @@ namespace Cqrs.DependencyInjection.Tests.Unit
 		protected void SetupDefaultCqrsModulesTest()
 		{
 			//Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
 				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -142,12 +144,13 @@ namespace Cqrs.DependencyInjection.Tests.Unit
 		public void DefaultCqrsModule_GetUnregisteredClass_BusHelperIsRegisteredAsSignleton()
 		{
 			//Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
 				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -173,12 +176,13 @@ namespace Cqrs.DependencyInjection.Tests.Unit
 		public void BusRegistrar_RegisterHandlerWithDependencyResolverImplementation_BusHelperIsRegisteredAsSignletonWhenHandlerResolved()
 		{
 			//Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
 				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -206,7 +210,7 @@ namespace Cqrs.DependencyInjection.Tests.Unit
 			: SimplifiedStartUp<THostModule>
 			where THostModule : Module, new()
 		{
-			public TestSimplifiedStartUp(IConfigurationManager configurationManager)
+			public TestSimplifiedStartUp(Cqrs.Configuration.IConfigurationManager configurationManager)
 				: base(configurationManager)
 			{
 			}

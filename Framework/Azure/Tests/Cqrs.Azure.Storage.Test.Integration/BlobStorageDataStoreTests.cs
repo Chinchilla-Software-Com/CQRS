@@ -56,7 +56,7 @@ namespace Cqrs.Azure.Storage.Test.Integration
 				Add_ValidProjectionView_ProjectionViewCanBeRetreived()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else

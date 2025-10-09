@@ -32,7 +32,7 @@ namespace Cqrs.Azure.KeyVault.Tests.Integration
 		public void GetSecret_KnownTestSecret_KnownValue()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new CloudConfigurationManager();
 #else
@@ -58,7 +58,7 @@ namespace Cqrs.Azure.KeyVault.Tests.Integration
 		public async Task GetSecretAsync_KnownTestSecret_KnownValue()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new CloudConfigurationManager();
 #else

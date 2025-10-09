@@ -37,7 +37,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 			host.Run();
 		}
 
-		static IConfigurationManager ConfigurationManager { get; set; }
+		static Cqrs.Configuration.IConfigurationManager ConfigurationManager { get; set; }
 
 #if NET472
 #else
