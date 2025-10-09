@@ -1,5 +1,6 @@
 using Chinchilla.Logging;
 using Cqrs.Commands;
+using Microsoft.ApplicationInsights;
 using Microsoft.Azure.Functions.Worker;
 using System;
 
@@ -13,11 +14,14 @@ public class TriggerScheduler
 
 	private ILogger Logger { get; set; }
 
-	public TriggerScheduler(ILogger log, IAsyncCommandPublisher<Guid> commandPublisher, ICorrelationIdHelper correlationIdHelper)
+	private TelemetryClient TelemetryClient { get; set; }
+
+	public TriggerScheduler(ILogger log, IAsyncCommandPublisher<Guid> commandPublisher, ICorrelationIdHelper correlationIdHelper, TelemetryClient telemetryClient)
 	{
 		Logger = log;
 		CommandPublisher = commandPublisher;
 		CorrelationIdHelper = correlationIdHelper;
+		TelemetryClient = telemetryClient;
 	}
 
 	[Function(nameof(TriggerScheduler))]
@@ -29,6 +33,8 @@ public class TriggerScheduler
 		{
 			Console.WriteLine($"Published for {myTimer.ScheduleStatus.Next}.");
 			Logger.LogInfo($"Published for {myTimer.ScheduleStatus.Next}.");
+
+			TelemetryClient.TrackEvent($"Published for {myTimer.ScheduleStatus.Next}.");
 		}
 
 		await Task.CompletedTask;
