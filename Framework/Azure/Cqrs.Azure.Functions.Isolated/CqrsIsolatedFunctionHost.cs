@@ -17,11 +17,13 @@ using Cqrs.Azure.Functions.Isolated.Configuration;
 using Cqrs.DependencyInjection;
 using Cqrs.DependencyInjection.Modules;
 using Cqrs.Hosts;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Azure.Functions.Worker.Builder;
+
 
 #if NET48
 #else
@@ -200,23 +202,31 @@ namespace Cqrs.Azure.Functions.Isolated
 
 				return configBuilder;
 			};
-				HostBuilder
-					.ConfigureFunctionsWorkerDefaults(builder => {
-				}, options =>
-				{
-				})
-				.ConfigureAppConfiguration(configBuilder =>
-				{
+
+			HostBuilder
+				.ConfigureFunctionsWorkerDefaults(builder => {
+			}, options =>
+			{
+			})
+			.ConfigureAppConfiguration(configBuilder =>
+			{
 #if NET48
 #else
-					cfgBuilder(configBuilder);
+				cfgBuilder(configBuilder);
 #endif
-				})
-				.ConfigureServices(services =>
-				{
-					ConfigureApplicationInsights(services);
-					ConfigureHostServices(services);
-				});
+			})
+			.ConfigureServices(services =>
+			{
+				ConfigureApplicationInsights(services);
+				ConfigureHostServices(services);
+			});
+
+
+			HostApplicationBuilder.Services.AddApplicationInsightsTelemetryWorkerService();
+			HostApplicationBuilder.Services.Configure<TelemetryConfiguration>((config) =>
+			{
+				config.ConnectionString = DependencyResolver.ConfigurationManager.GetConnectionString("Cqrs.Hosts.ApplicationInsights.ConnectionString");
+			});
 		}
 
 		/// <summary>
