@@ -82,10 +82,10 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 				.InSingletonScope();
 #endif
 
-			Bind<IConfigurationManager>()
+			Bind<Cqrs.Configuration.IConfigurationManager>()
 				.To<CloudConfigurationManager>()
 				.InSingletonScope();
-			DependencyResolver.ConfigurationManager = Resolve<IConfigurationManager>();
+			DependencyResolver.ConfigurationManager = Resolve<Cqrs.Configuration.IConfigurationManager>();
 		}
 
 		/// <summary>
@@ -134,7 +134,7 @@ namespace Cqrs.Ninject.Azure.Wcf.Configuration
 		protected virtual void RegisterBasicServices()
 		{
 			string authenticationType;
-			if (!Resolve<IConfigurationManager>().TryGetSetting("Cqrs.AuthenticationTokenType", out authenticationType) || string.IsNullOrWhiteSpace(authenticationType))
+			if (!Resolve<Cqrs.Configuration.IConfigurationManager>().TryGetSetting("Cqrs.AuthenticationTokenType", out authenticationType) || string.IsNullOrWhiteSpace(authenticationType))
 				authenticationType = "Guid";
 
 			if (authenticationType.ToLowerInvariant() == "int" || authenticationType.ToLowerInvariant() == "integer")

@@ -49,7 +49,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public async Task Constructor_NothingSpecial_SafeContainerName()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
@@ -89,7 +89,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public async Task CreateBrokeredMessageAsync_SagaEvent_HelpfulTypeCalculated()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
@@ -127,7 +127,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 
 	class MockAzureServiceBus : AzureServiceBus<Guid>
 	{
-		public MockAzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<Guid> messageSerialiser, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<Guid> azureBusHelper, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory, bool isAPublisher)
+		public MockAzureServiceBus(Cqrs.Configuration.IConfigurationManager configurationManager, IMessageSerialiser<Guid> messageSerialiser, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<Guid> azureBusHelper, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory, bool isAPublisher)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, hashAlgorithmFactory, isAPublisher)
 		{
 		}

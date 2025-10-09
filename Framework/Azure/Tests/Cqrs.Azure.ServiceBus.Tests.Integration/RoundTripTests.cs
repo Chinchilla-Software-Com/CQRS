@@ -67,7 +67,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			Guid processId = Guid.NewGuid();
 			testResponse.Add(processId, new Tuple<bool, Exception>(false, null));
 			var @event = new TestEvent{Id = processId};
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
@@ -131,7 +131,7 @@ namespace Cqrs.Azure.ServiceBus.Tests.Integration
 			Guid processId = Guid.NewGuid();
 			testResponse.Add(processId, new Tuple<bool, Exception>(false, null));
 			var command = new TestCommand { Id = processId };
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else

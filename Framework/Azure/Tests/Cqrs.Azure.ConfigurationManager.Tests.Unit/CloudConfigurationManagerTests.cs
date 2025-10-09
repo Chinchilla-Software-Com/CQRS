@@ -15,7 +15,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
-			IConfigurationManager configurationManager = new CloudConfigurationManager(config);
+			Cqrs.Configuration.IConfigurationManager configurationManager = new CloudConfigurationManager(config);
 
 			// Act
 			string value = configurationManager.GetSetting("Cqrs.Azure.CommandBus.ConnectionString");
@@ -32,7 +32,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
-			IConfigurationManager configurationManager = new CloudConfigurationManager(config);
+			Cqrs.Configuration.IConfigurationManager configurationManager = new CloudConfigurationManager(config);
 
 			// Act
 			bool value1 = bool.Parse(configurationManager.GetSetting("Cqrs.BooleanTestTrue"));
@@ -55,7 +55,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
-			IConfigurationManager configurationManager = new CloudConfigurationManager(config);
+			Cqrs.Configuration.IConfigurationManager configurationManager = new CloudConfigurationManager(config);
 
 			// Act
 			string value = configurationManager.GetSetting("Cqrs.Key.Not.Set");
@@ -90,7 +90,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 				.AddJsonFile("test-settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
-			IConfigurationManager configurationManager = new CloudConfigurationManager(config);
+			Cqrs.Configuration.IConfigurationManager configurationManager = new CloudConfigurationManager(config);
 
 			// Act
 			string value = configurationManager.GetConnectionString("Cqrs.Hosts.ApplicationInsights.ConnectionString");

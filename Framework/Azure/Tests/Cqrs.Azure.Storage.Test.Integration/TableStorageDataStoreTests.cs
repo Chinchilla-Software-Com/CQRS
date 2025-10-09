@@ -57,7 +57,7 @@ namespace Cqrs.Azure.Storage.Test.Integration
 				Add_ValidProjectionView_ProjectionViewCanBeRetreived()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
@@ -124,7 +124,7 @@ namespace Cqrs.Azure.Storage.Test.Integration
 				Add_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
@@ -190,7 +190,7 @@ namespace Cqrs.Azure.Storage.Test.Integration
 				Update_ValidProjectionEntityView_ProjectionEntityViewCanBeRetreived()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
@@ -266,7 +266,7 @@ namespace Cqrs.Azure.Storage.Test.Integration
 		/// <summary>
 		/// Create a <see cref="TableStorageDataStore{TData}"/> ready for testing.
 		/// </summary>
-		protected virtual TableStorageDataStore<TData> CreateDataStore<TData>(ILogger logger, IConfigurationManager configurationManager)
+		protected virtual TableStorageDataStore<TData> CreateDataStore<TData>(ILogger logger, Cqrs.Configuration.IConfigurationManager configurationManager)
 			where TData : Entity
 		{
 			return new TableStorageDataStore<TData>(logger, new TableStorageDataStoreConnectionStringFactory(configurationManager, logger));
