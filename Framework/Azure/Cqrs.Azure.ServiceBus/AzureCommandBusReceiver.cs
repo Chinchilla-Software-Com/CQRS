@@ -22,6 +22,7 @@ using Cqrs.Messages;
 
 #if NETSTANDARD2_0 || NET48_OR_GREATER
 using Azure.Messaging.ServiceBus;
+using Azure.Messaging.ServiceBus.Administration;
 using System.Reflection;
 using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusReceivedMessage;
 using IMessageReceiver = Azure.Messaging.ServiceBus.ServiceBusProcessor;
@@ -243,7 +244,7 @@ namespace Cqrs.Azure.ServiceBus
 #if NETSTANDARD2_0 || NET48_OR_GREATER
 						IEnumerable<RuleDescription> rules = await ruleManager
 							.GetRulesAsync()
-							.Where(r => r.Name == "CqrsConfiguredFilter" || r.Name == "$Default")
+							.Where(r => r.Name == "CqrsConfiguredFilter" || r.Name == RuleProperties.DefaultRuleName)
 							.ToListAsync();
 #else
 						IEnumerable<RuleDescription> rules = manager.GetRules(client.TopicPath, client.Name).ToList();
@@ -282,7 +283,7 @@ namespace Cqrs.Azure.ServiceBus
 						else if (string.IsNullOrWhiteSpace(filter) && !rules.Any())
 						{
 #if NETSTANDARD2_0 || NET48_OR_GREATER
-							await ruleManager.CreateRuleAsync("$Default", new SqlFilter("1=1"));
+							await ruleManager.CreateRuleAsync(RuleProperties.DefaultRuleName, new SqlFilter("1=1"));
 #else
 							ruleDescription = new RuleDescription
 							(
