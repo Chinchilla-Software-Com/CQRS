@@ -225,6 +225,11 @@ namespace Cqrs.Azure.ServiceBus
 		protected short TimeoutOnSendRetryMaximumCount { get; private set; }
 
 		/// <summary>
+		/// Use WebSockets rather than AMQP on port 5671
+		/// </summary>
+		protected bool UseWebSockets { get; private set; }
+
+		/// <summary>
 		/// The <see cref="IHashAlgorithmFactory"/> to use to sign messages.
 		/// </summary>
 		protected IHashAlgorithmFactory Signer { get; private set; }
@@ -264,6 +269,11 @@ namespace Cqrs.Azure.ServiceBus
 			short timeoutOnSendRetryMaximumCount;
 			if (ConfigurationManager.TryGetSetting("Cqrs.Azure.Servicebus.TimeoutOnSendRetryMaximumCount", out timeoutOnSendRetryMaximumCountValue) && !string.IsNullOrWhiteSpace(timeoutOnSendRetryMaximumCountValue) && short.TryParse(timeoutOnSendRetryMaximumCountValue, out timeoutOnSendRetryMaximumCount))
 				TimeoutOnSendRetryMaximumCount = timeoutOnSendRetryMaximumCount;
+
+			if (ConfigurationManager.TryGetSetting("Cqrs.Azure.Servicebus.UseWebSockets", out bool useWebSockets))
+				UseWebSockets = useWebSockets;
+			else
+				UseWebSockets = false;
 
 			ExclusionNamespaces = new SynchronizedCollection<string> { "Cqrs", "System" };
 			TaskRelatedMethodNames = new List<string>
@@ -326,13 +336,21 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						string connectionString = ConnectionString;
 						AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
+						var clientOptions = new ServiceBusClientOptions
+						{
+							TransportType = UseWebSockets
+								? ServiceBusTransportType.AmqpWebSockets
+								: ServiceBusTransportType.AmqpTcp,
+							Identifier = Logger.LoggerSettings.ModuleName
+						};
+
 
 						if (!string.IsNullOrWhiteSpace(connectionString))
-							ServiceBusClient = new ServiceBusClient(connectionString, new ServiceBusClientOptions { Identifier = Logger.LoggerSettings.ModuleName });
+							ServiceBusClient = new ServiceBusClient(connectionString, clientOptions);
 						else
 						{
 							var credentials = new ClientSecretCredential(rbacSettings.TenantId, rbacSettings.ApplicationId, rbacSettings.ClientKey);
-							ServiceBusClient = new ServiceBusClient(rbacSettings.Endpoint, credentials);
+							ServiceBusClient = new ServiceBusClient(rbacSettings.Endpoint, credentials, clientOptions);
 						}
 					}
 				}
