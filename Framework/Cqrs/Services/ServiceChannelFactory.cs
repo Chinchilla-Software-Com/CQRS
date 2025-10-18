@@ -23,7 +23,7 @@ namespace Cqrs.Services
 		/// Instantiates a new instance of the <see cref="ServiceChannelFactory{TService}"/> class with a specified endpoint configuration name.
 		/// </summary>
 		public ServiceChannelFactory(
-#if NETSTANDARD2_0
+#if NETSTANDARD
 				ServiceEndpoint endpoint
 #else
 				string endpointConfigurationName
@@ -31,7 +31,7 @@ namespace Cqrs.Services
 			)
 			: base
 			(
-#if NETSTANDARD2_0
+#if NETSTANDARD
 				endpoint
 #else
 				endpointConfigurationName
@@ -61,7 +61,7 @@ namespace Cqrs.Services
 					operationDescription.Behaviors.Add(serializerBehavior = new DataContractSerializerOperationBehavior(operationDescription));
 #if NET472_OR_GREATER
 				serializerBehavior.DataContractResolver = (DataContractResolver)Activator.CreateInstance(AppDomain.CurrentDomain, dataContractType.Assembly.FullName, dataContractType.FullName).Unwrap();
-#elif NETSTANDARD2_0
+#elif NETSTANDARD || NET
 				serializerBehavior.DataContractResolver = (DataContractResolver)DotNetStandard2Helper.CreateInstanceFrom(dataContractType.Assembly.FullName, dataContractType.FullName);
 #else
 				serializerBehavior.DataContractResolver = (DataContractResolver)Activator.CreateInstance(dataContractType.Assembly.FullName, dataContractType.FullName).Unwrap();

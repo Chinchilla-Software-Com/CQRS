@@ -305,7 +305,7 @@ namespace Cqrs.DataStores
 						// This optimises for single connection handling
 						if (writeableConnection != DbDataContext)
 							table = writeableConnection.Set<TData>();
-#if NETSTANDARD2_0
+#if NETSTANDARD
 						await table.AddAsync
 #else
 						table.Add
@@ -352,7 +352,7 @@ namespace Cqrs.DataStores
 						// This optimises for single connection handling
 						if (writeableConnection != DbDataContext)
 							table = writeableConnection.Set<TData>();
-#if NETSTANDARD2_0
+#if NETSTANDARD
 						await table.AddRangeAsync
 #else
 						table.AddRange

@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net472;netstandard2.0;net6.0</TargetFrameworks>
 		<title>Microsoft Azure Cosmos DB (DocumentDB) for CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -42,7 +42,7 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net472;</TargetFrameworks>
+		<TargetFrameworks>net472;netstandard2.0;net6.0</TargetFrameworks>
 		<DocumentationFile>Cqrs.Azure.DocumentDb.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	</PropertyGroup>
@@ -97,7 +97,7 @@
 		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net5.0'))">
 		<Reference Include="Microsoft.CSharp" />
 	</ItemGroup>
 

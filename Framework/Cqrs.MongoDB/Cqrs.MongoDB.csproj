@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net472;netstandard2.0;net6.0</TargetFrameworks>
 		<title>MongoDB for CQRS.NET</title>
 		<Authors>Chinchilla Software</Authors>
 		<Company>Chinchilla Software</Company>
@@ -30,7 +30,7 @@
 
 	<PropertyGroup>
 		<OutputType>library</OutputType>
-		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net472;netstandard2.0;net6.0</TargetFrameworks>
 		<DocumentationFile>Cqrs.MongoDB.xml</DocumentationFile>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
@@ -87,7 +87,7 @@
 		<ProjectReference Include="..\Cqrs\Cqrs.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
+    <ItemGroup Condition="!$([MSBuild]::IsTargetFrameworkCompatible($(TargetFramework), 'net5.0'))">
 		<Reference Include="Microsoft.CSharp" />
 	</ItemGroup>
 
