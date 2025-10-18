@@ -29,7 +29,7 @@ namespace Cqrs.Domain
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</typeparam>
 		/// <param name="aggregate">The <see cref="IAggregateRoot{TAuthenticationToken}"/> to save and persist.</param>
 		/// <param name="expectedVersion">The version number the <see cref="IAggregateRoot{TAuthenticationToken}"/> is expected to be at.</param>
-#if NET40
+#if NET472
 		void Save
 #else
 		Task SaveAsync
@@ -46,7 +46,7 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-#if NET40
+#if NET472
 		TAggregateRoot Get
 #else
 		Task<TAggregateRoot> GetAsync
@@ -64,7 +64,7 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-#if NET40
+#if NET472
 		TAggregateRoot GetToVersion
 #else
 		Task<TAggregateRoot> GetToVersionAsync
@@ -82,7 +82,7 @@ namespace Cqrs.Domain
 		/// A collection of <see cref="IEvent{TAuthenticationToken}"/> to replay on the retrieved <see cref="IAggregateRoot{TAuthenticationToken}"/>.
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
-#if NET40
+#if NET472
 		TAggregateRoot GetToDate
 #else
 		Task<TAggregateRoot> GetToDateAsync

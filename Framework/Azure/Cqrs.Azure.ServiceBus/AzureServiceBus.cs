@@ -39,7 +39,7 @@ using Microsoft.ServiceBus.Messaging;
 using Manager = Microsoft.ServiceBus.NamespaceManager;
 using IMessageReceiver = Microsoft.ServiceBus.Messaging.SubscriptionClient;
 #endif
-#if NET462
+#if NET472
 using Microsoft.Identity.Client;
 #endif
 
@@ -225,6 +225,11 @@ namespace Cqrs.Azure.ServiceBus
 		protected short TimeoutOnSendRetryMaximumCount { get; private set; }
 
 		/// <summary>
+		/// Use WebSockets rather than AMQP on port 5671
+		/// </summary>
+		protected bool UseWebSockets { get; private set; }
+
+		/// <summary>
 		/// The <see cref="IHashAlgorithmFactory"/> to use to sign messages.
 		/// </summary>
 		protected IHashAlgorithmFactory Signer { get; private set; }
@@ -238,7 +243,7 @@ namespace Cqrs.Azure.ServiceBus
 
 		private Regex ContainerNameMatcher { get; }
 
-#if NET462
+#if NET472
 		/// <summary>
 		/// Gets an access token from Active Directory when using RBAC based connections.
 		/// </summary>
@@ -265,6 +270,11 @@ namespace Cqrs.Azure.ServiceBus
 			if (ConfigurationManager.TryGetSetting("Cqrs.Azure.Servicebus.TimeoutOnSendRetryMaximumCount", out timeoutOnSendRetryMaximumCountValue) && !string.IsNullOrWhiteSpace(timeoutOnSendRetryMaximumCountValue) && short.TryParse(timeoutOnSendRetryMaximumCountValue, out timeoutOnSendRetryMaximumCount))
 				TimeoutOnSendRetryMaximumCount = timeoutOnSendRetryMaximumCount;
 
+			if (ConfigurationManager.TryGetSetting("Cqrs.Azure.Servicebus.UseWebSockets", out bool useWebSockets))
+				UseWebSockets = useWebSockets;
+			else
+				UseWebSockets = false;
+
 			ExclusionNamespaces = new SynchronizedCollection<string> { "Cqrs", "System" };
 			TaskRelatedMethodNames = new List<string>
 			{
@@ -273,12 +283,12 @@ namespace Cqrs.Azure.ServiceBus
 			};
 			ContainerNameMatcher = new Regex("^(.)+?>", RegexOptions.IgnoreCase);
 
-#if NET462
+#if NET472
 			InstantiateActiveDirectoryToken();
 #endif
 		}
 
-#if NET462
+#if NET472
 		/// <summary>
 		/// Setup <see cref="GetActiveDirectoryToken"/>
 		/// </summary>
@@ -326,13 +336,21 @@ namespace Cqrs.Azure.ServiceBus
 					{
 						string connectionString = ConnectionString;
 						AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
+						var clientOptions = new ServiceBusClientOptions
+						{
+							TransportType = UseWebSockets
+								? ServiceBusTransportType.AmqpWebSockets
+								: ServiceBusTransportType.AmqpTcp,
+							Identifier = Logger.LoggerSettings.ModuleName
+						};
+
 
 						if (!string.IsNullOrWhiteSpace(connectionString))
-							ServiceBusClient = new ServiceBusClient(connectionString, new ServiceBusClientOptions { Identifier = Logger.LoggerSettings.ModuleName });
+							ServiceBusClient = new ServiceBusClient(connectionString, clientOptions);
 						else
 						{
 							var credentials = new ClientSecretCredential(rbacSettings.TenantId, rbacSettings.ApplicationId, rbacSettings.ClientKey);
-							ServiceBusClient = new ServiceBusClient(rbacSettings.Endpoint, credentials);
+							ServiceBusClient = new ServiceBusClient(rbacSettings.Endpoint, credentials, clientOptions);
 						}
 					}
 				}
@@ -452,7 +470,7 @@ namespace Cqrs.Azure.ServiceBus
 #endif
 			()
 		{
-#if NET462
+#if NET472
 			if (GetActiveDirectoryToken == null)
 				InstantiateActiveDirectoryToken();
 #endif
@@ -477,9 +495,6 @@ namespace Cqrs.Azure.ServiceBus
 			ServiceBusClient client = await GetOrCreateClientAsync();
 			PrivateServiceBusPublisher = client.CreateSender(PrivateTopicName, new ServiceBusSenderOptions { Identifier = $"{Logger.LoggerSettings.ModuleName} Private Bus" });
 			PublicServiceBusPublisher = client.CreateSender(PublicTopicName, new ServiceBusSenderOptions { Identifier = $"{Logger.LoggerSettings.ModuleName} Public Bus" });
-#elif NET452
-			PrivateServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PrivateTopicName);
-			PublicServiceBusPublisher = TopicClient.CreateFromConnectionString(ConnectionString, PublicTopicName);
 #else
 			if (!string.IsNullOrWhiteSpace(ConnectionString))
 			{
@@ -633,14 +648,12 @@ namespace Cqrs.Azure.ServiceBus
 				IMessageReceiver serviceBusReceiver;
 				string connectionString = ConnectionString;
 				AzureBusRbacSettings rbacSettings = RbacConnectionSettings;
-#if NET452
-				serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, topicName, topicSubscriptionName);
-#else
+
 				if (!string.IsNullOrWhiteSpace(connectionString))
 					serviceBusReceiver = SubscriptionClient.CreateFromConnectionString(ConnectionString, topicName, topicSubscriptionName);
 				else
 					serviceBusReceiver = SubscriptionClient.CreateWithAzureActiveDirectory(new Uri(rbacSettings.Endpoint), topicName, topicSubscriptionName, GetActiveDirectoryToken, rbacSettings.GetDefaultAuthority());
-#endif
+
 				if (serviceBusReceivers.ContainsKey(i))
 					serviceBusReceivers[i] = serviceBusReceiver;
 				else
@@ -1132,14 +1145,10 @@ namespace Cqrs.Azure.ServiceBus
 					brokeredMessages = await deadLetterReceiver.ReceiveMessagesAsync(1000);
 #else
 					MessagingFactory factory;
-#if NET452
-					factory = MessagingFactory.CreateFromConnectionString(ConnectionString);
-#else
 					if (!string.IsNullOrWhiteSpace(ConnectionString))
 						factory = MessagingFactory.CreateFromConnectionString(ConnectionString);
 					else
 						factory = MessagingFactory.Create(new Uri(RbacConnectionSettings.Endpoint), TokenProvider.CreateAzureActiveDirectoryTokenProvider(GetActiveDirectoryToken, null, RbacConnectionSettings.GetDefaultAuthority()));
-#endif
 
 					string deadLetterPath = SubscriptionClient.FormatDeadLetterPath(topicName, topicSubscriptionName);
 					MessageReceiver client = factory.CreateMessageReceiver(deadLetterPath, ReceiveMode.PeekLock);
@@ -1153,7 +1162,7 @@ namespace Cqrs.Azure.ServiceBus
 						try
 						{
 							Logger.LogDebug($"A dead-letter message arrived with the id '{brokeredMessage.MessageId}'.");
-#if NET462
+#if NET472
 							string messageBody = brokeredMessage.GetBody<string>();
 #else
 							string messageBody = brokeredMessage.GetBodyAsString();

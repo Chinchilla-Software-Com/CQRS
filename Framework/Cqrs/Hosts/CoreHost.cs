@@ -173,7 +173,7 @@ namespace Cqrs.Hosts
 		/// <param name="eventHandler">The event handler to call</param>
 		/// <param name="holdMessageLock">If false, this will spin off another thread. This is a bad performance impact. Strongly suggest you use lock renewing instead... which is configuration based... so even better.</param>
 		protected virtual void ManuallyRegisterEventHandler<TMessage>(
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>
@@ -191,7 +191,7 @@ namespace Cqrs.Hosts
 		/// <param name="commandHandler">The command handler to call</param>
 		/// <param name="holdMessageLock">If false, this will spin off another thread. This is a bad performance impact. Strongly suggest you use lock renewing instead... which is configuration based... so even better.</param>
 		protected virtual void ManuallyRegisterCommandHandler<TMessage>(
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>

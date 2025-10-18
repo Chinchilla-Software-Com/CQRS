@@ -52,13 +52,13 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Build a message handler that implements telemetry capturing as well as off thread handling.
 		/// </summary>
-#if NET40
+#if NET472
 		Action<TMessage>
 #else
 		Func<TMessage, Task>
 #endif
 			BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper,
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>
@@ -69,14 +69,14 @@ namespace Cqrs.Bus
 		/// <summary>
 		/// Build a message handler that implements telemetry capturing as well as off thread handling.
 		/// </summary>
-#if NET40
+#if NET472
 		Action<TMessage>
 #else
 		Func<TMessage, Task>
 #endif
 			BuildActionHandler<TMessage>(
 
-#if NET40
+#if NET472
 			Action<TMessage>
 #else
 			Func<TMessage, Task>

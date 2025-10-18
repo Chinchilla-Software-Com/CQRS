@@ -27,7 +27,7 @@ namespace Cqrs.Snapshots
 		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/> to find a snapshot for.</typeparam>
 		/// <param name="id">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get the most recent <see cref="Snapshot"/> of.</param>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
-#if NET40
+#if NET472
 		Snapshot Get
 #else
 		Task<Snapshot> GetAsync
@@ -40,7 +40,7 @@ namespace Cqrs.Snapshots
 		/// <param name="aggregateRootType">The <see cref="Type"/> of <see cref="IAggregateRoot{TAuthenticationToken}"/> to find a snapshot for.</param>
 		/// <param name="id">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get the most recent <see cref="Snapshot"/> of.</param>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
-#if NET40
+#if NET472
 		Snapshot Get
 #else
 		Task<Snapshot> GetAsync
@@ -51,7 +51,7 @@ namespace Cqrs.Snapshots
 		/// Saves the provided <paramref name="snapshot"/> into storage.
 		/// </summary>
 		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>
-#if NET40
+#if NET472
 		void Save
 #else
 		Task SaveAsync

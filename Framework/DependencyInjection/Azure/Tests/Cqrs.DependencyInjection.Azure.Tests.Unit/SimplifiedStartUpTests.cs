@@ -24,12 +24,13 @@ namespace Cqrs.DependencyInjection.Tests.Unit
 		protected void SetupDefaultCqrsModulesTest()
 		{
 			//Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.settings.json", optional: true, reloadOnChange: false)
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 

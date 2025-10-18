@@ -8,6 +8,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace Cqrs.DependencyInjection.Modules
 {
@@ -35,7 +36,29 @@ namespace Cqrs.DependencyInjection.Modules
 		/// <returns>Null if no resolution is made.</returns>
 		protected virtual object Resolve(IServiceCollection services, Type type)
 		{
-			using (ServiceProvider tempProvider = services.BuildServiceProvider())
+			return ResolveAsync(services, type).GetAwaiter().GetResult();
+		}
+
+		/// <summary>
+		/// Resolves instances for the specified <typeparamref name="T"/>.
+		/// </summary>
+		/// <typeparam name="T">The <see cref="Type"/> to resolve.</typeparam>
+		/// <param name="services">The <see cref="IServiceCollection"/> to check.</param>
+		/// <returns>Null if no resolution is made.</returns>
+		protected virtual async Task<T> ResolveAsync<T>(IServiceCollection services)
+		{
+			return (T)(await ResolveAsync(services, typeof(T)));
+		}
+
+		/// <summary>
+		/// Resolves instances for the specified <paramref name="type"/>.
+		/// </summary>
+		/// <param name="services">The <see cref="IServiceCollection"/> to check.</param>
+		/// <param name="type">The <see cref="Type"/> to resolve.</param>
+		/// <returns>Null if no resolution is made.</returns>
+		protected virtual async Task<object> ResolveAsync(IServiceCollection services, Type type)
+		{
+			await using (ServiceProvider tempProvider = services.BuildServiceProvider())
 			{
 				// temporarily set the Kernel
 				var di = DependencyResolver.Current as DependencyResolver;

@@ -25,12 +25,12 @@ namespace Cqrs.Azure.ConfigurationManager
 	{
 #if NETSTANDARD2_0
 		/// <summary>
-		/// Gets or sets the <see cref="IConfigurationManager"/>. This must be set manually as dependency injection may not be ready in-time.
+		/// Gets or sets the <see cref="Cqrs.Configuration.IConfigurationManager"/>. This must be set manually as dependency injection may not be ready in-time.
 		/// </summary>
-		protected static IConfigurationManager _configurationManager = null;
+		protected static Cqrs.Configuration.IConfigurationManager _configurationManager = null;
 
 		/// <summary>
-		/// Set the <see cref="IConfigurationManager"/> to use before the <see cref="DependencyResolver.Current"/> is set.
+		/// Set the <see cref="Cqrs.Configuration.IConfigurationManager"/> to use before the <see cref="DependencyResolver.Current"/> is set.
 		/// Will also set <see cref="DependencyResolver.ConfigurationManager"/>.
 		/// </summary>
 		/// <param name="configuration"></param>
@@ -49,9 +49,9 @@ namespace Cqrs.Azure.ConfigurationManager
 #endif
 
 		/// <summary>
-		/// The <see cref="IConfigurationManager"/> that can be use before the <see cref="DependencyResolver.Current"/> is set.
+		/// The <see cref="Cqrs.Configuration.IConfigurationManager"/> that can be use before the <see cref="DependencyResolver.Current"/> is set.
 		/// </summary>
-		protected override IConfigurationManager ConfigurationManager
+		protected override Cqrs.Configuration.IConfigurationManager ConfigurationManager
 		{
 			get { return _configurationManager ?? DependencyResolver.ConfigurationManager; }
 		}

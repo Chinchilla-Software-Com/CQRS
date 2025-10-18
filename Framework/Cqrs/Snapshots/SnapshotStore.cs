@@ -76,7 +76,7 @@ namespace Cqrs.Snapshots
 		/// <param name="id">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get the most recent <see cref="Snapshot"/> of.</param>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
 		public virtual
-#if NET40
+#if NET472
 			Snapshot Get
 #else
 			async Task<Snapshot> GetAsync
@@ -85,7 +85,7 @@ namespace Cqrs.Snapshots
 		{
 			Type aggregateRootType = typeof (TAggregateRoot);
 			return
-#if NET40
+#if NET472
 				Get
 #else
 				await GetAsync
@@ -100,7 +100,7 @@ namespace Cqrs.Snapshots
 		/// <param name="id">The identifier of the <see cref="IAggregateRoot{TAuthenticationToken}"/> to get the most recent <see cref="Snapshot"/> of.</param>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
 		public virtual
-#if NET40
+#if NET472
 			Snapshot Get
 #else
 			async Task<Snapshot> GetAsync
@@ -119,7 +119,7 @@ namespace Cqrs.Snapshots
 			string streamName = string.Format(CqrsSnapshotStoreStreamNamePattern, aggregateRootType.FullName, id);
 
 			return
-#if NET40
+#if NET472
 				Get
 #else
 				await GetAsync
@@ -132,7 +132,7 @@ namespace Cqrs.Snapshots
 		/// </summary>
 		/// <returns>The most recent <see cref="Snapshot"/> of</returns>
 		protected abstract
-#if NET40
+#if NET472
 			Snapshot Get
 #else
 			Task<Snapshot> GetAsync
@@ -144,7 +144,7 @@ namespace Cqrs.Snapshots
 		/// </summary>
 		/// <param name="snapshot">the <see cref="Snapshot"/> to save and store.</param>
 		public abstract
-#if NET40
+#if NET472
 			void Save
 #else
 			Task SaveAsync

@@ -3,20 +3,20 @@ name: Build Core Framework
 on: [push]
 
 env:
-  nuGetVersionNumber: 5.2.3
-  nuGetFullVersionNumber: 5.2.3.${{ github.run_number }}
+  nuGetVersionNumber: 6.0.0
+  nuGetFullVersionNumber: 6.0.0.${{ github.run_number }}
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2019]
+        os: [windows-latest]
         # dotnet-version: [ '3.1.x', '5.0.x', '6.0.x', '7.0.x' ]
-        dotnet-version: [ '7.0.x' ]
+        dotnet-version: [ '8.0.x' ]
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup dotnet CLI
       uses: actions/setup-dotnet@v3.2.0
@@ -24,6 +24,7 @@ jobs:
         dotnet-version: | 
           6.0.x
           7.0.x
+          8.0.x
 
     - name: Setup dependencies caching
       uses: actions/cache@v3
@@ -47,7 +48,7 @@ jobs:
     - name: Test with dotnet (.NET 4.7.2)
       run: dotnet test -f net472 --logger trx --collect "Code Coverage" --results-directory "TestResults-net472-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
     - name: Upload dotnet test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dotnet-net472-results-${{ matrix.dotnet-version }}
         path: TestResults-net472-${{ matrix.dotnet-version }}
@@ -57,7 +58,7 @@ jobs:
     - name: Test with dotnet (.NET Core 3.1)
       run: dotnet test -f netcoreapp3.1 --logger trx --collect "Code Coverage" --results-directory "TestResults-net31-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
     - name: Upload dotnet test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dotnet-net31-results-${{ matrix.dotnet-version }}
         path: TestResults-net31-${{ matrix.dotnet-version }}
@@ -67,7 +68,7 @@ jobs:
     - name: Test with dotnet (.NET Core 5.0)
       run: dotnet test -f net5.0 --logger trx --collect "Code Coverage" --results-directory "TestResults-net5-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
     - name: Upload dotnet test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dotnet-net5-results-${{ matrix.dotnet-version }}
         path: TestResults-net5-${{ matrix.dotnet-version }}
@@ -77,30 +78,30 @@ jobs:
     - name: Test with dotnet (.NET Core 6.0)
       run: dotnet test -f net6.0 --logger trx --collect "Code Coverage" --results-directory "TestResults-net6-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
     - name: Upload dotnet test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dotnet-net6-results-${{ matrix.dotnet-version }}
         path: TestResults-net6-${{ matrix.dotnet-version }}
       # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
 
-    - name: Test with dotnet (.NET Core 7.0)
-      run: dotnet test -f net7.0 --logger trx --collect "Code Coverage" --results-directory "TestResults-net7-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
+    - name: Test with dotnet (.NET Core 8.0)
+      run: dotnet test -f net8.0 --logger trx --collect "Code Coverage" --results-directory "TestResults-net8-${{ matrix.dotnet-version }}" Framework\Ninject\Azure\Tests\Cqrs.Ninject.Azure.WebJobs.Tests.Integration\Cqrs.Ninject.Azure.WebJobs.Tests.Integration.csproj
     - name: Upload dotnet test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: dotnet-net7-results-${{ matrix.dotnet-version }}
-        path: TestResults-net7-${{ matrix.dotnet-version }}
+        name: dotnet-net8-ninject-results-${{ matrix.dotnet-version }}
+        path: TestResults-net8-${{ matrix.dotnet-version }}
       # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
 
-    - name: Test Dependency Resolver with dotnet (.NET Core 7.0)
-      run: dotnet test -f net7.0 --logger trx --collect "Code Coverage" --results-directory "DependencyResolver-TestResults-net7-${{ matrix.dotnet-version }}" Framework\DependencyInjection\Tests\Cqrs.DependencyInjection.Tests.Unit\Cqrs.DependencyInjection.Tests.Unit.csproj
+    - name: Test Dependency Resolver with dotnet (.NET Core 8.0)
+      run: dotnet test -f net8.0 --logger trx --collect "Code Coverage" --results-directory "DependencyResolver-TestResults-net8-${{ matrix.dotnet-version }}" Framework\DependencyInjection\Tests\Cqrs.DependencyInjection.Tests.Unit\Cqrs.DependencyInjection.Tests.Unit.csproj
     - name: Upload dotnet test results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
-        name: dotnet-net7-results-${{ matrix.dotnet-version }}
-        path: DependencyResolver-TestResults-net7-${{ matrix.dotnet-version }}
+        name: dotnet-net8-di-results-${{ matrix.dotnet-version }}
+        path: DependencyResolver-TestResults-net8-${{ matrix.dotnet-version }}
       # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
 
@@ -121,7 +122,6 @@ jobs:
 
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.EventHub\Cqrs.Azure.EventHub.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.Storage\Cqrs.Azure.Storage.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
 
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.KeyVault\Cqrs.Azure.KeyVault.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
@@ -133,8 +133,6 @@ jobs:
 
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Azure\Cqrs.Azure.WebJobs\Cqrs.Azure.WebJobs.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
 
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.EventHub.CommandBus\Cqrs.Ninject.Azure.EventHub.CommandBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
-        dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.EventHub.EventBus\Cqrs.Ninject.Azure.EventHub.EventBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.ServiceBus.CommandBus\Cqrs.Ninject.Azure.ServiceBus.CommandBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.ServiceBus.EventBus\Cqrs.Ninject.Azure.ServiceBus.EventBus.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged
         dotnet pack -c Release -p:Version=${{ env.nuGetVersionNumber }} Framework\Ninject\Azure\Cqrs.Ninject.Azure.Storage\Cqrs.Ninject.Azure.Storage.csproj -p:PackageVersion=${{ env.nuGetFullVersionNumber}} --version-suffix beta-$(date +%Y%m%d%H%M%S) --include-symbols -p:SymbolPackageFormat=snupkg --include-source -o Packaged

@@ -30,7 +30,7 @@ namespace Cqrs.Services
 		/// <returns>
 		/// true if the provided <paramref name="commiter"/> is the Committer, false otherwise.
 		/// </returns>
-#if NET40
+#if NET472
 		bool Commit
 #else
 		Task<bool> CommitAsync

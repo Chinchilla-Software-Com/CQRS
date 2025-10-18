@@ -66,7 +66,7 @@ namespace Cqrs.Snapshots
 			AggregateFactory = aggregateFactory;
 		}
 
-#if NET40
+#if NET472
 		/// <summary>
 		/// Calls <see cref="TryMakeSnapshot"/> then IAggregateRepository{TAuthenticationToken}.Save on <see cref="Repository"/>.
 		/// </summary>
@@ -82,7 +82,7 @@ namespace Cqrs.Snapshots
 		/// <param name="expectedVersion">The version number the <see cref="IAggregateRoot{TAuthenticationToken}"/> is expected to be at.</param>
 #endif
 		public virtual
-#if NET40
+#if NET472
 			void Save
 #else
 			async Task SaveAsync
@@ -93,14 +93,14 @@ namespace Cqrs.Snapshots
 			// We need to grab these first as the changes will have been commited already by the time we go to make the snapshot.
 			IEnumerable<IEvent<TAuthenticationToken>> uncommittedChanges = aggregate.GetUncommittedChanges();
 			// Save the evets first then snapshot the system.
-#if NET40
+#if NET472
 			Repository.Save
 #else
 			await Repository.SaveAsync
 #endif
 				(aggregate, expectedVersion);
 
-#if NET40
+#if NET472
 			TryMakeSnapshot
 #else
 			await TryMakeSnapshotAsync
@@ -108,7 +108,7 @@ namespace Cqrs.Snapshots
 				(aggregate, uncommittedChanges);
 		}
 
-#if NET40
+#if NET472
 		/// <summary>
 		/// Retrieves an <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <typeparamref name="TAggregateRoot"/>,
 		/// First using <see cref="TryRestoreAggregateFromSnapshot{TAggregateRoot}"/>, otherwise via IAggregateRepository{TAuthenticationToken}.Get on <see cref="Repository"/>
@@ -134,7 +134,7 @@ namespace Cqrs.Snapshots
 		/// </param>
 #endif
 		public virtual
-#if NET40
+#if NET472
 			TAggregateRoot Get
 #else
 			async Task<TAggregateRoot> GetAsync
@@ -144,7 +144,7 @@ namespace Cqrs.Snapshots
 		{
 			var aggregate = AggregateFactory.Create<TAggregateRoot>();
 			int snapshotVersion =
-#if NET40
+#if NET472
 				TryRestoreAggregateFromSnapshot
 #else
 				await TryRestoreAggregateFromSnapshotAsync
@@ -153,7 +153,7 @@ namespace Cqrs.Snapshots
 			if (snapshotVersion == -1)
 			{
 				return
-#if NET40
+#if NET472
 					Repository.Get
 #else
 					await Repository.GetAsync
@@ -161,7 +161,7 @@ namespace Cqrs.Snapshots
 						<TAggregateRoot>(aggregateId);
 			}
 			IEnumerable<IEvent<TAuthenticationToken>> theseEvents = events ?? (
-#if NET40
+#if NET472
 				EventStore.Get
 #else
 				await EventStore.GetAsync
@@ -184,7 +184,7 @@ namespace Cqrs.Snapshots
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		public virtual
-#if NET40
+#if NET472
 			TAggregateRoot GetToVersion
 #else
 			Task<TAggregateRoot> GetToVersionAsync
@@ -206,7 +206,7 @@ namespace Cqrs.Snapshots
 		/// If null, the <see cref="IEventStore{TAuthenticationToken}"/> will be used to retrieve a list of <see cref="IEvent{TAuthenticationToken}"/> for you.
 		/// </param>
 		public virtual
-#if NET40
+#if NET472
 			TAggregateRoot GetToDate
 #else
 			Task<TAggregateRoot> GetToDateAsync
@@ -217,7 +217,7 @@ namespace Cqrs.Snapshots
 			throw new InvalidOperationException("Verion replay is not appriopriate with snapshots.");
 		}
 
-#if NET40
+#if NET472
 		/// <summary>
 		/// Calls <see cref="ISnapshotStrategy{TAuthenticationToken}.IsSnapshotable"/> on <see cref="SnapshotStrategy"/>
 		/// If the <typeparamref name="TAggregateRoot"/> is snapshot-able <see cref="ISnapshotStore.Get{TAggregateRoot}"/> is called on <see cref="SnapshotStore"/>.
@@ -241,7 +241,7 @@ namespace Cqrs.Snapshots
 		/// <remarks>There may be more events after the snapshot that still need to rehydrated into the <typeparamref name="TAggregateRoot"/> after restoration.</remarks>
 #endif
 		protected virtual
-#if NET40
+#if NET472
 			int TryRestoreAggregateFromSnapshot
 #else
 			async Task<int> TryRestoreAggregateFromSnapshotAsync
@@ -252,7 +252,7 @@ namespace Cqrs.Snapshots
 			if (SnapshotStrategy.IsSnapshotable(typeof(TAggregateRoot)))
 			{
 				Snapshot snapshot =
-#if NET40
+#if NET472
 					SnapshotStore.Get
 #else
 					await SnapshotStore.GetAsync
@@ -267,7 +267,7 @@ namespace Cqrs.Snapshots
 			return version;
 		}
 
-#if NET40
+#if NET472
 		/// <summary>
 		/// Calls <see cref="ISnapshotStrategy{TAuthenticationToken}.ShouldMakeSnapShot(IAggregateRoot{TAuthenticationToken}, IEnumerable{IEvent{TAuthenticationToken}})"/> on <see cref="SnapshotStrategy"/>
 		/// If the <see cref="IAggregateRoot{TAuthenticationToken}"/> is snapshot-able <see cref="SnapshotAggregateRoot{TAuthenticationToken,TSnapshot}.GetSnapshot"/> is called
@@ -285,7 +285,7 @@ namespace Cqrs.Snapshots
 		/// <param name="uncommittedChanges">A collection of uncommited changes to assess. If null the aggregate will be asked to provide them.</param>
 #endif
 		protected virtual
-#if NET40
+#if NET472
 			void TryMakeSnapshot
 #else
 			async Task TryMakeSnapshotAsync
@@ -299,7 +299,7 @@ namespace Cqrs.Snapshots
 			if (rSnapshot != null)
 			{
 				rSnapshot.Version = aggregate.Version;
-#if NET40
+#if NET472
 				SnapshotStore.Save
 #else
 				await SnapshotStore.SaveAsync
@@ -309,7 +309,7 @@ namespace Cqrs.Snapshots
 			else
 			{
 				snapshot.Version = aggregate.Version;
-#if NET40
+#if NET472
 				SnapshotStore.Save
 #else
 				await SnapshotStore.SaveAsync

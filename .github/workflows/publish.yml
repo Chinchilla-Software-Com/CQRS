@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 env:
-  nuGetVersionNumber: 5.2.3
-  nuGetFullVersionNumber: 5.2.3.${{ github.run_number }}
+  nuGetVersionNumber: 6.0.0
+  nuGetFullVersionNumber: 6.0.0.${{ github.run_number }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -15,12 +15,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2019]
+        os: [windows-latest]
         # this is fixed to just one version so we only run the push operation once
-        dotnet-version: [ '7.0.x' ]
+        dotnet-version: [ '8.0.x' ]
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
 
     - name: Setup dotnet CLI
       uses: actions/setup-dotnet@v3.2.0
@@ -30,6 +30,7 @@ jobs:
           5.0.x
           6.0.x
           7.0.x
+          8.0.x
 
     - name: Setup dependencies caching
       uses: actions/cache@v3

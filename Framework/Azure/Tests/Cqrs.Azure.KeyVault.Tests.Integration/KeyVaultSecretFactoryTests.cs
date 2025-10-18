@@ -32,12 +32,12 @@ namespace Cqrs.Azure.KeyVault.Tests.Integration
 		public void GetSecret_KnownTestSecret_KnownValue()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new CloudConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -58,12 +58,12 @@ namespace Cqrs.Azure.KeyVault.Tests.Integration
 		public async Task GetSecretAsync_KnownTestSecret_KnownValue()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new CloudConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 

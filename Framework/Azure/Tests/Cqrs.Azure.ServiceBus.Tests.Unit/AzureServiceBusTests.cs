@@ -8,28 +8,32 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Chinchilla.Logging;
 using Chinchilla.Logging.Azure.Configuration;
 using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Configuration;
+using Cqrs.Events;
 
-using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
 using TestInitialize = NUnit.Framework.SetUpAttribute;
 using TestCleanup = NUnit.Framework.TearDownAttribute;
 using TestContext = System.Object;
+using NUnit.Framework;
 
 #if NET472
+using Microsoft.ServiceBus.Messaging;
 using Manager = Microsoft.ServiceBus.NamespaceManager;
 #else
 using Cqrs.Azure.ConfigurationManager;
 using Microsoft.Extensions.Configuration;
 using Manager = Azure.Messaging.ServiceBus.Administration.ServiceBusAdministrationClient;
-using System.Threading.Tasks;
+using BrokeredMessage = Azure.Messaging.ServiceBus.ServiceBusMessage;
 #endif
 
 namespace Cqrs.Azure.ServiceBus.Tests.Unit
@@ -40,18 +44,17 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 	[TestClass]
 	public class AzureServiceBusTests
 	{
-		/// <summary>
-		/// </summary>
+		/// <summary />
 		[TestMethod]
-		public void Constructor_NothingSpecial_SafeContainerName()
+		public async Task Constructor_NothingSpecial_SafeContainerName()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -77,12 +80,54 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 #endif
 
 			Assert.IsTrue(logger.FoundContainers.Contains(expectedValue));
+
+			await Task.CompletedTask;
+		}
+
+		/// <summary />
+		[TestMethod]
+		public async Task CreateBrokeredMessageAsync_SagaEvent_HelpfulTypeCalculated()
+		{
+			// Arrange
+			Cqrs.Configuration.IConfigurationManager configurationManager;
+#if NET472_OR_GREATER
+			configurationManager = new Configuration.ConfigurationManager();
+#else
+			IConfigurationRoot config = new ConfigurationBuilder()
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
+				.AddEnvironmentVariables()
+				.Build();
+
+			configurationManager = new CloudConfigurationManager(config);
+#endif
+			DependencyResolver.ConfigurationManager = configurationManager;
+			var logger = new MockLogger(new AzureLoggerSettingsConfiguration(
+#if NET472
+#else
+				config
+#endif
+				), new NullCorrelationIdHelper(), new NullTelemetryHelper());
+
+			var azureServiceBus = new MockAzureServiceBus(configurationManager, new MessageSerialiser<Guid>(), new DefaultAuthenticationTokenHelper(new ContextItemCollectionFactory()), new NullCorrelationIdHelper(), logger, null, null, new BuiltInHashAlgorithmFactory(), true);
+
+			// Act
+			var result =
+#if NET472
+				azureServiceBus._CreateBrokeredMessage
+#else
+				await azureServiceBus._CreateBrokeredMessageAsync
+#endif
+					(message => { return string.Empty; }, typeof(SagaEvent<Guid>), new SagaEvent<Guid>(new TestEvent()));
+
+			//Assert
+
+			await Task.CompletedTask;
 		}
 	}
 
 	class MockAzureServiceBus : AzureServiceBus<Guid>
 	{
-		public MockAzureServiceBus(IConfigurationManager configurationManager, IMessageSerialiser<Guid> messageSerialiser, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<Guid> azureBusHelper, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory, bool isAPublisher)
+		public MockAzureServiceBus(Cqrs.Configuration.IConfigurationManager configurationManager, IMessageSerialiser<Guid> messageSerialiser, IAuthenticationTokenHelper<Guid> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<Guid> azureBusHelper, IBusHelper busHelper, IHashAlgorithmFactory hashAlgorithmFactory, bool isAPublisher)
 			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper, busHelper, hashAlgorithmFactory, isAPublisher)
 		{
 		}
@@ -142,6 +187,33 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 			await CheckPrivateTopicExistsAsync(null, false);
 			await CheckPublicTopicExistsAsync(null, false);
 #endif
+		}
+
+		public virtual
+#if NET472
+			BrokeredMessage _CreateBrokeredMessage
+#else
+			async Task<BrokeredMessage> _CreateBrokeredMessageAsync
+#endif
+			<TMessage>(Func<TMessage, string> serialiserFunction, Type messageType, TMessage message
+#if NET472
+#else
+				, TimeSpan? delay = null
+#endif
+			)
+		{
+			return
+#if NET472
+				base.CreateBrokeredMessage
+#else
+				await base.CreateBrokeredMessageAsync
+#endif
+					(serialiserFunction, messageType, message
+#if NET472
+#else
+				, delay
+#endif
+			);
 		}
 	}
 }

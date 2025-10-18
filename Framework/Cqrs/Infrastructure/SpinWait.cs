@@ -82,7 +82,7 @@ namespace Cqrs.Infrastructure
 			SpinUntil(condition, -1, sleepInMilliseconds);
 		}
 
-#if NET40
+#if NET472
 #else
 		/// <summary>
 		/// Spins until the specified condition is satisfied.
@@ -149,7 +149,7 @@ namespace Cqrs.Infrastructure
 			return true;
 		}
 
-#if NET40
+#if NET472
 #else
 		/// <summary>
 		/// Spins until the specified condition is satisfied or until the specified timeout is expired.

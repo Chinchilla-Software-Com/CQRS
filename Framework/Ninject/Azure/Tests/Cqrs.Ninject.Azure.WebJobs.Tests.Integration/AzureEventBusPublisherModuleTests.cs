@@ -47,7 +47,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 			NinjectDependencyResolver.Start();
 		}
 
-		static IConfigurationManager ConfigurationManager { get; set; }
+		static Cqrs.Configuration.IConfigurationManager ConfigurationManager { get; set; }
 
 #if NET472
 #else
@@ -63,7 +63,7 @@ namespace Cqrs.Azure.ConfigurationManager.Tests.Unit
 #else
 			configuration = new ConfigurationBuilder()
 //				.SetBasePath(context.FunctionAppDirectory)
-				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("local.settings.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 			.Build();
 

@@ -23,7 +23,7 @@ namespace Cqrs.DataStores
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
 
-#if NET40
+#if NET472
 		void Add
 #else
 		Task AddAsync
@@ -33,7 +33,7 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-#if NET40
+#if NET472
 		void Add
 #else
 		Task AddAsync
@@ -43,7 +43,7 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsDeleted"/> to true in the data store and persist the change.
 		/// </summary>
-#if NET40
+#if NET472
 		void Remove
 #else
 		Task RemoveAsync
@@ -53,7 +53,7 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
 		/// </summary>
-#if NET40
+#if NET472
 		void Destroy
 #else
 		Task DestroyAsync
@@ -63,7 +63,7 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
 		/// </summary>
-#if NET40
+#if NET472
 		void RemoveAll
 #else
 		Task RemoveAllAsync
@@ -73,7 +73,7 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Update the provided <paramref name="data"/> in the data store and persist the change.
 		/// </summary>
-#if NET40
+#if NET472
 		void Update
 #else
 		Task UpdateAsync

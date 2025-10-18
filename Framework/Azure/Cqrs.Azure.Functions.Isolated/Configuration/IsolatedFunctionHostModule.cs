@@ -22,7 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 
-#if NET6_0
+#if NET6_0_OR_GREATER
 using Microsoft.Extensions.Configuration;
 #endif
 
@@ -68,17 +68,17 @@ namespace Cqrs.Azure.Functions.Isolated.Configuration
 				}
 			}
 
-#if NET6_0
+#if NET6_0_OR_GREATER
 			services.AddSingleton<IConfiguration>(Cqrs.Configuration.ConfigurationManager.BaseConfiguration);
 #endif
 			if (DependencyResolver.ConfigurationManager == null)
 			{
-				services.AddSingleton<IConfigurationManager, CloudConfigurationManager>();
-				DependencyResolver.ConfigurationManager = Resolve<IConfigurationManager>(services);
+				services.AddSingleton<Cqrs.Configuration.IConfigurationManager, CloudConfigurationManager>();
+				DependencyResolver.ConfigurationManager = Resolve<Cqrs.Configuration.IConfigurationManager>(services);
 			}
 			else
 			{
-				services.AddSingleton<IConfigurationManager>(DependencyResolver.ConfigurationManager);
+				services.AddSingleton<Cqrs.Configuration.IConfigurationManager>(DependencyResolver.ConfigurationManager);
 			}
 		}
 

@@ -113,7 +113,7 @@ namespace Cqrs.DataStores
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void Add
 #else
 			async Task AddAsync
@@ -121,7 +121,7 @@ namespace Cqrs.DataStores
 			(TData data)
 		{
 			InMemoryDatabase.Get<TData>().Add(data.Rsn, data);
-#if NET40
+#if NET472
 #else
 			await Task.CompletedTask;
 #endif
@@ -131,7 +131,7 @@ namespace Cqrs.DataStores
 		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void Add
 #else
 			async Task AddAsync
@@ -139,7 +139,7 @@ namespace Cqrs.DataStores
 			(IEnumerable<TData> data)
 		{
 			foreach (TData dataItem in data)
-#if NET40
+#if NET472
 				Add(dataItem);
 #else
 				await AddAsync(dataItem);
@@ -150,7 +150,7 @@ namespace Cqrs.DataStores
 		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsDeleted"/> to true in the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void Remove
 #else
 			async Task RemoveAsync
@@ -158,7 +158,7 @@ namespace Cqrs.DataStores
 			(TData data)
 		{
 			InMemoryDatabase.Get<TData>()[data.Rsn].IsDeleted = true;
-#if NET40
+#if NET472
 #else
 			await Task.CompletedTask;
 #endif
@@ -168,7 +168,7 @@ namespace Cqrs.DataStores
 		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void Destroy
 #else
 			async Task DestroyAsync
@@ -176,7 +176,7 @@ namespace Cqrs.DataStores
 			(TData data)
 		{
 			InMemoryDatabase.Get<TData>().Remove(data.Rsn);
-#if NET40
+#if NET472
 #else
 			await Task.CompletedTask;
 #endif
@@ -186,7 +186,7 @@ namespace Cqrs.DataStores
 		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void RemoveAll
 #else
 			async Task RemoveAllAsync
@@ -194,7 +194,7 @@ namespace Cqrs.DataStores
 			()
 		{
 			InMemoryDatabase.Get<TData>().Clear();
-#if NET40
+#if NET472
 #else
 			await Task.CompletedTask;
 #endif
@@ -204,7 +204,7 @@ namespace Cqrs.DataStores
 		/// Update the provided <paramref name="data"/> in the data store and persist the change.
 		/// </summary>
 		public virtual
-#if NET40
+#if NET472
 			void Update
 #else
 			async Task UpdateAsync
@@ -212,7 +212,7 @@ namespace Cqrs.DataStores
 			(TData data)
 		{
 			InMemoryDatabase.Get<TData>()[data.Rsn] = data;
-#if NET40
+#if NET472
 #else
 			await Task.CompletedTask;
 #endif

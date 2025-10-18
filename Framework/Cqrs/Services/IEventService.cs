@@ -29,7 +29,7 @@ namespace Cqrs.Services
 		/// </summary>
 		/// <param name="serviceRequest">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}">events</see> to find.</param>
 		[OperationContract]
-#if NET40
+#if NET472
 		IServiceResponseWithResultData<IEnumerable<EventData>> GetEventData
 #else
 		Task<IServiceResponseWithResultData<IEnumerable<EventData>>> GetEventDataAsync

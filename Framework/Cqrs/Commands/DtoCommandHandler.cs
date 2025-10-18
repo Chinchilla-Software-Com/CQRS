@@ -37,7 +37,7 @@ namespace Cqrs.Commands
 		/// </summary>
 		/// <param name="message">The <see cref="DtoCommand{TAuthenticationToken,TDto}"/> to respond to or "handle"</param>
 		public virtual
-#if NET40
+#if NET472
 			void Handle
 #else
 			async Task HandleAsync
@@ -46,7 +46,7 @@ namespace Cqrs.Commands
 		{
 			var item = new DtoAggregateRoot<TAuthenticationToken, TDto>(message.Id, message.Original, message.New);
 
-#if NET40
+#if NET472
 			UnitOfWork.Add(item);
 			UnitOfWork.Commit();
 #else

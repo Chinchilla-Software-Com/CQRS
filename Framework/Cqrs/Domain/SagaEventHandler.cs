@@ -11,7 +11,7 @@ using Chinchilla.Logging;
 using Cqrs.Configuration;
 using Cqrs.Events;
 
-#if NET40
+#if NET472
 #else
 using System.Threading.Tasks;
 #endif
@@ -64,7 +64,7 @@ namespace Cqrs.Domain
 		/// </summary>
 		/// <param name="id">The identifier of the <typeparamref name="TSaga"/> to get.</param>
 		protected virtual
-#if NET40
+#if NET472
 			TSaga GetSaga
 #else
 			async Task<TSaga> GetSaga
@@ -72,7 +72,7 @@ namespace Cqrs.Domain
 				(Guid id)
 		{
 			return
-#if NET40
+#if NET472
 			SagaUnitOfWork.Get
 #else
 			await SagaUnitOfWork.GetAsync

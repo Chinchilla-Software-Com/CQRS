@@ -54,14 +54,14 @@ namespace Cqrs.Azure.KeyVault
 		/// <returns>The secret</returns>
 		/// <exception cref="MissingApplicationSettingException">If the secret isn't found by the <see cref="IConfigurationManager"/></exception>
 		public
-#if NET40
+#if NET472
 #else
 			async
 #endif
 			Task<string> GetSecretAsync(string secretName)
 		{
 			string secret = GetSecret(secretName);
-#if NET40
+#if NET472
 			TaskCompletionSource<string> tcs1 = new TaskCompletionSource<string>();
 			Task<string> task = tcs1.Task;
 			tcs1.SetResult(secret);

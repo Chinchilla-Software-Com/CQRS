@@ -25,7 +25,7 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <typeparam name="T">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to be saved.</param>
-#if NET40
+#if NET472
 		void Save
 #else
 		Task SaveAsync
@@ -37,7 +37,7 @@ namespace Cqrs.Events
 		/// </summary>
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> to be saved.</param>
-#if NET40
+#if NET472
 		void Save
 #else
 		Task SaveAsync
@@ -51,7 +51,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersion">Load events starting from this version</param>
-#if NET40
+#if NET472
 		IEnumerable<IEvent<TAuthenticationToken>> Get
 #else
 		Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
@@ -65,7 +65,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersion">Load events starting from this version</param>
-#if NET40
+#if NET472
 		IEnumerable<IEvent<TAuthenticationToken>> Get
 #else
 		Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
@@ -78,7 +78,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
-#if NET40
+#if NET472
 		IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
 #else
 		Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
@@ -91,7 +91,7 @@ namespace Cqrs.Events
 		/// <typeparam name="T">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="version">Load events up-to and including from this version</param>
-#if NET40
+#if NET472
 		IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
 #else
 		Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
@@ -104,7 +104,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-#if NET40
+#if NET472
 		IEnumerable<IEvent<TAuthenticationToken>> GetToDate
 #else
 		Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
@@ -117,7 +117,7 @@ namespace Cqrs.Events
 		/// <typeparam name="T">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-#if NET40
+#if NET472
 		IEnumerable<IEvent<TAuthenticationToken>> GetToDate
 #else
 		Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
@@ -131,7 +131,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
 		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-#if NET40
+#if NET472
 		IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
 #else
 		Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
@@ -145,7 +145,7 @@ namespace Cqrs.Events
 		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
 		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
 		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
-#if NET40
+#if NET472
 		IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
 #else
 		Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
@@ -156,7 +156,7 @@ namespace Cqrs.Events
 		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
 		/// </summary>
 		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
-#if NET40
+#if NET472
 		IEnumerable<EventData> Get
 #else
 		Task<IEnumerable<EventData>> GetAsync

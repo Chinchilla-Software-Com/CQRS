@@ -28,7 +28,7 @@ namespace Cqrs.Configuration
 		/// The delegate that gets executed.
 		/// </summary>
 		public
-#if NET40
+#if NET472
 			Action<T>
 #else
 			Func<T, Task>

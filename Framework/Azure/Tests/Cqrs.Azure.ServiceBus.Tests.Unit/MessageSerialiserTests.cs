@@ -47,12 +47,12 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public void SerialiseEvent_TestEventWithEncryption_ExpectedSerialisedData()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -77,12 +77,12 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public void DeserialiseEvent_TestEventDataWithEncryptedValues_ExpectedEvent()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -109,12 +109,12 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public void SerialiseCommand_TestCommand_ExpectedSerialisedData()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 
@@ -139,12 +139,12 @@ namespace Cqrs.Azure.ServiceBus.Tests.Unit
 		public void DeserialiseCommand_TestCommandData_ExpectedCommand()
 		{
 			// Arrange
-			IConfigurationManager configurationManager;
+			Cqrs.Configuration.IConfigurationManager configurationManager;
 #if NET472_OR_GREATER
 			configurationManager = new Configuration.ConfigurationManager();
 #else
 			IConfigurationRoot config = new ConfigurationBuilder()
-				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: true)
+				.AddJsonFile("cqrs.json", optional: true, reloadOnChange: false)
 				.AddEnvironmentVariables()
 				.Build();
 

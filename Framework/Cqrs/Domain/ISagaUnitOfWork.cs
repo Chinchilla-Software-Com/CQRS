@@ -23,7 +23,7 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Add an item into the <see cref="ISagaUnitOfWork{TAuthenticationToken}"/> ready to be committed.
 		/// </summary>
-#if NET40
+#if NET472
 		void Add
 #else
 		Task AddAsync
@@ -34,7 +34,7 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Get an item from the <see cref="ISagaUnitOfWork{TAuthenticationToken}"/> if it has already been loaded.
 		/// </summary>
-#if NET40
+#if NET472
 		TSaga Get
 #else
 		Task<TSaga> GetAsync
@@ -46,7 +46,7 @@ namespace Cqrs.Domain
 		/// Commit any changed <see cref="Saga{TAuthenticationToken}"/> added to this <see cref="ISagaUnitOfWork{TAuthenticationToken}"/> via Add
 		/// </summary>
 
-#if NET40
+#if NET472
 		void Commit
 #else
 		Task CommitAsync
