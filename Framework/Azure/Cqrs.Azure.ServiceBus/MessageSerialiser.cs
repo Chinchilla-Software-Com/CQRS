@@ -1,56 +1,126 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
+using System.Reflection;
 using Cqrs.Commands;
 using Cqrs.Events;
 using Newtonsoft.Json;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// Serialises <see cref="IEvent{TAuthenticationToken}">events</see> and <see cref="ICommand{TAuthenticationToken}">commands</see>.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class MessageSerialiser<TAuthenticationToken> : IMessageSerialiser<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The default <see cref="JsonSerializerSettings"/> to use.
+		/// </summary>
 		public static JsonSerializerSettings DefaultSettings { get; private set; }
 
 		static MessageSerialiser()
 		{
-			DefaultSettings = new JsonSerializerSettings
-			{
-				DateFormatHandling = DateFormatHandling.IsoDateFormat,
-				DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind,
-				DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-				FloatFormatHandling = FloatFormatHandling.DefaultValue,
-				NullValueHandling = NullValueHandling.Include,
-				PreserveReferencesHandling = PreserveReferencesHandling.All,
-				ReferenceLoopHandling = ReferenceLoopHandling.Error,
-				StringEscapeHandling = StringEscapeHandling.EscapeNonAscii,
-				TypeNameHandling = TypeNameHandling.All
-			};
+			// this compiler directive is intentionally .NET Core and not 4.8
+#if NETSTANDARD2_0
+			RedirectAssembly("mscorlib", "System.Private.CoreLib");
+#else
+			RedirectAssembly("System.Private.CoreLib", "mscorlib");
+#endif
+			DefaultSettings = DefaultJsonSerializerSettings.DefaultSettings;
 		}
 
-		public string SerialiseEvent<TEvent>(TEvent @event)
+		/// <summary>
+		/// Redirect an assembly resolution, used heavily for polumorphic serialisation and deserialisation such as between .NET Core and the .NET Framework
+		/// </summary>
+		/// <param name="fromAssemblyShortName">The name of the assembly to redirect.</param>
+		/// <param name="replacmentAssemblyShortName">The name of the replacement assembly.</param>
+		/// <remarks>
+		/// https://stackoverflow.com/questions/50190568/net-standard-4-7-1-could-not-load-system-private-corelib-during-serialization
+		/// </remarks>
+		public static void RedirectAssembly(string fromAssemblyShortName, string replacmentAssemblyShortName)
+		{
+			Console.WriteLine($"Adding custom resolver redirect rule form:{fromAssemblyShortName}, to:{replacmentAssemblyShortName}");
+			ResolveEventHandler handler = null;
+			handler = (sender, args) =>
+			{
+				// Use latest strong name & version when trying to load SDK assemblies
+				var requestedAssembly = new AssemblyName(args.Name);
+				Console.WriteLine($"RedirectAssembly >  requesting:{requestedAssembly}; replacment from:{fromAssemblyShortName}, to:{replacmentAssemblyShortName}");
+				if (requestedAssembly.Name != fromAssemblyShortName)
+					return null;
+
+				try
+				{
+					Console.WriteLine($"Redirecting Assembly {fromAssemblyShortName} to: {replacmentAssemblyShortName}");
+					var replacmentAssembly = Assembly.Load(replacmentAssemblyShortName);
+					return replacmentAssembly;
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine($"ERROR while trying to provide replacement Assembly {fromAssemblyShortName} to: {replacmentAssemblyShortName}");
+					Console.WriteLine(e);
+					return null;
+				}
+			};
+
+			AppDomain.CurrentDomain.AssemblyResolve += handler;
+		}
+
+		/// <summary>
+		/// Serialise the provided <paramref name="event"/>.
+		/// </summary>
+		/// <typeparam name="TEvent">The <see cref="Type"/> of the <see cref="IEvent{TAuthenticationToken}"/> being serialised.</typeparam>
+		/// <param name="event">The <see cref="IEvent{TAuthenticationToken}"/> being serialised.</param>
+		/// <returns>A <see cref="string"/> representation of the provided <paramref name="event"/>.</returns>
+		public virtual string SerialiseEvent<TEvent>(TEvent @event)
 			where TEvent : IEvent<TAuthenticationToken>
 		{
-			return JsonConvert.SerializeObject(@event, DefaultSettings);
+			return JsonConvert.SerializeObject(@event, GetSerialisationSettings());
 		}
 
-		public string SerialiseCommand<TCommand>(TCommand command) where TCommand : ICommand<TAuthenticationToken>
+		/// <summary>
+		/// Serialise the provided <paramref name="command"/>.
+		/// </summary>
+		/// <typeparam name="TCommand">The <see cref="Type"/> of the <see cref="ICommand{TAuthenticationToken}"/> being serialised.</typeparam>
+		/// <param name="command">The <see cref="ICommand{TAuthenticationToken}"/> being serialised.</param>
+		/// <returns>A <see cref="string"/> representation of the provided <paramref name="command"/>.</returns>
+		public virtual string SerialiseCommand<TCommand>(TCommand command) where TCommand : ICommand<TAuthenticationToken>
 		{
-			return JsonConvert.SerializeObject(command, DefaultSettings);
+			return JsonConvert.SerializeObject(command, GetSerialisationSettings());
 		}
 
-		public IEvent<TAuthenticationToken> DeserialiseEvent(string @event)
+		/// <summary>
+		/// Deserialise the provided <paramref name="event"/> from its <see cref="string"/> representation.
+		/// </summary>
+		/// <param name="event">A <see cref="string"/> representation of an <see cref="IEvent{TAuthenticationToken}"/> to deserialise.</param>
+		public virtual IEvent<TAuthenticationToken> DeserialiseEvent(string @event)
 		{
-			return JsonConvert.DeserializeObject<IEvent<TAuthenticationToken>>(@event, DefaultSettings);
+			return JsonConvert.DeserializeObject<IEvent<TAuthenticationToken>>(@event, GetSerialisationSettings());
 		}
 
-		public ICommand<TAuthenticationToken> DeserialiseCommand(string @event)
+		/// <summary>
+		/// Deserialise the provided <paramref name="command"/> from its <see cref="string"/> representation.
+		/// </summary>
+		/// <param name="command">A <see cref="string"/> representation of an <see cref="ICommand{TAuthenticationToken}"/> to deserialise.</param>
+		public virtual ICommand<TAuthenticationToken> DeserialiseCommand(string command)
 		{
-			return JsonConvert.DeserializeObject<ICommand<TAuthenticationToken>>(@event, DefaultSettings);
+			return JsonConvert.DeserializeObject<ICommand<TAuthenticationToken>>(command, GetSerialisationSettings());
+		}
+
+		/// <summary>
+		/// Returns <see cref="DefaultSettings"/>
+		/// </summary>
+		/// <returns><see cref="DefaultSettings"/></returns>
+		protected virtual JsonSerializerSettings GetSerialisationSettings()
+		{
+			return DefaultSettings;
 		}
 	}
 }

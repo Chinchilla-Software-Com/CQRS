@@ -1,12 +1,18 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
+
+using Cqrs.Domain;
+
 namespace Cqrs.Akka.Domain.Commands
 {
+	/// <summary>
+	/// Get the <see cref="IAggregateRoot{TAuthenticationToken}.Version"/> from the Akka.net system.
+	/// </summary>
 	public class GetAkkaAggregateRootVersion
 	{
 	}

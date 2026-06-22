@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -9,27 +9,75 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Cqrs.Entities;
 
 namespace Cqrs.DataStores
 {
 	/// <summary>
-	/// A data store capable of being queried and modified
+	/// A data store capable of being queried and modified.
 	/// </summary>
 	public interface IDataStore<TData> : IOrderedQueryable<TData>, IDisposable
 	{
-		void Add(TData data);
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 
-		void Add(IEnumerable<TData> data);
+#if NET472
+		void Add
+#else
+		Task AddAsync
+#endif
+			(TData data);
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft).
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		void Remove(TData data);
+#if NET472
+		void Add
+#else
+		Task AddAsync
+#endif
+			(IEnumerable<TData> data);
 
-		void Destroy(TData data);
+		/// <summary>
+		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsDeleted"/> to true in the data store and persist the change.
+		/// </summary>
+#if NET472
+		void Remove
+#else
+		Task RemoveAsync
+#endif
+			(TData data);
 
-		void RemoveAll();
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
+#if NET472
+		void Destroy
+#else
+		Task DestroyAsync
+#endif
+			(TData data);
 
-		void Update(TData data);
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
+#if NET472
+		void RemoveAll
+#else
+		Task RemoveAllAsync
+#endif
+			();
+
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
+#if NET472
+		void Update
+#else
+		Task UpdateAsync
+#endif
+			(TData data);
 	}
 }

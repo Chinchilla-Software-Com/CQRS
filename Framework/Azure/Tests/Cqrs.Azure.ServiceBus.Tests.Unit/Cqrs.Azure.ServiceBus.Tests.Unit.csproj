@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net472;net8.0</TargetFrameworks>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Copyright>Copyright ©  2025</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFrameworks>net8.0;net472</TargetFrameworks>
+		<DocumentationFile>Cqrs.Azure.ServiceBus.Tests.Unit.xml</DocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Cqrs.Azure.ServiceBus.Tests.Unit.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="nunit" Version="3.14.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="5.2.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+		<PackageReference Include="Chinchilla.Logging.Azure" Version="5.3.46" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.9" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+		<PackageReference Include="WindowsAzure.ServiceBus" Version="6.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Cqrs\Cqrs.csproj" />
+	  <ProjectReference Include="..\..\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
+	  <ProjectReference Include="..\..\Cqrs.Azure.KeyVault\Cqrs.Azure.KeyVault.csproj" />
+	  <ProjectReference Include="..\..\Cqrs.Azure.ServiceBus\Cqrs.Azure.ServiceBus.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="cqrs.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="IF NOT EXIST &quot;$(ProjectDir)cqrs.json&quot; ECHO ^{ &quot;Cqrs&quot;: ^{ &quot;Secrets&quot;: ^{ &quot;TestKey&quot;: &quot;TestKey&quot; ^} ^} ^} &gt; &quot;$(ProjectDir)cqrs.json&quot;&#xD;&#xA;" />
+	</Target>
+</Project>

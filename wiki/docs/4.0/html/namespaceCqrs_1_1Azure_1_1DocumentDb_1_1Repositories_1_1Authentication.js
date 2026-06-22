@@ -1,0 +1,4 @@
+var namespaceCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1Authentication =
+[
+    [ "AzureSingleSignOnToken", "classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1Authentication_1_1AzureSingleSignOnToken.html", "classCqrs_1_1Azure_1_1DocumentDb_1_1Repositories_1_1Authentication_1_1AzureSingleSignOnToken" ]
+];

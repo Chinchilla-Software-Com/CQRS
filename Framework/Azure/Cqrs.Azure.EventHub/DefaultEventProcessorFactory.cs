@@ -1,13 +1,19 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
 
 using System;
+
+#if NETSTANDARD2_0 || NET6_0
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.EventHubs.Processor;
+#else
 using Microsoft.ServiceBus.Messaging;
+#endif
 
 namespace Cqrs.Azure.ServiceBus
 {

@@ -11,7 +11,13 @@ namespace Cqrs.Tests.Substitutes
 
 		public int SavedVersion { get; private set; }
 
-		public Snapshot Get(Guid id)
+		public Snapshot Get<TAggregateRoot>(Guid id)
+		{
+			VerifyGet = true;
+			return new TestSnapshotAggregateSnapshot();
+		}
+
+		public Snapshot Get(Type aggregateRootType, Guid id)
 		{
 			VerifyGet = true;
 			return new TestSnapshotAggregateSnapshot();

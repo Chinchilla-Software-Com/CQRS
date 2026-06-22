@@ -1,0 +1,7 @@
+var classCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Unit_1_1MessageSerialiserTests =
+[
+    [ "DeserialiseCommand_TestCommandData_ExpectedCommand", "classCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Unit_1_1MessageSerialiserTests_a33c0538a90a7ed653350ccc7d3c38f49.html#a33c0538a90a7ed653350ccc7d3c38f49", null ],
+    [ "DeserialiseEvent_TestEventData_ExpectedEvent", "classCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Unit_1_1MessageSerialiserTests_ad7bc69e1f1d8741b8520f76cc5e034c2.html#ad7bc69e1f1d8741b8520f76cc5e034c2", null ],
+    [ "SerialiseCommand_TestCommand_ExpectedSerialisedData", "classCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Unit_1_1MessageSerialiserTests_a9a2a5ddf1c109f58bb27c651fb9ec42a.html#a9a2a5ddf1c109f58bb27c651fb9ec42a", null ],
+    [ "SerialiseEvent_TestEvent_ExpectedSerialisedData", "classCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Unit_1_1MessageSerialiserTests_a9915b4ada786289ec41f1444374a3884.html#a9915b4ada786289ec41f1444374a3884", null ]
+];

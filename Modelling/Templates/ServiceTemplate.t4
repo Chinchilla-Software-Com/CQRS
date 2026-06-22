@@ -24,7 +24,7 @@ if (!string.IsNullOrWhiteSpace(baseClass))
 // using statements
 WriteUsingStatements(this.Element);
 #>
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Commands;
 using Cqrs.Events;
@@ -51,41 +51,25 @@ namespace <#= classNamespace #>
 	if (hasNoAggregateRootService)
 	{
 #>
-		protected ICommandSender<<#= authenticationTokenType #>> CommandSender { get; private set; }
+		protected ICommandPublisher<<#= authenticationTokenType #>> CommandPublisher { get; private set; }
 
 		protected IUnitOfWorkService UnitOfWorkService { get; private set; }
 
 		protected IQueryFactory QueryFactory { get; private set; }
 
-		protected IAuthenticationTokenHelper<<#= authenticationTokenType #>> AuthenticationTokenHelper { get; set; }
-
-		protected ICorrelationIdHelper CorrelationIdHelper { get; set; }
-
-		protected ILogger Logger { get; private set; }
-
-		public <#= className #>(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IEventStore<<#= authenticationTokenType #>> eventStore)
+		public <#= className #>(ICommandPublisher<<#= authenticationTokenType #>> commandPublisher, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IEventStore<<#= authenticationTokenType #>> eventStore)
 			: base(eventStore, logger, correlationIdHelper, authenticationTokenHelper)
 		{
-			CommandSender = commandSender;
+			CommandPublisher = commandPublisher;
 			UnitOfWorkService = unitOfWorkService;
 			QueryFactory = queryFactory;
-			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrelationIdHelper = correlationIdHelper;
-			Logger = logger;
-		}
-
-		protected virtual TServiceResponse CompleteResponse<TServiceResponse>(TServiceResponse serviceResponse)
-			where TServiceResponse : IServiceResponse
-		{
-			serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
-			return serviceResponse;
 		}
 
 <#
 	}
 #>
 <#
-		IList<IOperation> collectionMethods = GetMethodList(this.Element);
+		IList<IOperation> collectionMethods = GetMethodList(this.Element).Where(m => m.AppliedStereotypes.Any(property => property.Name == "ServiceMethod")).ToList();
 		// Methods
 		foreach(IOperation collectionMethod in collectionMethods)
 		{
@@ -99,7 +83,10 @@ namespace <#= classNamespace #>
 					methodTypeNameSuffix = string.Concat(methodTypeNameSuffix, methodTypeName.Substring(methodTypeName.Length - 1));
 					methodTypeName = methodTypeName.Substring(0, methodTypeName.Length - 1);
 				}
-				methodTypeName = string.Format("{0}Entity{1}", methodTypeName, methodTypeNameSuffix);
+				if (methodTypeName.EndsWith("Entity"))
+					methodTypeName = string.Format("{0}{1}", methodTypeName, methodTypeNameSuffix);
+				else
+					methodTypeName = string.Format("{0}Entity{1}", methodTypeName, methodTypeNameSuffix);
 			}
 			if (methodTypeName == "void")
 			{
@@ -123,11 +110,9 @@ namespace <#= classNamespace #>
 
 			var methodSignatureParameter = string.Empty;
 
-			var returnParameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
-			var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
-			if (returnParameter == null && parameters.Any())
-				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
-			else if (returnParameter != null)
+			IParameter returnParameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
+			IEnumerable<IParameter> parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
+			if (parameters.Any())
 				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
 			else
 				methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);

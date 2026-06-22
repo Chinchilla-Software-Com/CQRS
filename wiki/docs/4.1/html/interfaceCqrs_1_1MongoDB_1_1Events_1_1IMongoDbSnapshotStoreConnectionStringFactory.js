@@ -1,0 +1,5 @@
+var interfaceCqrs_1_1MongoDB_1_1Events_1_1IMongoDbSnapshotStoreConnectionStringFactory =
+[
+    [ "GetSnapshotStoreConnectionString", "interfaceCqrs_1_1MongoDB_1_1Events_1_1IMongoDbSnapshotStoreConnectionStringFactory_a634bf6d5d35873cde881588a4ea5f546.html#a634bf6d5d35873cde881588a4ea5f546", null ],
+    [ "GetSnapshotStoreDatabaseName", "interfaceCqrs_1_1MongoDB_1_1Events_1_1IMongoDbSnapshotStoreConnectionStringFactory_ab04ecd4d9529dca4ea648d38cb5d4b78.html#ab04ecd4d9529dca4ea648d38cb5d4b78", null ]
+];

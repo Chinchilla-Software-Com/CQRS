@@ -64,8 +64,27 @@ namespace <#= classNamespace #>.Events
 
 		#region Implementation of IMessage
 
+		/// <summary>
+		/// The correlation id used to group together events and notifications.
+		/// </summary>
 		[DataMember]
 		public Guid CorrelationId { get; set; }
+
+		[DataMember]
+		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
+		public FrameworkType Framework { get; set; }
+
+		/// <summary>
+		/// The originating framework this message was sent from.
+		/// </summary>
+		[DataMember]
+		public string OriginatingFramework { get; set; }
+
+		/// <summary>
+		/// The frameworks this <see cref="IMessage"/> has been delivered to/sent via already.
+		/// </summary>
+		[DataMember]
+		public IEnumerable<string> Frameworks { get; set; }
 
 		[Obsolete("Use CorrelationId")]
 		[DataMember]
@@ -75,14 +94,14 @@ namespace <#= classNamespace #>.Events
 			set { CorrelationId = value; }
 		}
 
-		[DataMember]
-		public FrameworkType Framework { get; set; }
-
 		#endregion
 
 		[DataMember]
 		public Guid Rsn { get; set; }
 
+		/// <summary>
+		/// Instantiates and Initialises a new instance of the <see cref="<#= className #>Deleted"/> <see cref="IEvent{TAuthenticationToken}"/>.
+		/// </summary>
 		public <#= className #>Deleted(Guid rsn)
 		{
 			Rsn = rsn;

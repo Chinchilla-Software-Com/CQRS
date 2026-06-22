@@ -1,12 +1,14 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
 
+using System;
 using System.ServiceModel;
+using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
@@ -16,5 +18,11 @@ namespace Cqrs.Bus
 	[ServiceContract(Namespace = "https://getcqrs.net/Bus/EventHandlerRegistrar")]
 	public interface IEventHandlerRegistrar : IHandlerRegistrar
 	{
+		/// <summary>
+		/// Register an event handler that will listen and respond to all events.
+		/// </summary>
+		[OperationContract]
+		void RegisterGlobalEventHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock = true)
+			where TMessage : IMessage;
 	}
 }

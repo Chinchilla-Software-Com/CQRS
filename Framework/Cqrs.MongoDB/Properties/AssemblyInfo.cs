@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Cqrs.MongoDB")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("cdmdotnet Limited")]
+[assembly: AssemblyCompany("Chinchilla Software Limited")]
 [assembly: AssemblyProduct("Cqrs.MongoDB")]
-[assembly: AssemblyCopyright("Copyright © cdmdotnet Limited 2016")]
+[assembly: AssemblyCopyright("Copyright © Chinchilla Software Limited 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

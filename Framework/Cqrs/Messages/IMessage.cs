@@ -1,7 +1,7 @@
 #region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -11,15 +11,15 @@ using System.Collections.Generic;
 
 namespace Cqrs.Messages
 {
+	/// <summary>
+	/// A message such as an event or command.
+	/// </summary>
 	public interface IMessage
 	{
-		[Obsolete("Use CorrelationId")]
-		Guid CorrolationId { get; set; }
-
+		/// <summary>
+		/// An identifier used to group together several <see cref="IMessage"/>. Any <see cref="IMessage"/> with the same <see cref="CorrelationId"/> were triggered by the same initiating request.
+		/// </summary>
 		Guid CorrelationId { get; set; }
-
-		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
-		FrameworkType Framework { get; set; }
 
 		/// <summary>
 		/// The originating framework this message was sent from.

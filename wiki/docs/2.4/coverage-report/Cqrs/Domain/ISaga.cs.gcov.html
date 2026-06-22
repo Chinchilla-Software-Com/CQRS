@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs/Domain/ISaga.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Cqrs/Domain</a> - ISaga.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-08-07 15:04:50</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">      12 </span>            : using Cqrs.Commands;
+<span class="lineNum">      13 </span>            : using Cqrs.Events;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : namespace Cqrs.Domain
+<span class="lineNum">      16 </span>            : {
+<span class="lineNum">      17 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      18 </span>            :         /// An independent component that reacts to domain &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; in a cross-&lt;see cref=&quot;IAggregateRoot{TAuthenticationToken}&quot;/&gt;, eventually consistent manner. Time can also be a trigger. A &lt;see cref=&quot;Saga{TAuthenticationToken}&quot;/&gt; can sometimes be purely reactive, and sometimes represent workflows.
+<span class="lineNum">      19 </span>            :         /// 
+<span class="lineNum">      20 </span>            :         /// From an implementation perspective, a &lt;see cref=&quot;Saga{TAuthenticationToken}&quot;/&gt; is a state machine that is driven forward by incoming &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; (which may come from many &lt;see cref=&quot;AggregateRoot{TAuthenticationToken}&quot;/&gt; or other &lt;see cref=&quot;Saga{TAuthenticationToken}&quot;/&gt;). Some states will have side effects, such as sending &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt;, talking to external web services, or sending emails.
+<span class="lineNum">      21 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      22 </span>            :         /// &lt;remarks&gt;
+<span class="lineNum">      23 </span>            :         /// Isn't a &lt;see cref=&quot;Saga{TAuthenticationToken}&quot;/&gt; just leaked domain logic?
+<span class="lineNum">      24 </span>            :         /// No.
+<span class="lineNum">      25 </span>            :         /// A &lt;see cref=&quot;Saga{TAuthenticationToken}&quot;/&gt; can doing things that no individual &lt;see cref=&quot;AggregateRoot{TAuthenticationToken}&quot;/&gt; can sensibly do. Thus, it's not a logic leak since the logic didn't belong in an &lt;see cref=&quot;AggregateRoot{TAuthenticationToken}&quot;/&gt; anyway. Furthermore, we're not breaking encapsulation in any way, since &lt;see cref=&quot;Saga{TAuthenticationToken}&quot;/&gt; operate with &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; and &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;, which are part of the public API.
+<span class="lineNum">      26 </span>            :         /// 
+<span class="lineNum">      27 </span>            :         /// How can I make my &lt;see cref=&quot;Saga{TAuthenticationToken}&quot;/&gt; react to an &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; that did not happen?
+<span class="lineNum">      28 </span>            :         /// The &lt;see cref=&quot;Saga{TAuthenticationToken}&quot;/&gt;, besides reacting to domain &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;, can be &quot;woken up&quot; by recurrent internal alarms. Implementing such alarms is easy. See cron in Unix, or triggered WebJobs in Azure for examples.
+<span class="lineNum">      29 </span>            :         /// 
+<span class="lineNum">      30 </span>            :         /// How does the &lt;see cref=&quot;Saga{TAuthenticationToken}&quot;/&gt; interact with the write side?
+<span class="lineNum">      31 </span>            :         /// By sending an &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to it.
+<span class="lineNum">      32 </span>            :         /// &lt;/remarks&gt;
+<span class="lineNum">      33 </span>            :         public interface ISaga&lt;TAuthenticationToken&gt;
+<span class="lineNum">      34 </span>            :         {
+<span class="lineNum">      35 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      36 </span>            :                 /// The identifier of the &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      37 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      38 </span>            :                 [DataMember]
+<span class="lineNum">      39 </span>            :                 Guid Id { get; }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// The current version of this &lt;see cref=&quot;ISaga{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span>            :                 [DataMember]
+<span class="lineNum">      45 </span>            :                 int Version { get; }
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      48 </span>            :                 /// Get all applied changes that haven't yet been committed.
+<span class="lineNum">      49 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      50 </span><span class="lineCov">          1 :                 IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; GetUncommittedChanges();</span>
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      53 </span>            :                 /// Mark all applied changes as committed, increment &lt;see cref=&quot;Version&quot;/&gt; and flush the internal collection of changes.
+<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      55 </span><span class="lineCov">          1 :                 void MarkChangesAsCommitted();</span>
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// Apply all the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; in &lt;paramref name=&quot;history&quot;/&gt;
+<span class="lineNum">      59 </span>            :                 /// using event replay to this instance.
+<span class="lineNum">      60 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      61 </span><span class="lineCov">          1 :                 void LoadFromHistory(IEnumerable&lt;ISagaEvent&lt;TAuthenticationToken&gt;&gt; history);</span>
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      64 </span>            :                 /// Get all pending commands that haven't yet been published yet.
+<span class="lineNum">      65 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      66 </span><span class="lineCov">          1 :                 IEnumerable&lt;ICommand&lt;TAuthenticationToken&gt;&gt; GetUnpublishedCommands();</span>
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      69 </span>            :                 /// Mark all published commands as published and flush the internal collection of commands.
+<span class="lineNum">      70 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      71 </span><span class="lineCov">          1 :                 void MarkCommandsAsPublished();</span>
+<span class="lineNum">      72 </span>            :         }
+<span class="lineNum">      73 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.12</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

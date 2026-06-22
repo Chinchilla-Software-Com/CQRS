@@ -6,24 +6,26 @@
 		<version>$version$</version>
 		<authors>Chinchilla Software</authors>
 		<licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-		<projectUrl>https://github.com/Chinchilla-Software-Com/CQRS</projectUrl>
-		<iconUrl>https://raw.githubusercontent.com/Chinchilla-Software-Com/CQRS/master/wiki/ChinChilla-Software-Red.png</iconUrl>
+		<projectUrl>http://chinchilla-software-com.github.io/CQRS/</projectUrl>
+		<iconUrl>http://chinchilla-software-com.github.io/CQRS/wiki/ChinChilla-Software-Red.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Use Azure ServiceBus as a message, event or command bus in CQRS.NET</description>
 		<copyright>Copyright 2015</copyright>
-		<tags>CQRS Azure ServiceBus</tags>
+		<tags>CQRS CQRS.NET Pub/Sub Azure ServiceBus</tags>
 		<releaseNotes>
-			Version 1.601
+			Version 2.4
 
-			* Added configurable setting to enable certain events and commands to not be required to be handled by the service bus (useful when you want an instance of the system to just run a subset of all possible events that might be received by a poorly configured bus).
-			* Added configurable setting to change the default behaviour of the "certain events and commands are required or not" settings into a white-list or black-list
-			* Added better handling when the message cannot be deserialised due to the event not being in a local assembly and attempts to apply the above configuration lookup to enable the message to be pushed off the queue.
-			* Added SendAndWait to command senders.
-			* Added a configuration checker to the service-bus. This means if you change the settings in Azure without recycling the application, this method will now pick up change of several settings and switch to a new connection using the new setting.
-			* Added a configuration setting for Cqrs.Azure.EventBus.MaximumConcurrentReceiverProcessesCount (the number of threads used per client) and Cqrs.Azure.EventBus.NumberOfReceiversCount (the number of clients used).
+			see https://github.com/Chinchilla-Software-Com/CQRS/releases/tag/releases%2F2.4%2F2.4.1619.839
+
+			Version 2.3
+
+			see https://github.com/Chinchilla-Software-Com/CQRS/releases/tag/releases%2F2.3%2F2.3.1595.820
 		</releaseNotes>
 		<dependencies>
 			<dependency id="Cqrs" version="[$version$]" />
 		</dependencies>
 	</metadata>
+	<files>
+		<file src="Tools\*.ps1" target="Tools" />
+	</files>
 </package>

@@ -1,13 +1,14 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Cqrs.Commands;
 using Cqrs.Events;
 
@@ -140,14 +141,32 @@ namespace Cqrs.Domain
 	/// </remarks>
 	public interface IAggregateRoot<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The identifier of this <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// </summary>
+		[DataMember]
 		Guid Id { get; }
 
+		/// <summary>
+		/// The current version of this <see cref="IAggregateRoot{TAuthenticationToken}"/>.
+		/// </summary>
+		[DataMember]
 		int Version { get; }
 
+		/// <summary>
+		/// Get all applied changes that haven't yet been committed.
+		/// </summary>
 		IEnumerable<IEvent<TAuthenticationToken>> GetUncommittedChanges();
 
+		/// <summary>
+		/// Mark all applied changes as committed, increment <see cref="Version"/> and flush the internal collection of changes.
+		/// </summary>
 		void MarkChangesAsCommitted();
 
+		/// <summary>
+		/// Apply all the <see cref="IEvent{TAuthenticationToken}">events</see> in <paramref name="history"/>
+		/// using event replay to this instance.
+		/// </summary>
 		void LoadFromHistory(IEnumerable<IEvent<TAuthenticationToken>> history);
 	}
 }

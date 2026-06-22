@@ -1,0 +1,7 @@
+var classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStoragEventStoreModule =
+[
+    [ "Load", "classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStoragEventStoreModule_a76808b1263f1086b834a21ad82a0604f.html#a76808b1263f1086b834a21ad82a0604f", null ],
+    [ "RegisterEventSerialisationConfiguration", "classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStoragEventStoreModule_a546c871cff486df5efba7e0f9e3ceb96.html#a546c871cff486df5efba7e0f9e3ceb96", null ],
+    [ "RegisterEventStore", "classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStoragEventStoreModule_a579cbe7615e4cf812946ff43e3a5aebd.html#a579cbe7615e4cf812946ff43e3a5aebd", null ],
+    [ "RegisterFactories", "classCqrs_1_1Ninject_1_1Azure_1_1BlobStorage_1_1Configuration_1_1BlobStoragEventStoreModule_a5afa83a73b65a61272d3c18a2f6fd214.html#a5afa83a73b65a61272d3c18a2f6fd214", null ]
+];

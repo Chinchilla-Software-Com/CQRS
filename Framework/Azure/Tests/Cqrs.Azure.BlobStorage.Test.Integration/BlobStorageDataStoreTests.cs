@@ -1,11 +1,22 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Azure.BlobStorage.DataStores;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Configuration;
+using Cqrs.DataStores;
+using Cqrs.Entities;
 using NUnit.Framework;
 using TestClass = NUnit.Framework.TestFixtureAttribute;
 using TestMethod = NUnit.Framework.TestAttribute;
@@ -21,14 +32,19 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 	[TestClass]
 	public class BlobStorageDataStoreTests
 	{
+		/// <summary>
+		/// Tests the <see cref="IDataStore{TData}.Add(TData)"/> method
+		/// Passing a valid test <see cref="IEntity"/>
+		/// Expecting the test <see cref="IEntity"/> is able to be read.
+		/// </summary>
 		[TestMethod]
-		public void Save_ValidProjectionView_ProjectionViewCanBeRetreived()
+		public virtual void Save_ValidProjectionView_ProjectionViewCanBeRetreived()
 		{
 			// Arrange
-			var correlationIdHelper = new CorrelationIdHelper();
+			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			var dataStore = new BlobStorageDataStore<TestEvent>(logger, new BlobStorageDataStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			var dataStore = new BlobStorageDataStore<TestEvent>(logger, new BlobStorageDataStoreConnectionStringFactory(new Configuration.ConfigurationManager(), logger));
 
 			var event1 = new TestEvent
 			{

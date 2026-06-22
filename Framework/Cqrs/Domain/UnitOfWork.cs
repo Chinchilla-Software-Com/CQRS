@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -9,19 +9,46 @@
 using System;
 using System.Collections.Generic;
 using Cqrs.Domain.Exceptions;
+using Cqrs.Events;
+
+#if NET472
+#else
+using System.Threading.Tasks;
+#endif
 
 namespace Cqrs.Domain
 {
 	/// <summary>
-	/// This is a Unit of Work
+	/// Provides a basic container to control when <see cref="IEvent{TAuthenticationToken}">events</see> are store in an <see cref="IEventStore{TAuthenticationToken}"/> and then published on an <see cref="IEventPublisher{TAuthenticationToken}"/>.
 	/// </summary>
-	public class UnitOfWork<TAuthenticationToken> : IUnitOfWork<TAuthenticationToken>
+	/// <remarks>
+	/// This shouldn't normally be used as a singleton.
+	/// </remarks>
+	public class UnitOfWork<TAuthenticationToken>
+		: IUnitOfWork<TAuthenticationToken>
 	{
-		private IRepository<TAuthenticationToken> Repository { get; set; }
+		private IAggregateRepository<TAuthenticationToken> Repository { get; set; }
+
+		private ISnapshotAggregateRepository<TAuthenticationToken> SnapshotRepository { get; set; }
 
 		private Dictionary<Guid, IAggregateDescriptor<TAuthenticationToken>> TrackedAggregates { get; set; }
 
-		public UnitOfWork(IRepository<TAuthenticationToken> repository)
+		/// <summary>
+		/// Instantiates a new instance of <see cref="UnitOfWork{TAuthenticationToken}"/>
+		/// </summary>
+		public UnitOfWork(ISnapshotAggregateRepository<TAuthenticationToken> snapshotRepository, IAggregateRepository<TAuthenticationToken> repository)
+			: this(repository)
+		{
+			if (snapshotRepository == null)
+				throw new ArgumentNullException("snapshotRepository");
+
+			SnapshotRepository = snapshotRepository;
+		}
+
+		/// <summary>
+		/// Instantiates a new instance of <see cref="UnitOfWork{TAuthenticationToken}"/>
+		/// </summary>
+		public UnitOfWork(IAggregateRepository<TAuthenticationToken> repository)
 		{
 			if(repository == null)
 				throw new ArgumentNullException("repository");
@@ -33,7 +60,13 @@ namespace Cqrs.Domain
 		/// <summary>
 		/// Add an item into the <see cref="IUnitOfWork{TAuthenticationToken}"/> ready to be committed.
 		/// </summary>
-		public void Add<TAggregateRoot>(TAggregateRoot aggregate)
+		public virtual
+#if NET472
+			void Add
+#else
+			async Task AddAsync
+#endif
+				<TAggregateRoot>(TAggregateRoot aggregate, bool useSnapshots = false)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			if (!IsTracked(aggregate.Id))
@@ -41,32 +74,106 @@ namespace Cqrs.Domain
 				var aggregateDescriptor = new AggregateDescriptor<TAggregateRoot, TAuthenticationToken>
 				{
 					Aggregate = aggregate,
-					Version = aggregate.Version
+					Version = aggregate.Version,
+					UseSnapshots = useSnapshots
 				};
 				TrackedAggregates.Add(aggregate.Id, aggregateDescriptor);
 			}
-			else if (((TrackedAggregates[aggregate.Id]).Aggregate) != (IAggregateRoot<TAuthenticationToken>)aggregate)
+			else if (TrackedAggregates[aggregate.Id].Aggregate != (IAggregateRoot<TAuthenticationToken>)aggregate)
 				throw new ConcurrencyException(aggregate.Id);
+#if NET472
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
-		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded or get it from the <see cref="IRepository{TAuthenticationToken}"/>.
+		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> if it has already been loaded or get it from the <see cref="IAggregateRepository{TAuthenticationToken}"/>.
 		/// </summary>
-		public TAggregateRoot Get<TAggregateRoot>(Guid id, int? expectedVersion = null)
+		public virtual
+#if NET472
+			TAggregateRoot Get
+#else
+			async Task<TAggregateRoot> GetAsync
+#endif
+				<TAggregateRoot>(Guid id, int? expectedVersion = null, bool useSnapshots = false)
 			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
 		{
 			if(IsTracked(id))
 			{
 				var trackedAggregate = (TAggregateRoot)TrackedAggregates[id].Aggregate;
 				if (expectedVersion != null && trackedAggregate.Version != expectedVersion)
-					throw new ConcurrencyException(trackedAggregate.Id);
+					throw new ConcurrencyException(trackedAggregate.Id, expectedVersion.Value, trackedAggregate.Version);
 				return trackedAggregate;
 			}
 
-			var aggregate = Repository.Get<TAggregateRoot>(id);
+			var aggregate =
+#if NET472
+				(useSnapshots ? SnapshotRepository : Repository).Get
+#else
+				await (useSnapshots ? SnapshotRepository : Repository).GetAsync
+#endif
+					<TAggregateRoot>(id);
 			if (expectedVersion != null && aggregate.Version != expectedVersion)
-				throw new ConcurrencyException(id);
-			Add(aggregate);
+				throw new ConcurrencyException(id, expectedVersion.Value, aggregate.Version);
+#if NET472
+			Add
+#else
+			await AddAsync
+#endif
+				(aggregate, useSnapshots);
+
+			return aggregate;
+		}
+
+		/// <summary>
+		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
+		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		public virtual
+#if NET472
+			TAggregateRoot GetToVersion
+#else
+			async Task<TAggregateRoot> GetToVersionAsync
+#endif
+				<TAggregateRoot>(Guid id, int version)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
+		{
+			var aggregate =
+#if NET472
+				Repository.GetToVersion
+#else
+				await Repository.GetToVersionAsync
+#endif
+					<TAggregateRoot>(id, version);
+
+			return aggregate;
+		}
+
+		/// <summary>
+		/// Get an item from the <see cref="IUnitOfWork{TAuthenticationToken}"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <typeparam name="TAggregateRoot">The <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</typeparam>
+		/// <param name="id">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public virtual
+#if NET472
+			TAggregateRoot GetToDate
+#else
+			async Task<TAggregateRoot> GetToDateAsync
+#endif
+				<TAggregateRoot>(Guid id, DateTime versionedDate)
+			where TAggregateRoot : IAggregateRoot<TAuthenticationToken>
+		{
+			var aggregate =
+#if NET472
+				Repository.GetToDate
+#else
+				await Repository.GetToDateAsync
+#endif
+					<TAggregateRoot>(id, versionedDate);
 
 			return aggregate;
 		}
@@ -77,14 +184,26 @@ namespace Cqrs.Domain
 		}
 
 		/// <summary>
-		/// Commit any changed <see cref="AggregateRoot{TAuthenticationToken}"/> added to this <see cref="IUnitOfWork{TAuthenticationToken}"/> via <see cref="Add{T}"/>
-		/// into the <see cref="IRepository{TAuthenticationToken}"/>
+		/// Commit any changed <see cref="AggregateRoot{TAuthenticationToken}"/> added to this <see cref="IUnitOfWork{TAuthenticationToken}"/> via Add
+		/// into the <see cref="IAggregateRepository{TAuthenticationToken}"/>
 		/// </summary>
-		public void Commit()
+		public virtual
+
+#if NET472
+			void Commit
+#else
+			async Task CommitAsync
+#endif
+				()
 		{
 			foreach (IAggregateDescriptor<TAuthenticationToken> descriptor in TrackedAggregates.Values)
 			{
-				Repository.Save(descriptor.Aggregate, descriptor.Version);
+#if NET472
+				(descriptor.UseSnapshots ? SnapshotRepository : Repository).Save
+#else
+				await (descriptor.UseSnapshots ? SnapshotRepository : Repository).SaveAsync
+#endif
+					(descriptor.Aggregate, descriptor.Version);
 			}
 			TrackedAggregates.Clear();
 		}

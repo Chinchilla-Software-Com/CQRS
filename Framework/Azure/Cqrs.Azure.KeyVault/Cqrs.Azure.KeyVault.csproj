@@ -1,0 +1,85 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+		<title>Microsoft Azure KeyVault for CQRS.NET</title>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Description>Use Azure KeyVault for access to secrets and keys in CQRS.NET</Description>
+		<Copyright>Copyright ©  2025</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+		<PackageReleaseNotes>
+			Version 6.0
+
+			- Removed .NET 4.0, .NET 4.5, .NET 4.5.1, .NET 4.5.2, .NET 4.6 and , .NET 4.6.2 support. The minimum .NET Framework version is now .NET 4.7.2.
+			- Deprecated .NET 6.0, replaced with .NET 8.0
+
+			Version 5.0
+
+			- Upgraded Azure Identity SDK from 1.4.0 to 1.10.2.
+		</PackageReleaseNotes>
+		<PackageIcon>images\icon.png</PackageIcon>
+		<readme>README.md</readme>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>CQRS;CQRS.NET;Azure;KeyVault</PackageTags>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="tools\**" />
+	  <EmbeddedResource Remove="tools\**" />
+	  <None Remove="tools\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\icon.png" Link="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>images\</PackagePath>
+		</None>
+		<None Include="..\..\..\README.md" Link="Packaging\README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<DocumentationFile>Cqrs.Azure.KeyVault.xml</DocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
+		<PackageReference Include="Azure.Identity" Version="1.13.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+		<Reference Include="System.Runtime" />
+
+		<PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.5" />
+		<PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.6.0" />
+		<PackageReference Include="Microsoft.Rest.ClientRuntime" Version="2.3.24" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Cqrs.Azure.KeyVault.xml" />
+		<None Remove="Cqrs.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.11" />
+		<PackageReference Include="Chinchilla.Logging" Version="5.3.46" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+	</Target>
+</Project>

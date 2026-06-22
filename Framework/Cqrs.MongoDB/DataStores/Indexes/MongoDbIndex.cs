@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -9,9 +9,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Cqrs.Entities;
 
 namespace Cqrs.MongoDB.DataStores.Indexes
 {
+	/// <summary>
+	/// An index for MongoDB.
+	/// </summary>
+	/// <typeparam name="TEntity">The <see cref="Type"/> of <see cref="IEntity"/> this index is for.</typeparam>
 	public abstract class MongoDbIndex<TEntity>
 	{
 		/// <summary>
@@ -29,8 +34,14 @@ namespace Cqrs.MongoDB.DataStores.Indexes
 		/// </summary>
 		public string Name { get; protected set; }
 
+		/// <summary>
+		/// The selectors that the index is comprised of.
+		/// </summary>
 		public IEnumerable<Expression<Func<TEntity, object>>> Selectors { get; protected set; }
 
+		/// <summary>
+		/// Instantiate a new instance of <see cref="MongoDbIndex{TEntity}"/>.
+		/// </summary>
 		protected MongoDbIndex()
 		{
 			IsUnique = false;

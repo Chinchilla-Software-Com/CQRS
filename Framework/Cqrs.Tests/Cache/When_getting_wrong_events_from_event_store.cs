@@ -16,7 +16,7 @@ namespace Cqrs.Tests.Cache
 		[SetUp]
 		public void Setup()
 		{
-			_rep = new CacheRepository<ISingleSignOnToken>(new TestRepository(), new TestEventStoreWithBugs());
+			_rep = new CacheRepository<ISingleSignOnToken>(new TestAggregateRepository(), new TestEventStoreWithBugs());
 			_aggregate = _rep.Get<TestAggregate>(Guid.NewGuid());
 		}
 

@@ -1,15 +1,24 @@
-﻿using Cqrs.Azure.ServiceBus;
-using Cqrs.Bus;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
+using Cqrs.Azure.ServiceBus;
+using Cqrs.Commands;
+using Ninject.Modules;
 
 namespace Cqrs.Azure.EventHub.CommandBus.Configuration
 {
-	public class AzureQueuedCommandBusReceiverModule<TAuthenticationToken> : AzureCommandBusReceiverModule<TAuthenticationToken>
+	/// <summary>
+	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureQueuedCommandBusReceiver{TAuthenticationToken}"/> as the <see cref="ICommandReceiver"/> and other require components.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	[Obsolete("Use AzureQueuedCommandHubReceiverModule")]
+	public class AzureQueuedCommandBusReceiverModule<TAuthenticationToken> : AzureQueuedCommandHubReceiverModule<TAuthenticationToken>
 	{
-		public override void RegisterCommandHandlerRegistrar()
-		{
-			Bind<ICommandHandlerRegistrar>()
-				.To<AzureQueuedCommandBusReceiver<TAuthenticationToken>>()
-				.InSingletonScope();
-		}
 	}
 }

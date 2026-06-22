@@ -20,12 +20,12 @@ string className = ClassifierName(this.Element);
 string baseClass = GetBaseClass(this.Element);
 if (!string.IsNullOrWhiteSpace(baseClass))
 	baseClass = baseClass + ", ";
-baseClass = baseClass + "IEvent<" + authenticationTokenType + ">";
+baseClass = baseClass + "IEventWithIdentity<" + authenticationTokenType + ">";
 
 // using statements
 WriteUsingStatements(this.Element);
 #>
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Events;
 using Cqrs.Messages;
 
@@ -36,25 +36,47 @@ namespace <#= classNamespace #>
 #>
 <# WriteSummaryComment(this.Element.Description); #>
 	<#= GetGeneratedCodeAttribute() #>
+<#
+if (stereoTypeProperties.PropertyInstances
+	.Any(property => property.Name == "EventVisibility" && (property.Value == "" || property.Value == "Public" || property.Value == "Both")))
+{#>
+	[PublicEvent]
+<#
+}
+if (stereoTypeProperties.PropertyInstances
+	.Any(property => property.Name == "EventVisibility" && (property.Value == "Private" || property.Value == "Both")))
+{#>
+	[PrivateEvent]
+<#
+}
+if (stereoTypeProperties.PropertyInstances
+	.Any(property => property.Name == "EventNotification" && (property.Value == "" || property.Value == "Caller")))
+{#>
+	[NotifyCallerEvent]
+<#
+}
+if (stereoTypeProperties.PropertyInstances
+	.Any(property => property.Name == "EventNotification" && (property.Value == "All")))
+{#>
+	[NotifyEveryoneEvent]
+<#
+}
+if (stereoTypeProperties.PropertyInstances
+	.Any(property => property.Name == "EventNotification" && (property.Value == "AllExceptCaller")))
+{#>
+	[NotifyEveryoneExceptCallerEvent]
+<#
+}
+#>
 	public <#= GetAbstract(this.Element) #> partial class <#= className #> : <#= baseClass #>
 	{
 		#region Implementation of IEvent
 
 		/// <summary>
-		/// The Rsn of the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
+		/// The Id of the <see cref="IEvent{TAuthenticationToken}" /> itself.
 		/// </summary>
 		[DataMember]
-		public Guid Id
-		{
-			get
-			{
-				return Rsn;
-			}
-			set
-			{
-				Rsn = value;
-			}
-		}
+		public Guid Id { get; set; }
 
 		/// <summary>
 		/// The version number the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> shifted to as a result of the request.
@@ -88,10 +110,6 @@ namespace <#= classNamespace #>
 		[DataMember]
 		public Guid CorrelationId { get; set; }
 
-		[DataMember]
-		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
-		public FrameworkType Framework { get; set; }
-
 		/// <summary>
 		/// The originating framework this message was sent from.
 		/// </summary>
@@ -104,15 +122,9 @@ namespace <#= classNamespace #>
 		[DataMember]
 		public IEnumerable<string> Frameworks { get; set; }
 
-		[Obsolete("Use CorrelationId")]
-		[DataMember]
-		public Guid CorrolationId
-		{
-			get { return CorrelationId; }
-			set { CorrelationId = value; }
-		}
-
 		#endregion
+
+		#region Implementation of IEventWithIdentity
 
 		/// <summary>
 		/// The Rsn of the <see cref="IAggregateRoot{TAuthenticationToken}">aggregate</see> being targeted.
@@ -120,31 +132,41 @@ namespace <#= classNamespace #>
 		[DataMember]
 		public Guid Rsn { get; set; }
 
+		#endregion
 <#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		// Properties
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
-			if (collectionProperty.OwningAssociation != null)
+			IAssociation owningAssociation = collectionProperty.OwningAssociation;
+			if (owningAssociation != null)
 			{
-				var eventToCommandConverterHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
-				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				var eventToCommandConverterHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
+				// If this is an event to command handler association, don't add a property for it.
 				if (eventToCommandConverterHandler != null)
 					continue;
-				var eventHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
-				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				var eventHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is an event handler association, don't add a property for it.
 				if (eventHandler != null)
 					continue;
-				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				eventHandler = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is an association to an event handler, don't add a property for it.
+				if (eventHandler != null)
+					continue;
+				var saga = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
+				// If this is a saga association, don't add a property for it.
+				if (saga != null)
+					continue;
+				var eventLink = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
 				// If this is an event association, don't add a property for it as it's an event definition
 				if (eventLink != null)
 					continue;
 			}
 #>
+
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
-
 <#
 		}
 #>
@@ -156,17 +178,26 @@ namespace <#= classNamespace #>
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
-			if (collectionProperty.OwningAssociation != null)
+			IAssociation owningAssociation = collectionProperty.OwningAssociation;
+			if (owningAssociation != null)
 			{
-				var eventToCommandConverterHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
+				var eventToCommandConverterHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventToCommandConverterHandler != null)
 					continue;
-				var eventHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				var eventHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventHandler != null)
 					continue;
-				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				eventHandler = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is an association to an event handler, don't add a property for it.
+				if (eventHandler != null)
+					continue;
+				var saga = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
+				// If this is a saga association, don't add a property for it.
+				if (saga != null)
+					continue;
+				var eventLink = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
 				// If this is an event association, don't add a property for it as it's an event definition
 				if (eventLink != null)
 					continue;
@@ -175,21 +206,31 @@ namespace <#= classNamespace #>
 		}
 #>)
 		{
+			Id = Guid.NewGuid();
 			Rsn = rsn;
 <#
 		foreach(IProperty collectionProperty in collectionProperties)
 		{
-			if (collectionProperty.OwningAssociation != null)
+			IAssociation owningAssociation = collectionProperty.OwningAssociation;
+			if (owningAssociation != null)
 			{
-				var eventToCommandConverterHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
+				var eventToCommandConverterHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventToCommandConverter");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventToCommandConverterHandler != null)
 					continue;
-				var eventHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				var eventHandler = owningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
 				// If this is a command handler association, don't add a property for it as it's a command handler definition
 				if (eventHandler != null)
 					continue;
-				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				eventHandler = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "EventHandler");
+				// If this is an association to an event handler, don't add a property for it.
+				if (eventHandler != null)
+					continue;
+				var saga = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Saga");
+				// If this is a saga association, don't add a property for it.
+				if (saga != null)
+					continue;
+				var eventLink = owningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
 				// If this is an event association, don't add a property for it as it's an event definition
 				if (eventLink != null)
 					continue;
@@ -207,6 +248,14 @@ namespace <#= classNamespace #>
 if (classNamespace.EndsWith(".Events"))
 { #>
 namespace <#= classNamespace.Substring(0, classNamespace.Length - 6) #>Commands
+{
+}
+
+namespace <#= classNamespace #>.Handlers
+{
+}
+
+namespace <#= classNamespace.Substring(0, classNamespace.Length - 6) #>Sagas
 {
 }
 <# } #>

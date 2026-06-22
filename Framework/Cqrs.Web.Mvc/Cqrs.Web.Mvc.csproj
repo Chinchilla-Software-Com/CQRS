@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Copyright>Copyright ©  2025</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+		<PackageReleaseNotes>
+			Version 6.0
+
+			- Removed .NET 4.0, .NET 4.5, .NET 4.5.1, .NET 4.5.2, .NET 4.6 and , .NET 4.6.2 support. The minimum .NET Framework version is now .NET 4.7.2.
+			- Deprecated .NET 6.0, replaced with .NET 8.0
+		</PackageReleaseNotes>
+		<PackageIcon>images\icon.png</PackageIcon>
+		<readme>README.md</readme>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>CQRS;CQRS.NET;Pub/Sub;Microservices;AspNet;MVC;AspNetMVC;WebHost</PackageTags>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Cqrs.Web.Mvc.xml" />
+		<None Remove="Tools\Create-Log-Table.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="tools\init.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<None Include="tools\install.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\icon.png" Link="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>images\</PackagePath>
+		</None>
+		<None Include="..\..\README.md" Link="Packaging\README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFrameworks>net472</TargetFrameworks>
+		<DocumentationFile>Cqrs.Web.Mvc.xml</DocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+		<!--
+		<PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.3" />
+		<PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.7" />
+		-->
+		<PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.11" />
+		<PackageReference Include="Chinchilla.Logging" Version="5.3.46" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Cqrs\Cqrs.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+	</Target>
+</Project>

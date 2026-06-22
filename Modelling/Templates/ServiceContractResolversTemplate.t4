@@ -46,7 +46,10 @@ namespace <#= classNamespace #>
 					methodTypeNameSuffix = string.Concat(methodTypeNameSuffix, methodTypeName.Substring(methodTypeName.Length - 1));
 					methodTypeName = methodTypeName.Substring(0, methodTypeName.Length - 1);
 				}
-				methodTypeName = string.Format("{0}Entity{1}", methodTypeName, methodTypeNameSuffix);
+				if (methodTypeName.EndsWith("Entity"))
+					methodTypeName = string.Format("{0}{1}", methodTypeName, methodTypeNameSuffix);
+				else
+					methodTypeName = string.Format("{0}Entity{1}", methodTypeName, methodTypeNameSuffix);
 			}
 			if (methodTypeName == "void")
 			{
@@ -68,9 +71,7 @@ namespace <#= classNamespace #>
 
 			var returnParameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
 			var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
-			if (returnParameter == null && parameters.Any())
-				methodSignatureParameter = string.Format("ServiceRequestWithData<{0}, {1}{2}Parameters>", authenticationTokenType, className, collectionMethod.Name);
-			else if (returnParameter != null)
+			if (parameters.Any())
 				methodSignatureParameter = string.Format("ServiceRequestWithData<{0}, {1}{2}Parameters>", authenticationTokenType, className, collectionMethod.Name);
 			else
 				methodSignatureParameter = string.Format("ServiceRequest<{0}>", authenticationTokenType);
@@ -80,7 +81,7 @@ namespace <#= classNamespace #>
 	/// A <see cref="DataContractResolver"/> for using <see cref="I<#= className #>.<#= collectionMethod.Name #>"/> via WCF
 	/// </summary>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial class <#= className #><#= collectionMethod.Name #>Resolver : ServiceParameterResolver<I<#= className #>, <#= authenticationTokenType #>>
+	public partial class <#= className #><#= collectionMethod.Name #>Resolver : BasicServiceParameterResolver<I<#= className #>, <#= authenticationTokenType #>>
 	{
 		public <#= className #><#= collectionMethod.Name #>Resolver(ISingleSignOnTokenResolver singleSignOnTokenResolver, IEventDataResolver eventDataResolver)
 			: base(singleSignOnTokenResolver, eventDataResolver)
@@ -91,10 +92,14 @@ namespace <#= classNamespace #>
 string authenticationTokenTypeResolver = authenticationTokenType;
 int index = authenticationTokenTypeResolver.LastIndexOf(".");
 if (index > 0)
-	authenticationTokenTypeResolver = string.Format("{0}{1}Resolver", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
+{
+	if (authenticationTokenTypeResolver.Substring(index).StartsWith(".I"))
+		authenticationTokenTypeResolver = string.Format("{0}{1}", authenticationTokenTypeResolver.Substring(0, index + 1), authenticationTokenTypeResolver.Substring(index + 2));
+authenticationTokenTypeResolver = authenticationTokenTypeResolver + "Resolver";
+}
 #>
 		public <#= className #><#= collectionMethod.Name #>Resolver()
-			: base(new <#= authenticationTokenTypeResolver #>(), new EventDataResolver<<#= authenticationTokenType #>>())
+			: base(new EventDataResolver<<#= authenticationTokenType #>>())
 		{
 		}
 

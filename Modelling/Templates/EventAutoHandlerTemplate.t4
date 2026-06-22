@@ -38,7 +38,8 @@ switch(eventHandlerTechnology)
 		break;
 }
 #>
-using cdmdotnet.Logging;
+using cdmdotnet.AutoMapper;
+using Chinchilla.Logging;
 using Cqrs.Events;
 using Cqrs.Domain;
 
@@ -67,7 +68,7 @@ switch(eventHandlerTechnology)
 		baseClass = "ReceiveActor";
 #>
 		/// <summary>
-		/// Instantiates the <see cref="<#= className #>EventHandler"/> class registering any <see cref="ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
+		/// Instantiates the <see cref="<#= className #>EventHandler"/> class registering any <see cref="Akka.Actor.ReceiveActor.Receive{T}(System.Func{T,System.Threading.Tasks.Task})"/> required.
 		/// </summary>
 		public <#= className #>EventHandler()
 		{
@@ -81,12 +82,15 @@ switch(eventHandlerTechnology)
 }
 #>
 
-		public <#= className #>EventHandler(ILogger logger)
+		public <#= className #>EventHandler(ILogger logger, IAutomapHelper automapHelper)
 		{
 			Logger = logger;
+			AutomapHelper = automapHelper;
 		}
 
 		protected ILogger Logger { get; private set; }
+
+		protected IAutomapHelper AutomapHelper { get; private set; }
 
 		#region Implementation of IEventHandler<in <#= className #>>
 

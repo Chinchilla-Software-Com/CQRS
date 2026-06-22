@@ -1,0 +1,5 @@
+var classCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Integration_1_1GuidAuthenticationTokenHelper =
+[
+    [ "GetAuthenticationToken", "classCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Integration_1_1GuidAuthenticationTokenHelper_abf0d4aa030e3cc15830301225ef28eac.html#abf0d4aa030e3cc15830301225ef28eac", null ],
+    [ "SetAuthenticationToken", "classCqrs_1_1Azure_1_1ServiceBus_1_1Tests_1_1Integration_1_1GuidAuthenticationTokenHelper_a651700262491c8cf527e3a3881198050.html#a651700262491c8cf527e3a3881198050", null ]
+];

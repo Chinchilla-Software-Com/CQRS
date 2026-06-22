@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Cqrs.Ninject")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("cdmdotnet Limited")]
+[assembly: AssemblyCompany("Chinchilla Software Limited")]
 [assembly: AssemblyProduct("Cqrs.Ninject")]
-[assembly: AssemblyCopyright("Copyright © cdmdotnet Limited 2013")]
+[assembly: AssemblyCopyright("Copyright © Chinchilla Software Limited 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

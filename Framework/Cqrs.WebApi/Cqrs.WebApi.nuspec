@@ -6,17 +6,46 @@
 		<version>$version$</version>
 		<authors>Chinchilla Software</authors>
 		<licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-		<projectUrl>https://getcqrs.net</projectUrl>
-		<iconUrl>https://raw.githubusercontent.com/Chinchilla-Software-Com/CQRS/master/wiki/ChinChilla-Software-Red.png</iconUrl>
+		<projectUrl>http://chinchilla-software-com.github.io/CQRS/</projectUrl>
+		<iconUrl>http://chinchilla-software-com.github.io/CQRS/wiki/ChinChilla-Software-Red.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Use ASP.NET Web API with CQRS.NET</description>
 		<copyright>Copyright 2016</copyright>
-		<tags>CQRS CQRS.NET AspNet WebApi AspNetWebApi WebHost</tags>
+		<tags>CQRS CQRS.NET Pub/Sub Microservices AspNet WebApi AspNetWebApi WebHost</tags>
+		<releaseNotes>
+			Version 2.3
+
+			* Added IEventWithIdentity and ICommandWithIdentity to provide better event and command traceability versus aggregate and saga identification.
+			* Relaxed a lot of rules relating to WebAPI usage. Several constraints have now been removed.
+			* Corrected an issue with getting tokens from query strings.
+			* Added support for storing auth tokens on the browser in local storage or session storage.
+
+			Version 2.2
+
+			* Added CORS support with Microsoft.AspNet.WebApi.Cors.
+			* Refactored CqrsHttpApplication into the base CQRS package and migrated current usages to CqrsHttpApplicationWithSignalR.
+			* Relaxed the rules on the TAuthenticationToken type in HelpPageConfig. Switched to using "Cqrs.AuthenticationTokenType" app setting resolution.
+			* Allowed the loaded assembly XML documentation files in HelpPageConfig to be overridden if desired.
+			* Added support for generating documentation from HttpResponseMessage if you use HttpResponseMessage{TData}.
+
+			Version 2.1
+
+			* Added a Client WebAPI controller - something that was part of the blank solutions, but moving here for more broad use.
+			* Updated Microsoft.AspNet.SignalR.Core to version 2.2.2
+
+			Version 2.0
+
+			* Added a WebAPI controller
+			* Added a SignalR Hub and the class to proxy events from the message bus out over singalR.
+			* Added an implementation for notification proxy of NotifyCallerEventAttribute and NotifyEveryoneEventAttribute, but NOT NotifyEveryoneExceptCallerEventAttribute.
+			* Added a form-multipart encoded media type formatter
+		</releaseNotes>
 		<dependencies>
 			<dependency id="Cqrs" version="[$version$]" />
 		</dependencies>
 	</metadata>
-</package> 
-
-
-
+	<files>
+		<file src="Packaging\*.xdt" target="content" />
+		<file src="Tools\*.ps1" target="Tools" />
+	</files>
+</package>

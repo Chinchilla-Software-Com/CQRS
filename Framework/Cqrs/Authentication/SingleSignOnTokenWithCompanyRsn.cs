@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -18,7 +18,7 @@ namespace Cqrs.Authentication
 	/// As such, if not used correctly, this can expose identifiable information.
 	/// It is suggested the service layer populates this before sending commands as part of authorisation/authentication.
 	/// </summary>
-	public class SingleSignOnTokenWithCompanyRsn : SingleSignOnToken
+	public class SingleSignOnTokenWithCompanyRsn : SingleSignOnToken, ISingleSignOnTokenWithCompanyRsn
 	{
 		/// <summary>
 		/// The Rsn of the company the user doing the operation is operating on.
@@ -27,6 +27,15 @@ namespace Cqrs.Authentication
 		/// </summary>
 		[Required]
 		[DataMember]
-		Guid CompanyRsn { get; set; }
+		public Guid CompanyRsn { get; set; }
+
+		/// <summary>
+		/// Returns <see cref="CompanyRsn"/>.
+		/// </summary>
+		/// <returns><see cref="CompanyRsn"/>.</returns>
+		public override string Serialise()
+		{
+			return CompanyRsn.ToString("N");
+		}
 	}
 }

@@ -1,0 +1,4 @@
+var classCqrs_1_1Mongo_1_1DataStores_1_1Indexes_1_1ByIsDeletedAndRsnMongoIndex =
+[
+    [ "ByIsDeletedAndRsnMongoIndex", "classCqrs_1_1Mongo_1_1DataStores_1_1Indexes_1_1ByIsDeletedAndRsnMongoIndex_ac8d7d3e7eadc2080041196f33e878da2.html#ac8d7d3e7eadc2080041196f33e878da2", null ]
+];

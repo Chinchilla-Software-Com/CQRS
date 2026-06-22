@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<!-- If configSections tag is absent -->
+	<appSettings xdt:Transform="InsertIfMissing"></appSettings>
+
+	<appSettings>
+		<add key="Cqrs.Hosts.PauseAndWaitMaximumCount" value="300" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+		<add key="Cqrs.Hosts.PauseAndWait" value="false" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+		<add key="Cqrs.Hosts.AppName" value="My CQRS Application" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+
+		<add key="Cqrs.MessageBus.BlackListProcessing" value="false" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+
+		<add key="Cqrs.Hosts.EnableEventReceiving" value="true" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+		<add key="Cqrs.Hosts.EnableCommandReceiving" value="true" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+
+		<add key="Cqrs.SqlDataStore.ConnectionStringName" value="DataStore" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+		<add key="Cqrs.SqlEventStore.ConnectionStringName" value="EventStore" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+
+		<add key="Cqrs.Web.AuthenticationTokenName" value="X-Token" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+
+		<!-- http://blog.guybarrette.com/post/2014/01/12/Azure-Web-Sites-how-to-disable-sticky-sessions.aspx -->
+		<add key="Arr-Disable-Session-Affinity" value="true" xdt:Transform="InsertIfMissing" xdt:Locator="Match(key)" />
+	</appSettings>
+
+	<connectionStrings xdt:Transform="InsertIfMissing">
+	</connectionStrings>
+
+	<connectionStrings>
+		<add name="DataStore" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\MyApp.MDF;Integrated Security=SSPI;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=DataStore;User Instance=True" providerName="System.Data.SqlClient" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+		<add name="EventStore" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\MyApp.MDF;Integrated Security=SSPI;MultipleActiveResultSets=True;Connect Timeout=30;Application Name=EventStore;User Instance=True" providerName="System.Data.SqlClient" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+	</connectionStrings>
+
+	<system.serviceModel xdt:Transform="InsertIfMissing"></system.serviceModel>
+
+	<system.serviceModel>
+		<bindings xdt:Transform="InsertIfMissing">
+			<customBinding>
+				<binding closeTimeout="00:10:00" openTimeout="00:01:00" receiveTimeout="00:10:00" sendTimeout="00:01:00">
+					<binaryMessageEncoding>
+						<readerQuotas maxArrayLength="114748364" maxBytesPerRead="114748364" maxDepth="128" maxNameTableCharCount="114748364" maxStringContentLength="114748364" />
+					</binaryMessageEncoding>
+					<httpsTransport transferMode="Streamed" maxBufferPoolSize="114748364" maxBufferSize="114748364" maxReceivedMessageSize="114748364" />
+				</binding>
+				<binding name="AspSmsX2Soap12">
+					<textMessageEncoding messageVersion="Soap12" />
+					<httpsTransport />
+				</binding>
+			</customBinding>
+			<basicHttpBinding>
+				<binding transferMode="Streamed" maxBufferPoolSize="114748364" maxReceivedMessageSize="114748364" maxBufferSize="114748364" closeTimeout="00:10:00" openTimeout="00:10:00" receiveTimeout="00:10:00" sendTimeout="00:10:00">
+					<readerQuotas maxDepth="32" maxStringContentLength="188192" maxArrayLength="600000000" maxBytesPerRead="4096" maxNameTableCharCount="16384" />
+				</binding>
+				<binding name="AspSmsX2Soap">
+				</binding>
+				<binding name="AspSmsX2Soap1" />
+			</basicHttpBinding>
+		</bindings>
+		<protocolMapping xdt:Transform="InsertIfMissing">
+			<add scheme="https" binding="basicHttpBinding" />
+			<add scheme="http" binding="basicHttpBinding" />
+		</protocolMapping>
+		<behaviors xdt:Transform="InsertIfMissing">
+			<endpointBehaviors>
+				<behavior>
+					<dataContractSerializer maxItemsInObjectGraph="114748364" />
+				</behavior>
+			</endpointBehaviors>
+			<serviceBehaviors>
+				<behavior>
+					<serviceMetadata httpGetEnabled="True" httpsGetEnabled="True" />
+					<serviceDebug includeExceptionDetailInFaults="True" />
+					<dataContractSerializer ignoreExtensionDataObject="false" maxItemsInObjectGraph="114748364" />
+				</behavior>
+			</serviceBehaviors>
+		</behaviors>
+		<diagnostics xdt:Transform="InsertIfMissing">
+			<messageLogging logEntireMessage="true" logMessagesAtServiceLevel="true" logMessagesAtTransportLevel="true" logMalformedMessages="true" maxMessagesToLog="50000" maxSizeOfMessageToLog="4748364" />
+		</diagnostics>
+	</system.serviceModel>
+</configuration>

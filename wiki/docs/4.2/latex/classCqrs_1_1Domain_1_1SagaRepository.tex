@@ -1,0 +1,293 @@
+\hypertarget{classCqrs_1_1Domain_1_1SagaRepository}{}\doxysection{Cqrs.\+Domain.\+Saga\+Repository$<$ T\+Authentication\+Token $>$ Class Template Reference}
+\label{classCqrs_1_1Domain_1_1SagaRepository}\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+
+
+Provides basic repository methods for operations with instances of I\+Saga$<$\+T\+Authentication\+Token$>$.  
+
+
+Inheritance diagram for Cqrs.\+Domain.\+Saga\+Repository$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{classCqrs_1_1Domain_1_1SagaRepository}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_ab444c7f3ace1ee0350d9f396345c395d_ab444c7f3ace1ee0350d9f396345c395d}{Saga\+Repository}} (\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory}} saga\+Factory, \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}}$<$ T\+Authentication\+Token $>$ event\+Store, \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventPublisher}{I\+Event\+Publisher}}$<$ T\+Authentication\+Token $>$ publisher, \mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommandPublisher}{I\+Command\+Publisher}}$<$ T\+Authentication\+Token $>$ command\+Publisher, I\+Correlation\+Id\+Helper correlation\+Id\+Helper)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_ab444c7f3ace1ee0350d9f396345c395d_ab444c7f3ace1ee0350d9f396345c395d}{Saga\+Repository$<$\+T\+Authentication\+Token$>$}} \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a84cae424cb01de22864ae7d960007cd0_a84cae424cb01de22864ae7d960007cd0}{Save$<$ T\+Saga $>$}} (T\+Saga saga, int? expected\+Version=null)
+\begin{DoxyCompactList}\small\item\em Save and persist the provided {\itshape saga} , optionally providing the version number the I\+Saga$<$\+T\+Authentication\+Token$>$ is expected to be at. \end{DoxyCompactList}\item 
+virtual T\+Saga \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a1b80ecc2a5719d1681ca5d182a252120_a1b80ecc2a5719d1681ca5d182a252120}{Get$<$ T\+Saga $>$}} (Guid saga\+Id, I\+List$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$$>$ events=null)
+\begin{DoxyCompactList}\small\item\em Retrieves an I\+Saga$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Saga} . \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_af6af9066681e47bc4ff2e14358321fb8_af6af9066681e47bc4ff2e14358321fb8}{Load\+Saga\+History$<$ T\+Saga $>$}} (T\+Saga saga, I\+List$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$$>$ events=null, bool throw\+Exception\+On\+No\+Events=true)
+\begin{DoxyCompactList}\small\item\em If {\itshape events}  is null, loads the events from \mbox{\hyperlink{namespaceCqrs_1_1EventStore}{Event\+Store}}, checks for duplicates and then rehydrates the {\itshape saga}  with the events. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a1dec03959e4d859c6cf2be0507b1bc05_a1dec03959e4d859c6cf2be0507b1bc05}{Publish\+Event}} (\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$ @event)
+\begin{DoxyCompactList}\small\item\em Publish the saved {\itshape event} . \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_acf126ad11c6a5996012885d14f9c45c2_acf126ad11c6a5996012885d14f9c45c2}{Publish\+Command}} (I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}}$<$ T\+Authentication\+Token $>$$>$ commands)
+\begin{DoxyCompactList}\small\item\em Publish the {\itshape commands} . \end{DoxyCompactList}\item 
+virtual T\+Saga \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_acb23e0bd3e5655547a13b4ad2b06e548_acb23e0bd3e5655547a13b4ad2b06e548}{Create\+Saga$<$ T\+Saga $>$}} (Guid id)
+\begin{DoxyCompactList}\small\item\em Calls I\+Aggregate\+Factory.\+Create to get a, {\itshape T\+Saga} . \end{DoxyCompactList}\item 
+virtual T\+Saga \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_acc59a4478bb992b03690f0cda3e4e362_acc59a4478bb992b03690f0cda3e4e362}{Load\+Saga$<$ T\+Saga $>$}} (Guid id, I\+List$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$$>$ events=null)
+\begin{DoxyCompactList}\small\item\em Calls I\+Aggregate\+Factory.\+Create to get a, {\itshape T\+Saga}  and then calls \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_af6af9066681e47bc4ff2e14358321fb8_af6af9066681e47bc4ff2e14358321fb8}{Load\+Saga\+History$<$\+T\+Saga$>$}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}}$<$ T\+Authentication\+Token $>$ \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a4b872f1a20660ece8ce1b54720193fda_a4b872f1a20660ece8ce1b54720193fda}{Event\+Store}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ used to store and retrieve events from. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventPublisher}{I\+Event\+Publisher}}$<$ T\+Authentication\+Token $>$ \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a94707dc4549d096ea3cf5d241117495a_a94707dc4549d096ea3cf5d241117495a}{Publisher}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the Publisher used to publish events on once saved into the \mbox{\hyperlink{namespaceCqrs_1_1EventStore}{Event\+Store}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommandPublisher}{I\+Command\+Publisher}}$<$ T\+Authentication\+Token $>$ \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a65911c8ed6a372f3cccb4c175f198abb_a65911c8ed6a372f3cccb4c175f198abb}{Command\+Publisher}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the Publisher used to publish an I\+Command$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory}} \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a578164fa38728f3a23ca41d8c81611e0_a578164fa38728f3a23ca41d8c81611e0}{Saga\+Factory}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or set the I\+Aggregate\+Factory. \end{DoxyCompactList}\item 
+I\+Correlation\+Id\+Helper \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_a654f9f7c2130864d63515f1504a750fd_a654f9f7c2130864d63515f1504a750fd}{Correlation\+Id\+Helper}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or set the I\+Correlation\+Id\+Helper. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provides basic repository methods for operations with instances of I\+Saga$<$\+T\+Authentication\+Token$>$. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of authentication token.\\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_ab444c7f3ace1ee0350d9f396345c395d_ab444c7f3ace1ee0350d9f396345c395d}\label{classCqrs_1_1Domain_1_1SagaRepository_ab444c7f3ace1ee0350d9f396345c395d_ab444c7f3ace1ee0350d9f396345c395d}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!SagaRepository@{SagaRepository}}
+\index{SagaRepository@{SagaRepository}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{SagaRepository()}{SagaRepository()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Saga\+Repository}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory}}}]{saga\+Factory,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}}$<$ T\+Authentication\+Token $>$}]{event\+Store,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventPublisher}{I\+Event\+Publisher}}$<$ T\+Authentication\+Token $>$}]{publisher,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommandPublisher}{I\+Command\+Publisher}}$<$ T\+Authentication\+Token $>$}]{command\+Publisher,  }\item[{I\+Correlation\+Id\+Helper}]{correlation\+Id\+Helper }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_ab444c7f3ace1ee0350d9f396345c395d_ab444c7f3ace1ee0350d9f396345c395d}{Saga\+Repository$<$\+T\+Authentication\+Token$>$}} 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_acb23e0bd3e5655547a13b4ad2b06e548_acb23e0bd3e5655547a13b4ad2b06e548}\label{classCqrs_1_1Domain_1_1SagaRepository_acb23e0bd3e5655547a13b4ad2b06e548_acb23e0bd3e5655547a13b4ad2b06e548}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!CreateSaga$<$ TSaga $>$@{CreateSaga$<$ TSaga $>$}}
+\index{CreateSaga$<$ TSaga $>$@{CreateSaga$<$ TSaga $>$}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CreateSaga$<$ TSaga $>$()}{CreateSaga< TSaga >()}}
+{\footnotesize\ttfamily virtual T\+Saga \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Create\+Saga$<$ T\+Saga $>$ (\begin{DoxyParamCaption}\item[{Guid}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Calls I\+Aggregate\+Factory.\+Create to get a, {\itshape T\+Saga} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Saga} & The Type of I\+Saga$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The id of the {\itshape T\+Saga}  to create.\\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a2c7263d0e58d2b31149ec685d5be934a_a2c7263d0e58d2b31149ec685d5be934a}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Repository$<$ T\+Authentication\+Token $>$}}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Saga} : {\em I\+Saga$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_a1b80ecc2a5719d1681ca5d182a252120_a1b80ecc2a5719d1681ca5d182a252120}\label{classCqrs_1_1Domain_1_1SagaRepository_a1b80ecc2a5719d1681ca5d182a252120_a1b80ecc2a5719d1681ca5d182a252120}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!Get$<$ TSaga $>$@{Get$<$ TSaga $>$}}
+\index{Get$<$ TSaga $>$@{Get$<$ TSaga $>$}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Get$<$ TSaga $>$()}{Get< TSaga >()}}
+{\footnotesize\ttfamily virtual T\+Saga \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Get$<$ T\+Saga $>$ (\begin{DoxyParamCaption}\item[{Guid}]{saga\+Id,  }\item[{I\+List$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Retrieves an I\+Saga$<$\+T\+Authentication\+Token$>$ of type {\itshape T\+Saga} . 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Saga} & The Type of the I\+Saga$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em saga\+Id} & The identifier of the I\+Saga$<$\+T\+Authentication\+Token$>$ to retrieve.\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Saga$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISagaRepository_aa3409bf59bbe489afcc89716928e9ad1_aa3409bf59bbe489afcc89716928e9ad1}{Cqrs.\+Domain.\+I\+Saga\+Repository$<$ T\+Authentication\+Token $>$}}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Saga} : {\em I\+Saga$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_acc59a4478bb992b03690f0cda3e4e362_acc59a4478bb992b03690f0cda3e4e362}\label{classCqrs_1_1Domain_1_1SagaRepository_acc59a4478bb992b03690f0cda3e4e362_acc59a4478bb992b03690f0cda3e4e362}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!LoadSaga$<$ TSaga $>$@{LoadSaga$<$ TSaga $>$}}
+\index{LoadSaga$<$ TSaga $>$@{LoadSaga$<$ TSaga $>$}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{LoadSaga$<$ TSaga $>$()}{LoadSaga< TSaga >()}}
+{\footnotesize\ttfamily virtual T\+Saga \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Load\+Saga$<$ T\+Saga $>$ (\begin{DoxyParamCaption}\item[{Guid}]{id,  }\item[{I\+List$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Calls I\+Aggregate\+Factory.\+Create to get a, {\itshape T\+Saga}  and then calls \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository_af6af9066681e47bc4ff2e14358321fb8_af6af9066681e47bc4ff2e14358321fb8}{Load\+Saga\+History$<$\+T\+Saga$>$}}. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Saga} & The Type of I\+Saga$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The id of the {\itshape T\+Saga}  to create.\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Saga$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Saga} : {\em I\+Saga$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_af6af9066681e47bc4ff2e14358321fb8_af6af9066681e47bc4ff2e14358321fb8}\label{classCqrs_1_1Domain_1_1SagaRepository_af6af9066681e47bc4ff2e14358321fb8_af6af9066681e47bc4ff2e14358321fb8}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!LoadSagaHistory$<$ TSaga $>$@{LoadSagaHistory$<$ TSaga $>$}}
+\index{LoadSagaHistory$<$ TSaga $>$@{LoadSagaHistory$<$ TSaga $>$}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{LoadSagaHistory$<$ TSaga $>$()}{LoadSagaHistory< TSaga >()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Load\+Saga\+History$<$ T\+Saga $>$ (\begin{DoxyParamCaption}\item[{T\+Saga}]{saga,  }\item[{I\+List$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$$>$}]{events = {\ttfamily null},  }\item[{bool}]{throw\+Exception\+On\+No\+Events = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+If {\itshape events}  is null, loads the events from \mbox{\hyperlink{namespaceCqrs_1_1EventStore}{Event\+Store}}, checks for duplicates and then rehydrates the {\itshape saga}  with the events. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Saga} & The Type of I\+Saga$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em saga} & The {\itshape T\+Saga}  to rehydrate.\\
+\hline
+{\em events} & A collection of I\+Event$<$\+T\+Authentication\+Token$>$ to replay on the retrieved I\+Saga$<$\+T\+Authentication\+Token$>$. If null, the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ will be used to retrieve a list of I\+Event$<$\+T\+Authentication\+Token$>$ for you. \\
+\hline
+{\em throw\+Exception\+On\+No\+Events} & If true will throw an instance of Saga\+Not\+Found\+Exception$<$\+T\+Saga,\+T\+Authentication\+Token$>$ if no aggregate events or provided or found in the \mbox{\hyperlink{namespaceCqrs_1_1EventStore}{Event\+Store}}.\\
+\hline
+\end{DoxyParams}
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Saga} : {\em I\+Saga$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_acf126ad11c6a5996012885d14f9c45c2_acf126ad11c6a5996012885d14f9c45c2}\label{classCqrs_1_1Domain_1_1SagaRepository_acf126ad11c6a5996012885d14f9c45c2_acf126ad11c6a5996012885d14f9c45c2}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!PublishCommand@{PublishCommand}}
+\index{PublishCommand@{PublishCommand}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PublishCommand()}{PublishCommand()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Publish\+Command (\begin{DoxyParamCaption}\item[{I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}}$<$ T\+Authentication\+Token $>$$>$}]{commands }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Publish the {\itshape commands} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_a1dec03959e4d859c6cf2be0507b1bc05_a1dec03959e4d859c6cf2be0507b1bc05}\label{classCqrs_1_1Domain_1_1SagaRepository_a1dec03959e4d859c6cf2be0507b1bc05_a1dec03959e4d859c6cf2be0507b1bc05}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!PublishEvent@{PublishEvent}}
+\index{PublishEvent@{PublishEvent}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PublishEvent()}{PublishEvent()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Publish\+Event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$ @}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Publish the saved {\itshape event} . 
+
+
+
+Reimplemented in \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaRepository_a7f6375bb99e680792466fb420232a535_a7f6375bb99e680792466fb420232a535}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Repository$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_a84cae424cb01de22864ae7d960007cd0_a84cae424cb01de22864ae7d960007cd0}\label{classCqrs_1_1Domain_1_1SagaRepository_a84cae424cb01de22864ae7d960007cd0_a84cae424cb01de22864ae7d960007cd0}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!Save$<$ TSaga $>$@{Save$<$ TSaga $>$}}
+\index{Save$<$ TSaga $>$@{Save$<$ TSaga $>$}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Save$<$ TSaga $>$()}{Save< TSaga >()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Save$<$ T\+Saga $>$ (\begin{DoxyParamCaption}\item[{T\+Saga}]{saga,  }\item[{int?}]{expected\+Version = {\ttfamily null} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Save and persist the provided {\itshape saga} , optionally providing the version number the I\+Saga$<$\+T\+Authentication\+Token$>$ is expected to be at. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Saga} & The Type of the I\+Saga$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em saga} & The I\+Saga$<$\+T\+Authentication\+Token$>$ to save and persist.\\
+\hline
+{\em expected\+Version} & The version number the I\+Saga$<$\+T\+Authentication\+Token$>$ is expected to be at.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISagaRepository_ad539cdc70f3168d0335c9510742e25cd_ad539cdc70f3168d0335c9510742e25cd}{Cqrs.\+Domain.\+I\+Saga\+Repository$<$ T\+Authentication\+Token $>$}}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Saga} : {\em I\+Saga$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_a65911c8ed6a372f3cccb4c175f198abb_a65911c8ed6a372f3cccb4c175f198abb}\label{classCqrs_1_1Domain_1_1SagaRepository_a65911c8ed6a372f3cccb4c175f198abb_a65911c8ed6a372f3cccb4c175f198abb}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!CommandPublisher@{CommandPublisher}}
+\index{CommandPublisher@{CommandPublisher}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CommandPublisher}{CommandPublisher}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommandPublisher}{I\+Command\+Publisher}}$<$T\+Authentication\+Token$>$ \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Command\+Publisher\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the Publisher used to publish an I\+Command$<$\+T\+Authentication\+Token$>$ 
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_a654f9f7c2130864d63515f1504a750fd_a654f9f7c2130864d63515f1504a750fd}\label{classCqrs_1_1Domain_1_1SagaRepository_a654f9f7c2130864d63515f1504a750fd_a654f9f7c2130864d63515f1504a750fd}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!CorrelationIdHelper@{CorrelationIdHelper}}
+\index{CorrelationIdHelper@{CorrelationIdHelper}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CorrelationIdHelper}{CorrelationIdHelper}}
+{\footnotesize\ttfamily I\+Correlation\+Id\+Helper \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Correlation\+Id\+Helper\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or set the I\+Correlation\+Id\+Helper. 
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_a4b872f1a20660ece8ce1b54720193fda_a4b872f1a20660ece8ce1b54720193fda}\label{classCqrs_1_1Domain_1_1SagaRepository_a4b872f1a20660ece8ce1b54720193fda_a4b872f1a20660ece8ce1b54720193fda}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!EventStore@{EventStore}}
+\index{EventStore@{EventStore}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{EventStore}{EventStore}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventStore}{I\+Event\+Store}}$<$T\+Authentication\+Token$>$ \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Events_1_1EventStore}{Event\+Store}}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Event\+Store$<$\+T\+Authentication\+Token$>$ used to store and retrieve events from. 
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_a94707dc4549d096ea3cf5d241117495a_a94707dc4549d096ea3cf5d241117495a}\label{classCqrs_1_1Domain_1_1SagaRepository_a94707dc4549d096ea3cf5d241117495a_a94707dc4549d096ea3cf5d241117495a}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!Publisher@{Publisher}}
+\index{Publisher@{Publisher}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Publisher}{Publisher}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEventPublisher}{I\+Event\+Publisher}}$<$T\+Authentication\+Token$>$ \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Publisher\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the Publisher used to publish events on once saved into the \mbox{\hyperlink{namespaceCqrs_1_1EventStore}{Event\+Store}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Domain_1_1SagaRepository_a578164fa38728f3a23ca41d8c81611e0_a578164fa38728f3a23ca41d8c81611e0}\label{classCqrs_1_1Domain_1_1SagaRepository_a578164fa38728f3a23ca41d8c81611e0_a578164fa38728f3a23ca41d8c81611e0}} 
+\index{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}!SagaFactory@{SagaFactory}}
+\index{SagaFactory@{SagaFactory}!Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$@{Cqrs.Domain.SagaRepository$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{SagaFactory}{SagaFactory}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1Factories_1_1IAggregateFactory}{I\+Aggregate\+Factory}} \mbox{\hyperlink{classCqrs_1_1Domain_1_1SagaRepository}{Cqrs.\+Domain.\+Saga\+Repository}}$<$ T\+Authentication\+Token $>$.Saga\+Factory\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or set the I\+Aggregate\+Factory. 
+

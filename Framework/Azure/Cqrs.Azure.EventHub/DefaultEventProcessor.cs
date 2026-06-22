@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -9,18 +9,43 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
+#if NETSTANDARD2_0 || NET6_0
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.EventHubs.Processor;
+#else
 using Microsoft.ServiceBus.Messaging;
+#endif
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// A default implementation of <see cref="IEventProcessor"/> suitable for most situations and conditions.
+	/// </summary>
 	internal class DefaultEventProcessor : IEventProcessor
 	{
 		protected ILogger Logger { get; private set; }
 
-		protected Action<PartitionContext, EventData> ReceiverMessageHandler { get; private set; }
+		protected
 
-		public DefaultEventProcessor(ILogger logger, Action<PartitionContext, EventData> receiverMessageHandler)
+#if NETSTANDARD2_0 || NET6_0
+			Func<PartitionContext, EventData, Task>
+#else
+			Action<PartitionContext, EventData>
+#endif
+			ReceiverMessageHandler { get; private set; }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DefaultEventProcessor"/> class.
+		/// </summary>
+		public DefaultEventProcessor(ILogger logger,
+
+#if NETSTANDARD2_0 || NET6_0
+			Func<PartitionContext, EventData, Task>
+#else
+			Action<PartitionContext, EventData>
+#endif
+			receiverMessageHandler)
 		{
 			Logger = logger;
 			ReceiverMessageHandler = receiverMessageHandler;
@@ -35,7 +60,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>
 		/// The task that indicates that the Open operation is complete.
 		/// </returns>
-		public Task OpenAsync(PartitionContext context)
+		public virtual Task OpenAsync(PartitionContext context)
 		{
 			Logger.LogInfo("Open Async");
 			return Task.FromResult<object>(null);
@@ -49,7 +74,7 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>
 		/// The task that indicates that <see cref="M:Microsoft.ServiceBus.Messaging.IEventProcessor.ProcessEventsAsync(Microsoft.ServiceBus.Messaging.PartitionContext,System.Collections.Generic.IEnumerable{Microsoft.ServiceBus.Messaging.EventData})"/> is complete.
 		/// </returns>
-		public Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
+		public virtual Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
 		{
 			Task results = new TaskFactory().StartNew(() =>
 			{
@@ -68,8 +93,15 @@ namespace Cqrs.Azure.ServiceBus
 		/// <returns>
 		/// A task indicating that the Close operation is complete.
 		/// </returns>
-		public Task CloseAsync(PartitionContext context, CloseReason reason)
+		public virtual Task CloseAsync(PartitionContext context, CloseReason reason)
 		{
+			Logger.LogInfo("Close Async");
+			return Task.FromResult<object>(null);
+		}
+
+		public Task ProcessErrorAsync(PartitionContext context, Exception error)
+		{
+			Logger.LogInfo("Process Error Async");
 			return Task.FromResult<object>(null);
 		}
 

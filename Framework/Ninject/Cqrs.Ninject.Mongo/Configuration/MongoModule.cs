@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -11,6 +11,9 @@ using Ninject.Modules;
 
 namespace Cqrs.Ninject.Mongo.Configuration
 {
+	/// <summary>
+	/// A <see cref="INinjectModule"/> that wires up <see cref="MongoDataStoreConnectionStringFactory"/> as the <see cref="IMongoDataStoreConnectionStringFactory"/>.
+	/// </summary>
 	public class MongoModule : NinjectModule
 	{
 		#region Overrides of NinjectModule
@@ -45,7 +48,7 @@ namespace Cqrs.Ninject.Mongo.Configuration
 		}
 
 		/// <summary>
-		/// Register the all Cqrs command handlers
+		/// Register any CQRS requirements
 		/// </summary>
 		public virtual void RegisterCqrsRequirements()
 		{

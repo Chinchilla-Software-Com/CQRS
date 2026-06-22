@@ -1,14 +1,27 @@
-﻿using System.Linq;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using Cqrs.Azure.ServiceBus;
 using Cqrs.Bus;
+using Cqrs.Events;
+using Cqrs.Ninject.Configuration;
+using Ninject;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// A <see cref="INinjectModule"/> that wires up <see cref="AzureEventBusReceiver{TAuthenticationToken}"/> as the <see cref="IEventReceiver"/> and other require components.
 	/// </summary>
-	public class AzureEventBusReceiverModule<TAuthenticationToken> : NinjectModule
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class AzureEventBusReceiverModule<TAuthenticationToken>
+		: ResolvableModule
 	{
 		#region Overrides of NinjectModule
 
@@ -17,28 +30,103 @@ namespace Cqrs.Ninject.Azure.ServiceBus.EventBus.Configuration
 		/// </summary>
 		public override void Load()
 		{
-			RegisterEventHandlerRegistrar();
+			bool isAzureBusHelper = IsRegistered<IAzureBusHelper<TAuthenticationToken>>();
+			if (!isAzureBusHelper)
+			{
+				Bind<IAzureBusHelper<TAuthenticationToken>>()
+					.To<AzureBusHelper<TAuthenticationToken>>()
+					.InSingletonScope();
+			}
+
 			RegisterEventMessageSerialiser();
+			var bus = GetOrCreateBus<AzureEventBusReceiver<TAuthenticationToken>>();
+
+			RegisterEventReceiver(bus);
+			RegisterEventHandlerRegistrar(bus);
 		}
 
 		#endregion
 
 		/// <summary>
-		/// Register the Cqrs event handler registrar
+		/// Checks if an existing <typeparamref name="TBus"/> has already been registered, if not
+		/// it tries to instantiates a new instance via resolution and registers that instance.
 		/// </summary>
-		public virtual void RegisterEventHandlerRegistrar()
+		/// <typeparam name="TBus">The <see cref="Type"/> of bus to resolve. Best if a class not an interface.</typeparam>
+		public virtual TBus GetOrCreateBus<TBus>()
+			where TBus : class,
+#if NETSTANDARD || NET6_0_OR_GREATER
+				IAsyncEventReceiver<TAuthenticationToken>, IAsyncEventHandlerRegistrar
+#else
+				IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
+#endif
 		{
-			Bind<IEventHandlerRegistrar>()
-				.To<AzureEventBusReceiver<TAuthenticationToken>>()
+			bool isBusBound = IsRegistered<TBus>();
+			TBus bus;
+			if (!isBusBound)
+			{
+				bus = Kernel.Get<TBus>();
+				Bind<TBus>()
+					.ToConstant(bus)
+					.InSingletonScope();
+			}
+			else
+				bus = Kernel.Get<TBus>();
+
+			return bus;
+		}
+
+		/// <summary>
+		/// Register the CQRS event receiver
+		/// </summary>
+#if NETSTANDARD || NET6_0_OR_GREATER
+		public virtual void RegisterEventReceiver(IAsyncEventReceiver<TAuthenticationToken> bus)
+#else
+		public virtual void RegisterEventReceiver<TBus>(TBus bus)
+			where TBus : IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
+#endif
+		{
+			Bind<
+#if NETSTANDARD || NET6_0_OR_GREATER
+				IAsyncEventReceiver
+#else
+				IEventReceiver
+#endif
+				<TAuthenticationToken>>()
+				.ToConstant(bus)
 				.InSingletonScope();
 		}
 
 		/// <summary>
-		/// Register the Cqrs event handler message serialiser
+		/// Register the CQRS event handler registrar
+		/// </summary>
+#if NETSTANDARD || NET6_0_OR_GREATER
+		public virtual void RegisterEventHandlerRegistrar(IAsyncEventHandlerRegistrar bus)
+#else
+		public virtual void RegisterEventHandlerRegistrar<TBus>(TBus bus)
+			where TBus : IEventReceiver<TAuthenticationToken>, IEventHandlerRegistrar
+#endif
+		{
+			bool isHandlerRegistrationBound = IsRegistered<IEventHandlerRegistrar>();
+			if (!isHandlerRegistrationBound)
+			{
+				Bind<
+#if NETSTANDARD || NET6_0_OR_GREATER
+					IAsyncEventHandlerRegistrar
+#else
+					IEventHandlerRegistrar
+#endif
+					>()
+					.ToConstant(bus)
+					.InSingletonScope();
+			}
+		}
+
+		/// <summary>
+		/// Register the CQRS event handler message serialiser
 		/// </summary>
 		public virtual void RegisterEventMessageSerialiser()
 		{
-			bool isMessageSerialiserBound = Kernel.GetBindings(typeof(IMessageSerialiser<TAuthenticationToken>)).Any();
+			bool isMessageSerialiserBound = IsRegistered<IMessageSerialiser<TAuthenticationToken>>();
 			if (!isMessageSerialiserBound)
 			{
 				Bind<IMessageSerialiser<TAuthenticationToken>>()

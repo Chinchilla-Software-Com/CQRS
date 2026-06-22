@@ -12,12 +12,12 @@ namespace Cqrs.Tests.Cache
 	{
 		private CacheRepository<ISingleSignOnToken> _rep;
 		private TestAggregate _aggregate;
-		private TestRepository _testRep;
+		private TestAggregateRepository _testRep;
 
 		[SetUp]
 		public void Setup()
 		{
-			_testRep = new TestRepository();
+			_testRep = new TestAggregateRepository();
 			_rep = new CacheRepository<ISingleSignOnToken>(_testRep, new TestInMemoryEventStore());
 			_aggregate = _testRep.Get<TestAggregate>(Guid.NewGuid());
 			_aggregate.DoSomething();

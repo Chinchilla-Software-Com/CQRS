@@ -1,0 +1,6 @@
+var classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubPublisherModule =
+[
+    [ "Load", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubPublisherModule_a1053c9b0a8d649bb63f1404563186677.html#a1053c9b0a8d649bb63f1404563186677", null ],
+    [ "RegisterEventMessageSerialiser", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubPublisherModule_adc517a90b48388fb0f8ce5e56094aff5.html#adc517a90b48388fb0f8ce5e56094aff5", null ],
+    [ "RegisterEventPublisher", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureEventHubPublisherModule_a86c95fe05f75c63d85a52a3052f3b016.html#a86c95fe05f75c63d85a52a3052f3b016", null ]
+];

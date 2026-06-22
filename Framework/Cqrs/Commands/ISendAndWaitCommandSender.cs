@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -15,8 +15,9 @@ namespace Cqrs.Commands
 	/// <summary>
 	/// Sends an <see cref="ICommand{TAuthenticationToken}"/>
 	/// </summary>
-	/// <typeparam name="TAuthenticationToken"></typeparam>
-	public interface ISendAndWaitCommandSender<TAuthenticationToken> : ICommandSender<TAuthenticationToken>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	[Obsolete("Use IPublishAndWaitCommandPublisher instead.")]
+	public interface ISendAndWaitCommandSender<TAuthenticationToken> : ICommandPublisher<TAuthenticationToken>
 	{
 		/// <summary>
 		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/>

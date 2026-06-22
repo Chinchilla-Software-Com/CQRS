@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -11,42 +11,85 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
+using Cqrs.Bus;
 using Cqrs.Configuration;
 using Cqrs.Events;
+
+#if NETSTANDARD2_0 || NET6_0
+using System.Threading.Tasks;
+using Microsoft.Azure.EventHubs;
+using Microsoft.Azure.EventHubs.Processor;
+using EventData = Microsoft.Azure.EventHubs.EventData;
+#else
 using Microsoft.ServiceBus.Messaging;
 using EventData = Microsoft.ServiceBus.Messaging.EventData;
+#endif
 using SpinWait = Cqrs.Infrastructure.SpinWait;
 
 namespace Cqrs.Azure.ServiceBus
 {
+	/// <summary>
+	/// A concurrent implementation of <see cref="AzureEventBusReceiver{TAuthenticationToken}"/> that resides in memory.
+	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AzureQueuedEventBusReceiver<TAuthenticationToken> : AzureEventBusReceiver<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Tracks all queues.
+		/// </summary>
 		protected static ConcurrentDictionary<string, ConcurrentQueue<IEvent<TAuthenticationToken>>> QueueTracker { get; private set; }
 
+		/// <summary>
+		/// Gets the <see cref="ReaderWriterLockSlim"/>.
+		/// </summary>
 		protected ReaderWriterLockSlim QueueTrackerLock { get; private set; }
 
-		public AzureQueuedEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
-			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, azureBusHelper)
+		/// <summary>
+		/// Receives an <see cref="EventData"/> message from the event bus, identifies a key and queues it accordingly.
+		/// </summary>
+		public AzureQueuedEventBusReceiver(IConfigurationManager configurationManager, IMessageSerialiser<TAuthenticationToken> messageSerialiser, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, ILogger logger, IHashAlgorithmFactory hashAlgorithmFactory, IAzureBusHelper<TAuthenticationToken> azureBusHelper)
+			: base(configurationManager, messageSerialiser, authenticationTokenHelper, correlationIdHelper, logger, hashAlgorithmFactory, azureBusHelper)
 		{
 			QueueTracker = new ConcurrentDictionary<string, ConcurrentQueue<IEvent<TAuthenticationToken>>>();
 			QueueTrackerLock = new ReaderWriterLockSlim();
 		}
 
-		protected override void ReceiveEvent(PartitionContext context, EventData eventData)
+		/// <summary>
+		/// Receives an <see cref="EventData"/> message from the event bus, identifies a key and queues it accordingly.
+		/// </summary>
+		protected override
+#if NETSTANDARD2_0 || NET6_0
+			async Task ReceiveEventAsync
+#else
+			void ReceiveEvent
+#endif
+		(PartitionContext context, EventData eventData)
 		{
 			// Do a manual 10 try attempt with back-off
 			for (int i = 0; i < 10; i++)
 			{
 				try
 				{
+#if NETSTANDARD2_0 || NET6_0
+					Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
+#else
 					Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+#endif
+#if NETSTANDARD2_0 || NET6_0
+					string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
+#else
 					string messageBody = Encoding.UTF8.GetString(eventData.GetBytes());
+#endif
 					IEvent<TAuthenticationToken> @event = MessageSerialiser.DeserialiseEvent(messageBody);
 
 					CorrelationIdHelper.SetCorrelationId(@event.CorrelationId);
+#if NETSTANDARD2_0 || NET6_0
+					Logger.LogInfo(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3}.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset, @event.GetType().FullName));
+#else
 					Logger.LogInfo(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3}.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset, @event.GetType().FullName));
+#endif
 
 					Type eventType = @event.GetType();
 
@@ -59,7 +102,11 @@ namespace Cqrs.Azure.ServiceBus
 					}
 					catch
 					{
+#if NETSTANDARD2_0 || NET6_0
+						Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3} but with no Rsn property.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset, eventType));
+#else
 						Logger.LogDebug(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' was of type {3} but with no Rsn property.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset, eventType));
+#endif
 						// Do nothing if there is no rsn. Just use @event type name
 					}
 
@@ -67,15 +114,27 @@ namespace Cqrs.Azure.ServiceBus
 					EnqueueEvent(targetQueueName, @event);
 
 					// remove the original message from the incoming queue
-					context.CheckpointAsync(eventData);
 
+#if NETSTANDARD2_0 || NET6_0
+					await
+#endif
+						context.CheckpointAsync(eventData);
+
+#if NETSTANDARD2_0 || NET6_0
+					Logger.LogDebug(string.Format("An event message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset));
+#else
 					Logger.LogDebug(string.Format("An event message arrived and was processed with the partition key '{0}', sequence number '{1}' and offset '{2}'.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset));
+#endif
 					return;
 				}
 				catch (Exception exception)
 				{
 					// Indicates a problem, unlock message in queue
+#if NETSTANDARD2_0 || NET6_0
+					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.SystemProperties.PartitionKey, eventData.SystemProperties.SequenceNumber, eventData.SystemProperties.Offset), exception: exception);
+#else
 					Logger.LogError(string.Format("An event message arrived with the partition key '{0}', sequence number '{1}' and offset '{2}' but failed to be process.", eventData.PartitionKey, eventData.SequenceNumber, eventData.Offset), exception: exception);
+#endif
 
 					switch (i)
 					{
@@ -105,15 +164,27 @@ namespace Cqrs.Azure.ServiceBus
 				}
 			}
 			// Eventually just accept it
-			context.CheckpointAsync(eventData);
+
+#if NETSTANDARD2_0 || NET6_0
+			await
+#endif
+				context.CheckpointAsync(eventData);
 		}
 
+		/// <summary>
+		/// Adds the provided <paramref name="event"/> to the <see cref="QueueTracker"/> of the queue <paramref name="targetQueueName"/>.
+		/// </summary>
 		private void EnqueueEvent(string targetQueueName, IEvent<TAuthenticationToken> @event)
 		{
 			var queue = QueueTracker.GetOrAdd(targetQueueName, new ConcurrentQueue<IEvent<TAuthenticationToken>>());
 			queue.Enqueue(@event);
 		}
 
+		/// <summary>
+		/// Creates the queue of the name <paramref name="queueName"/> if it does not already exist,
+		/// the queue is attached to <see cref="DequeueAndProcessEvent"/> using a <see cref="Thread"/>.
+		/// </summary>
+		/// <param name="queueName">The name of the queue to check and create.</param>
 		protected void CreateQueueAndAttachListenerIfNotExist(string queueName)
 		{
 			if (!QueueTracker.ContainsKey(queueName))
@@ -127,7 +198,7 @@ namespace Cqrs.Azure.ServiceBus
 						new Thread(() =>
 						{
 							Thread.CurrentThread.Name = queueName;
-							DequeuAndProcessEvent(queueName);
+							DequeueAndProcessEvent(queueName);
 						}).Start();
 					}
 				}
@@ -142,7 +213,21 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
-		protected void DequeuAndProcessEvent(string queueName)
+
+#if NETSTANDARD2_0 || NET6_0
+		/// <summary>
+		/// Takes an <see cref="IEvent{TAuthenticationToken}"/> off the queue of <paramref name="queueName"/>
+		/// and calls <see cref="ReceiveEventAsync(PartitionContext, EventData)"/>. Repeats in a loop until the queue is empty.
+		/// </summary>
+		/// <param name="queueName">The name of the queue process.</param>
+#else
+		/// <summary>
+		/// Takes an <see cref="IEvent{TAuthenticationToken}"/> off the queue of <paramref name="queueName"/>
+		/// and calls <see cref="ReceiveEvent"/>. Repeats in a loop until the queue is empty.
+		/// </summary>
+		/// <param name="queueName">The name of the queue process.</param>
+#endif
+		protected void DequeueAndProcessEvent(string queueName)
 		{
 			SpinWait.SpinUntil
 			(
@@ -176,7 +261,13 @@ namespace Cqrs.Azure.ServiceBus
 									}
 									try
 									{
+#if NETSTANDARD2_0 || NET6_0
+										SafeTask.RunSafelyAsync(async () => {
+											await ReceiveEventAsync(@event);
+										}).Wait();
+#else
 										ReceiveEvent(@event);
+#endif
 									}
 									catch (Exception exception)
 									{
@@ -204,6 +295,9 @@ namespace Cqrs.Azure.ServiceBus
 			);
 		}
 
+		/// <summary>
+		/// The number of queues currently known.
+		/// </summary>
 		public int QueueCount
 		{
 			get
@@ -220,6 +314,9 @@ namespace Cqrs.Azure.ServiceBus
 			}
 		}
 
+		/// <summary>
+		/// The name of all currently known queues.
+		/// </summary>
 		public ICollection<string> QueueNames
 		{
 			get

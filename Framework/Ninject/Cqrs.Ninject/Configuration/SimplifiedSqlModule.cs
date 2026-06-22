@@ -1,31 +1,41 @@
-﻿using Cqrs.Events;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
+using Cqrs.Events;
+using Cqrs.Snapshots;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// The <see cref="INinjectModule"/> to wireup <see cref="IEvent{TAuthenticationToken}"/> to <see cref="SqlEventStore{TAuthenticationToken}"/>.
 	/// </summary>
-	public class SimplifiedSqlModule<TAuthenticationToken> : NinjectModule
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class SimplifiedSqlModule<TAuthenticationToken> : ResolvableModule
 	{
-		#region Overrides of NinjectModule
+#region Overrides of NinjectModule
 
 		/// <summary>
 		/// Loads the module into the kernel.
 		/// </summary>
 		public override void Load()
 		{
-			RegisterFactories();
-			RegisterServices();
-			RegisterCqrsRequirements();
+			RegisterEventSerialisationConfiguration();
+			RegisterEventStore();
 		}
 
-		#endregion
+#endregion
 
 		/// <summary>
-		/// Register the all factories
+		/// Register the all event serialisation configurations
 		/// </summary>
-		public virtual void RegisterFactories()
+		public virtual void RegisterEventSerialisationConfiguration()
 		{
 			Bind<IEventBuilder<TAuthenticationToken>>()
 				.To<DefaultEventBuilder<TAuthenticationToken>>()
@@ -33,22 +43,21 @@ namespace Cqrs.Ninject.Configuration
 			Bind<IEventDeserialiser<TAuthenticationToken>>()
 				.To<EventDeserialiser<TAuthenticationToken>>()
 				.InSingletonScope();
+			Bind<ISnapshotDeserialiser>()
+				.To<SnapshotDeserialiser>()
+				.InSingletonScope();
 		}
 
 		/// <summary>
-		/// Register the all services
+		/// Register the <see cref="IEventStore{TAuthenticationToken}"/>
 		/// </summary>
-		public virtual void RegisterServices()
-		{
-		}
-
-		/// <summary>
-		/// Register the all Cqrs command handlers
-		/// </summary>
-		public virtual void RegisterCqrsRequirements()
+		public virtual void RegisterEventStore()
 		{
 			Bind<IEventStore<TAuthenticationToken>>()
 				.To<SqlEventStore<TAuthenticationToken>>()
+				.InSingletonScope();
+			Bind<ISnapshotStore>()
+				.To<SqlSnapshotStore>()
 				.InSingletonScope();
 		}
 	}

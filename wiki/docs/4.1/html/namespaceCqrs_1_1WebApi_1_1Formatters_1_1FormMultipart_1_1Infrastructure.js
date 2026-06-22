@@ -1,0 +1,8 @@
+var namespaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure =
+[
+    [ "Logger", "namespaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger.html", "namespaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger" ],
+    [ "TypeConverters", "namespaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters.html", "namespaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1TypeConverters" ],
+    [ "FormData", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1FormData.html", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1FormData" ],
+    [ "HttpFile", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1HttpFile.html", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1HttpFile" ],
+    [ "MultipartFormatterSettings", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings.html", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1MultipartFormatterSettings" ]
+];

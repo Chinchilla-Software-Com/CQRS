@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net472;net48;net8.0</TargetFrameworks>
+
+		<IsPackable>false</IsPackable>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="tools\**" />
+		<EmbeddedResource Remove="tools\**" />
+		<None Remove="tools\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Azure.Data.Tables" Version="12.9.1" />
+		<PackageReference Include="nunit" Version="3.14.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="5.2.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+		<PackageReference Include="Moq" Version="4.20.72" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" /> <!-- 6.34.0 -->
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Cqrs.Azure.Storage\Cqrs.Azure.Storage.csproj" />
+		<ProjectReference Include="..\Cqrs.Azure.ServiceBus.Tests.Unit\Cqrs.Azure.ServiceBus.Tests.Unit.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="cqrs.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)app.config&quot; ECHO ^&lt;^?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;^?^&gt;^&lt;configuration^&gt;^&lt;^/configuration^&gt; &gt; &quot;$(ProjectDir)app.config&quot;&#xD;&#xA;IF NOT EXIST &quot;$(ProjectDir)cqrs.json&quot; ECHO ^{ &quot;Cqrs&quot;: ^{ ^} ^} &gt; &quot;$(ProjectDir)cqrs.json&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration.app.config&quot; copy /Y &quot;$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration.app.config&quot; &quot;$(ProjectDir)app.config&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration-settings.json&quot; copy /Y &quot;$(SolutionDir)Code\Cqrs.Azure.Storage.Test.Integration-settings.json&quot; &quot;$(ProjectDir)cqrs.json&quot;&#xD;&#xA;" />
+	</Target>
+
+</Project>

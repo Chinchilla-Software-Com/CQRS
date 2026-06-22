@@ -1,0 +1,5 @@
+var namespaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger =
+[
+    [ "FormDataConverterLogger", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger.html", "classCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1FormDataConverterLogger" ],
+    [ "IFormDataConverterLogger", "interfaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1IFormDataConverterLogger.html", "interfaceCqrs_1_1WebApi_1_1Formatters_1_1FormMultipart_1_1Infrastructure_1_1Logger_1_1IFormDataConverterLogger" ]
+];

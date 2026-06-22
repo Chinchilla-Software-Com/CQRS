@@ -1,0 +1,269 @@
+\hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar}{}\section{Cqrs.\+Configuration.\+Bus\+Registrar Class Reference}
+\label{classCqrs_1_1Configuration_1_1BusRegistrar}\index{Cqrs.\+Configuration.\+Bus\+Registrar@{Cqrs.\+Configuration.\+Bus\+Registrar}}
+
+
+Triggers the I\+Event\+Handler\+Registrar and I\+Command\+Handler\+Registrar if they are registered in the \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver}.  
+
+
+Inheritance diagram for Cqrs.\+Configuration.\+Bus\+Registrar\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCqrs_1_1Configuration_1_1BusRegistrar}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_1_1HandlerTypeInformation}{Handler\+Type\+Information}
+\begin{DoxyCompactList}\small\item\em Information explaining the registration to make \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a4a934d21a535b28af6c67154512bba20_a4a934d21a535b28af6c67154512bba20}{Bus\+Registrar} (\hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} dependency\+Resolver)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar}{Bus\+Registrar}. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_ab8deb04dc9cb6b80f32b54c847dfb1b3_ab8deb04dc9cb6b80f32b54c847dfb1b3}{Register} (params Type\mbox{[}$\,$\mbox{]} types\+From\+Assembly\+Containing\+Messages)
+\begin{DoxyCompactList}\small\item\em Registers all I\+Event\+Handler and I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ instances found in the Assembly for each Type in {\itshape types\+From\+Assembly\+Containing\+Messages} . \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_abc3af2b8dfeeb49f5e5461456ae01f67_abc3af2b8dfeeb49f5e5461456ae01f67}{Register} (bool true\+For\+Events\+False\+For\+Commands, Func$<$ Type, I\+Enumerable$<$ Type $>$$>$ resolve\+Message\+Handler\+Interface, bool skip\+Command\+Handlers, params Type\mbox{[}$\,$\mbox{]} types\+From\+Assembly\+Containing\+Messages)
+\begin{DoxyCompactList}\small\item\em Registers all I\+Handler instances found in the Assembly for each Type in {\itshape types\+From\+Assembly\+Containing\+Messages} . \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_abb83d8748bd598e728a90b51b4a93c35_abb83d8748bd598e728a90b51b4a93c35}{Register} (bool true\+For\+Events\+False\+For\+Commands, Func$<$ Type, I\+Enumerable$<$ Type $>$$>$ resolve\+Message\+Handler\+Interface, bool skip\+Command\+Handlers, params \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_1_1HandlerTypeInformation}{Handler\+Type\+Information}\mbox{[}$\,$\mbox{]} executor\+Types)
+\begin{DoxyCompactList}\small\item\em Registers all I\+Handler instances in the provided {\itshape executor\+Types} . \end{DoxyCompactList}\item 
+virtual I\+Enumerable$<$ Type $>$ \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a0af1844a5f7f1c4adfde2499b054aaae_a0af1844a5f7f1c4adfde2499b054aaae}{Resolve\+Event\+Handler\+Interface} (Type type)
+\begin{DoxyCompactList}\small\item\em Finds all Type that implement \hyperlink{interfaceCqrs_1_1Events_1_1IEventHandler}{I\+Event\+Handler$<$\+T\+Authentication\+Token,\+T\+Event$>$} that are implemented by {\itshape type} . \end{DoxyCompactList}\item 
+virtual I\+Enumerable$<$ Type $>$ \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a0e118c57c7e804df1d810750befb25df_a0e118c57c7e804df1d810750befb25df}{Resolve\+Command\+Handler\+Interface} (Type type)
+\begin{DoxyCompactList}\small\item\em Finds all Type that implement I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ that are implemented by {\itshape type} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a159eba5ece9015165be70676a52d8127_a159eba5ece9015165be70676a52d8127}{Invoke\+Handler} (Type @interface, bool true\+For\+Events\+False\+For\+Commands, Func$<$ Type, I\+Enumerable$<$ Type $>$$>$ resolve\+Message\+Handler\+Interface, Type executor\+Type)
+\begin{DoxyCompactList}\small\item\em Extract the I\+Handler\+Registrar.\+Register\+Handler$<$\+T\+Message$>$(\+System.\+Action$<$\+T\+Message$>$,\+System.\+Type,bool) method of \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_adaab0236b3ce39214ce60b2272e5ab19_adaab0236b3ce39214ce60b2272e5ab19}{Get\+Event\+Handler\+Registrar} or \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a5ac56d73af9d550c70ee722daed7dce8_a5ac56d73af9d550c70ee722daed7dce8}{Get\+Command\+Handler\+Registrar}. Create an Action around the provided {\itshape executor\+Type}  Then register the created Action using the extracted I\+Handler\+Registrar.\+Register\+Handler$<$\+T\+Message$>$(\+System.\+Action$<$\+T\+Message$>$,\+System.\+Type,bool) method \end{DoxyCompactList}\item 
+virtual void \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a3103da4cf077104607fe03a862958827_a3103da4cf077104607fe03a862958827}{Invoke\+Handler\+Delegate} (Method\+Info register\+Executor\+Method, bool true\+For\+Events\+False\+For\+Commands, \hyperlink{classCqrs_1_1Configuration_1_1HandlerDelegate}{Handler\+Delegate} handler\+Delegate)
+\begin{DoxyCompactList}\small\item\em Invokes {\itshape handler\+Delegate} , fetching the corresponding \char`\"{}\+Hold\+Message\+Lock\char`\"{} configuration setting \end{DoxyCompactList}\item 
+virtual \hyperlink{classCqrs_1_1Configuration_1_1HandlerDelegate}{Handler\+Delegate} \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a07d27088739f2ae0ac7c551fc6a72ac9_a07d27088739f2ae0ac7c551fc6a72ac9}{Build\+Delegate\+Action} (Type executor\+Type, Func$<$ Type, I\+Enumerable$<$ Type $>$$>$ resolve\+Message\+Handler\+Interface)
+\begin{DoxyCompactList}\small\item\em Builds a \hyperlink{classCqrs_1_1Configuration_1_1HandlerDelegate}{Handler\+Delegate} that will resolve the provided {\itshape executor\+Type}  and invoke the Handle method, when executed. \end{DoxyCompactList}\item 
+virtual Method\+Info \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a03ecf12389b8f55b75c887e113520ac7_a03ecf12389b8f55b75c887e113520ac7}{Build\+Executor\+Method} (Method\+Info original\+Register\+Executor\+Method, Type executor\+Type, Type command\+Type)
+\begin{DoxyCompactList}\small\item\em Builds a method replacing the generic type with {\itshape command\+Type} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_aafccd565c2d9a748ff0f850a94100399_aafccd565c2d9a748ff0f850a94100399}{Dependency\+Resolver}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or set the \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver}. \end{DoxyCompactList}\item 
+static Func$<$ Type, Type, \hyperlink{interfaceCqrs_1_1Bus_1_1IHandlerRegistrar}{I\+Handler\+Registrar} $>$ \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_adaab0236b3ce39214ce60b2272e5ab19_adaab0236b3ce39214ce60b2272e5ab19}{Get\+Event\+Handler\+Registrar}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A Func$<$\+Type, Type, T\+Handler\+Registrar$>$ to use in-\/place of I\+Event\+Handler\+Registrar \end{DoxyCompactList}\item 
+static Func$<$ Type, Type, \hyperlink{interfaceCqrs_1_1Bus_1_1IHandlerRegistrar}{I\+Handler\+Registrar} $>$ \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a5ac56d73af9d550c70ee722daed7dce8_a5ac56d73af9d550c70ee722daed7dce8}{Get\+Command\+Handler\+Registrar}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A Func$<$\+Type, Type, T\+Handler\+Registrar$>$ to use in-\/place of I\+Command\+Handler\+Registrar \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Triggers the I\+Event\+Handler\+Registrar and I\+Command\+Handler\+Registrar if they are registered in the \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver}. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_a4a934d21a535b28af6c67154512bba20_a4a934d21a535b28af6c67154512bba20}\label{classCqrs_1_1Configuration_1_1BusRegistrar_a4a934d21a535b28af6c67154512bba20_a4a934d21a535b28af6c67154512bba20}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Bus\+Registrar@{Bus\+Registrar}}
+\index{Bus\+Registrar@{Bus\+Registrar}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Bus\+Registrar()}{BusRegistrar()}}
+{\footnotesize\ttfamily Cqrs.\+Configuration.\+Bus\+Registrar.\+Bus\+Registrar (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver}}]{dependency\+Resolver }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar}{Bus\+Registrar}. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_a07d27088739f2ae0ac7c551fc6a72ac9_a07d27088739f2ae0ac7c551fc6a72ac9}\label{classCqrs_1_1Configuration_1_1BusRegistrar_a07d27088739f2ae0ac7c551fc6a72ac9_a07d27088739f2ae0ac7c551fc6a72ac9}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Build\+Delegate\+Action@{Build\+Delegate\+Action}}
+\index{Build\+Delegate\+Action@{Build\+Delegate\+Action}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Build\+Delegate\+Action()}{BuildDelegateAction()}}
+{\footnotesize\ttfamily virtual \hyperlink{classCqrs_1_1Configuration_1_1HandlerDelegate}{Handler\+Delegate} Cqrs.\+Configuration.\+Bus\+Registrar.\+Build\+Delegate\+Action (\begin{DoxyParamCaption}\item[{Type}]{executor\+Type,  }\item[{Func$<$ Type, I\+Enumerable$<$ Type $>$$>$}]{resolve\+Message\+Handler\+Interface }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Builds a \hyperlink{classCqrs_1_1Configuration_1_1HandlerDelegate}{Handler\+Delegate} that will resolve the provided {\itshape executor\+Type}  and invoke the Handle method, when executed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em executor\+Type} & The type of I\+Handler to resolve.$>$\\
+\hline
+{\em resolve\+Message\+Handler\+Interface} & Not used.\\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classCqrs_1_1Akka_1_1Configuration_1_1AkkaBusRegistrar_ad7e3e5d332d5b4d781375a28f23bdb19_ad7e3e5d332d5b4d781375a28f23bdb19}{Cqrs.\+Akka.\+Configuration.\+Akka\+Bus\+Registrar$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_a03ecf12389b8f55b75c887e113520ac7_a03ecf12389b8f55b75c887e113520ac7}\label{classCqrs_1_1Configuration_1_1BusRegistrar_a03ecf12389b8f55b75c887e113520ac7_a03ecf12389b8f55b75c887e113520ac7}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Build\+Executor\+Method@{Build\+Executor\+Method}}
+\index{Build\+Executor\+Method@{Build\+Executor\+Method}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Build\+Executor\+Method()}{BuildExecutorMethod()}}
+{\footnotesize\ttfamily virtual Method\+Info Cqrs.\+Configuration.\+Bus\+Registrar.\+Build\+Executor\+Method (\begin{DoxyParamCaption}\item[{Method\+Info}]{original\+Register\+Executor\+Method,  }\item[{Type}]{executor\+Type,  }\item[{Type}]{command\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Builds a method replacing the generic type with {\itshape command\+Type} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_a159eba5ece9015165be70676a52d8127_a159eba5ece9015165be70676a52d8127}\label{classCqrs_1_1Configuration_1_1BusRegistrar_a159eba5ece9015165be70676a52d8127_a159eba5ece9015165be70676a52d8127}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Invoke\+Handler@{Invoke\+Handler}}
+\index{Invoke\+Handler@{Invoke\+Handler}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Invoke\+Handler()}{InvokeHandler()}}
+{\footnotesize\ttfamily virtual void Cqrs.\+Configuration.\+Bus\+Registrar.\+Invoke\+Handler (\begin{DoxyParamCaption}\item[{Type @}]{interface,  }\item[{bool}]{true\+For\+Events\+False\+For\+Commands,  }\item[{Func$<$ Type, I\+Enumerable$<$ Type $>$$>$}]{resolve\+Message\+Handler\+Interface,  }\item[{Type}]{executor\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Extract the I\+Handler\+Registrar.\+Register\+Handler$<$\+T\+Message$>$(\+System.\+Action$<$\+T\+Message$>$,\+System.\+Type,bool) method of \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_adaab0236b3ce39214ce60b2272e5ab19_adaab0236b3ce39214ce60b2272e5ab19}{Get\+Event\+Handler\+Registrar} or \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a5ac56d73af9d550c70ee722daed7dce8_a5ac56d73af9d550c70ee722daed7dce8}{Get\+Command\+Handler\+Registrar}. Create an Action around the provided {\itshape executor\+Type}  Then register the created Action using the extracted I\+Handler\+Registrar.\+Register\+Handler$<$\+T\+Message$>$(\+System.\+Action$<$\+T\+Message$>$,\+System.\+Type,bool) method 
+
+
+\begin{DoxyParams}{Parameters}
+{\em interface} & The Type of I\+Handler\\
+\hline
+{\em true\+For\+Events\+False\+For\+Commands} & Indicates if this is registers I\+Event\+Handler or I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$.\\
+\hline
+{\em resolve\+Message\+Handler\+Interface} & \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a0af1844a5f7f1c4adfde2499b054aaae_a0af1844a5f7f1c4adfde2499b054aaae}{Resolve\+Event\+Handler\+Interface} or \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a0e118c57c7e804df1d810750befb25df_a0e118c57c7e804df1d810750befb25df}{Resolve\+Command\+Handler\+Interface}\\
+\hline
+{\em executor\+Type} & The Type of the event handler that will do the handling\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_a3103da4cf077104607fe03a862958827_a3103da4cf077104607fe03a862958827}\label{classCqrs_1_1Configuration_1_1BusRegistrar_a3103da4cf077104607fe03a862958827_a3103da4cf077104607fe03a862958827}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Invoke\+Handler\+Delegate@{Invoke\+Handler\+Delegate}}
+\index{Invoke\+Handler\+Delegate@{Invoke\+Handler\+Delegate}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Invoke\+Handler\+Delegate()}{InvokeHandlerDelegate()}}
+{\footnotesize\ttfamily virtual void Cqrs.\+Configuration.\+Bus\+Registrar.\+Invoke\+Handler\+Delegate (\begin{DoxyParamCaption}\item[{Method\+Info}]{register\+Executor\+Method,  }\item[{bool}]{true\+For\+Events\+False\+For\+Commands,  }\item[{\hyperlink{classCqrs_1_1Configuration_1_1HandlerDelegate}{Handler\+Delegate}}]{handler\+Delegate }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Invokes {\itshape handler\+Delegate} , fetching the corresponding \char`\"{}\+Hold\+Message\+Lock\char`\"{} configuration setting 
+
+
+\begin{DoxyParams}{Parameters}
+{\em register\+Executor\+Method} & The Method\+Info to use to invoke {\itshape handler\+Delegate} .\\
+\hline
+{\em true\+For\+Events\+False\+For\+Commands} & Indicates if this is registers I\+Event\+Handler or I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$.\\
+\hline
+{\em handler\+Delegate} & The actual \hyperlink{classCqrs_1_1Configuration_1_1HandlerDelegate}{Handler\+Delegate} that gets executed.\\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classCqrs_1_1Akka_1_1Configuration_1_1AkkaBusRegistrar_a0ac474751b2ba8ebb27b885a15fbf053_a0ac474751b2ba8ebb27b885a15fbf053}{Cqrs.\+Akka.\+Configuration.\+Akka\+Bus\+Registrar$<$ T\+Authentication\+Token $>$}.
+
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_ab8deb04dc9cb6b80f32b54c847dfb1b3_ab8deb04dc9cb6b80f32b54c847dfb1b3}\label{classCqrs_1_1Configuration_1_1BusRegistrar_ab8deb04dc9cb6b80f32b54c847dfb1b3_ab8deb04dc9cb6b80f32b54c847dfb1b3}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Register@{Register}}
+\index{Register@{Register}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Register()}{Register()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily virtual void Cqrs.\+Configuration.\+Bus\+Registrar.\+Register (\begin{DoxyParamCaption}\item[{params Type \mbox{[}$\,$\mbox{]}}]{types\+From\+Assembly\+Containing\+Messages }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Registers all I\+Event\+Handler and I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ instances found in the Assembly for each Type in {\itshape types\+From\+Assembly\+Containing\+Messages} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em types\+From\+Assembly\+Containing\+Messages} & A collection of Type to track back to their containing Assembly and scan.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_abc3af2b8dfeeb49f5e5461456ae01f67_abc3af2b8dfeeb49f5e5461456ae01f67}\label{classCqrs_1_1Configuration_1_1BusRegistrar_abc3af2b8dfeeb49f5e5461456ae01f67_abc3af2b8dfeeb49f5e5461456ae01f67}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Register@{Register}}
+\index{Register@{Register}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Register()}{Register()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily virtual void Cqrs.\+Configuration.\+Bus\+Registrar.\+Register (\begin{DoxyParamCaption}\item[{bool}]{true\+For\+Events\+False\+For\+Commands,  }\item[{Func$<$ Type, I\+Enumerable$<$ Type $>$$>$}]{resolve\+Message\+Handler\+Interface,  }\item[{bool}]{skip\+Command\+Handlers,  }\item[{params Type \mbox{[}$\,$\mbox{]}}]{types\+From\+Assembly\+Containing\+Messages }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Registers all I\+Handler instances found in the Assembly for each Type in {\itshape types\+From\+Assembly\+Containing\+Messages} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em true\+For\+Events\+False\+For\+Commands} & Indicates if this is registers I\+Event\+Handler or I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$.\\
+\hline
+{\em resolve\+Message\+Handler\+Interface} & \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a0af1844a5f7f1c4adfde2499b054aaae_a0af1844a5f7f1c4adfde2499b054aaae}{Resolve\+Event\+Handler\+Interface} or \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a0e118c57c7e804df1d810750befb25df_a0e118c57c7e804df1d810750befb25df}{Resolve\+Command\+Handler\+Interface}\\
+\hline
+{\em skip\+Command\+Handlers} & Indicates if registering of I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ is enabled.\\
+\hline
+{\em types\+From\+Assembly\+Containing\+Messages} & A collection of Type to track back to their containing Assembly and scan.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_abb83d8748bd598e728a90b51b4a93c35_abb83d8748bd598e728a90b51b4a93c35}\label{classCqrs_1_1Configuration_1_1BusRegistrar_abb83d8748bd598e728a90b51b4a93c35_abb83d8748bd598e728a90b51b4a93c35}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Register@{Register}}
+\index{Register@{Register}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Register()}{Register()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily virtual void Cqrs.\+Configuration.\+Bus\+Registrar.\+Register (\begin{DoxyParamCaption}\item[{bool}]{true\+For\+Events\+False\+For\+Commands,  }\item[{Func$<$ Type, I\+Enumerable$<$ Type $>$$>$}]{resolve\+Message\+Handler\+Interface,  }\item[{bool}]{skip\+Command\+Handlers,  }\item[{params \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_1_1HandlerTypeInformation}{Handler\+Type\+Information} \mbox{[}$\,$\mbox{]}}]{executor\+Types }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Registers all I\+Handler instances in the provided {\itshape executor\+Types} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em true\+For\+Events\+False\+For\+Commands} & Indicates if this is registers I\+Event\+Handler or I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$.\\
+\hline
+{\em resolve\+Message\+Handler\+Interface} & \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a0af1844a5f7f1c4adfde2499b054aaae_a0af1844a5f7f1c4adfde2499b054aaae}{Resolve\+Event\+Handler\+Interface} or \hyperlink{classCqrs_1_1Configuration_1_1BusRegistrar_a0e118c57c7e804df1d810750befb25df_a0e118c57c7e804df1d810750befb25df}{Resolve\+Command\+Handler\+Interface}\\
+\hline
+{\em skip\+Command\+Handlers} & Indicates if registering of I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ is enabled.\\
+\hline
+{\em executor\+Types} & A collection of Type to register.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_a0e118c57c7e804df1d810750befb25df_a0e118c57c7e804df1d810750befb25df}\label{classCqrs_1_1Configuration_1_1BusRegistrar_a0e118c57c7e804df1d810750befb25df_a0e118c57c7e804df1d810750befb25df}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Resolve\+Command\+Handler\+Interface@{Resolve\+Command\+Handler\+Interface}}
+\index{Resolve\+Command\+Handler\+Interface@{Resolve\+Command\+Handler\+Interface}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Resolve\+Command\+Handler\+Interface()}{ResolveCommandHandlerInterface()}}
+{\footnotesize\ttfamily virtual I\+Enumerable$<$Type$>$ Cqrs.\+Configuration.\+Bus\+Registrar.\+Resolve\+Command\+Handler\+Interface (\begin{DoxyParamCaption}\item[{Type}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Finds all Type that implement I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ that are implemented by {\itshape type} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The Type to find all I\+Command\+Handler$<$\+T\+Authentication\+Token,\+T\+Command$>$ of.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_a0af1844a5f7f1c4adfde2499b054aaae_a0af1844a5f7f1c4adfde2499b054aaae}\label{classCqrs_1_1Configuration_1_1BusRegistrar_a0af1844a5f7f1c4adfde2499b054aaae_a0af1844a5f7f1c4adfde2499b054aaae}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Resolve\+Event\+Handler\+Interface@{Resolve\+Event\+Handler\+Interface}}
+\index{Resolve\+Event\+Handler\+Interface@{Resolve\+Event\+Handler\+Interface}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Resolve\+Event\+Handler\+Interface()}{ResolveEventHandlerInterface()}}
+{\footnotesize\ttfamily virtual I\+Enumerable$<$Type$>$ Cqrs.\+Configuration.\+Bus\+Registrar.\+Resolve\+Event\+Handler\+Interface (\begin{DoxyParamCaption}\item[{Type}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Finds all Type that implement \hyperlink{interfaceCqrs_1_1Events_1_1IEventHandler}{I\+Event\+Handler$<$\+T\+Authentication\+Token,\+T\+Event$>$} that are implemented by {\itshape type} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The Type to find all \hyperlink{interfaceCqrs_1_1Events_1_1IEventHandler}{I\+Event\+Handler$<$\+T\+Authentication\+Token,\+T\+Event$>$} of.\\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_aafccd565c2d9a748ff0f850a94100399_aafccd565c2d9a748ff0f850a94100399}\label{classCqrs_1_1Configuration_1_1BusRegistrar_aafccd565c2d9a748ff0f850a94100399_aafccd565c2d9a748ff0f850a94100399}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Dependency\+Resolver@{Dependency\+Resolver}}
+\index{Dependency\+Resolver@{Dependency\+Resolver}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Dependency\+Resolver}{DependencyResolver}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver} Cqrs.\+Configuration.\+Bus\+Registrar.\+Dependency\+Resolver\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or set the \hyperlink{interfaceCqrs_1_1Configuration_1_1IDependencyResolver}{I\+Dependency\+Resolver}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_a5ac56d73af9d550c70ee722daed7dce8_a5ac56d73af9d550c70ee722daed7dce8}\label{classCqrs_1_1Configuration_1_1BusRegistrar_a5ac56d73af9d550c70ee722daed7dce8_a5ac56d73af9d550c70ee722daed7dce8}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Get\+Command\+Handler\+Registrar@{Get\+Command\+Handler\+Registrar}}
+\index{Get\+Command\+Handler\+Registrar@{Get\+Command\+Handler\+Registrar}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Get\+Command\+Handler\+Registrar}{GetCommandHandlerRegistrar}}
+{\footnotesize\ttfamily Func$<$Type, Type, \hyperlink{interfaceCqrs_1_1Bus_1_1IHandlerRegistrar}{I\+Handler\+Registrar}$>$ Cqrs.\+Configuration.\+Bus\+Registrar.\+Get\+Command\+Handler\+Registrar\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+A Func$<$\+Type, Type, T\+Handler\+Registrar$>$ to use in-\/place of I\+Command\+Handler\+Registrar 
+
+\mbox{\Hypertarget{classCqrs_1_1Configuration_1_1BusRegistrar_adaab0236b3ce39214ce60b2272e5ab19_adaab0236b3ce39214ce60b2272e5ab19}\label{classCqrs_1_1Configuration_1_1BusRegistrar_adaab0236b3ce39214ce60b2272e5ab19_adaab0236b3ce39214ce60b2272e5ab19}} 
+\index{Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}!Get\+Event\+Handler\+Registrar@{Get\+Event\+Handler\+Registrar}}
+\index{Get\+Event\+Handler\+Registrar@{Get\+Event\+Handler\+Registrar}!Cqrs\+::\+Configuration\+::\+Bus\+Registrar@{Cqrs\+::\+Configuration\+::\+Bus\+Registrar}}
+\subsubsection{\texorpdfstring{Get\+Event\+Handler\+Registrar}{GetEventHandlerRegistrar}}
+{\footnotesize\ttfamily Func$<$Type, Type, \hyperlink{interfaceCqrs_1_1Bus_1_1IHandlerRegistrar}{I\+Handler\+Registrar}$>$ Cqrs.\+Configuration.\+Bus\+Registrar.\+Get\+Event\+Handler\+Registrar\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}, {\ttfamily [set]}}
+
+
+
+A Func$<$\+Type, Type, T\+Handler\+Registrar$>$ to use in-\/place of I\+Event\+Handler\+Registrar 
+

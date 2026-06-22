@@ -1,0 +1,416 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Authentication.IDefaultSingleSignOnTokenFactory
+  commentId: T:Cqrs.Authentication.IDefaultSingleSignOnTokenFactory
+  id: IDefaultSingleSignOnTokenFactory
+  parent: Cqrs.Authentication
+  children:
+  - Cqrs.Authentication.IDefaultSingleSignOnTokenFactory.RenewTokenExpiry(Cqrs.Authentication.ISingleSignOnToken,System.Int32)
+  langs:
+  - csharp
+  - vb
+  name: IDefaultSingleSignOnTokenFactory
+  nameWithType: IDefaultSingleSignOnTokenFactory
+  fullName: Cqrs.Authentication.IDefaultSingleSignOnTokenFactory
+  type: Interface
+  source:
+    remote:
+      path: Framework/Cqrs/Authentication/IDefaultSingleSignOnTokenFactory.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: IDefaultSingleSignOnTokenFactory
+    path: Framework/Cqrs/Authentication/IDefaultSingleSignOnTokenFactory.cs
+    startLine: 16
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Authentication
+  summary: "\nA Factory for creating new authentication tokens of type <xref href=\"Cqrs.Authentication.SingleSignOnToken\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: >-
+      [ServiceContract(Namespace = "https://getcqrs.net/SingleSignOn/TokenFactory")]
+
+      public interface IDefaultSingleSignOnTokenFactory : ISingleSignOnTokenFactory<SingleSignOnToken>
+    content.vb: >-
+      <ServiceContract(Namespace:="https://getcqrs.net/SingleSignOn/TokenFactory")>
+
+      Public Interface IDefaultSingleSignOnTokenFactory
+          Inherits ISingleSignOnTokenFactory(Of SingleSignOnToken)
+  inheritedMembers:
+  - Cqrs.Authentication.ISingleSignOnTokenFactory{Cqrs.Authentication.SingleSignOnToken}.CreateNew(System.Int32)
+  - Cqrs.Authentication.ISingleSignOnTokenFactory{Cqrs.Authentication.SingleSignOnToken}.RenewTokenExpiry(Cqrs.Authentication.SingleSignOnToken,System.Int32)
+  attributes:
+  - type: System.ServiceModel.ServiceContractAttribute
+    ctor: System.ServiceModel.ServiceContractAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: Namespace
+      type: System.String
+      value: https://getcqrs.net/SingleSignOn/TokenFactory
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: Cqrs.Authentication.IDefaultSingleSignOnTokenFactory.RenewTokenExpiry(Cqrs.Authentication.ISingleSignOnToken,System.Int32)
+  commentId: M:Cqrs.Authentication.IDefaultSingleSignOnTokenFactory.RenewTokenExpiry(Cqrs.Authentication.ISingleSignOnToken,System.Int32)
+  id: RenewTokenExpiry(Cqrs.Authentication.ISingleSignOnToken,System.Int32)
+  parent: Cqrs.Authentication.IDefaultSingleSignOnTokenFactory
+  langs:
+  - csharp
+  - vb
+  name: RenewTokenExpiry(ISingleSignOnToken, Int32)
+  nameWithType: IDefaultSingleSignOnTokenFactory.RenewTokenExpiry(ISingleSignOnToken, Int32)
+  fullName: Cqrs.Authentication.IDefaultSingleSignOnTokenFactory.RenewTokenExpiry(Cqrs.Authentication.ISingleSignOnToken, System.Int32)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Authentication/IDefaultSingleSignOnTokenFactory.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: RenewTokenExpiry
+    path: Framework/Cqrs/Authentication/IDefaultSingleSignOnTokenFactory.cs
+    startLine: 24
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Authentication
+  summary: "\nRenew the value of <xref href=\"Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [OperationContract]
+
+      ISingleSignOnToken RenewTokenExpiry(ISingleSignOnToken token, int timeoutInMinutes = 360)
+    parameters:
+    - id: token
+      type: Cqrs.Authentication.ISingleSignOnToken
+      description: The <xref href="Cqrs.Authentication.ISingleSignOnToken" data-throw-if-not-resolved="false"></xref> to renew.
+    - id: timeoutInMinutes
+      type: System.Int32
+      description: The amount of time in minutes to set the <xref href="Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry" data-throw-if-not-resolved="false"></xref> to. This is from <xref href="System.DateTime.UtcNow" data-throw-if-not-resolved="false"></xref>
+    return:
+      type: Cqrs.Authentication.ISingleSignOnToken
+    content.vb: >-
+      <OperationContract>
+
+      Function RenewTokenExpiry(token As ISingleSignOnToken, timeoutInMinutes As Integer = 360) As ISingleSignOnToken
+  overload: Cqrs.Authentication.IDefaultSingleSignOnTokenFactory.RenewTokenExpiry*
+  attributes:
+  - type: System.ServiceModel.OperationContractAttribute
+    ctor: System.ServiceModel.OperationContractAttribute.#ctor
+    arguments: []
+references:
+- uid: Cqrs.Authentication.SingleSignOnToken
+  commentId: T:Cqrs.Authentication.SingleSignOnToken
+  parent: Cqrs.Authentication
+  isExternal: false
+  name: SingleSignOnToken
+  nameWithType: SingleSignOnToken
+  fullName: Cqrs.Authentication.SingleSignOnToken
+- uid: Cqrs.Authentication
+  commentId: N:Cqrs.Authentication
+  isExternal: false
+  name: Cqrs.Authentication
+  nameWithType: Cqrs.Authentication
+  fullName: Cqrs.Authentication
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory{Cqrs.Authentication.SingleSignOnToken}.CreateNew(System.Int32)
+  commentId: M:Cqrs.Authentication.ISingleSignOnTokenFactory{Cqrs.Authentication.SingleSignOnToken}.CreateNew(System.Int32)
+  parent: Cqrs.Authentication.ISingleSignOnTokenFactory{Cqrs.Authentication.SingleSignOnToken}
+  definition: Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew(System.Int32)
+  name: CreateNew(Int32)
+  nameWithType: ISingleSignOnTokenFactory<SingleSignOnToken>.CreateNew(Int32)
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<Cqrs.Authentication.SingleSignOnToken>.CreateNew(System.Int32)
+  nameWithType.vb: ISingleSignOnTokenFactory(Of SingleSignOnToken).CreateNew(Int32)
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of Cqrs.Authentication.SingleSignOnToken).CreateNew(System.Int32)
+  spec.csharp:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew(System.Int32)
+    name: CreateNew
+    nameWithType: ISingleSignOnTokenFactory<SingleSignOnToken>.CreateNew
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<Cqrs.Authentication.SingleSignOnToken>.CreateNew
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew(System.Int32)
+    name: CreateNew
+    nameWithType: ISingleSignOnTokenFactory(Of SingleSignOnToken).CreateNew
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory(Of Cqrs.Authentication.SingleSignOnToken).CreateNew
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory{Cqrs.Authentication.SingleSignOnToken}.RenewTokenExpiry(Cqrs.Authentication.SingleSignOnToken,System.Int32)
+  commentId: M:Cqrs.Authentication.ISingleSignOnTokenFactory{Cqrs.Authentication.SingleSignOnToken}.RenewTokenExpiry(Cqrs.Authentication.SingleSignOnToken,System.Int32)
+  parent: Cqrs.Authentication.ISingleSignOnTokenFactory{Cqrs.Authentication.SingleSignOnToken}
+  definition: Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry(`0,System.Int32)
+  name: RenewTokenExpiry(SingleSignOnToken, Int32)
+  nameWithType: ISingleSignOnTokenFactory<SingleSignOnToken>.RenewTokenExpiry(SingleSignOnToken, Int32)
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<Cqrs.Authentication.SingleSignOnToken>.RenewTokenExpiry(Cqrs.Authentication.SingleSignOnToken, System.Int32)
+  nameWithType.vb: ISingleSignOnTokenFactory(Of SingleSignOnToken).RenewTokenExpiry(SingleSignOnToken, Int32)
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of Cqrs.Authentication.SingleSignOnToken).RenewTokenExpiry(Cqrs.Authentication.SingleSignOnToken, System.Int32)
+  spec.csharp:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry(`0,System.Int32)
+    name: RenewTokenExpiry
+    nameWithType: ISingleSignOnTokenFactory<SingleSignOnToken>.RenewTokenExpiry
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<Cqrs.Authentication.SingleSignOnToken>.RenewTokenExpiry
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Authentication.SingleSignOnToken
+    name: SingleSignOnToken
+    nameWithType: SingleSignOnToken
+    fullName: Cqrs.Authentication.SingleSignOnToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry(`0,System.Int32)
+    name: RenewTokenExpiry
+    nameWithType: ISingleSignOnTokenFactory(Of SingleSignOnToken).RenewTokenExpiry
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory(Of Cqrs.Authentication.SingleSignOnToken).RenewTokenExpiry
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: Cqrs.Authentication.SingleSignOnToken
+    name: SingleSignOnToken
+    nameWithType: SingleSignOnToken
+    fullName: Cqrs.Authentication.SingleSignOnToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew(System.Int32)
+  commentId: M:Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew(System.Int32)
+  isExternal: true
+  name: CreateNew(Int32)
+  nameWithType: ISingleSignOnTokenFactory<TSingleSignOnToken>.CreateNew(Int32)
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<TSingleSignOnToken>.CreateNew(System.Int32)
+  nameWithType.vb: ISingleSignOnTokenFactory(Of TSingleSignOnToken).CreateNew(Int32)
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of TSingleSignOnToken).CreateNew(System.Int32)
+  spec.csharp:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew(System.Int32)
+    name: CreateNew
+    nameWithType: ISingleSignOnTokenFactory<TSingleSignOnToken>.CreateNew
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<TSingleSignOnToken>.CreateNew
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.CreateNew(System.Int32)
+    name: CreateNew
+    nameWithType: ISingleSignOnTokenFactory(Of TSingleSignOnToken).CreateNew
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory(Of TSingleSignOnToken).CreateNew
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory{Cqrs.Authentication.SingleSignOnToken}
+  commentId: T:Cqrs.Authentication.ISingleSignOnTokenFactory{Cqrs.Authentication.SingleSignOnToken}
+  parent: Cqrs.Authentication
+  definition: Cqrs.Authentication.ISingleSignOnTokenFactory`1
+  name: ISingleSignOnTokenFactory<SingleSignOnToken>
+  nameWithType: ISingleSignOnTokenFactory<SingleSignOnToken>
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<Cqrs.Authentication.SingleSignOnToken>
+  nameWithType.vb: ISingleSignOnTokenFactory(Of SingleSignOnToken)
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of Cqrs.Authentication.SingleSignOnToken)
+  name.vb: ISingleSignOnTokenFactory(Of SingleSignOnToken)
+  spec.csharp:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1
+    name: ISingleSignOnTokenFactory
+    nameWithType: ISingleSignOnTokenFactory
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Authentication.SingleSignOnToken
+    name: SingleSignOnToken
+    nameWithType: SingleSignOnToken
+    fullName: Cqrs.Authentication.SingleSignOnToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1
+    name: ISingleSignOnTokenFactory
+    nameWithType: ISingleSignOnTokenFactory
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Authentication.SingleSignOnToken
+    name: SingleSignOnToken
+    nameWithType: SingleSignOnToken
+    fullName: Cqrs.Authentication.SingleSignOnToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry(`0,System.Int32)
+  commentId: M:Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry(`0,System.Int32)
+  isExternal: true
+  name: RenewTokenExpiry(TSingleSignOnToken, Int32)
+  nameWithType: ISingleSignOnTokenFactory<TSingleSignOnToken>.RenewTokenExpiry(TSingleSignOnToken, Int32)
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<TSingleSignOnToken>.RenewTokenExpiry(TSingleSignOnToken, System.Int32)
+  nameWithType.vb: ISingleSignOnTokenFactory(Of TSingleSignOnToken).RenewTokenExpiry(TSingleSignOnToken, Int32)
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of TSingleSignOnToken).RenewTokenExpiry(TSingleSignOnToken, System.Int32)
+  spec.csharp:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry(`0,System.Int32)
+    name: RenewTokenExpiry
+    nameWithType: ISingleSignOnTokenFactory<TSingleSignOnToken>.RenewTokenExpiry
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<TSingleSignOnToken>.RenewTokenExpiry
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: TSingleSignOnToken
+    nameWithType: TSingleSignOnToken
+    fullName: TSingleSignOnToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1.RenewTokenExpiry(`0,System.Int32)
+    name: RenewTokenExpiry
+    nameWithType: ISingleSignOnTokenFactory(Of TSingleSignOnToken).RenewTokenExpiry
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory(Of TSingleSignOnToken).RenewTokenExpiry
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: TSingleSignOnToken
+    nameWithType: TSingleSignOnToken
+    fullName: TSingleSignOnToken
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1
+  commentId: T:Cqrs.Authentication.ISingleSignOnTokenFactory`1
+  isExternal: false
+  name: ISingleSignOnTokenFactory<TSingleSignOnToken>
+  nameWithType: ISingleSignOnTokenFactory<TSingleSignOnToken>
+  fullName: Cqrs.Authentication.ISingleSignOnTokenFactory<TSingleSignOnToken>
+  nameWithType.vb: ISingleSignOnTokenFactory(Of TSingleSignOnToken)
+  fullName.vb: Cqrs.Authentication.ISingleSignOnTokenFactory(Of TSingleSignOnToken)
+  name.vb: ISingleSignOnTokenFactory(Of TSingleSignOnToken)
+  spec.csharp:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1
+    name: ISingleSignOnTokenFactory
+    nameWithType: ISingleSignOnTokenFactory
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TSingleSignOnToken
+    nameWithType: TSingleSignOnToken
+    fullName: TSingleSignOnToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Authentication.ISingleSignOnTokenFactory`1
+    name: ISingleSignOnTokenFactory
+    nameWithType: ISingleSignOnTokenFactory
+    fullName: Cqrs.Authentication.ISingleSignOnTokenFactory
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TSingleSignOnToken
+    nameWithType: TSingleSignOnToken
+    fullName: TSingleSignOnToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry
+  commentId: P:Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry
+  parent: Cqrs.Authentication.ISingleSignOnToken
+  isExternal: false
+  name: TimeOfExpiry
+  nameWithType: ISingleSignOnToken.TimeOfExpiry
+  fullName: Cqrs.Authentication.ISingleSignOnToken.TimeOfExpiry
+- uid: Cqrs.Authentication.ISingleSignOnToken
+  commentId: T:Cqrs.Authentication.ISingleSignOnToken
+  parent: Cqrs.Authentication
+  isExternal: false
+  name: ISingleSignOnToken
+  nameWithType: ISingleSignOnToken
+  fullName: Cqrs.Authentication.ISingleSignOnToken
+- uid: System.DateTime.UtcNow
+  commentId: P:System.DateTime.UtcNow
+- uid: Cqrs.Authentication.IDefaultSingleSignOnTokenFactory.RenewTokenExpiry*
+  commentId: Overload:Cqrs.Authentication.IDefaultSingleSignOnTokenFactory.RenewTokenExpiry
+  isExternal: false
+  name: RenewTokenExpiry
+  nameWithType: IDefaultSingleSignOnTokenFactory.RenewTokenExpiry
+  fullName: Cqrs.Authentication.IDefaultSingleSignOnTokenFactory.RenewTokenExpiry
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System

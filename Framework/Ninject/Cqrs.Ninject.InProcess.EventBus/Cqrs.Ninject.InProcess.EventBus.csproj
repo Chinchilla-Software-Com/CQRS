@@ -23,6 +23,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Cqrs.Ninject.InProcess.EventBus.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +33,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Cqrs.Ninject.InProcess.EventBus.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ninject">
@@ -51,11 +55,16 @@
   <ItemGroup>
     <None Include="Cqrs.Ninject.InProcess.EventBus.nuspec" />
     <None Include="packages.config" />
+    <None Include="Tools\install.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Cqrs\Cqrs.csproj">
       <Project>{DAFD2A8A-D6B0-4433-8DDF-B98460C64EC6}</Project>
       <Name>Cqrs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cqrs.Ninject\Cqrs.Ninject.csproj">
+      <Project>{359bdd3f-785d-4a4a-861f-4951e6e71321}</Project>
+      <Name>Cqrs.Ninject</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -66,6 +75,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>COPY /Y "$(SolutionDir)Framework\Cqrs\Tools\install.ps1" "$(ProjectDir)Tools\install.ps1"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

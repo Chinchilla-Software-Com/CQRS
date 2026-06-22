@@ -1,0 +1,96 @@
+# For most projects, this workflow file will not need changing; you simply need
+# to commit it to your repository.
+#
+# You may wish to alter this file to override the set of languages analyzed,
+# or to provide custom queries or build logic.
+#
+# ******** NOTE ********
+# We have attempted to detect the languages in your repository. Please check
+# the `language` matrix defined below to confirm you have the correct set of
+# supported CodeQL languages.
+#
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "master", "develop" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "master" ]
+  schedule:
+    - cron: '35 4 * * 2'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ${{ matrix.os }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+        language: [ 'csharp' ]
+        # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
+        # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
+        # this is fixed to just one version so we only run the analysis operation once, not once for each version of the runtime
+        dotnet-version: [ '8.0.x' ]
+    steps:
+    - name: Install .NET Framework 4.0 Developer Pack
+      run: |
+        Invoke-WebRequest -Uri "https://archive.org/download/framework-pack/NDP452-KB2901907-x86-x64-AllOS-ENU.exe" -OutFile "ndp40.exe"
+        Start-Process -FilePath "ndp40.exe" -ArgumentList "/quiet" -Wait
+
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+        # If you wish to specify custom queries, you can do so here or in a config file.
+        # By default, queries listed here will override any specified in a config file.
+        # Prefix the list here with "+" to use these queries and those in the config file.
+        
+        # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+        # queries: security-extended,security-and-quality
+
+    - name: Setup dotnet CLI
+      uses: actions/setup-dotnet@v3.2.0
+      with:
+#        dotnet-version: ${{ matrix.dotnet-version }}
+        dotnet-version: | 
+          3.1.x
+          5.0.x
+          6.0.x
+          7.0.x
+          8.0.x
+
+    - name: Setup dependencies caching
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        # Look to see if there is a cache hit for the corresponding requirements file
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget
+
+    - name: Prepare Legacy NuGet
+      run: |
+        cd .\.nuget
+        ren NuGet.ex_ NuGet.exe
+        cd ..
+        .nuget\NuGet.exe restore Cqrs.sln
+
+    - name: Build Framework with dotnet CLI
+      run: dotnet build --configuration Release .\Cqrs.sln
+
+    - name: Build Scheduler with dotnet CLI
+      run: dotnet build --configuration Release .\Scheduler\Cqrs.Scheduler.sln
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2

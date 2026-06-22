@@ -1,30 +1,63 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cqrs.Configuration;
 using Ninject;
 using Ninject.Modules;
 using Ninject.Parameters;
+using Ninject.Syntax;
 
 namespace Cqrs.Ninject.Configuration
 {
-	public class NinjectDependencyResolver : IDependencyResolver
+	/// <summary>
+	/// Provides an ability to resolve instances of objects using Ninject
+	/// </summary>
+	public class NinjectDependencyResolver : DependencyResolver
 	{
-		public static IDependencyResolver Current { get; protected set; }
+		/// <summary>
+		/// The inner Ninject <see cref="IKernel"/> used by this instance.
+		/// </summary>
+		public IKernel Kernel { get; private set; }
 
-		protected IKernel Kernel { get; private set; }
-
+		/// <summary>
+		/// A collection of <see cref="INinjectModule"/> instances to load when we call <see cref="PrepareKernel"/>
+		/// </summary>
 		public static IList<INinjectModule> ModulesToLoad = new List<INinjectModule>();
 
+		/// <summary>
+		/// A user supplied <see cref="Func{TResult}"/> that will be called during <see cref="Start"/> to create and populate <see cref="DependencyResolver.Current"/>.
+		/// </summary>
 		public static Func<IKernel, NinjectDependencyResolver> DependencyResolverCreator { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="NinjectDependencyResolver"/>
+		/// </summary>
 		public NinjectDependencyResolver(IKernel kernel)
 		{
 			Kernel = kernel;
+			BindDependencyResolver();
+		}
 
-			Kernel.Bind<IDependencyResolver>()
-				.ToConstant(this)
-				.InSingletonScope();
+		/// <summary>
+		/// Checks if <see cref="IDependencyResolver"/> has already been registered and if not, registers this instance to it.
+		/// </summary>
+		protected virtual void BindDependencyResolver()
+		{
+			bool isDependencyResolverBound = Kernel.GetBindings(typeof(IDependencyResolver)).Any();
+			if (!isDependencyResolverBound)
+			{
+				Kernel.Bind<IDependencyResolver>()
+					.ToConstant(this)
+					.InSingletonScope();
+			}
 		}
 
 		/// <summary>
@@ -50,6 +83,10 @@ namespace Cqrs.Ninject.Configuration
 				PrepareKernel(kernel);
 		}
 
+		/// <summary>
+		/// Calls <see cref="IKernel.Load(IEnumerable{INinjectModule})"/> passing in <see cref="ModulesToLoad"/>
+		/// </summary>
+		/// <param name="kernel">The <see cref="IKernel"/> the <see cref="ModulesToLoad"/> will be loaded into.</param>
 		public static void PrepareKernel(IKernel kernel)
 		{
 			kernel.Load
@@ -58,14 +95,22 @@ namespace Cqrs.Ninject.Configuration
 			);
 		}
 
-		public virtual T Resolve<T>()
+		/// <summary>
+		/// Resolves a single instance for the specified <typeparamref name="T"/>.
+		/// by calling <see cref="IResolutionRoot.Resolve"/>
+		/// </summary>
+		public override T Resolve<T>()
 		{
 			return (T)Resolve(typeof(T));
 		}
 
-		public virtual object Resolve(Type serviceType)
+		/// <summary>
+		/// Resolves a single instance for the specified <paramref name="type"/>.
+		/// by calling <see cref="IResolutionRoot.Resolve"/>
+		/// </summary>
+		public override object Resolve(Type type)
 		{
-			return Kernel.Resolve(Kernel.CreateRequest(serviceType, null, new Parameter[0], true, true)).SingleOrDefault();
+			return Kernel.Resolve(Kernel.CreateRequest(type, null, new Parameter[0], true, true)).SingleOrDefault();
 		}
 	}
 }

@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.ServiceBus/IAzureBusHelper.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.ServiceBus</a> - IAzureBusHelper.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-24 00:33:17</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : #region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Threading;
+<span class="lineNum">      11 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      12 </span>            : using Cqrs.Bus;
+<span class="lineNum">      13 </span>            : using Cqrs.Commands;
+<span class="lineNum">      14 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      15 </span>            : using Cqrs.Events;
+<span class="lineNum">      16 </span>            : using Cqrs.Messages;
+<span class="lineNum">      17 </span>            : #if NET452
+<span class="lineNum">      18 </span>            : using Microsoft.ServiceBus.Messaging;
+<span class="lineNum">      19 </span>            : #endif
+<span class="lineNum">      20 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">      21 </span>            : using Microsoft.Azure.ServiceBus.Core;
+<span class="lineNum">      22 </span>            : using BrokeredMessage = Microsoft.Azure.ServiceBus.Message;
+<span class="lineNum">      23 </span>            : #endif
+<span class="lineNum">      24 </span>            : 
+<span class="lineNum">      25 </span>            : namespace Cqrs.Azure.ServiceBus
+<span class="lineNum">      26 </span>            : {
+<span class="lineNum">      27 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      28 </span>            :         /// A helper for Azure Service Bus and Event Hub.
+<span class="lineNum">      29 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      30 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      31 </span>            :         public interface IAzureBusHelper&lt;TAuthenticationToken&gt;
+<span class="lineNum">      32 </span>            :         {
+<span class="lineNum">      33 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      34 </span>            :                 /// Prepares a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to be sent specifying the framework it is sent via.
+<span class="lineNum">      35 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      36 </span>            :                 /// &lt;typeparam name=&quot;TCommand&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of&lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; being sent.&lt;/typeparam&gt;
+<span class="lineNum">      37 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">      38 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The framework the &lt;paramref name=&quot;command&quot;/&gt; is being sent from.&lt;/param&gt;
+<span class="lineNum">      39 </span><span class="lineCov">          1 :                 void PrepareCommand&lt;TCommand&gt;(TCommand command, string framework)</span>
+<span class="lineNum">      40 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      43 </span>            :                 /// Prepares and validates a &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to be sent specifying the framework it is sent via.
+<span class="lineNum">      44 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      45 </span>            :                 /// &lt;typeparam name=&quot;TCommand&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of&lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; being sent.&lt;/typeparam&gt;
+<span class="lineNum">      46 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">      47 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The framework the &lt;paramref name=&quot;command&quot;/&gt; is being sent from.&lt;/param&gt;
+<span class="lineNum">      48 </span><span class="lineCov">          1 :                 bool PrepareAndValidateCommand&lt;TCommand&gt;(TCommand command, string framework)</span>
+<span class="lineNum">      49 </span>            :                         where TCommand : ICommand&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      52 </span>            :                 /// Deserialises and processes the &lt;paramref name=&quot;messageBody&quot;/&gt; received from the network through the provided &lt;paramref name=&quot;receiveCommandHandler&quot;/&gt;.
+<span class="lineNum">      53 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      54 </span>            :                 /// &lt;param name=&quot;messageBody&quot;&gt;A serialised &lt;see cref=&quot;IMessage&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      55 </span>            :                 /// &lt;param name=&quot;receiveCommandHandler&quot;&gt;The handler method that will process the &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      56 </span>            :                 /// &lt;param name=&quot;messageId&quot;&gt;The network id of the &lt;see cref=&quot;IMessage&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      57 </span>            :                 /// &lt;param name=&quot;signature&quot;&gt;The signature of the &lt;see cref=&quot;IMessage&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      58 </span>            :                 /// &lt;param name=&quot;signingTokenConfigurationKey&quot;&gt;The configuration key for the signing token as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">      59 </span>            :                 /// &lt;param name=&quot;skippedAction&quot;&gt;The &lt;see cref=&quot;Action&quot;/&gt; to call when the &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; is being skipped.&lt;/param&gt;
+<span class="lineNum">      60 </span>            :                 /// &lt;param name=&quot;lockRefreshAction&quot;&gt;The &lt;see cref=&quot;Action&quot;/&gt; to call to refresh the network lock.&lt;/param&gt;
+<span class="lineNum">      61 </span>            :                 /// &lt;returns&gt;The &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; that was processed.&lt;/returns&gt;
+<span class="lineNum">      62 </span><span class="lineCov">          1 :                 ICommand&lt;TAuthenticationToken&gt; ReceiveCommand(string messageBody, Func&lt;ICommand&lt;TAuthenticationToken&gt;, bool?&gt; receiveCommandHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null);</span>
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      65 </span>            :                 /// The default command handler that
+<span class="lineNum">      66 </span>            :                 /// check if the &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; has already been processed by this framework,
+<span class="lineNum">      67 </span>            :                 /// checks if the &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; is required,
+<span class="lineNum">      68 </span>            :                 /// finds the handler from the provided &lt;paramref name=&quot;routeManager&quot;/&gt;.
+<span class="lineNum">      69 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      70 </span>            :                 /// &lt;param name=&quot;command&quot;&gt;The &lt;see cref=&quot;ICommand{TAuthenticationToken}&quot;/&gt; to process.&lt;/param&gt;
+<span class="lineNum">      71 </span>            :                 /// &lt;param name=&quot;routeManager&quot;&gt;The &lt;see cref=&quot;RouteManager&quot;/&gt; to get the &lt;see cref=&quot;ICommandHandler{TAuthenticationToken,TCommand}&quot;/&gt; from.&lt;/param&gt;
+<span class="lineNum">      72 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The current framework.&lt;/param&gt;
+<span class="lineNum">      73 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">      74 </span>            :                 /// True indicates the &lt;paramref name=&quot;command&quot;/&gt; was successfully handled by a handler.
+<span class="lineNum">      75 </span>            :                 /// False indicates the &lt;paramref name=&quot;command&quot;/&gt; wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
+<span class="lineNum">      76 </span>            :                 /// Null indicates the command&lt;paramref name=&quot;command&quot;/&gt; wasn't handled as it was already handled.
+<span class="lineNum">      77 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">      78 </span><span class="lineCov">          1 :                 bool? DefaultReceiveCommand(ICommand&lt;TAuthenticationToken&gt; command, RouteManager routeManager, string framework);</span>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      81 </span>            :                 /// Prepares an &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be sent specifying the framework it is sent via.
+<span class="lineNum">      82 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      83 </span>            :                 /// &lt;typeparam name=&quot;TEvent&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; being sent.&lt;/typeparam&gt;
+<span class="lineNum">      84 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">      85 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The framework the &lt;paramref name=&quot;event&quot;/&gt; is being sent from.&lt;/param&gt;
+<span class="lineNum">      86 </span><span class="lineCov">          1 :                 void PrepareEvent&lt;TEvent&gt;(TEvent @event, string framework)</span>
+<span class="lineNum">      87 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      88 </span>            : 
+<span class="lineNum">      89 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      90 </span>            :                 /// Prepares and validates an &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to be sent specifying the framework it is sent via.
+<span class="lineNum">      91 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      92 </span>            :                 /// &lt;typeparam name=&quot;TEvent&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of&lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; being sent.&lt;/typeparam&gt;
+<span class="lineNum">      93 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to send.&lt;/param&gt;
+<span class="lineNum">      94 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The framework the &lt;paramref name=&quot;event&quot;/&gt; is being sent from.&lt;/param&gt;
+<span class="lineNum">      95 </span><span class="lineCov">          1 :                 bool PrepareAndValidateEvent&lt;TEvent&gt;(TEvent @event, string framework)</span>
+<span class="lineNum">      96 </span>            :                         where TEvent : IEvent&lt;TAuthenticationToken&gt;;
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      99 </span>            :                 /// Deserialises and processes the &lt;paramref name=&quot;messageBody&quot;/&gt; received from the network through the provided &lt;paramref name=&quot;receiveEventHandler&quot;/&gt;.
+<span class="lineNum">     100 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     101 </span>            :                 /// &lt;param name=&quot;messageBody&quot;&gt;A serialised &lt;see cref=&quot;IMessage&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     102 </span>            :                 /// &lt;param name=&quot;receiveEventHandler&quot;&gt;The handler method that will process the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     103 </span>            :                 /// &lt;param name=&quot;messageId&quot;&gt;The network id of the &lt;see cref=&quot;IMessage&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     104 </span>            :                 /// &lt;param name=&quot;signature&quot;&gt;The signature of the &lt;see cref=&quot;IMessage&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     105 </span>            :                 /// &lt;param name=&quot;signingTokenConfigurationKey&quot;&gt;The configuration key for the signing token as used by &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.&lt;/param&gt;
+<span class="lineNum">     106 </span>            :                 /// &lt;param name=&quot;skippedAction&quot;&gt;The &lt;see cref=&quot;Action&quot;/&gt; to call when the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; is being skipped.&lt;/param&gt;
+<span class="lineNum">     107 </span>            :                 /// &lt;param name=&quot;lockRefreshAction&quot;&gt;The &lt;see cref=&quot;Action&quot;/&gt; to call to refresh the network lock.&lt;/param&gt;
+<span class="lineNum">     108 </span>            :                 /// &lt;returns&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; that was processed.&lt;/returns&gt;
+<span class="lineNum">     109 </span><span class="lineCov">          1 :                 IEvent&lt;TAuthenticationToken&gt; ReceiveEvent(string messageBody, Func&lt;IEvent&lt;TAuthenticationToken&gt;, bool?&gt; receiveEventHandler, string messageId, string signature, string signingTokenConfigurationKey, Action skippedAction = null, Action lockRefreshAction = null);</span>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     112 </span>            :                 /// Refreshes the network lock.
+<span class="lineNum">     113 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     114 </span>            : #if NET452
+<span class="lineNum">     115 </span>            :                 void RefreshLock(CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = &quot;message&quot;);
+<span class="lineNum">     116 </span>            : #endif
+<span class="lineNum">     117 </span>            : #if NETCOREAPP3_0
+<span class="lineNum">     118 </span>            :                 void RefreshLock(IMessageReceiver client, CancellationTokenSource brokeredMessageRenewCancellationTokenSource, BrokeredMessage message, string type = &quot;message&quot;);
+<span class="lineNum">     119 </span>            : #endif
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     122 </span>            :                 /// The default event handler that
+<span class="lineNum">     123 </span>            :                 /// check if the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; has already been processed by this framework,
+<span class="lineNum">     124 </span>            :                 /// checks if the &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; is required,
+<span class="lineNum">     125 </span>            :                 /// finds the handler from the provided &lt;paramref name=&quot;routeManager&quot;/&gt;.
+<span class="lineNum">     126 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     127 </span>            :                 /// &lt;param name=&quot;event&quot;&gt;The &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;/&gt; to process.&lt;/param&gt;
+<span class="lineNum">     128 </span>            :                 /// &lt;param name=&quot;routeManager&quot;&gt;The &lt;see cref=&quot;RouteManager&quot;/&gt; to get the &lt;see cref=&quot;IEventHandler{TAuthenticationToken,TCommand}&quot;/&gt; from.&lt;/param&gt;
+<span class="lineNum">     129 </span>            :                 /// &lt;param name=&quot;framework&quot;&gt;The current framework.&lt;/param&gt;
+<span class="lineNum">     130 </span>            :                 /// &lt;returns&gt;
+<span class="lineNum">     131 </span>            :                 /// True indicates the &lt;paramref name=&quot;event&quot;/&gt; was successfully handled by a handler.
+<span class="lineNum">     132 </span>            :                 /// False indicates the &lt;paramref name=&quot;event&quot;/&gt; wasn't handled, but didn't throw an error, so by convention, that means it was skipped.
+<span class="lineNum">     133 </span>            :                 /// Null indicates the &lt;paramref name=&quot;event&quot;/&gt; wasn't handled as it was already handled.
+<span class="lineNum">     134 </span>            :                 /// &lt;/returns&gt;
+<span class="lineNum">     135 </span><span class="lineCov">          1 :                 bool? DefaultReceiveEvent(IEvent&lt;TAuthenticationToken&gt; @event, RouteManager routeManager, string framework);</span>
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     138 </span>            :                 /// Manually registers the provided &lt;paramref name=&quot;handler&quot;/&gt; 
+<span class="lineNum">     139 </span>            :                 /// on the provided &lt;paramref name=&quot;routeManger&quot;/&gt;
+<span class="lineNum">     140 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     141 </span>            :                 /// &lt;typeparam name=&quot;TMessage&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IMessage&quot;/&gt; the &lt;paramref name=&quot;handler&quot;/&gt; can handle.&lt;/typeparam&gt;
+<span class="lineNum">     142 </span><span class="lineCov">          1 :                 void RegisterHandler&lt;TMessage&gt;(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action&lt;TMessage&gt; handler, Type targetedType, bool holdMessageLock = true)</span>
+<span class="lineNum">     143 </span>            :                         where TMessage : IMessage;
+<span class="lineNum">     144 </span>            : 
+<span class="lineNum">     145 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     146 </span>            :                 /// Register an event handler that will listen and respond to all events.
+<span class="lineNum">     147 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     148 </span><span class="lineCov">          1 :                 void RegisterGlobalEventHandler&lt;TMessage&gt;(ITelemetryHelper telemetryHelper, RouteManager routeManger, Action&lt;TMessage&gt; handler, bool holdMessageLock = true)</span>
+<span class="lineNum">     149 </span>            :                         where TMessage : IMessage;
+<span class="lineNum">     150 </span>            :         }
+<span class="lineNum">     151 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,49 +1,23 @@
-﻿using Cqrs.Events;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
+using Cqrs.Events;
 using Ninject.Modules;
 
 namespace Cqrs.Ninject.InProcess.EventStore.Configuration
 {
 	/// <summary>
-	/// The <see cref="INinjectModule"/> for use with the Cqrs package.
+	/// A <see cref="INinjectModule"/> that configures the <see cref="InProcessEventStore{TAuthenticationToken}"/> as a <see cref="IEventStore{TAuthenticationToken}"/>.
 	/// </summary>
-	public class InProcessEventStoreModule<TAuthenticationToken> : NinjectModule
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	[Obsolete("Use Cqrs.Ninject.Configuration.InProcessEventStoreModule<TAuthenticationToken> instead.")]
+	public class InProcessEventStoreModule<TAuthenticationToken> : Ninject.Configuration.InProcessEventStoreModule<TAuthenticationToken>
 	{
-		#region Overrides of NinjectModule
-
-		/// <summary>
-		/// Loads the module into the kernel.
-		/// </summary>
-		public override void Load()
-		{
-			RegisterFactories();
-			RegisterServices();
-			RegisterCqrsRequirements();
-		}
-
-		#endregion
-
-		/// <summary>
-		/// Register the all factories
-		/// </summary>
-		public virtual void RegisterFactories()
-		{
-		}
-
-		/// <summary>
-		/// Register the all services
-		/// </summary>
-		public virtual void RegisterServices()
-		{
-		}
-
-		/// <summary>
-		/// Register the all Cqrs command handlers
-		/// </summary>
-		public virtual void RegisterCqrsRequirements()
-		{
-			Bind<IEventStore<TAuthenticationToken>>()
-				.To<InProcessEventStore<TAuthenticationToken>>()
-				.InSingletonScope();
-		}
 	}
 }

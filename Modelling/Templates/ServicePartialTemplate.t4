@@ -38,8 +38,8 @@ namespace <#= classNamespace #>
 /*
 		protected IVersionService VersionService { get; private set; }
 
-		public <#= className #>(ICommandSender<<#= authenticationTokenType #>> commandSender, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> AuthenticationTokenHelper, <#= className.Substring(0, className.Length - 7) #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository, IVersionService versionService)
-			: this (commandSender, unitOfWorkService, queryFactory, AuthenticationTokenHelper, <#= GetLowercaseFirstCharacter(className) #>Repository)
+		public <#= className #>(ICommandPublisher<<#= authenticationTokenType #>> commandPublisher, IUnitOfWorkService unitOfWorkService, IQueryFactory queryFactory, IAuthenticationTokenHelper<<#= authenticationTokenType #>> AuthenticationTokenHelper, <#= className.Substring(0, className.Length - 7) #>Repository <#= GetLowercaseFirstCharacter(className) #>Repository, IVersionService versionService)
+			: this (commandPublisher, unitOfWorkService, queryFactory, AuthenticationTokenHelper, <#= GetLowercaseFirstCharacter(className) #>Repository)
 		{
 			VersionService = versionService;
 		}
@@ -71,9 +71,7 @@ namespace <#= classNamespace #>
 
 			var returnParameter = collectionMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
 			var parameters = collectionMethod.OwnedParameters.Where(p => p.Direction != ParameterDirectionKind.Return);
-			if (returnParameter == null && parameters.Any())
-				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
-			else if (returnParameter != null)
+			if (parameters.Any())
 				methodSignatureParameter = string.Format("IServiceRequestWithData<{0}, {1}{2}Parameters> serviceRequest", authenticationTokenType, className, collectionMethod.Name);
 			else
 				methodSignatureParameter = string.Format("IServiceRequest<{0}> serviceRequest", authenticationTokenType);

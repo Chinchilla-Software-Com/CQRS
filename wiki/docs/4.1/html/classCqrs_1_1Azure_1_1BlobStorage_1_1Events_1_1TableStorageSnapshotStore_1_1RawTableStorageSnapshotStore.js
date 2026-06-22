@@ -1,0 +1,10 @@
+var classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore =
+[
+    [ "RawTableStorageSnapshotStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore_a19d6dadf022ad205c9bf6e380f4da06e.html#a19d6dadf022ad205c9bf6e380f4da06e", null ],
+    [ "CreateTableEntity", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore_a95ed4acb7d3445b066ed8f8717738715.html#a95ed4acb7d3445b066ed8f8717738715", null ],
+    [ "GetSafeSourceName", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore_af20c9f26ee29e95c89fb4ba24783472b.html#af20c9f26ee29e95c89fb4ba24783472b", null ],
+    [ "GetUpdatableTableEntity", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore_aaa0f7573c822c83550878e25873099a5.html#aaa0f7573c822c83550878e25873099a5", null ],
+    [ "GetUpdatableTableEntity", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore_ac3ead9ef0bc43493ebcd2f18ef4e2901.html#ac3ead9ef0bc43493ebcd2f18ef4e2901", null ],
+    [ "Remove", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore_a3f0c5381b2169d014d5e9c0e1b00e43d.html#a3f0c5381b2169d014d5e9c0e1b00e43d", null ],
+    [ "TableName", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore.html#a7bb0abf790674757876ca684b8320093", null ]
+];

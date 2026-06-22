@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Copyright>Copyright © 2025</Copyright>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFrameworks>net472</TargetFrameworks>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.11" />
+		<PackageReference Include="Chinchilla.Logging" Version="5.3.46" />
+		<PackageReference Include="NUnit" Version="3.14.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Remove="Properties\" />
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="tools\Create-Log-Table.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Cqrs\Cqrs.csproj" />
+		<ProjectReference Include="..\Ninject\Cqrs.Ninject\Cqrs.Ninject.csproj" />
+	</ItemGroup>
+</Project>

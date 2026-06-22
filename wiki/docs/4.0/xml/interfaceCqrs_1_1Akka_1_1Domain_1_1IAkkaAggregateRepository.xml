@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository" kind="interface" language="C#" prot="public">
+    <compoundname>Cqrs::Akka::Domain::IAkkaAggregateRepository</compoundname>
+    <basecompoundref refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository" prot="public" virt="non-virtual">Cqrs::Domain::IAggregateRepository&lt; TAuthenticationToken &gt;</basecompoundref>
+    <derivedcompoundref refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository" prot="public" virt="non-virtual">Cqrs.Akka.Domain.AkkaAggregateRepository&lt; TAuthenticationToken &gt;</derivedcompoundref>
+    <derivedcompoundref refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSnapshotAggregateRepository" prot="public" virt="non-virtual">Cqrs.Akka.Domain.IAkkaSnapshotAggregateRepository&lt; TAuthenticationToken &gt;</derivedcompoundref>
+    <templateparamlist>
+      <param>
+        <type>TAuthenticationToken</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository_a9010b259daf5d09f7269277361015ddf_1a9010b259daf5d09f7269277361015ddf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Cqrs.Akka.Domain.IAkkaAggregateRepository&lt; TAuthenticationToken &gt;.LoadAggregateHistory&lt; TAggregateRoot &gt;</definition>
+        <argsstring>(TAggregateRoot aggregate, IList&lt; IEvent&lt; TAuthenticationToken &gt;&gt; events=null, bool throwExceptionOnNoEvents=true)</argsstring>
+        <name>LoadAggregateHistory&lt; TAggregateRoot &gt;</name>
+        <reimplementedby refid="classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository_a22974b2e02f76de5ad76369130fbb8f4_1a22974b2e02f76de5ad76369130fbb8f4">LoadAggregateHistory&lt; TAggregateRoot &gt;</reimplementedby>
+        <param>
+          <type>TAggregateRoot</type>
+          <declname>aggregate</declname>
+        </param>
+        <param>
+          <type>IList&lt; <ref refid="interfaceCqrs_1_1Events_1_1IEvent" kindref="compound">IEvent</ref>&lt; TAuthenticationToken &gt;&gt;</type>
+          <declname>events</declname>
+          <defval>null</defval>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>throwExceptionOnNoEvents</declname>
+          <defval>true</defval>
+        </param>
+        <briefdescription>
+<para>If <emphasis>events</emphasis>  is null, loads the events from IEventStore&lt;TAuthenticationToken&gt;, checks for duplicates and then rehydrates the <emphasis>aggregate</emphasis>  with the events. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAggregateRoot</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of IAggregateRoot&lt;TAuthenticationToken&gt;.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>aggregate</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <emphasis>TAggregateRoot</emphasis>  to rehydrate.</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>events</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A collection of IEvent&lt;TAuthenticationToken&gt; to replay on the retrieved IAggregateRoot&lt;TAuthenticationToken&gt;. If null, the IEventStore&lt;TAuthenticationToken&gt; will be used to retrieve a list of IEvent&lt;TAuthenticationToken&gt; for you. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>throwExceptionOnNoEvents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true will throw an instance of AggregateNotFoundException&lt;TAggregateRoot,TAuthenticationToken&gt; if no aggregate events or provided or found in the IEventStore&lt;TAuthenticationToken&gt;.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaAggregateRepository.cs" line="34" column="1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>A AggregateRepository&lt;TAuthenticationToken&gt; that is safe to use within Akka.NET </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAuthenticationToken</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of authentication token.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>Cqrs::Akka::Domain::AkkaAggregateRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRepository"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>Cqrs::Akka::Domain::IAkkaSnapshotAggregateRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaSnapshotAggregateRepository"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>IAggregateRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository"/>
+      </node>
+      <node id="5">
+        <label>Cqrs::Akka::Snapshots::AkkaSnapshotRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Akka_1_1Snapshots_1_1AkkaSnapshotRepository"/>
+        <childnode refid="4" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Cqrs.Akka.Domain.IAkkaAggregateRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>IAggregateRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository"/>
+      </node>
+      <node id="1">
+        <label>Cqrs.Akka.Domain.IAkkaAggregateRepository&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaAggregateRepository.cs" line="22" column="1" bodyfile="/opt/buildAgent/work/565751ca98ebc594/Framework/Akka.Net/Cqrs.Akka/Domain/IAkkaAggregateRepository.cs" bodystart="21" bodyend="36"/>
+    <listofallmembers>
+      <member refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository_a890633fddbd05bd3b9e9968a2de095bb_1a890633fddbd05bd3b9e9968a2de095bb" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::IAkkaAggregateRepository</scope><name>Get&lt; TAggregateRoot &gt;</name></member>
+      <member refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository_a32308a27ce03c5d406e16b17430dd040_1a32308a27ce03c5d406e16b17430dd040" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::IAkkaAggregateRepository</scope><name>GetToDate&lt; TAggregateRoot &gt;</name></member>
+      <member refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository_aa0d6b4b9b117357e1676cae829fe2a5c_1aa0d6b4b9b117357e1676cae829fe2a5c" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::IAkkaAggregateRepository</scope><name>GetToVersion&lt; TAggregateRoot &gt;</name></member>
+      <member refid="interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository_a9010b259daf5d09f7269277361015ddf_1a9010b259daf5d09f7269277361015ddf" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::IAkkaAggregateRepository</scope><name>LoadAggregateHistory&lt; TAggregateRoot &gt;</name></member>
+      <member refid="interfaceCqrs_1_1Domain_1_1IAggregateRepository_a306baf8aa6faabe893f93e5db5d3517d_1a306baf8aa6faabe893f93e5db5d3517d" prot="public" virt="non-virtual"><scope>Cqrs::Akka::Domain::IAkkaAggregateRepository</scope><name>Save&lt; TAggregateRoot &gt;</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

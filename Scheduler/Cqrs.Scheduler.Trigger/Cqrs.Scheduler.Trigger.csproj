@@ -1,0 +1,101 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<RootNamespace>Cqrs.Scheduler.Trigger</RootNamespace>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<ApplicationIcon>Cqrs.Scheduler.Trigger.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<IsPackable>true</IsPackable>
+		<StartupObject>Program</StartupObject>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+		<!--
+		<FunctionsEnableWorkerIndexing>false</FunctionsEnableWorkerIndexing>
+		<FunctionsAutoRegisterGeneratedMetadataProvider>True</FunctionsAutoRegisterGeneratedMetadataProvider>
+		<FunctionsEnableExecutorSourceGen>True</FunctionsEnableExecutorSourceGen>
+		-->
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'NET48' ">
+		<!--
+		<FunctionsEnableWorkerIndexing>false</FunctionsEnableWorkerIndexing>
+		<FunctionsAutoRegisterGeneratedMetadataProvider>True</FunctionsAutoRegisterGeneratedMetadataProvider>
+		<FunctionsEnableExecutorSourceGen>True</FunctionsEnableExecutorSourceGen>
+		-->
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'NET472' ">
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<OutputType>Library</OutputType>
+		<!--
+		<PublishReadyToRun>true</PublishReadyToRun>
+		<RuntimeIdentifier>win-x86</RuntimeIdentifier>
+		-->
+	</PropertyGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'NET472' ">
+		<!--
+		<PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+		-->
+		<PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.7.0" />
+		<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
+
+		<Reference Include="System.Configuration">
+		  <Private>True</Private>
+		</Reference>
+		<Reference Include="System.Data.Linq">
+		  <Private>True</Private>
+		</Reference>
+		<Reference Include="System.ServiceModel">
+		  <Private>True</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' OR '$(TargetFramework)' == 'NET48' ">
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" Version="4.3.1" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.5" />
+		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions.Isolated\Cqrs.Azure.Functions.Isolated.csproj" />
+		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions.ServiceBus.Isolated\Cqrs.Azure.Functions.ServiceBus.Isolated.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Cqrs.Scheduler.Commands\Cqrs.Scheduler.Commands.csproj" />
+		<ProjectReference Include="..\Cqrs.Scheduler.Events\Cqrs.Scheduler.Events.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="host.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="cqrs.settings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</None>
+		<None Update="local.settings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="tools\**" />
+		<EmbeddedResource Remove="tools\**" />
+		<EntityDeploy Remove="tools\**" />
+		<None Remove="Properties\**" />
+		<None Remove="tools\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)cqrs.settings.json&quot; COPY /Y &quot;$(ProjectDir)sample.settings.json&quot; &quot;$(ProjectDir)cqrs.settings.json&quot;&#xD;&#xA;IF NOT EXIST &quot;$(ProjectDir)local.settings.json&quot; COPY /Y &quot;$(ProjectDir)sample.settings.json&quot; &quot;$(ProjectDir)local.settings.json&quot;" />
+	</Target>
+</Project>

@@ -1,46 +1,75 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
 
 using System;
 using System.Collections.Generic;
-using System.Data.Linq;
+#if NET472_OR_GREATER
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+#else
+using Microsoft.EntityFrameworkCore;
+#endif
 using System.Linq;
-using cdmdotnet.Logging;
+using System.Threading.Tasks;
+using Chinchilla.Logging;
 using Cqrs.Configuration;
-using Cqrs.DataStores;
-using Cqrs.Entities;
+using Cqrs.Domain;
+using Cqrs.Messages;
 
 namespace Cqrs.Events
 {
 	/// <summary>
-	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses LinqToSql and follows a rigid schema.
+	/// A simplified SqlServer based <see cref="EventStore{TAuthenticationToken}"/> that uses Entity Framework and follows a rigid schema.
 	/// </summary>
-	public class SqlEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken> 
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class SqlEventStore<TAuthenticationToken>
+		: EventStore<TAuthenticationToken> 
 	{
-		internal const string SqlEventStoreDbFileOrServerOrConnectionApplicationKey = @"SqlEventStoreDbFileOrServerOrConnection";
+		internal const string SqlEventStoreConnectionNameApplicationKey = @"Cqrs.SqlEventStore.ConnectionStringName";
 
-		internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @"SqlEventStoreGetByCorrelationIdCommandTimeout";
+		internal const string SqlEventStoreGetByCorrelationIdCommandTimeout = @"Cqrs.SqlEventStore.GetByCorrelationId.CommandTimeout";
 
-		public IConfigurationManager ConfigurationManager { get; set; }
+		internal const string SqlEventStoreTableNameApplicationKeyPattern = @"Cqrs.SqlEventStore.CustomTableNames.{0}";
 
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>.
+		/// </summary>
+		protected IConfigurationManager ConfigurationManager { get; private set; }
+
+		/// <summary>
+		/// Instantiate a new instance of the <see cref="SqlEventStore{TAuthenticationToken}"/> class.
+		/// </summary>
 		public SqlEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)
 			: base(eventBuilder, eventDeserialiser, logger)
 		{
 			ConfigurationManager = configurationManager;
 		}
 
-		#region Overrides of EventStore<TAuthenticationToken>
+#region Overrides of EventStore<TAuthenticationToken>
 
-		public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersion">Load events starting from this version</param>
+		public override
+#if NET472
+			IEnumerable<IEvent<TAuthenticationToken>> Get
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
-			using (DataContext dbDataContext = CreateDbDataContext())
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
 			{
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
@@ -50,71 +79,260 @@ namespace Cqrs.Events
 				if (useLastEventOnly)
 					query = query.AsQueryable().Take(1);
 
-				return query
+				var results = query
 					.Select(EventDeserialiser.Deserialise)
 					.ToList();
+				return
+#if NET472
+					results;
+#else
+					await Task.FromResult(results);
+#endif
 			}
 		}
 
-		public override IEnumerable<EventData> Get(Guid correlationId)
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		public override
+#if NET472
+			IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, int version)
 		{
-			using (DataContext dbDataContext = CreateDbDataContext())
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			{
+				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
+					.AsQueryable()
+					.Where(eventData => eventData.AggregateId == streamName && eventData.Version <= version)
+					.OrderByDescending(eventData => eventData.Version);
+
+				var results = query
+					.Select(EventDeserialiser.Deserialise)
+					.ToList();
+				return
+#if NET472
+					results;
+#else
+					await Task.FromResult(results);
+#endif
+			}
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public override
+#if NET472
+			IEnumerable<IEvent<TAuthenticationToken>> GetToDate
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			{
+				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
+					.AsQueryable()
+					.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp <= versionedDate)
+					.OrderByDescending(eventData => eventData.Version);
+
+				var results = query
+					.Select(EventDeserialiser.Deserialise)
+					.ToList();
+				return
+#if NET472
+					results;
+#else
+					await Task.FromResult(results);
+#endif
+			}
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> from and including the provided <paramref name="fromVersionedDate"/> up to and including the provided <paramref name="toVersionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersionedDate">Load events from and including from this <see cref="DateTime"/></param>
+		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="DateTime"/></param>
+		public override
+#if NET472
+			IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(aggregateRootType.FullName))
+			{
+				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
+					.AsQueryable()
+					.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp >= fromVersionedDate && eventData.Timestamp <= toVersionedDate)
+					.OrderByDescending(eventData => eventData.Version);
+
+				var results = query
+					.Select(EventDeserialiser.Deserialise)
+					.ToList();
+				return
+#if NET472
+					results;
+#else
+					await Task.FromResult(results);
+#endif
+			}
+		}
+
+		/// <summary>
+		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
+		/// </summary>
+		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
+		public override
+#if NET472
+			IEnumerable<EventData> Get
+#else
+			async Task<IEnumerable<EventData>> GetAsync
+#endif
+				(Guid correlationId)
+		{
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext())
 			{
 				string commandTimeoutValue;
 				int commandTimeout;
-				if (ConfigurationManager.TryGetSetting(SqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue))
-					if (int.TryParse(commandTimeoutValue, out commandTimeout))
-						dbDataContext.CommandTimeout = commandTimeout;
+				bool found = ConfigurationManager.TryGetSetting(SqlEventStoreGetByCorrelationIdCommandTimeout, out commandTimeoutValue);
+				if (found && int.TryParse(commandTimeoutValue, out commandTimeout))
+				{
+#if NET472_OR_GREATER
+					// Get the ObjectContext related to this DbContext
+					var objectContext = (dbDataContext as IObjectContextAdapter).ObjectContext;
+
+					// Sets the command timeout for all the commands
+					objectContext.CommandTimeout = commandTimeout;
+#else
+					dbDataContext.Database.SetCommandTimeout(commandTimeout);
+#endif
+				}
 
 				IEnumerable<EventData> query = GetEventStoreTable(dbDataContext)
 					.AsQueryable()
 					.Where(eventData => eventData.CorrelationId == correlationId)
 					.OrderBy(eventData => eventData.Timestamp);
 
-				return query.ToList();
+				var results = query.ToList();
+				return
+#if NET472
+					results;
+#else
+					await Task.FromResult(results);
+#endif
 			}
 		}
 
-		protected override void PersistEvent(EventData eventData)
+		/// <summary>
+		/// Persist the provided <paramref name="eventData"/> into SQL Server.
+		/// </summary>
+		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
+		protected override
+#if NET472
+			void PersistEvent
+#else
+			async Task PersistEventAsync
+#endif
+				(EventData eventData)
 		{
-			using (DataContext dbDataContext = CreateDbDataContext())
+			using (SqlEventStoreDataContext dbDataContext = CreateDbDataContext(eventData.AggregateId.Substring(0, eventData.AggregateId.IndexOf("/", StringComparison.InvariantCultureIgnoreCase))))
 			{
-				Add(dbDataContext, eventData);
+#if NET472
+				Add
+#else
+				await AddAsync
+#endif
+					(dbDataContext, eventData);
 			}
 		}
 
-		#endregion
+#endregion
 
-		protected virtual DataContext CreateDbDataContext()
+		/// <summary>
+		/// Creates a new <see cref="DbContext"/> using connection string settings from <see cref="ConfigurationManager"/>.
+		/// </summary>
+		protected virtual SqlEventStoreDataContext CreateDbDataContext(string aggregateRootTypeName = null)
 		{
-			string connectionStringKey;
-			if (!ConfigurationManager.TryGetSetting(SqlEventStoreDbFileOrServerOrConnectionApplicationKey, out connectionStringKey) || string.IsNullOrEmpty(connectionStringKey))
-				connectionStringKey = ConfigurationManager.GetSetting(SqlDataStore<Entity>.SqlDataStoreDbFileOrServerOrConnectionApplicationKey);
-			return new DataContext(connectionStringKey);
+			string connectionStringKey = ConfigurationManager.GetConnectionStringBySettingKey(SqlEventStoreConnectionNameApplicationKey, true, true);
+
+			string tableName;
+			if (!string.IsNullOrWhiteSpace(aggregateRootTypeName) && ConfigurationManager.TryGetSetting(string.Format(SqlEventStoreTableNameApplicationKeyPattern, aggregateRootTypeName), out tableName) && !string.IsNullOrEmpty(tableName))
+			{
+				bool autoname;
+				if (bool.TryParse(tableName, out autoname))
+				{
+					if (autoname)
+						return SqlEventStoreDataContext.New(aggregateRootTypeName.Replace(".", "_"), connectionStringKey);
+				}
+				else
+					return SqlEventStoreDataContext.New(tableName, connectionStringKey);
+			}
+
+			return new SqlEventStoreDataContext(connectionStringKey);
 		}
 
-		protected virtual Table<EventData> GetEventStoreTable(DataContext dbDataContext)
+		/// <summary>
+		/// Gets the <see cref="DbSet{TEntity}"/> of <see cref="EventData"/>.
+		/// </summary>
+		/// <param name="dbDataContext">The <see cref="SqlEventStoreDataContext"/> to use.</param>
+		protected virtual DbSet<EventData> GetEventStoreTable(SqlEventStoreDataContext dbDataContext)
 		{
 			// Get a typed table to run queries.
-			return dbDataContext.GetTable<EventData>();
+			return dbDataContext.Set<EventData>();
 		}
 
-		protected virtual void Add(DataContext dbDataContext, EventData data)
+		/// <summary>
+		/// Persist the provided <paramref name="data"/> into SQL Server using the provided <paramref name="dbDataContext"/>.
+		/// </summary>
+		protected virtual
+#if NET472
+			void Add
+#else
+			async Task AddAsync
+#endif
+				(SqlEventStoreDataContext dbDataContext, EventData data)
 		{
-			Logger.LogDebug("Adding data to the Sql eventstore database", "SqlEventStore\\Add");
+			Logger.LogDebug("Adding data to the SQL eventstore database", "SqlEventStore\\Add");
 			try
 			{
 				DateTime start = DateTime.Now;
-				GetEventStoreTable(dbDataContext).InsertOnSubmit(data);
-				dbDataContext.SubmitChanges();
+				GetEventStoreTable(dbDataContext).Add(data);
+				dbDataContext.SaveChanges();
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Adding data in the Sql eventstore database took {0}.", end - start), "SqlEventStore\\Add");
+				Logger.LogDebug($"Adding data in the SQL eventstore database took {end - start}.", "SqlEventStore\\Add");
+			}
+			catch (Exception exception)
+			{
+				Logger.LogError("There was an issue persisting data to the SQL event store.", exception: exception);
+				throw;
 			}
 			finally
 			{
-				Logger.LogDebug("Adding data to the Sql eventstore database... Done", "SqlEventStore\\Add");
+				Logger.LogDebug("Adding data to the SQL eventstore database... Done", "SqlEventStore\\Add");
+#if NET472
+#else
+				await Task.CompletedTask;
+#endif
 			}
 		}
-
 	}
 }

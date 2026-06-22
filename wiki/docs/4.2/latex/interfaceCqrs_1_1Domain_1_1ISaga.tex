@@ -1,0 +1,140 @@
+\hypertarget{interfaceCqrs_1_1Domain_1_1ISaga}{}\doxysection{Cqrs.\+Domain.\+I\+Saga$<$ T\+Authentication\+Token $>$ Interface Template Reference}
+\label{interfaceCqrs_1_1Domain_1_1ISaga}\index{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}}
+
+
+An independent component that reacts to domain I\+Event$<$\+T\+Authentication\+Token$>$ in a cross-\/I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$, eventually consistent manner. Time can also be a trigger. A Saga$<$\+T\+Authentication\+Token$>$ can sometimes be purely reactive, and sometimes represent workflows.  
+
+
+Inheritance diagram for Cqrs.\+Domain.\+I\+Saga$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.915033cm]{interfaceCqrs_1_1Domain_1_1ISaga}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_abb77811b4f7d19adb61f9d33da18e7e0_abb77811b4f7d19adb61f9d33da18e7e0}{Get\+Uncommitted\+Changes}} ()
+\begin{DoxyCompactList}\small\item\em Get all applied changes that haven\textquotesingle{}t yet been committed. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a85c75f80bc5be4bad7f1d9f1231bfba7_a85c75f80bc5be4bad7f1d9f1231bfba7}{Mark\+Changes\+As\+Committed}} ()
+\begin{DoxyCompactList}\small\item\em Mark all applied changes as committed, increment \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a83a02ff45543d670356dde4149cdc614_a83a02ff45543d670356dde4149cdc614}{Version}} and flush the internal collection of changes. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a2714804684bc65cf4dec79b4697b9b21_a2714804684bc65cf4dec79b4697b9b21}{Load\+From\+History}} (I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$$>$ history)
+\begin{DoxyCompactList}\small\item\em Apply all the \mbox{\hyperlink{}{events}} in {\itshape history}  using event replay to this instance. \end{DoxyCompactList}\item 
+I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_abba76d72857107a14328c8b555f3883f_abba76d72857107a14328c8b555f3883f}{Get\+Unpublished\+Commands}} ()
+\begin{DoxyCompactList}\small\item\em Get all pending commands that haven\textquotesingle{}t yet been published yet. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a4ce7c6cb939b5d6a5afb7538da3d1680_a4ce7c6cb939b5d6a5afb7538da3d1680}{Mark\+Commands\+As\+Published}} ()
+\begin{DoxyCompactList}\small\item\em Mark all published commands as published and flush the internal collection of commands. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+Guid \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_aa470a39d3bcdc506dbd5bf49d127bc3c_aa470a39d3bcdc506dbd5bf49d127bc3c}{Id}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The identifier of the I\+Saga$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a83a02ff45543d670356dde4149cdc614_a83a02ff45543d670356dde4149cdc614}{Version}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The current version of this I\+Saga$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+An independent component that reacts to domain I\+Event$<$\+T\+Authentication\+Token$>$ in a cross-\/I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$, eventually consistent manner. Time can also be a trigger. A Saga$<$\+T\+Authentication\+Token$>$ can sometimes be purely reactive, and sometimes represent workflows. 
+
+From an implementation perspective, a Saga$<$\+T\+Authentication\+Token$>$ is a state machine that is driven forward by incoming I\+Event$<$\+T\+Authentication\+Token$>$ (which may come from many Aggregate\+Root$<$\+T\+Authentication\+Token$>$ or other Saga$<$\+T\+Authentication\+Token$>$). Some states will have side effects, such as sending I\+Command$<$\+T\+Authentication\+Token$>$, talking to external web services, or sending emails.
+
+Isn\textquotesingle{}t a Saga$<$\+T\+Authentication\+Token$>$ just leaked domain logic? No. A Saga$<$\+T\+Authentication\+Token$>$ can doing things that no individual Aggregate\+Root$<$\+T\+Authentication\+Token$>$ can sensibly do. Thus, it\textquotesingle{}s not a logic leak since the logic didn\textquotesingle{}t belong in an Aggregate\+Root$<$\+T\+Authentication\+Token$>$ anyway. Furthermore, we\textquotesingle{}re not breaking encapsulation in any way, since Saga$<$\+T\+Authentication\+Token$>$ operate with I\+Command$<$\+T\+Authentication\+Token$>$ and I\+Event$<$\+T\+Authentication\+Token$>$, which are part of the public A\+PI.
+
+How can I make my Saga$<$\+T\+Authentication\+Token$>$ react to an I\+Event$<$\+T\+Authentication\+Token$>$ that did not happen? The Saga$<$\+T\+Authentication\+Token$>$, besides reacting to domain I\+Event$<$\+T\+Authentication\+Token$>$, can be \char`\"{}woken up\char`\"{} by recurrent internal alarms. Implementing such alarms is easy. See cron in Unix, or triggered Web\+Jobs in \mbox{\hyperlink{namespaceCqrs_1_1Azure}{Azure}} for examples.
+
+How does the Saga$<$\+T\+Authentication\+Token$>$ interact with the write side? By sending an I\+Command$<$\+T\+Authentication\+Token$>$ to it. 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1ISaga_abb77811b4f7d19adb61f9d33da18e7e0_abb77811b4f7d19adb61f9d33da18e7e0}\label{interfaceCqrs_1_1Domain_1_1ISaga_abb77811b4f7d19adb61f9d33da18e7e0_abb77811b4f7d19adb61f9d33da18e7e0}} 
+\index{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}!GetUncommittedChanges@{GetUncommittedChanges}}
+\index{GetUncommittedChanges@{GetUncommittedChanges}!Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetUncommittedChanges()}{GetUncommittedChanges()}}
+{\footnotesize\ttfamily I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga}{Cqrs.\+Domain.\+I\+Saga}}$<$ T\+Authentication\+Token $>$.Get\+Uncommitted\+Changes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get all applied changes that haven\textquotesingle{}t yet been committed. 
+
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a1fceccba498fa9f2d3db328a921da23d_a1fceccba498fa9f2d3db328a921da23d}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Domain_1_1Saga_a759b30b518c7fa5037ec4041054f349c_a759b30b518c7fa5037ec4041054f349c}{Cqrs.\+Domain.\+Saga$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaProxy_a8cad3415bc5474a01bfdb2db3a852ea5_a8cad3415bc5474a01bfdb2db3a852ea5}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Proxy$<$ T\+Authentication\+Token, T\+Saga $>$}}.
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1ISaga_abba76d72857107a14328c8b555f3883f_abba76d72857107a14328c8b555f3883f}\label{interfaceCqrs_1_1Domain_1_1ISaga_abba76d72857107a14328c8b555f3883f_abba76d72857107a14328c8b555f3883f}} 
+\index{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}!GetUnpublishedCommands@{GetUnpublishedCommands}}
+\index{GetUnpublishedCommands@{GetUnpublishedCommands}!Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetUnpublishedCommands()}{GetUnpublishedCommands()}}
+{\footnotesize\ttfamily I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga}{Cqrs.\+Domain.\+I\+Saga}}$<$ T\+Authentication\+Token $>$.Get\+Unpublished\+Commands (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get all pending commands that haven\textquotesingle{}t yet been published yet. 
+
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a0776a9a8f387c01313aa12d06643249a_a0776a9a8f387c01313aa12d06643249a}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Domain_1_1Saga_ac21a95f722235e90ea721542bed24148_ac21a95f722235e90ea721542bed24148}{Cqrs.\+Domain.\+Saga$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaProxy_a959a64faad2d1a8f912c08362adab668_a959a64faad2d1a8f912c08362adab668}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Proxy$<$ T\+Authentication\+Token, T\+Saga $>$}}.
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1ISaga_a2714804684bc65cf4dec79b4697b9b21_a2714804684bc65cf4dec79b4697b9b21}\label{interfaceCqrs_1_1Domain_1_1ISaga_a2714804684bc65cf4dec79b4697b9b21_a2714804684bc65cf4dec79b4697b9b21}} 
+\index{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}!LoadFromHistory@{LoadFromHistory}}
+\index{LoadFromHistory@{LoadFromHistory}!Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{LoadFromHistory()}{LoadFromHistory()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga}{Cqrs.\+Domain.\+I\+Saga}}$<$ T\+Authentication\+Token $>$.Load\+From\+History (\begin{DoxyParamCaption}\item[{I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1ISagaEvent}{I\+Saga\+Event}}$<$ T\+Authentication\+Token $>$$>$}]{history }\end{DoxyParamCaption})}
+
+
+
+Apply all the \mbox{\hyperlink{}{events}} in {\itshape history}  using event replay to this instance. 
+
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a40b859bc15c2f7c87a21b07f9bc9548c_a40b859bc15c2f7c87a21b07f9bc9548c}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Domain_1_1Saga_a6029fc09445e2093f7fb40e304a04ff8_a6029fc09445e2093f7fb40e304a04ff8}{Cqrs.\+Domain.\+Saga$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaProxy_a21b69799b046c1fcdf5b2443699dee0c_a21b69799b046c1fcdf5b2443699dee0c}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Proxy$<$ T\+Authentication\+Token, T\+Saga $>$}}.
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1ISaga_a85c75f80bc5be4bad7f1d9f1231bfba7_a85c75f80bc5be4bad7f1d9f1231bfba7}\label{interfaceCqrs_1_1Domain_1_1ISaga_a85c75f80bc5be4bad7f1d9f1231bfba7_a85c75f80bc5be4bad7f1d9f1231bfba7}} 
+\index{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}!MarkChangesAsCommitted@{MarkChangesAsCommitted}}
+\index{MarkChangesAsCommitted@{MarkChangesAsCommitted}!Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{MarkChangesAsCommitted()}{MarkChangesAsCommitted()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga}{Cqrs.\+Domain.\+I\+Saga}}$<$ T\+Authentication\+Token $>$.Mark\+Changes\+As\+Committed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Mark all applied changes as committed, increment \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga_a83a02ff45543d670356dde4149cdc614_a83a02ff45543d670356dde4149cdc614}{Version}} and flush the internal collection of changes. 
+
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a83269fac4653cca097461e924feaea7f_a83269fac4653cca097461e924feaea7f}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Domain_1_1Saga_a9caac842ea6e88d6e502b63ca1820fe4_a9caac842ea6e88d6e502b63ca1820fe4}{Cqrs.\+Domain.\+Saga$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaProxy_a5a5c012bc0f7f957b8bd2298956ca9ae_a5a5c012bc0f7f957b8bd2298956ca9ae}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Proxy$<$ T\+Authentication\+Token, T\+Saga $>$}}.
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1ISaga_a4ce7c6cb939b5d6a5afb7538da3d1680_a4ce7c6cb939b5d6a5afb7538da3d1680}\label{interfaceCqrs_1_1Domain_1_1ISaga_a4ce7c6cb939b5d6a5afb7538da3d1680_a4ce7c6cb939b5d6a5afb7538da3d1680}} 
+\index{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}!MarkCommandsAsPublished@{MarkCommandsAsPublished}}
+\index{MarkCommandsAsPublished@{MarkCommandsAsPublished}!Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{MarkCommandsAsPublished()}{MarkCommandsAsPublished()}}
+{\footnotesize\ttfamily void \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga}{Cqrs.\+Domain.\+I\+Saga}}$<$ T\+Authentication\+Token $>$.Mark\+Commands\+As\+Published (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Mark all published commands as published and flush the internal collection of commands. 
+
+
+
+Implemented in \mbox{\hyperlink{classCqrs_1_1Domain_1_1Saga_ac0488c612d08f1bcd204e87968f3ab8a_ac0488c612d08f1bcd204e87968f3ab8a}{Cqrs.\+Domain.\+Saga$<$ T\+Authentication\+Token $>$}}, \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSaga_a8ba652a3fbc2025b3367ef73185f8a6f_a8ba652a3fbc2025b3367ef73185f8a6f}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga$<$ T\+Authentication\+Token $>$}}, and \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaSagaProxy_aec2b133ce13d4bcda56de80f9637330a_aec2b133ce13d4bcda56de80f9637330a}{Cqrs.\+Akka.\+Domain.\+Akka\+Saga\+Proxy$<$ T\+Authentication\+Token, T\+Saga $>$}}.
+
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1ISaga_aa470a39d3bcdc506dbd5bf49d127bc3c_aa470a39d3bcdc506dbd5bf49d127bc3c}\label{interfaceCqrs_1_1Domain_1_1ISaga_aa470a39d3bcdc506dbd5bf49d127bc3c_aa470a39d3bcdc506dbd5bf49d127bc3c}} 
+\index{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}!Id@{Id}}
+\index{Id@{Id}!Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Id}{Id}}
+{\footnotesize\ttfamily Guid \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga}{Cqrs.\+Domain.\+I\+Saga}}$<$ T\+Authentication\+Token $>$.Id\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+The identifier of the I\+Saga$<$\+T\+Authentication\+Token$>$. 
+
+\mbox{\Hypertarget{interfaceCqrs_1_1Domain_1_1ISaga_a83a02ff45543d670356dde4149cdc614_a83a02ff45543d670356dde4149cdc614}\label{interfaceCqrs_1_1Domain_1_1ISaga_a83a02ff45543d670356dde4149cdc614_a83a02ff45543d670356dde4149cdc614}} 
+\index{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}!Version@{Version}}
+\index{Version@{Version}!Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$@{Cqrs.Domain.ISaga$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Version}{Version}}
+{\footnotesize\ttfamily int \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1ISaga}{Cqrs.\+Domain.\+I\+Saga}}$<$ T\+Authentication\+Token $>$.Version\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+The current version of this I\+Saga$<$\+T\+Authentication\+Token$>$. 
+

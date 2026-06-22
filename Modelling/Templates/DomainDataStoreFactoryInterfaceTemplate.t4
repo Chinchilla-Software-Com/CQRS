@@ -28,10 +28,10 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 <#
 	// Class and Attributes
 #>
-	<#= GetGeneratedCodeAttribute() #>
 	/// <summary>
 	/// A factory for obtaining <see cref="IDataStore{TData}"/> instances
 	/// </summary>
+	<#= GetGeneratedCodeAttribute() #>
 	public partial interface I<#= className #>DataStoreFactory
 	{
 <#
@@ -42,7 +42,11 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildDataStore" && property.Value == "true");
 			if (shouldBuild)
-				allDataStores.Add(element);
+			{
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
+				if (shouldBuild)
+					allDataStores.Add(element);
+			}
 		}
 		foreach (INamedElement element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
 		{
@@ -58,9 +62,10 @@ namespace <#= classNamespace #>.<#= className #>.Factories
 		foreach (INamedElement element in allDataStores)
 		{
 			string elementName = element.Name;
+			bool isAggregateTo = element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot");
 			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
 #>
-		IDataStore<<#= moduleName #>.Entities.<#= elementName #>Entity> Get<#= elementName #>DataStore();
+		IDataStore<<#= moduleName #>.Entities.<#= elementName #><#= isAggregateTo ? "Entity" : string.Empty #>> Get<#= elementName #>DataStore();
 
 <#
 		}

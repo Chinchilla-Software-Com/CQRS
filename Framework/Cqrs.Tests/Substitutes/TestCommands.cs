@@ -7,7 +7,9 @@ using Cqrs.Messages;
 
 namespace Cqrs.Tests.Substitutes
 {
-	public class TestAggregateDoSomething : ICommand<ISingleSignOnToken>
+	public class TestAggregateDoSomething
+		: ICommand<ISingleSignOnToken>
+		, ITelemeteredMessage
 	{
 		public Guid Id { get; set; }
 
@@ -24,10 +26,6 @@ namespace Cqrs.Tests.Substitutes
 		[DataMember]
 		public Guid CorrelationId { get; set; }
 
-		[DataMember]
-		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
-		public FrameworkType Framework { get; set; }
-
 		/// <summary>
 		/// The originating framework this message was sent from.
 		/// </summary>
@@ -40,15 +38,29 @@ namespace Cqrs.Tests.Substitutes
 		[DataMember]
 		public IEnumerable<string> Frameworks { get; set; }
 
-		[Obsolete("Use CorrelationId")]
-		[DataMember]
-		public Guid CorrolationId
+		#endregion
+
+		public TestAggregateDoSomething()
 		{
-			get { return CorrelationId; }
-			set { CorrelationId = value; }
+			TelemetryName = "Command/TestAggregateDoSomething";
 		}
 
+		#region Implementation of ITelemeteredMessage
+
+		/// <summary>
+		/// Gets or sets the Name of this message.
+		/// </summary>
+		public string TelemetryName { get; set; }
+
 		#endregion
+	}
+
+	public class TestAggregateDoSomething2 : TestAggregateDoSomething
+	{
+	}
+
+	public class TestAggregateDoSomething3 : TestAggregateDoSomething
+	{
 	}
 
 	public class TestAggregateDoSomethingHandler : ICommandHandler<ISingleSignOnToken, TestAggregateDoSomething> 

@@ -1,0 +1,4 @@
+var classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule =
+[
+    [ "RegisterEventStore", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule_a2b3e6c1f8edd6aa4101b98df7d1be93e.html#a2b3e6c1f8edd6aa4101b98df7d1be93e", null ]
+];

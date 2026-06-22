@@ -1,0 +1,7 @@
+var namespaceCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration =
+[
+    [ "AzureDocumentDbEventStoreModule", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule.html", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbEventStoreModule" ],
+    [ "AzureDocumentDbModule", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule.html", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1AzureDocumentDbModule" ],
+    [ "TestAzureDocumentDbEventStoreModule", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule.html", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbEventStoreModule" ],
+    [ "TestAzureDocumentDbModule", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbModule.html", "classCqrs_1_1Ninject_1_1Azure_1_1DocumentDb_1_1Configuration_1_1TestAzureDocumentDbModule" ]
+];

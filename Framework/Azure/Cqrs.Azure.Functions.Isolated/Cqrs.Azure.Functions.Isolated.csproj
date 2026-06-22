@@ -1,0 +1,108 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net48;net8.0</TargetFrameworks>
+		<title>Microsoft Azure Functions for CQRS.NET</title>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Description>Use Azure Functions with CQRS.NET</Description>
+		<Copyright>Copyright ©  2025</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+		<PackageReleaseNotes>
+			Version 6.0
+
+			- Removed .NET 4.0, .NET 4.5, .NET 4.5.1, .NET 4.5.2, .NET 4.6 and , .NET 4.6.2 support. The minimum .NET Framework version is now .NET 4.7.2.
+			- Deprecated .NET 6.0, replaced with .NET 8.0
+
+			Version 5.0
+
+			- Azure function support added
+		</PackageReleaseNotes>
+		<PackageIcon>images\icon.png</PackageIcon>
+		<readme>README.md</readme>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>CQRS;CQRS.NET;Pub/Sub;Microservices;Azure;Functions</PackageTags>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="tools\init.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<None Include="tools\install.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<Compile Remove="Content\Program.cs" />
+		<Content Include="Content\Program.cs" PackagePath="content" Pack="true" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\icon.png" Link="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>images\</PackagePath>
+		</None>
+		<None Include="..\..\..\README.md" Link="Packaging\README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<DocumentationFile>Cqrs.Azure.Functions.xml</DocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Chinchilla.Logging.Azure" Version="5.3.46" />
+		<PackageReference Include="Chinchilla.Logging.Azure.ApplicationInsights" Version="5.3.46" />
+
+		<PackageReference Include="Microsoft.ApplicationInsights" Version="2.23.0" />
+		<PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.1.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.0.0" />
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.5" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="9.0.9" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Cqrs.Azure.Functions.Isolated.xml" />
+		<None Remove="Cqrs.Azure.Functions.xml" />
+		<None Remove="packages.config" />
+		<None Remove="Tools\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\DependencyInjection\Cqrs.DependencyInjection\Cqrs.DependencyInjection.csproj" />
+		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
+		<ProjectReference Include="..\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+	</Target>
+</Project>

@@ -1,9 +1,18 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Azure.BlobStorage.Events;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
 using Cqrs.Configuration;
@@ -23,14 +32,19 @@ namespace Cqrs.Azure.BlobStorage.Test.Integration
 	[TestClass]
 	public class BlobStorageEventStoreTests
 	{
+		/// <summary>
+		/// Tests the <see cref="IEventStore{TAuthenticationToken}.Save"/> method
+		/// Passing a valid test <see cref="IEvent{TAuthenticationToken}"/>
+		/// Expecting the test <see cref="IEvent{TAuthenticationToken}"/> is able to be read.
+		/// </summary>
 		[TestMethod]
-		public void Save_ValidEvent_EventCanBeRetreived()
+		public virtual void Save_ValidEvent_EventCanBeRetreived()
 		{
 			// Arrange
-			var correlationIdHelper = new CorrelationIdHelper();
+			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
 			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
-			var eventStore = new BlobStorageEventStore<Guid>(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, new BlobStorageEventStoreConnectionStringFactory(new ConfigurationManager(), logger));
+			var eventStore = new BlobStorageEventStore<Guid>(new DefaultEventBuilder<Guid>(), new EventDeserialiser<Guid>(), logger, new BlobStorageEventStoreConnectionStringFactory(new Configuration.ConfigurationManager(), logger));
 
 			var event1 = new TestEvent
 			{

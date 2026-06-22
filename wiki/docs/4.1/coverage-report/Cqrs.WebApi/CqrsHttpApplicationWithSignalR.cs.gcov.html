@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.WebApi/CqrsHttpApplicationWithSignalR.cs</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">Cqrs.WebApi</a> - CqrsHttpApplicationWithSignalR.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">4.0</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-25 19:57:53</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Web.Http;
+<span class="lineNum">      11 </span>            : using System.Web.Routing;
+<span class="lineNum">      12 </span>            : using Cqrs.Bus;
+<span class="lineNum">      13 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      14 </span>            : using Cqrs.Events;
+<span class="lineNum">      15 </span>            : using Cqrs.Hosts;
+<span class="lineNum">      16 </span>            : using Cqrs.WebApi.Configuration;
+<span class="lineNum">      17 </span>            : using Cqrs.WebApi.Events.Handlers;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : namespace Cqrs.WebApi
+<span class="lineNum">      20 </span>            : {
+<span class="lineNum">      21 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :         /// A &lt;see cref=&quot;CqrsHttpApplication&quot;/&gt; that allows you to specify how &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; are sent to SignalR.
+<span class="lineNum">      23 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      25 </span>            :         /// &lt;typeparam name=&quot;TEventToHubProxy&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the proxy class that specifies how &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; are sent to SignalR.&lt;/typeparam&gt;
+<span class="lineNum">      26 </span>            :         public abstract class CqrsHttpApplicationWithSignalR&lt;TAuthenticationToken, TEventToHubProxy&gt;
+<span class="lineNum">      27 </span>            :                 : CqrsHttpApplication&lt;TAuthenticationToken&gt;
+<span class="lineNum">      28 </span>            :                 where TEventToHubProxy : EventToHubProxy&lt;TAuthenticationToken&gt;
+<span class="lineNum">      29 </span>            :         {
+<span class="lineNum">      30 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      31 </span>            :                 /// Calls &lt;see cref=&quot;CqrsHttpApplication.SetBuses&quot;/&gt;, &lt;see cref=&quot;RegisterDefaultRoutes&quot;/&gt;, &lt;see cref=&quot;CqrsHttpApplication.RegisterServiceParameterResolver&quot;/&gt;,
+<span class="lineNum">      32 </span>            :                 /// &lt;see cref=&quot;ConfigureMvcOrWebApi&quot;/&gt;, &lt;see cref=&quot;CqrsHttpApplication.RegisterCommandAndEventHandlers&quot;/&gt;, &lt;see cref=&quot;RegisterSignalR&quot;/&gt;, 
+<span class="lineNum">      33 </span>            :                 /// &lt;see cref=&quot;CqrsHttpApplication.StartBuses&quot;/&gt; and finally &lt;see cref=&quot;CqrsHttpApplication.LogApplicationStarted&quot;/&gt;.
+<span class="lineNum">      34 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      35 </span><span class="lineCov">          2 :                 protected override void Application_Start(object sender, EventArgs e)</span>
+<span class="lineNum">      36 </span>            :                 {
+<span class="lineNum">      37 </span>            :                         SetBuses();
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span>            :                         RegisterDefaultRoutes();
+<span class="lineNum">      40 </span>            :                         RegisterServiceParameterResolver();
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            :                         ConfigureMvcOrWebApi();
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                         BusRegistrar registrar = RegisterCommandAndEventHandlers();
+<span class="lineNum">      45 </span>            :                         RegisterSignalR(registrar);
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                         StartBuses();
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                         LogApplicationStarted();
+<span class="lineNum">      50 </span>            :                 }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      53 </span>            :                 /// Register SignalR to the path /signalr
+<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      55 </span><span class="lineCov">          2 :                 protected virtual void RegisterSignalR(BusRegistrar registrar)</span>
+<span class="lineNum">      56 </span>            :                 {
+<span class="lineNum">      57 </span>            :                         RouteTable.Routes.MapOwinPath(&quot;/signalr&quot;);
+<span class="lineNum">      58 </span>            :                         registrar.Register(typeof(TEventToHubProxy));
+<span class="lineNum">      59 </span>            :                 }
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      62 </span>            :                 /// Register default offered routes and controllers such as the Java-script Client
+<span class="lineNum">      63 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      64 </span><span class="lineCov">          2 :                 protected virtual void RegisterDefaultRoutes()</span>
+<span class="lineNum">      65 </span>            :                 {
+<span class="lineNum">      66 </span>            :                         GlobalConfiguration.Configure(WebApiConfig.Register);
+<span class="lineNum">      67 </span>            :                 }
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      70 </span>            :                 /// Override to configure MVC or WebAPI components such as AreaRegistration.RegisterAllAreas();
+<span class="lineNum">      71 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      72 </span><span class="lineCov">          2 :                 protected virtual void ConfigureMvcOrWebApi()</span>
+<span class="lineNum">      73 </span>            :                 {
+<span class="lineNum">      74 </span>            :                 }
+<span class="lineNum">      75 </span>            :         }
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      78 </span>            :         /// A &lt;see cref=&quot;CqrsHttpApplication&quot;/&gt; that uses the &lt;see cref=&quot;GlobalEventToHubProxy{TAuthenticationToken}&quot;/&gt; to automatically proxy all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; to SignalR
+<span class="lineNum">      79 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      80 </span>            :         /// &lt;typeparam name=&quot;TAuthenticationToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of the authentication token.&lt;/typeparam&gt;
+<span class="lineNum">      81 </span>            :         public abstract class CqrsHttpApplicationWithSignalR&lt;TAuthenticationToken&gt;
+<span class="lineNum">      82 </span>            :                 : CqrsHttpApplicationWithSignalR&lt;TAuthenticationToken, GlobalEventToHubProxy&lt;TAuthenticationToken&gt;&gt;
+<span class="lineNum">      83 </span><span class="lineCov">          2 :         {</span>
+<span class="lineNum">      84 </span>            :                 #region Overrides of CqrsHttpApplicationWithSignalR&lt;TAuthenticationToken, TEventToHubProxy&gt;
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      87 </span>            :                 /// Register SignalR and auto wire-up &lt;see cref=&quot;GlobalEventToHubProxy{TAuthenticationToken}&quot;/&gt; to automatically proxy all &lt;see cref=&quot;IEvent{TAuthenticationToken}&quot;&gt;events&lt;/see&gt; to SignalR.
+<span class="lineNum">      88 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      89 </span><span class="lineCov">          2 :                 protected override void RegisterSignalR(BusRegistrar registrar)</span>
+<span class="lineNum">      90 </span>            :                 {
+<span class="lineNum">      91 </span>            :                         base.RegisterSignalR(registrar);
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                         var eventHandlerRegistrar = DependencyResolver.Current.Resolve&lt;IEventHandlerRegistrar&gt;();
+<span class="lineNum">      94 </span>            :                         var proxy = DependencyResolver.Current.Resolve&lt;GlobalEventToHubProxy&lt;TAuthenticationToken&gt;&gt;();
+<span class="lineNum">      95 </span>            :                         eventHandlerRegistrar.RegisterGlobalEventHandler&lt;IEvent&lt;TAuthenticationToken&gt;&gt;(proxy.Handle, false);
+<span class="lineNum">      96 </span>            :                 }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                 #endregion
+<span class="lineNum">      99 </span>            :         }
+<span class="lineNum">     100 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

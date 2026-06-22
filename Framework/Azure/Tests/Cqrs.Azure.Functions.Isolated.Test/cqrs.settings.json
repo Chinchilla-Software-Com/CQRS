@@ -1,0 +1,34 @@
+{
+	"IsEncrypted": false,
+	"Values": {
+		"AzureWebJobsStorage": "UseDevelopmentStorage=true",
+		// https://stackoverflow.com/questions/69104798/error-did-not-find-functions-with-language-dotnet-isolated-in-azure-function#75554132
+		"FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+	},
+	"Chinchilla": {
+		"Logging": {
+			"EnableThreadedLoggingOutput": "true",
+			"EnableThreadedLogging": "true",
+			"UseApplicationInsightTelemetryHelper": "true",
+			"ModuleName": "Cqrs.Azure.Functions.Isolated.Test.Trigger",
+			"Instance": "AU-East",
+			"Environment": "Local",
+			"EnvironmentInstance": "One",
+			"SqlDatabaseTableName": "TriggerLogs"
+		}
+	},
+	"Cqrs": {
+		"AuthenticationTokenType": "Guid",
+		"SetupForSqlLogging": false,
+		"SetupForWeb": false,
+		"Hosts": {
+			"ApplicationInsights": {
+				"InstrumentationKey": ""
+			},
+			"AppName": "Trigger",
+			"EnableEventReceiving": false,
+			"EnableCommandReceiving": false,
+			"PauseAndWaitMaximumCount": 0
+		}
+	}
+}

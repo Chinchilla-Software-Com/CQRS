@@ -1,21 +1,47 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 
 namespace Cqrs.Repositories.Queries
 {
+	/// <summary>
+	/// Information about a parameter pass to a function in a <see cref="IQueryStrategy"/>.
+	/// </summary>
 	public class QueryParameter : IComparable<QueryParameter>
 	{
+		/// <summary>
+		/// Instantiates a new instance of <see cref="QueryParameter"/>
+		/// </summary>
 		public QueryParameter() { }
 
+		/// <summary>
+		/// Instantiates a new instance of <see cref="QueryParameter"/>
+		/// </summary>
 		public QueryParameter(string parameterName, object parameterValue)
 		{
 			ParameterName = parameterName;
 			ParameterValue = parameterValue;
 		}
 
+		/// <summary>
+		/// The name of the parameter.
+		/// </summary>
 		public string ParameterName { get; set; }
 
+		/// <summary>
+		/// The value of the parameter.
+		/// </summary>
 		public object ParameterValue { get; set; }
 
+		/// <summary>
+		/// Returns <see cref="ParameterValue"/> cast to <typeparamref name="T"/>.
+		/// </summary>
 		public T GetParameterValue<T>()
 		{
 			return (T) ParameterValue;
@@ -52,7 +78,7 @@ namespace Cqrs.Repositories.Queries
 		/// <param name="other">An object to compare with this object.</param>
 		public int CompareTo(QueryParameter other)
 		{
-			return System.String.Compare(ParameterName, other.ParameterName, StringComparison.Ordinal);
+			return string.Compare(ParameterName, other.ParameterName, StringComparison.Ordinal);
 		}
 
 		#endregion

@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.13">
+  <compounddef id="classCqrs_1_1Events_1_1ReplicatedSqlEventStore" kind="class" language="C#" prot="public">
+    <compoundname>Cqrs::Events::ReplicatedSqlEventStore</compoundname>
+    <basecompoundref refid="classCqrs_1_1Events_1_1SqlEventStore" prot="public" virt="non-virtual">Cqrs::Events::SqlEventStore&lt; TAuthenticationToken &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>TAuthenticationToken</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="property">
+      <memberdef kind="property" id="classCqrs_1_1Events_1_1ReplicatedSqlEventStore_ab2811e34d4f19fb0115a96f622050f68_1ab2811e34d4f19fb0115a96f622050f68" prot="protected" static="no" readable="no" writable="no" gettable="yes" privategettable="no" protectedgettable="no" settable="no" privatesettable="yes" protectedsettable="no">
+        <type>IEnumerable&lt; string &gt;</type>
+        <definition>IEnumerable&lt;string&gt; Cqrs.Events.ReplicatedSqlEventStore&lt; TAuthenticationToken &gt;.WritableConnectionStrings</definition>
+        <argsstring></argsstring>
+        <name>WritableConnectionStrings</name>
+        <briefdescription>
+<para>A collection of connection strings that are used to write to the database. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/ReplicatedSqlEventStore.cs" line="29" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/ReplicatedSqlEventStore.cs" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classCqrs_1_1Events_1_1ReplicatedSqlEventStore_aac9c247dd70c4775cf02f2ad172cd927_1aac9c247dd70c4775cf02f2ad172cd927" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Cqrs.Events.ReplicatedSqlEventStore&lt; TAuthenticationToken &gt;.ReplicatedSqlEventStore</definition>
+        <argsstring>(IEventBuilder&lt; TAuthenticationToken &gt; eventBuilder, IEventDeserialiser&lt; TAuthenticationToken &gt; eventDeserialiser, ILogger logger, IConfigurationManager configurationManager)</argsstring>
+        <name>ReplicatedSqlEventStore</name>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Events_1_1IEventBuilder" kindref="compound">IEventBuilder</ref>&lt; TAuthenticationToken &gt;</type>
+          <declname>eventBuilder</declname>
+        </param>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Events_1_1IEventDeserialiser" kindref="compound">IEventDeserialiser</ref>&lt; TAuthenticationToken &gt;</type>
+          <declname>eventDeserialiser</declname>
+        </param>
+        <param>
+          <type>ILogger</type>
+          <declname>logger</declname>
+        </param>
+        <param>
+          <type><ref refid="interfaceCqrs_1_1Configuration_1_1IConfigurationManager" kindref="compound">IConfigurationManager</ref></type>
+          <declname>configurationManager</declname>
+        </param>
+        <briefdescription>
+<para>Instantiates and Initialises a new instance of the <ref refid="classCqrs_1_1Events_1_1ReplicatedSqlEventStore_aac9c247dd70c4775cf02f2ad172cd927_1aac9c247dd70c4775cf02f2ad172cd927" kindref="member">ReplicatedSqlEventStore&lt;TAuthenticationToken&gt;</ref> class. </para>        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/ReplicatedSqlEventStore.cs" line="34" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/ReplicatedSqlEventStore.cs" bodystart="34" bodyend="61"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="classCqrs_1_1Events_1_1ReplicatedSqlEventStore_aedff93a62c275a18d45ede6576fe2840_1aedff93a62c275a18d45ede6576fe2840" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>override void</type>
+        <definition>override void Cqrs.Events.ReplicatedSqlEventStore&lt; TAuthenticationToken &gt;.PersistEvent</definition>
+        <argsstring>(EventData eventData)</argsstring>
+        <name>PersistEvent</name>
+        <reimplements refid="classCqrs_1_1Events_1_1EventStore_aedb71ca0ddf21220e323bc60ad7508cd_1aedb71ca0ddf21220e323bc60ad7508cd">PersistEvent</reimplements>
+        <param>
+          <type><ref refid="classCqrs_1_1Events_1_1EventData" kindref="compound">EventData</ref></type>
+          <declname>eventData</declname>
+        </param>
+        <briefdescription>
+<para>Persist the provided <emphasis>eventData</emphasis>  into each SQL Server in <ref refid="classCqrs_1_1Events_1_1ReplicatedSqlEventStore_ab2811e34d4f19fb0115a96f622050f68_1ab2811e34d4f19fb0115a96f622050f68" kindref="member">WritableConnectionStrings</ref>. A single TransactionScope wraps all SQL servers, so all must complete successfully, or they will ALL roll back. </para>        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>eventData</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="classCqrs_1_1Events_1_1EventData" kindref="compound">EventData</ref> to persist.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/ReplicatedSqlEventStore.cs" line="68" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/ReplicatedSqlEventStore.cs" bodystart="68" bodyend="122"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+<para>A simplified SqlServer based <ref refid="classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_1a6346cb2aea4c5b4e740dc6cfb15abab8" kindref="member">EventStore&lt;TAuthenticationToken&gt;</ref> that uses LinqToSql and follows a rigid schema that also replicates to multiple connections, but only reads from one connection. </para>    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TAuthenticationToken</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The Type of the authentication token.</para></parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>    </detaileddescription>
+    <inheritancegraph>
+      <node id="1742">
+        <label>SqlEventStore&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Events_1_1SqlEventStore"/>
+        <childnode refid="1743" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1744">
+        <label>IEventStore&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Events_1_1IEventStore"/>
+      </node>
+      <node id="1741">
+        <label>Cqrs.Events.ReplicatedSqlEventStore&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Events_1_1ReplicatedSqlEventStore"/>
+        <childnode refid="1742" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1743">
+        <label>EventStore&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Events_1_1EventStore"/>
+        <childnode refid="1744" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1746">
+        <label>SqlEventStore&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Events_1_1SqlEventStore"/>
+        <childnode refid="1747" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1748">
+        <label>IEventStore&lt; TAuthenticationToken &gt;</label>
+        <link refid="interfaceCqrs_1_1Events_1_1IEventStore"/>
+      </node>
+      <node id="1745">
+        <label>Cqrs.Events.ReplicatedSqlEventStore&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Events_1_1ReplicatedSqlEventStore"/>
+        <childnode refid="1746" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1747">
+        <label>EventStore&lt; TAuthenticationToken &gt;</label>
+        <link refid="classCqrs_1_1Events_1_1EventStore"/>
+        <childnode refid="1748" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/ReplicatedSqlEventStore.cs" line="25" column="1" bodyfile="/opt/buildAgent/work/a99f043f4d1af837/Framework/Cqrs/Events/ReplicatedSqlEventStore.cs" bodystart="24" bodyend="123"/>
+    <listofallmembers>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_a94ce64c00db57e5b9dbd10f74a4cef5b_1a94ce64c00db57e5b9dbd10f74a4cef5b" prot="protected" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>Add</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_ac74de2a6905b38d167bcb23055e19b3d_1ac74de2a6905b38d167bcb23055e19b3d" prot="protected" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>ConfigurationManager</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a1e6d87995d38d6fbb148388ec165a87e_1a1e6d87995d38d6fbb148388ec165a87e" prot="protected" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>CqrsEventStoreStreamNamePattern</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_a9ad7c8a629ee39f2f40bc4dbc968f0e9_1a9ad7c8a629ee39f2f40bc4dbc968f0e9" prot="protected" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>CreateDbDataContext</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a05393aedf2eae4b2eeae3977e7f1c6f9_1a05393aedf2eae4b2eeae3977e7f1c6f9" prot="protected" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>EventBuilder</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a24f17302c069058e5814dedfb614d599_1a24f17302c069058e5814dedfb614d599" prot="protected" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>EventDeserialiser</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a6346cb2aea4c5b4e740dc6cfb15abab8_1a6346cb2aea4c5b4e740dc6cfb15abab8" prot="protected" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>EventStore</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a03df06d4ce9c6d16201c079f2de0a7f3_1a03df06d4ce9c6d16201c079f2de0a7f3" prot="protected" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>GenerateStreamName</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_aba61739e47fdd0f7fce656f896cbe908_1aba61739e47fdd0f7fce656f896cbe908" prot="protected" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>GenerateStreamName</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_a7e32a08a015642a5bc1cefa6998e6f11_1a7e32a08a015642a5bc1cefa6998e6f11" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>Get</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_ac1fb2bdec07cbeec57fb3d985e7a8b31_1ac1fb2bdec07cbeec57fb3d985e7a8b31" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>Get</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_aa6ffed5d7dd365600669149da29f9e89_1aa6ffed5d7dd365600669149da29f9e89" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>Get&lt; T &gt;</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_addd080c095c2a87effa71a0310402f78_1addd080c095c2a87effa71a0310402f78" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>GetBetweenDates</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a273b6bf609a82564fda68380d381209e_1a273b6bf609a82564fda68380d381209e" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>GetBetweenDates&lt; T &gt;</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_a6daa6c32874ab593d0d8a54c90d219c6_1a6daa6c32874ab593d0d8a54c90d219c6" prot="protected" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>GetEventStoreTable</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_a9ae45c68fa8b7ef69a4e1d6ae0e777f3_1a9ae45c68fa8b7ef69a4e1d6ae0e777f3" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>GetToDate</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a8a7b9c1ae079b28d3fedb4f815d93fb9_1a8a7b9c1ae079b28d3fedb4f815d93fb9" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>GetToDate&lt; T &gt;</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_ae3e2b22dd0afb8aa3e685d12b9cf9f3e_1ae3e2b22dd0afb8aa3e685d12b9cf9f3e" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>GetToVersion</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_abbefa3356d8082902bb2b51f2bfab3fc_1abbefa3356d8082902bb2b51f2bfab3fc" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>GetToVersion&lt; T &gt;</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a99506f7136a658364f8b74ef6a779a3f_1a99506f7136a658364f8b74ef6a779a3f" prot="protected" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>Logger</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_1ad3a795e3a8a4c506caaeaf0deb1a244e" prot="package" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>OldSqlEventStoreGetByCorrelationIdCommandTimeout</name></member>
+      <member refid="classCqrs_1_1Events_1_1ReplicatedSqlEventStore_aedff93a62c275a18d45ede6576fe2840_1aedff93a62c275a18d45ede6576fe2840" prot="protected" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>PersistEvent</name></member>
+      <member refid="classCqrs_1_1Events_1_1ReplicatedSqlEventStore_aac9c247dd70c4775cf02f2ad172cd927_1aac9c247dd70c4775cf02f2ad172cd927" prot="public" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>ReplicatedSqlEventStore</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a3ba5ba04a36382b6d36a6ad8867dc766_1a3ba5ba04a36382b6d36a6ad8867dc766" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>Save</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a958854f49c3eb4fcf1922ba7737a8dfe_1a958854f49c3eb4fcf1922ba7737a8dfe" prot="public" virt="virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>Save&lt; T &gt;</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_a15df78a1b12d2e3035b9715e9bfc8535_1a15df78a1b12d2e3035b9715e9bfc8535" prot="public" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>SqlEventStore</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_1a088a0442a391ae70031597ee6e0ecb98" prot="package" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>SqlEventStoreConnectionNameApplicationKey</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_1ab3e131b210ea6183e597999132e96881" prot="package" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>SqlEventStoreDbFileOrServerOrConnectionApplicationKey</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_1a697c47ac60f5939ae59563ff2c4390b5" prot="package" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>SqlEventStoreGetByCorrelationIdCommandTimeout</name></member>
+      <member refid="classCqrs_1_1Events_1_1SqlEventStore_1ab95d483ee5cae730bc3f263f6a8ef2a8" prot="package" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>SqlEventStoreTableNameApplicationKeyPattern</name></member>
+      <member refid="classCqrs_1_1Events_1_1EventStore_a75d6d3ad3a26fb9b511e2a98e72260f9_1a75d6d3ad3a26fb9b511e2a98e72260f9" prot="protected" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>TelemetryHelper</name></member>
+      <member refid="classCqrs_1_1Events_1_1ReplicatedSqlEventStore_ab2811e34d4f19fb0115a96f622050f68_1ab2811e34d4f19fb0115a96f622050f68" prot="protected" virt="non-virtual"><scope>Cqrs::Events::ReplicatedSqlEventStore</scope><name>WritableConnectionStrings</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

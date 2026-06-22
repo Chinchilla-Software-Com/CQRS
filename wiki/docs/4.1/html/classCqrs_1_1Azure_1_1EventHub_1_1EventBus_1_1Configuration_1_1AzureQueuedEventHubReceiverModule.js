@@ -1,0 +1,4 @@
+var classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureQueuedEventHubReceiverModule =
+[
+    [ "RegisterEventHandlerRegistrar", "classCqrs_1_1Azure_1_1EventHub_1_1EventBus_1_1Configuration_1_1AzureQueuedEventHubReceiverModule_ab0050be0bdfe6b95d068120a6c276986.html#ab0050be0bdfe6b95d068120a6c276986", null ]
+];

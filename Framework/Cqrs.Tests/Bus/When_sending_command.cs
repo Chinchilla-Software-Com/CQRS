@@ -1,9 +1,12 @@
 using System;
 using Cqrs.Bus;
 using Cqrs.Authentication;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement.Threaded;
+using Cqrs.Commands;
 using Cqrs.Configuration;
+using Cqrs.Exceptions;
 using Cqrs.Tests.Substitutes;
 using NUnit.Framework;
 
@@ -17,7 +20,7 @@ namespace Cqrs.Tests.Bus
 		[SetUp]
 		public void Setup()
 		{
-			_bus = new InProcessBus<ISingleSignOnToken>(new SingleSignOnTokenValueHelper(), new NullCorrelationIdHelper(), new TestDependencyResolver(), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new ConfigurationManager(), new BusHelper(new ConfigurationManager()));
+			_bus = new InProcessBus<ISingleSignOnToken>(new AuthenticationTokenHelper(new ContextItemCollectionFactory()), new NullCorrelationIdHelper(), new TestDependencyResolver(null), new ConsoleLogger(new LoggerSettingsConfigurationSection(), new NullCorrelationIdHelper()), new ConfigurationManager(), new BusHelper(new ConfigurationManager(), new ContextItemCollectionFactory()));
 		}
 
 		[Test]
@@ -37,13 +40,19 @@ namespace Cqrs.Tests.Bus
 			_bus.RegisterHandler<TestAggregateDoSomething>(x.Handle, x.GetType());
 			_bus.RegisterHandler<TestAggregateDoSomething>(x.Handle, x.GetType());
 
-			Assert.Throws<InvalidOperationException>(() => _bus.Send(new TestAggregateDoSomething()));
+			Assert.Throws<MultipleCommandHandlersRegisteredException>(() => _bus.Send(new TestAggregateDoSomething()));
 		}
 
 		[Test]
 		public void Should_throw_if_no_handlers()
 		{
-			Assert.Throws<InvalidOperationException>(() => _bus.Send(new TestAggregateDoSomething()));
+			Assert.Throws<NoCommandHandlerRegisteredException>(() => _bus.Send(new TestAggregateDoSomething2()));
+		}
+
+		[Test]
+		public void Has_no_handles_should_not_throw_due_to_settings()
+		{
+			_bus.Send(new TestAggregateDoSomething3());
 		}
 	}
 }

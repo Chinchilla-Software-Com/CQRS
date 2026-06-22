@@ -20,6 +20,13 @@ string className = ClassifierName(this.Element);
 string aggregateRootName = stereoTypeProperties.PropertyInstances
 	.Single(property => property.Name == "AggregateRootName")
 	.Value;
+string entityName = stereoTypeProperties.PropertyInstances
+	.Single(property => property.Name == "EntityName")
+	.Value;
+
+string targetName= entityName;
+if (string.IsNullOrWhiteSpace(entityName))
+	targetName = string.Format("{0}Entity", aggregateRootName);
 
 // using statements
 #>
@@ -34,7 +41,7 @@ namespace <#= classNamespace #>
 	// Class and Attributes
 #>
 	<#= GetGeneratedCodeAttribute() #>
-	public partial interface I<#= className #>Builder : IQueryBuilder<<#= className #>, Entities.<#= aggregateRootName #>Entity>
+	public partial interface I<#= className #>Builder : IQueryBuilder<<#= className #>, Entities.<#= targetName #>>
 	{
 	}
 }

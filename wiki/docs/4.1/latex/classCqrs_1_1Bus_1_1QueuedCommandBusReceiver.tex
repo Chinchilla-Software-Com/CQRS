@@ -1,0 +1,250 @@
+\hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{}\doxysection{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver$<$ T\+Authentication\+Token $>$ Class Template Reference}
+\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+
+
+Receives instances of a I\+Command$<$\+T\+Authentication\+Token$>$ from the command bus, places them into one of several internal concurrent queues and then processes the commands one at a time per queue.  
+
+
+Inheritance diagram for Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual ? bool \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a19d51190f085f164963bd16ba88454fd_a19d51190f085f164963bd16ba88454fd}{Receive\+Command}} (\mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}}$<$ T\+Authentication\+Token $>$ command)
+\begin{DoxyCompactList}\small\item\em Receives a I\+Command$<$\+T\+Authentication\+Token$>$ from the command bus. \end{DoxyCompactList}\item 
+abstract void \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad8bf3c1f9d9b0444cb85784cb9e59823_ad8bf3c1f9d9b0444cb85784cb9e59823}{Start}} ()
+\begin{DoxyCompactList}\small\item\em Starts listening and processing instances of I\+Command$<$\+T\+Authentication\+Token$>$ from the command bus. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aa5158357f8e2007f06b640d4a4129781_aa5158357f8e2007f06b640d4a4129781}{Queued\+Command\+Bus\+Receiver}} (\mbox{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}}$<$ T\+Authentication\+Token $>$ authentication\+Token\+Helper, I\+Correlation\+Id\+Helper correlation\+Id\+Helper, I\+Logger logger, \mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} configuration\+Manager, \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper}} bus\+Helper)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aa5158357f8e2007f06b640d4a4129781_aa5158357f8e2007f06b640d4a4129781}{Queued\+Command\+Bus\+Receiver$<$\+T\+Authentication\+Token$>$}}. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ab27ff7119814cdc22bf9a5811340e4e7_ab27ff7119814cdc22bf9a5811340e4e7}{Enqueue\+Command}} (string target\+Queue\+Name, \mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}}$<$ T\+Authentication\+Token $>$ command)
+\begin{DoxyCompactList}\small\item\em Places the provided {\itshape command}  into the appropriate queue in the \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}}. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad703e46b4a8318debac37ea747163f30_ad703e46b4a8318debac37ea747163f30}{Create\+Queue\+And\+Attach\+Listener\+If\+Not\+Exist}} (string queue\+Name)
+\begin{DoxyCompactList}\small\item\em Checks if the queue exists, if it doesn\textquotesingle{}t it creates a new queue in \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}} and then starts a separate Thread running \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a6e00e819b9738c694fd05815938cb433_a6e00e819b9738c694fd05815938cb433}{Dequeu\+And\+Process\+Command}}. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a6e00e819b9738c694fd05815938cb433_a6e00e819b9738c694fd05815938cb433}{Dequeu\+And\+Process\+Command}} (string queue\+Name)
+\begin{DoxyCompactList}\small\item\em Infinitely runs a loop checking if the queue exists in \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}} and then dequeues I\+Command$<$\+T\+Authentication\+Token$>$ one at a time, pausing for 0.\+1 seconds between loops. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+static Concurrent\+Dictionary$<$ string, Concurrent\+Queue$<$ \mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}}$<$ T\+Authentication\+Token $>$ $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The queues keyed by an identifier. \end{DoxyCompactList}\item 
+Reader\+Writer\+Lock\+Slim \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ac633e2d140fc90fab100acba4afa136b_ac633e2d140fc90fab100acba4afa136b}{Queue\+Tracker\+Lock}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A Reader\+Writer\+Lock\+Slim for providing a lock mechanism around the main \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}}$<$ T\+Authentication\+Token $>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a809cb92ece6c52bbbe3abc347be0470d_a809cb92ece6c52bbbe3abc347be0470d}{Authentication\+Token\+Helper}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Authentication\+Token\+Helper$<$\+T\+Authentication\+Token$>$ \end{DoxyCompactList}\item 
+I\+Correlation\+Id\+Helper \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a4cf8781cab9cb844892eb032cfca773f_a4cf8781cab9cb844892eb032cfca773f}{Correlation\+Id\+Helper}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Correlation\+Id\+Helper \end{DoxyCompactList}\item 
+I\+Logger \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a0d0174c10f6cde11cd5a9d76092f3058_a0d0174c10f6cde11cd5a9d76092f3058}{Logger}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Logger \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_acd7c3367d16742abd5e650f6bacf4df9_acd7c3367d16742abd5e650f6bacf4df9}{Configuration\+Manager}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Configuration\+Manager \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper}} \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_acc1fa8c5074a43382bcf21805b4ee709_acc1fa8c5074a43382bcf21805b4ee709}{Bus\+Helper}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper}} \end{DoxyCompactList}\item 
+abstract I\+Dictionary$<$ Type, I\+List$<$ Action$<$ \mbox{\hyperlink{interfaceCqrs_1_1Messages_1_1IMessage}{I\+Message}} $>$ $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad69fe38758694599261bad82e6c6378c_ad69fe38758694599261bad82e6c6378c}{Routes}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the routes or handlers that will be executed as the commands arrive. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aefae09fd32d799ac59d35eb706f76654_aefae09fd32d799ac59d35eb706f76654}{Queue\+Count}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The current number of queues in \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}}. \end{DoxyCompactList}\item 
+I\+Collection$<$ string $>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a959facef20063d615b427eafa4290e0f_a959facef20063d615b427eafa4290e0f}{Queue\+Names}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets the names of all queues in \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Receives instances of a I\+Command$<$\+T\+Authentication\+Token$>$ from the command bus, places them into one of several internal concurrent queues and then processes the commands one at a time per queue. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of authentication token.\\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aa5158357f8e2007f06b640d4a4129781_aa5158357f8e2007f06b640d4a4129781}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aa5158357f8e2007f06b640d4a4129781_aa5158357f8e2007f06b640d4a4129781}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!QueuedCommandBusReceiver@{QueuedCommandBusReceiver}}
+\index{QueuedCommandBusReceiver@{QueuedCommandBusReceiver}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{QueuedCommandBusReceiver()}{QueuedCommandBusReceiver()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Queued\+Command\+Bus\+Receiver}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}}$<$ T\+Authentication\+Token $>$}]{authentication\+Token\+Helper,  }\item[{I\+Correlation\+Id\+Helper}]{correlation\+Id\+Helper,  }\item[{I\+Logger}]{logger,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}}]{configuration\+Manager,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper}}}]{bus\+Helper }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aa5158357f8e2007f06b640d4a4129781_aa5158357f8e2007f06b640d4a4129781}{Queued\+Command\+Bus\+Receiver$<$\+T\+Authentication\+Token$>$}}. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad703e46b4a8318debac37ea747163f30_ad703e46b4a8318debac37ea747163f30}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad703e46b4a8318debac37ea747163f30_ad703e46b4a8318debac37ea747163f30}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!CreateQueueAndAttachListenerIfNotExist@{CreateQueueAndAttachListenerIfNotExist}}
+\index{CreateQueueAndAttachListenerIfNotExist@{CreateQueueAndAttachListenerIfNotExist}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CreateQueueAndAttachListenerIfNotExist()}{CreateQueueAndAttachListenerIfNotExist()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Create\+Queue\+And\+Attach\+Listener\+If\+Not\+Exist (\begin{DoxyParamCaption}\item[{string}]{queue\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Checks if the queue exists, if it doesn\textquotesingle{}t it creates a new queue in \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}} and then starts a separate Thread running \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a6e00e819b9738c694fd05815938cb433_a6e00e819b9738c694fd05815938cb433}{Dequeu\+And\+Process\+Command}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em queue\+Name} & The name of the queue.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a6e00e819b9738c694fd05815938cb433_a6e00e819b9738c694fd05815938cb433}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a6e00e819b9738c694fd05815938cb433_a6e00e819b9738c694fd05815938cb433}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!DequeuAndProcessCommand@{DequeuAndProcessCommand}}
+\index{DequeuAndProcessCommand@{DequeuAndProcessCommand}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{DequeuAndProcessCommand()}{DequeuAndProcessCommand()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Dequeu\+And\+Process\+Command (\begin{DoxyParamCaption}\item[{string}]{queue\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Infinitely runs a loop checking if the queue exists in \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}} and then dequeues I\+Command$<$\+T\+Authentication\+Token$>$ one at a time, pausing for 0.\+1 seconds between loops. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em queue\+Name} & The name of the queue.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ab27ff7119814cdc22bf9a5811340e4e7_ab27ff7119814cdc22bf9a5811340e4e7}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ab27ff7119814cdc22bf9a5811340e4e7_ab27ff7119814cdc22bf9a5811340e4e7}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!EnqueueCommand@{EnqueueCommand}}
+\index{EnqueueCommand@{EnqueueCommand}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{EnqueueCommand()}{EnqueueCommand()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Enqueue\+Command (\begin{DoxyParamCaption}\item[{string}]{target\+Queue\+Name,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}}$<$ T\+Authentication\+Token $>$}]{command }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Places the provided {\itshape command}  into the appropriate queue in the \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em target\+Queue\+Name} & The name of the target queue to place the command into\\
+\hline
+{\em command} & The I\+Command$<$\+T\+Authentication\+Token$>$ to handle.\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a19d51190f085f164963bd16ba88454fd_a19d51190f085f164963bd16ba88454fd}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a19d51190f085f164963bd16ba88454fd_a19d51190f085f164963bd16ba88454fd}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!ReceiveCommand@{ReceiveCommand}}
+\index{ReceiveCommand@{ReceiveCommand}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ReceiveCommand()}{ReceiveCommand()}}
+{\footnotesize\ttfamily virtual ? bool \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Receive\+Command (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}}$<$ T\+Authentication\+Token $>$}]{command }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Receives a I\+Command$<$\+T\+Authentication\+Token$>$ from the command bus. 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad8bf3c1f9d9b0444cb85784cb9e59823_ad8bf3c1f9d9b0444cb85784cb9e59823}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad8bf3c1f9d9b0444cb85784cb9e59823_ad8bf3c1f9d9b0444cb85784cb9e59823}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!Start@{Start}}
+\index{Start@{Start}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Start()}{Start()}}
+{\footnotesize\ttfamily abstract void \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Starts listening and processing instances of I\+Command$<$\+T\+Authentication\+Token$>$ from the command bus. 
+
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a809cb92ece6c52bbbe3abc347be0470d_a809cb92ece6c52bbbe3abc347be0470d}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a809cb92ece6c52bbbe3abc347be0470d_a809cb92ece6c52bbbe3abc347be0470d}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!AuthenticationTokenHelper@{AuthenticationTokenHelper}}
+\index{AuthenticationTokenHelper@{AuthenticationTokenHelper}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{AuthenticationTokenHelper}{AuthenticationTokenHelper}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}}$<$T\+Authentication\+Token$>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Authentication_1_1AuthenticationTokenHelper}{Authentication\+Token\+Helper}}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Authentication\+Token\+Helper$<$\+T\+Authentication\+Token$>$ 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_acc1fa8c5074a43382bcf21805b4ee709_acc1fa8c5074a43382bcf21805b4ee709}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_acc1fa8c5074a43382bcf21805b4ee709_acc1fa8c5074a43382bcf21805b4ee709}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!BusHelper@{BusHelper}}
+\index{BusHelper@{BusHelper}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{BusHelper}{BusHelper}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper}} \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper}{Bus\+Helper}}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper}{I\+Bus\+Helper}} 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_acd7c3367d16742abd5e650f6bacf4df9_acd7c3367d16742abd5e650f6bacf4df9}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_acd7c3367d16742abd5e650f6bacf4df9_acd7c3367d16742abd5e650f6bacf4df9}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!ConfigurationManager@{ConfigurationManager}}
+\index{ConfigurationManager@{ConfigurationManager}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ConfigurationManager}{ConfigurationManager}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Configuration_1_1ConfigurationManager}{Configuration\+Manager}}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Configuration\+Manager 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a4cf8781cab9cb844892eb032cfca773f_a4cf8781cab9cb844892eb032cfca773f}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a4cf8781cab9cb844892eb032cfca773f_a4cf8781cab9cb844892eb032cfca773f}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!CorrelationIdHelper@{CorrelationIdHelper}}
+\index{CorrelationIdHelper@{CorrelationIdHelper}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CorrelationIdHelper}{CorrelationIdHelper}}
+{\footnotesize\ttfamily I\+Correlation\+Id\+Helper \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Correlation\+Id\+Helper\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Correlation\+Id\+Helper 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a0d0174c10f6cde11cd5a9d76092f3058_a0d0174c10f6cde11cd5a9d76092f3058}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a0d0174c10f6cde11cd5a9d76092f3058_a0d0174c10f6cde11cd5a9d76092f3058}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!Logger@{Logger}}
+\index{Logger@{Logger}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Logger}{Logger}}
+{\footnotesize\ttfamily I\+Logger \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Logger\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Logger 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aefae09fd32d799ac59d35eb706f76654_aefae09fd32d799ac59d35eb706f76654}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_aefae09fd32d799ac59d35eb706f76654_aefae09fd32d799ac59d35eb706f76654}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!QueueCount@{QueueCount}}
+\index{QueueCount@{QueueCount}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{QueueCount}{QueueCount}}
+{\footnotesize\ttfamily int \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Queue\+Count\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+The current number of queues in \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a959facef20063d615b427eafa4290e0f_a959facef20063d615b427eafa4290e0f}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a959facef20063d615b427eafa4290e0f_a959facef20063d615b427eafa4290e0f}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!QueueNames@{QueueNames}}
+\index{QueueNames@{QueueNames}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{QueueNames}{QueueNames}}
+{\footnotesize\ttfamily I\+Collection$<$string$>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Queue\+Names\hspace{0.3cm}{\ttfamily [get]}}
+
+
+
+Gets the names of all queues in \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!QueueTracker@{QueueTracker}}
+\index{QueueTracker@{QueueTracker}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{QueueTracker}{QueueTracker}}
+{\footnotesize\ttfamily Concurrent\+Dictionary$<$string, Concurrent\+Queue$<$\mbox{\hyperlink{interfaceCqrs_1_1Commands_1_1ICommand}{I\+Command}}$<$T\+Authentication\+Token$>$ $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Queue\+Tracker\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The queues keyed by an identifier. 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ac633e2d140fc90fab100acba4afa136b_ac633e2d140fc90fab100acba4afa136b}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ac633e2d140fc90fab100acba4afa136b_ac633e2d140fc90fab100acba4afa136b}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!QueueTrackerLock@{QueueTrackerLock}}
+\index{QueueTrackerLock@{QueueTrackerLock}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{QueueTrackerLock}{QueueTrackerLock}}
+{\footnotesize\ttfamily Reader\+Writer\+Lock\+Slim \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Queue\+Tracker\+Lock\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+A Reader\+Writer\+Lock\+Slim for providing a lock mechanism around the main \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_a2fc62989429929acd8ea66808a8c4a78_a2fc62989429929acd8ea66808a8c4a78}{Queue\+Tracker}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad69fe38758694599261bad82e6c6378c_ad69fe38758694599261bad82e6c6378c}\label{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver_ad69fe38758694599261bad82e6c6378c_ad69fe38758694599261bad82e6c6378c}} 
+\index{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}!Routes@{Routes}}
+\index{Routes@{Routes}!Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$@{Cqrs.Bus.QueuedCommandBusReceiver$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Routes}{Routes}}
+{\footnotesize\ttfamily abstract I\+Dictionary$<$Type, I\+List$<$Action$<$\mbox{\hyperlink{interfaceCqrs_1_1Messages_1_1IMessage}{I\+Message}}$>$ $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1QueuedCommandBusReceiver}{Cqrs.\+Bus.\+Queued\+Command\+Bus\+Receiver}}$<$ T\+Authentication\+Token $>$.Routes\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the routes or handlers that will be executed as the commands arrive. 
+

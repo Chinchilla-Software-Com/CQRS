@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Ninject/Azure/Cqrs.Ninject.Azure.DocumentDb/Events/TestAzureDocumentDbEventStoreConnectionStringFactory.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">Ninject/Azure/Cqrs.Ninject.Azure.DocumentDb/Events</a> - TestAzureDocumentDbEventStoreConnectionStringFactory.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-24 00:33:17</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using Cqrs.Azure.DocumentDb.Events;
+<span class="lineNum">      10 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      11 </span>            : using Chinchilla.StateManagement;
+<span class="lineNum">      12 </span>            : using Chinchilla.StateManagement.Threaded;
+<span class="lineNum">      13 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      14 </span>            : using Cqrs.DataStores;
+<span class="lineNum">      15 </span>            : using Cqrs.Events;
+<span class="lineNum">      16 </span>            : using Microsoft.Azure.Documents.Client;
+<span class="lineNum">      17 </span>            : 
+<span class="lineNum">      18 </span>            : namespace Cqrs.Ninject.Azure.DocumentDb.Events
+<span class="lineNum">      19 </span>            : {
+<span class="lineNum">      20 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      21 </span>            :         /// A &lt;see cref=&quot;AzureDocumentDbEventStoreConnectionStringFactory&quot;/&gt;
+<span class="lineNum">      22 </span>            :         /// that enables you to set a database name with &lt;see cref=&quot;DatabaseName&quot;/&gt;. This means you can randomly generate your own database name per test.
+<span class="lineNum">      23 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :         public class TestAzureDocumentDbEventStoreConnectionStringFactory
+<span class="lineNum">      25 </span>            :                 : AzureDocumentDbEventStoreConnectionStringFactory
+<span class="lineNum">      26 </span>            :                 , IAzureDocumentDbSnapshotStoreConnectionStringFactory
+<span class="lineNum">      27 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      28 </span>            :                 private const string CallContextDatabaseNameKey = &quot;AzureDocumentDbEventStoreConnectionStringFactory¿DatabaseName&quot;;
+<span class="lineNum">      29 </span>            : 
+<span class="lineNum">      30 </span>            :                 private static IContextItemCollection Query { get; set; }
+<span class="lineNum">      31 </span>            : 
+<span class="lineNum">      32 </span>            :                 static TestAzureDocumentDbEventStoreConnectionStringFactory()
+<span class="lineNum">      33 </span>            :                 {
+<span class="lineNum">      34 </span>            :                         Query = new Chinchilla.StateManagement.Threaded.ContextItemCollection();
+<span class="lineNum">      35 </span>            :                 }
+<span class="lineNum">      36 </span>            : 
+<span class="lineNum">      37 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      38 </span>            :                 /// The name of the database currently being used.
+<span class="lineNum">      39 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      40 </span>            :                 public static string DatabaseName
+<span class="lineNum">      41 </span>            :                 {
+<span class="lineNum">      42 </span>            :                         get
+<span class="lineNum">      43 </span>            :                         {
+<span class="lineNum">      44 </span>            :                                 return Query.GetData&lt;string&gt;(CallContextDatabaseNameKey);
+<span class="lineNum">      45 </span>            :                         }
+<span class="lineNum">      46 </span>            :                         set
+<span class="lineNum">      47 </span>            :                         {
+<span class="lineNum">      48 </span>            :                                 Query.SetData(CallContextDatabaseNameKey, value);
+<span class="lineNum">      49 </span>            :                         }
+<span class="lineNum">      50 </span>            :                 }
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      53 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;TestAzureDocumentDbEventStoreConnectionStringFactory&quot;/&gt; defaulting to using &lt;see cref=&quot;ConfigurationManager&quot;/&gt;
+<span class="lineNum">      54 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      55 </span><span class="lineCov">          1 :                 public TestAzureDocumentDbEventStoreConnectionStringFactory(ILogger logger)</span>
+<span class="lineNum">      56 </span>            :                         : base(logger, new ConfigurationManager())
+<span class="lineNum">      57 </span>            :                 {
+<span class="lineNum">      58 </span>            :                 }
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span>            :                 #region Implementation of IAzureDocumentDbDataStoreConnectionStringFactory
+<span class="lineNum">      61 </span>            : 
+<span class="lineNum">      62 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      63 </span>            :                 /// Gets the value of &lt;see cref=&quot;DatabaseName&quot;/&gt;.
+<span class="lineNum">      64 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      65 </span><span class="lineCov">          1 :                 public override string GetEventStoreConnectionDatabaseName()</span>
+<span class="lineNum">      66 </span>            :                 {
+<span class="lineNum">      67 </span>            :                         return DatabaseName;
+<span class="lineNum">      68 </span>            :                 }
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :                 #endregion
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :                 #region Implementation of IAzureDocumentDbSnapshotStoreConnectionStringFactory
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      75 </span>            :                 /// Gets the current &lt;see cref=&quot;DocumentClient&quot;/&gt;.
+<span class="lineNum">      76 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      77 </span><span class="lineCov">          1 :                 public DocumentClient GetSnapshotStoreConnectionClient()</span>
+<span class="lineNum">      78 </span>            :                 {
+<span class="lineNum">      79 </span>            :                         return GetEventStoreConnectionClient();
+<span class="lineNum">      80 </span>            :                 }
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      83 </span>            :                 /// Gets the current database name.
+<span class="lineNum">      84 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      85 </span><span class="lineCov">          1 :                 public string GetSnapshotStoreConnectionDatabaseName()</span>
+<span class="lineNum">      86 </span>            :                 {
+<span class="lineNum">      87 </span>            :                         return GetEventStoreConnectionDatabaseName();
+<span class="lineNum">      88 </span>            :                 }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      91 </span>            :                 /// Gets the current collection name.
+<span class="lineNum">      92 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      93 </span><span class="lineCov">          1 :                 public string GetSnapshotStoreConnectionCollectionName()</span>
+<span class="lineNum">      94 </span>            :                 {
+<span class="lineNum">      95 </span>            :                         return GetEventStoreConnectionCollectionName();
+<span class="lineNum">      96 </span>            :                 }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                 #endregion
+<span class="lineNum">      99 </span>            :         }
+<span class="lineNum">     100 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+var classCqrs_1_1Azure_1_1ConfigurationManager_1_1Tests_1_1Unit_1_1CloudConfigurationManagerTests =
+[
+    [ "GetSetting_MissingTestKey_ReturnsNull", "classCqrs_1_1Azure_1_1ConfigurationManager_1_1Tests_1_1Unit_1_1CloudConfigurationManagerTests_a97cfd2179ac1ba908685a64901239d25.html#a97cfd2179ac1ba908685a64901239d25", null ],
+    [ "GetSetting_RandomTest_ReturnsExpectedValue", "classCqrs_1_1Azure_1_1ConfigurationManager_1_1Tests_1_1Unit_1_1CloudConfigurationManagerTests_a3b7c7c74a42e71b61e347c240045672b.html#a3b7c7c74a42e71b61e347c240045672b", null ],
+    [ "GetSetting_TestBooleanKeys_ReturnsExpectedValue", "classCqrs_1_1Azure_1_1ConfigurationManager_1_1Tests_1_1Unit_1_1CloudConfigurationManagerTests_a3d307846c8d5bc93045c0ad3ed74580c.html#a3d307846c8d5bc93045c0ad3ed74580c", null ],
+    [ "GetSetting_TestKey_ReturnsExpectedValue", "classCqrs_1_1Azure_1_1ConfigurationManager_1_1Tests_1_1Unit_1_1CloudConfigurationManagerTests_ab4028aaa23b57cbd4a60fb38b89f5637.html#ab4028aaa23b57cbd4a60fb38b89f5637", null ]
+];

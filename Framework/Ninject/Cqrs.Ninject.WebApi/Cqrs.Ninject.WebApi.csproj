@@ -1,0 +1,90 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net472</TargetFrameworks>
+		<title>ASP.NET Web API with CQRS.NET and Ninject</title>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Copyright>Copyright ©  2025</Copyright>
+		<Description>Use Ninject as your IoC container of choice with WebAPI and CQRS.NET</Description>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+		<PackageReleaseNotes>
+			Version 6.0
+
+			- Removed .NET 4.0, .NET 4.5, .NET 4.5.1, .NET 4.5.2, .NET 4.6 and , .NET 4.6.2 support. The minimum .NET Framework version is now .NET 4.7.2.
+			- Deprecated .NET 6.0, replaced with .NET 8.0
+		</PackageReleaseNotes>
+		<PackageIcon>images\icon.png</PackageIcon>
+		<readme>README.md</readme>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>CQRS;CQRS.NET;Ninject;WebAPI</PackageTags>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="Cqrs.Ninject.WebApi.xml" />
+		<None Remove="Tools\Create-Log-Table.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="tools\init.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<None Include="tools\install.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\icon.png" Link="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>images\</PackagePath>
+		</None>
+		<None Include="..\..\..\README.md" Link="Packaging\README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFrameworks>net472</TargetFrameworks>
+		<DocumentationFile>Cqrs.Ninject.WebApi.xml</DocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<PackageReference Include="Ninject" Version="3.3.4" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net472' ">
+		<PackageReference Include="Ninject" Version="3.2.2" />
+		<PackageReference Include="Ninject.MVC3" version="3.2.1.0" />
+		<PackageReference Include="Ninject.Web.Common.WebHost" Version="3.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Cqrs.WebApi\Cqrs.WebApi.csproj" />
+		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
+		<ProjectReference Include="..\Cqrs.Ninject\Cqrs.Ninject.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+	</Target>
+
+	<!--
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;&#xD;&#xA;COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\init.ps1&quot;" />
+	</Target>
+	-->
+</Project>

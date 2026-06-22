@@ -1,0 +1,8 @@
+var namespaceCqrs_1_1Tests_1_1Snapshots =
+[
+    [ "When_getting_a_snapshot_aggregate_with_no_snapshot", "classCqrs_1_1Tests_1_1Snapshots_1_1When__getting__a__snapshot__aggregate__with__no__snapshot.html", "classCqrs_1_1Tests_1_1Snapshots_1_1When__getting__a__snapshot__aggregate__with__no__snapshot" ],
+    [ "When_getting_an_aggregate_with_snapshot", "classCqrs_1_1Tests_1_1Snapshots_1_1When__getting__an__aggregate__with__snapshot.html", "classCqrs_1_1Tests_1_1Snapshots_1_1When__getting__an__aggregate__with__snapshot" ],
+    [ "When_getting_snapshotable_aggreate", "classCqrs_1_1Tests_1_1Snapshots_1_1When__getting__snapshotable__aggreate.html", "classCqrs_1_1Tests_1_1Snapshots_1_1When__getting__snapshotable__aggreate" ],
+    [ "When_saving_a_snapshotable_aggregate", "classCqrs_1_1Tests_1_1Snapshots_1_1When__saving__a__snapshotable__aggregate.html", "classCqrs_1_1Tests_1_1Snapshots_1_1When__saving__a__snapshotable__aggregate" ],
+    [ "When_saving_a_snapshotable_aggregate_for_each_change", "classCqrs_1_1Tests_1_1Snapshots_1_1When__saving__a__snapshotable__aggregate__for__each__change.html", "classCqrs_1_1Tests_1_1Snapshots_1_1When__saving__a__snapshotable__aggregate__for__each__change" ]
+];

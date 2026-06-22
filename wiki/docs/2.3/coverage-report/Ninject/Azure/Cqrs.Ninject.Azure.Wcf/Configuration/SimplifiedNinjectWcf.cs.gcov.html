@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Ninject/Azure/Cqrs.Ninject.Azure.Wcf/Configuration/SimplifiedNinjectWcf.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../index.html">top level</a> - <a href="index.html">Ninject/Azure/Cqrs.Ninject.Azure.Wcf/Configuration</a> - SimplifiedNinjectWcf.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-20</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      10 </span>            : using Cqrs.Azure.ConfigurationManager;
+<span class="lineNum">      11 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      12 </span>            : using Cqrs.Ninject.Configuration;
+<span class="lineNum">      13 </span>            : using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+<span class="lineNum">      14 </span>            : using Ninject;
+<span class="lineNum">      15 </span>            : using Ninject.Web.Common;
+<span class="lineNum">      16 </span>            : 
+<span class="lineNum">      17 </span>            : [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf), &quot;Start&quot;, Order = 50)]
+<span class="lineNum">      18 </span>            : [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Cqrs.Ninject.Azure.Wcf.Configuration.SimplifiedNinjectWcf), &quot;Stop&quot;, Order = 50)]
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : namespace Cqrs.Ninject.Azure.Wcf.Configuration
+<span class="lineNum">      21 </span>            : {
+<span class="lineNum">      22 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      23 </span>            :         /// A &lt;see cref=&quot;WebActivatorEx.PreApplicationStartMethodAttribute&quot;/&gt; that calls &lt;see cref=&quot;Start&quot;/&gt;
+<span class="lineNum">      24 </span>            :         /// and &lt;see cref=&quot;WebActivatorEx.ApplicationShutdownMethodAttribute&quot;/&gt; that calls &lt;see cref=&quot;Stop&quot;/&gt;
+<span class="lineNum">      25 </span>            :         /// configuring Simplified SQL by wiring up &lt;see cref=&quot;SimplifiedSqlModule{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">      26 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      27 </span>            :         public static class SimplifiedNinjectWcf
+<span class="lineNum">      28 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      29 </span>            :                 private static readonly Bootstrapper Bootstrapper = new Bootstrapper();
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// Starts the application
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span><span class="lineCov">          1 :                 public static void Start()</span>
+<span class="lineNum">      35 </span>            :                 {
+<span class="lineNum">      36 </span>            :                         DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
+<span class="lineNum">      37 </span>            :                         DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
+<span class="lineNum">      38 </span>            :                         Bootstrapper.Initialize(CreateKernel);
+<span class="lineNum">      39 </span>            :                 }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// Stops the application.
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span><span class="lineCov">          1 :                 public static void Stop()</span>
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                         Bootstrapper.ShutDown();
+<span class="lineNum">      47 </span>            :                 }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Creates the kernel that will manage your application.
+<span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      52 </span>            :                 /// &lt;returns&gt;The created kernel.&lt;/returns&gt;
+<span class="lineNum">      53 </span>            :                 private static IKernel CreateKernel()
+<span class="lineNum">      54 </span>            :                 {
+<span class="lineNum">      55 </span>            :                         return new WcfStartUp(new CloudConfigurationManager()).CreateKernel();
+<span class="lineNum">      56 </span>            :                 }
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span>            :                 private class WcfStartUp : SimplifiedNinjectStartUp&lt;WebHostModule&gt;
+<span class="lineNum">      59 </span>            :                 {
+<span class="lineNum">      60 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">      61 </span>            :                         /// Instantiate a new instance of &lt;see cref=&quot;WcfStartUp&quot;/&gt;
+<span class="lineNum">      62 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">      63 </span><span class="lineCov">          1 :                         public WcfStartUp(IConfigurationManager configurationManager)</span>
+<span class="lineNum">      64 </span>            :                                 : base(configurationManager)
+<span class="lineNum">      65 </span>            :                         {
+<span class="lineNum">      66 </span>            :                         }
+<span class="lineNum">      67 </span>            : 
+<span class="lineNum">      68 </span>            :                         #region Overrides of SimplifiedNinjectStartUp&lt;WebHostModule&gt;
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span>            :                         /// &lt;summary&gt;
+<span class="lineNum">      71 </span>            :                         /// Adds the &lt;see cref=&quot;SimplifiedSqlModule{TAuthenticationToken}&quot;/&gt; into &lt;see cref=&quot;NinjectDependencyResolver.ModulesToLoad&quot;/&gt;.
+<span class="lineNum">      72 </span>            :                         /// &lt;/summary&gt;
+<span class="lineNum">      73 </span><span class="lineCov">          1 :                         protected override void AddSupplementryModules()</span>
+<span class="lineNum">      74 </span>            :                         {
+<span class="lineNum">      75 </span>            :                                 NinjectDependencyResolver.ModulesToLoad.Insert(2, new SimplifiedSqlModule&lt;SingleSignOnToken&gt;());
+<span class="lineNum">      76 </span>            :                         }
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                         #endregion
+<span class="lineNum">      79 </span>            :                 }
+<span class="lineNum">      80 </span>            :         }
+<span class="lineNum">      81 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

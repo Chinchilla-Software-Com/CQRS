@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -32,5 +32,14 @@ namespace Cqrs.Authentication
 		[Required]
 		[DataMember]
 		public Guid UserRsn { get; set; }
+
+		/// <summary>
+		/// Returns <see cref="CompanyRsn"/> and <see cref="UserRsn"/>.
+		/// </summary>
+		/// <returns><see cref="CompanyRsn"/> and <see cref="UserRsn"/>.</returns>
+		public override string Serialise()
+		{
+			return string.Format("{0:N}/{1:N}", CompanyRsn, UserRsn);
+		}
 	}
 }

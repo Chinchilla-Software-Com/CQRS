@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -14,7 +14,8 @@ namespace Cqrs.Bus
 	/// Registers command handlers that listen and respond to commands.
 	/// </summary>
 	[ServiceContract(Namespace = "https://getcqrs.net/Bus/CommandHandlerRegistrar")]
-	public interface ICommandHandlerRegistrar : IHandlerRegistrar
+	public interface ICommandHandlerRegistrar
+		: IHandlerRegistrar
 	{
 	}
 }

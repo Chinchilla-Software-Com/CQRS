@@ -1,0 +1,229 @@
+\hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{}\doxysection{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root$<$ T\+Authentication\+Token $>$ Class Template Reference}
+\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+
+
+An I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ that is safe to use within Akka.\+N\+ET  
+
+
+Inheritance diagram for Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root$<$ T\+Authentication\+Token $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.612284cm]{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a2d11510fec0129ba318f63f7103aeec0_a2d11510fec0129ba318f63f7103aeec0}{Get\+Uncommitted\+Changes}} ()
+\begin{DoxyCompactList}\small\item\em Get all applied changes that haven\textquotesingle{}t yet been committed. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a0d2615067175e5f8249bb2dc3d17ee0b_a0d2615067175e5f8249bb2dc3d17ee0b}{Mark\+Changes\+As\+Committed}} ()
+\begin{DoxyCompactList}\small\item\em Mark all applied changes as committed, increment \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a4b526322c63542b1da2a700ff1b48d0c_a4b526322c63542b1da2a700ff1b48d0c}{Version}} and flush the internal collection of changes. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_af6d84b07d4e9475bb88e769ac9081830_af6d84b07d4e9475bb88e769ac9081830}{Load\+From\+History}} (I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$$>$ history)
+\begin{DoxyCompactList}\small\item\em Apply all the \mbox{\hyperlink{}{events}} in {\itshape history}  using event replay to this instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a060f981e4c3023aec36e7c6f1cfb3a9d_a060f981e4c3023aec36e7c6f1cfb3a9d}{Akka\+Aggregate\+Root}} (\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IUnitOfWork}{I\+Unit\+Of\+Work}}$<$ T\+Authentication\+Token $>$ unit\+Of\+Work, I\+Logger logger, \mbox{\hyperlink{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository}{I\+Akka\+Aggregate\+Repository}}$<$ T\+Authentication\+Token $>$ repository, I\+Correlation\+Id\+Helper correlation\+Id\+Helper, \mbox{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}}$<$ T\+Authentication\+Token $>$ authentication\+Token\+Helper)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a060f981e4c3023aec36e7c6f1cfb3a9d_a060f981e4c3023aec36e7c6f1cfb3a9d}{Akka\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$}} \end{DoxyCompactList}\item 
+override void \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a7da2d3a244e34717ec5af1db8f0042bc_a7da2d3a244e34717ec5af1db8f0042bc}{Pre\+Start}} ()
+\begin{DoxyCompactList}\small\item\em User overridable callback. 
+
+Is called when an Actor is started. Actors are automatically started asynchronously when created. Empty default implementation. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_af8a9bd0e80498b3b54beb7cbec820533_af8a9bd0e80498b3b54beb7cbec820533}{Execute$<$ T\+Command $>$}} (Action$<$ T\+Command $>$ action, T\+Command command)
+\begin{DoxyCompactList}\small\item\em Executes the provided {\itshape action}  passing it the provided {\itshape command} , then calls Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Publish\+Event \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_aaa135cb26be9e5353986f5611f05c059_aaa135cb26be9e5353986f5611f05c059}{Apply\+Change}} (\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ @event)
+\begin{DoxyCompactList}\small\item\em Call the \char`\"{}\+Apply\char`\"{} method with a signature matching the provided {\itshape event}  without using event replay to this instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IUnitOfWork}{I\+Unit\+Of\+Work}}$<$ T\+Authentication\+Token $>$ \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a58b79dc3e0d837e58d95f5cfeb2da9a1_a58b79dc3e0d837e58d95f5cfeb2da9a1}{Unit\+Of\+Work}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository}{I\+Akka\+Aggregate\+Repository}}$<$ T\+Authentication\+Token $>$ \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_ae15ae65ca994c5ab932d9817a9f7cb7d_ae15ae65ca994c5ab932d9817a9f7cb7d}{Repository}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Akka\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+I\+Logger \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a685737862246db856bf3eb94345fca3f_a685737862246db856bf3eb94345fca3f}{Logger}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Logger. \end{DoxyCompactList}\item 
+I\+Correlation\+Id\+Helper \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_ae1460c9574d7d7b1cb9de2848ae7102e_ae1460c9574d7d7b1cb9de2848ae7102e}{Correlation\+Id\+Helper}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Correlation\+Id\+Helper. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}}$<$ T\+Authentication\+Token $>$ \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a3a73139fe47221bd579949e978d0126d_a3a73139fe47221bd579949e978d0126d}{Authentication\+Token\+Helper}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Authentication\+Token\+Helper$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+Guid \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_ac03d79efc02629b17642c6324ff181c9_ac03d79efc02629b17642c6324ff181c9}{Id}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The identifier of this I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a4b526322c63542b1da2a700ff1b48d0c_a4b526322c63542b1da2a700ff1b48d0c}{Version}}\hspace{0.3cm}{\ttfamily  \mbox{[}get, protected set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The current version of this I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+An I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ that is safe to use within Akka.\+N\+ET 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Authentication\+Token} & The Type of authentication token.\\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a060f981e4c3023aec36e7c6f1cfb3a9d_a060f981e4c3023aec36e7c6f1cfb3a9d}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a060f981e4c3023aec36e7c6f1cfb3a9d_a060f981e4c3023aec36e7c6f1cfb3a9d}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!AkkaAggregateRoot@{AkkaAggregateRoot}}
+\index{AkkaAggregateRoot@{AkkaAggregateRoot}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{AkkaAggregateRoot()}{AkkaAggregateRoot()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Akka\+Aggregate\+Root}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IUnitOfWork}{I\+Unit\+Of\+Work}}$<$ T\+Authentication\+Token $>$}]{unit\+Of\+Work,  }\item[{I\+Logger}]{logger,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository}{I\+Akka\+Aggregate\+Repository}}$<$ T\+Authentication\+Token $>$}]{repository,  }\item[{I\+Correlation\+Id\+Helper}]{correlation\+Id\+Helper,  }\item[{\mbox{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}}$<$ T\+Authentication\+Token $>$}]{authentication\+Token\+Helper }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a060f981e4c3023aec36e7c6f1cfb3a9d_a060f981e4c3023aec36e7c6f1cfb3a9d}{Akka\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$}} 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_aaa135cb26be9e5353986f5611f05c059_aaa135cb26be9e5353986f5611f05c059}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_aaa135cb26be9e5353986f5611f05c059_aaa135cb26be9e5353986f5611f05c059}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!ApplyChange@{ApplyChange}}
+\index{ApplyChange@{ApplyChange}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{ApplyChange()}{ApplyChange()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Apply\+Change (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$ @}]{event }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Call the \char`\"{}\+Apply\char`\"{} method with a signature matching the provided {\itshape event}  without using event replay to this instance. 
+
+This means a method named \char`\"{}\+Apply\char`\"{}, with return type void and one parameter must exist to be applied. If no method exists, nothing is applied The parameter type must match exactly the Type of the provided {\itshape event} . \mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_af8a9bd0e80498b3b54beb7cbec820533_af8a9bd0e80498b3b54beb7cbec820533}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_af8a9bd0e80498b3b54beb7cbec820533_af8a9bd0e80498b3b54beb7cbec820533}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!Execute$<$ TCommand $>$@{Execute$<$ TCommand $>$}}
+\index{Execute$<$ TCommand $>$@{Execute$<$ TCommand $>$}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Execute$<$ TCommand $>$()}{Execute< TCommand >()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Execute$<$ T\+Command $>$ (\begin{DoxyParamCaption}\item[{Action$<$ T\+Command $>$}]{action,  }\item[{T\+Command}]{command }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Executes the provided {\itshape action}  passing it the provided {\itshape command} , then calls Aggregate\+Repository$<$\+T\+Authentication\+Token$>$.\+Publish\+Event 
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Command} : {\em I\+Command$<$T\+Authentication\+Token$>$}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a2d11510fec0129ba318f63f7103aeec0_a2d11510fec0129ba318f63f7103aeec0}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a2d11510fec0129ba318f63f7103aeec0_a2d11510fec0129ba318f63f7103aeec0}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!GetUncommittedChanges@{GetUncommittedChanges}}
+\index{GetUncommittedChanges@{GetUncommittedChanges}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{GetUncommittedChanges()}{GetUncommittedChanges()}}
+{\footnotesize\ttfamily I\+Enumerable$<$\mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$T\+Authentication\+Token$>$ $>$ \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Get\+Uncommitted\+Changes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get all applied changes that haven\textquotesingle{}t yet been committed. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_a22fda414613f5ac0d4371554d7d6473b_a22fda414613f5ac0d4371554d7d6473b}{Cqrs.\+Domain.\+I\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_af6d84b07d4e9475bb88e769ac9081830_af6d84b07d4e9475bb88e769ac9081830}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_af6d84b07d4e9475bb88e769ac9081830_af6d84b07d4e9475bb88e769ac9081830}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!LoadFromHistory@{LoadFromHistory}}
+\index{LoadFromHistory@{LoadFromHistory}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{LoadFromHistory()}{LoadFromHistory()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Load\+From\+History (\begin{DoxyParamCaption}\item[{I\+Enumerable$<$ \mbox{\hyperlink{interfaceCqrs_1_1Events_1_1IEvent}{I\+Event}}$<$ T\+Authentication\+Token $>$$>$}]{history }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Apply all the \mbox{\hyperlink{}{events}} in {\itshape history}  using event replay to this instance. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_afe9329ee26ae68613059189ca64dfe60_afe9329ee26ae68613059189ca64dfe60}{Cqrs.\+Domain.\+I\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a0d2615067175e5f8249bb2dc3d17ee0b_a0d2615067175e5f8249bb2dc3d17ee0b}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a0d2615067175e5f8249bb2dc3d17ee0b_a0d2615067175e5f8249bb2dc3d17ee0b}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!MarkChangesAsCommitted@{MarkChangesAsCommitted}}
+\index{MarkChangesAsCommitted@{MarkChangesAsCommitted}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{MarkChangesAsCommitted()}{MarkChangesAsCommitted()}}
+{\footnotesize\ttfamily virtual void \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Mark\+Changes\+As\+Committed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Mark all applied changes as committed, increment \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a4b526322c63542b1da2a700ff1b48d0c_a4b526322c63542b1da2a700ff1b48d0c}{Version}} and flush the internal collection of changes. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IAggregateRoot_af31116870bbf6566b3eec0b8bc02c6de_af31116870bbf6566b3eec0b8bc02c6de}{Cqrs.\+Domain.\+I\+Aggregate\+Root$<$ T\+Authentication\+Token $>$}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a7da2d3a244e34717ec5af1db8f0042bc_a7da2d3a244e34717ec5af1db8f0042bc}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a7da2d3a244e34717ec5af1db8f0042bc_a7da2d3a244e34717ec5af1db8f0042bc}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!PreStart@{PreStart}}
+\index{PreStart@{PreStart}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{PreStart()}{PreStart()}}
+{\footnotesize\ttfamily override void \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Pre\+Start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+User overridable callback. 
+
+Is called when an Actor is started. Actors are automatically started asynchronously when created. Empty default implementation. 
+
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a3a73139fe47221bd579949e978d0126d_a3a73139fe47221bd579949e978d0126d}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a3a73139fe47221bd579949e978d0126d_a3a73139fe47221bd579949e978d0126d}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!AuthenticationTokenHelper@{AuthenticationTokenHelper}}
+\index{AuthenticationTokenHelper@{AuthenticationTokenHelper}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{AuthenticationTokenHelper}{AuthenticationTokenHelper}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Authentication_1_1IAuthenticationTokenHelper}{I\+Authentication\+Token\+Helper}}$<$T\+Authentication\+Token$>$ \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Authentication_1_1AuthenticationTokenHelper}{Authentication\+Token\+Helper}}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Authentication\+Token\+Helper$<$\+T\+Authentication\+Token$>$. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_ae1460c9574d7d7b1cb9de2848ae7102e_ae1460c9574d7d7b1cb9de2848ae7102e}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_ae1460c9574d7d7b1cb9de2848ae7102e_ae1460c9574d7d7b1cb9de2848ae7102e}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!CorrelationIdHelper@{CorrelationIdHelper}}
+\index{CorrelationIdHelper@{CorrelationIdHelper}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{CorrelationIdHelper}{CorrelationIdHelper}}
+{\footnotesize\ttfamily I\+Correlation\+Id\+Helper \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Correlation\+Id\+Helper\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Correlation\+Id\+Helper. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_ac03d79efc02629b17642c6324ff181c9_ac03d79efc02629b17642c6324ff181c9}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_ac03d79efc02629b17642c6324ff181c9_ac03d79efc02629b17642c6324ff181c9}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!Id@{Id}}
+\index{Id@{Id}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Id}{Id}}
+{\footnotesize\ttfamily Guid \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Id\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected set]}}
+
+
+
+The identifier of this I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a685737862246db856bf3eb94345fca3f_a685737862246db856bf3eb94345fca3f}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a685737862246db856bf3eb94345fca3f_a685737862246db856bf3eb94345fca3f}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!Logger@{Logger}}
+\index{Logger@{Logger}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Logger}{Logger}}
+{\footnotesize\ttfamily I\+Logger \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Logger\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Logger. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_ae15ae65ca994c5ab932d9817a9f7cb7d_ae15ae65ca994c5ab932d9817a9f7cb7d}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_ae15ae65ca994c5ab932d9817a9f7cb7d_ae15ae65ca994c5ab932d9817a9f7cb7d}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!Repository@{Repository}}
+\index{Repository@{Repository}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Repository}{Repository}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Akka_1_1Domain_1_1IAkkaAggregateRepository}{I\+Akka\+Aggregate\+Repository}}$<$T\+Authentication\+Token$>$ \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Repository\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Akka\+Aggregate\+Repository$<$\+T\+Authentication\+Token$>$. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a58b79dc3e0d837e58d95f5cfeb2da9a1_a58b79dc3e0d837e58d95f5cfeb2da9a1}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a58b79dc3e0d837e58d95f5cfeb2da9a1_a58b79dc3e0d837e58d95f5cfeb2da9a1}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!UnitOfWork@{UnitOfWork}}
+\index{UnitOfWork@{UnitOfWork}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{UnitOfWork}{UnitOfWork}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Domain_1_1IUnitOfWork}{I\+Unit\+Of\+Work}}$<$T\+Authentication\+Token$>$ \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.\mbox{\hyperlink{classCqrs_1_1Domain_1_1UnitOfWork}{Unit\+Of\+Work}}\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Unit\+Of\+Work$<$\+T\+Authentication\+Token$>$. 
+
+\mbox{\Hypertarget{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a4b526322c63542b1da2a700ff1b48d0c_a4b526322c63542b1da2a700ff1b48d0c}\label{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot_a4b526322c63542b1da2a700ff1b48d0c_a4b526322c63542b1da2a700ff1b48d0c}} 
+\index{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}!Version@{Version}}
+\index{Version@{Version}!Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$@{Cqrs.Akka.Domain.AkkaAggregateRoot$<$ TAuthenticationToken $>$}}
+\doxysubsubsection{\texorpdfstring{Version}{Version}}
+{\footnotesize\ttfamily int \mbox{\hyperlink{classCqrs_1_1Akka_1_1Domain_1_1AkkaAggregateRoot}{Cqrs.\+Akka.\+Domain.\+Akka\+Aggregate\+Root}}$<$ T\+Authentication\+Token $>$.Version\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected set]}}
+
+
+
+The current version of this I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$. 
+

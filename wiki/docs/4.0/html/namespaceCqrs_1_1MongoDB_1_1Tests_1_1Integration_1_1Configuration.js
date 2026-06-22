@@ -1,0 +1,4 @@
+var namespaceCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1Configuration =
+[
+    [ "TestMongoDbModule", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1Configuration_1_1TestMongoDbModule.html", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1Configuration_1_1TestMongoDbModule" ]
+];

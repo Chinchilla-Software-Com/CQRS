@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.Mongo/DataStores/Indexes/MongoIndex.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">Cqrs.Mongo/DataStores/Indexes</a> - MongoIndex.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2018-02-20</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using Cqrs.Entities;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace Cqrs.Mongo.DataStores.Indexes
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// An index for MongoDB.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         /// &lt;typeparam name=&quot;TEntity&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;IEntity&quot;/&gt; this index is for.&lt;/typeparam&gt;
+<span class="lineNum">      19 </span>            :         public abstract class MongoIndex&lt;TEntity&gt;
+<span class="lineNum">      20 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      21 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      22 </span>            :                 /// Indicates if the index enforces unique values. Defaults to false.
+<span class="lineNum">      23 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      24 </span>            :                 public bool IsUnique { get; protected set; }
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      27 </span>            :                 /// Indicates if the index is in ascending order or descending. Defaults to true meaning ascending order.
+<span class="lineNum">      28 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      29 </span>            :                 public bool IsAcending { get; protected set; }
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      32 </span>            :                 /// The name of the index. Default to the class name removing any instances of &quot;Index&quot; and &quot;MongoIndex&quot; from the name.
+<span class="lineNum">      33 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      34 </span>            :                 public string Name { get; protected set; }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      37 </span>            :                 /// The selectors that the index is comprised of.
+<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      39 </span>            :                 public IEnumerable&lt;System.Linq.Expressions.Expression&lt;Func&lt;TEntity, object&gt;&gt;&gt; Selectors { get; protected set; }
+<span class="lineNum">      40 </span>            : 
+<span class="lineNum">      41 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      42 </span>            :                 /// Instantiate a new instance of &lt;see cref=&quot;MongoIndex{TEntity}&quot;/&gt;.
+<span class="lineNum">      43 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      44 </span><span class="lineCov">          1 :                 protected MongoIndex()</span>
+<span class="lineNum">      45 </span>            :                 {
+<span class="lineNum">      46 </span>            :                         IsUnique = false;
+<span class="lineNum">      47 </span>            :                         IsAcending = true;
+<span class="lineNum">      48 </span>            :                         Name = GetType()
+<span class="lineNum">      49 </span>            :                                 .Name
+<span class="lineNum">      50 </span>            :                                 .Replace(&quot;MongoIndex&quot;, string.Empty)
+<span class="lineNum">      51 </span>            :                                 .Replace(&quot;Index&quot;, string.Empty);
+<span class="lineNum">      52 </span>            :                 }
+<span class="lineNum">      53 </span>            :         }
+<span class="lineNum">      54 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.10</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

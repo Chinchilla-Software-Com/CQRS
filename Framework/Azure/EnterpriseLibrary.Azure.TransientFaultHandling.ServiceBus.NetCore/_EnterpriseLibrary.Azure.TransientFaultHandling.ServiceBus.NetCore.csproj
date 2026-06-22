@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0;net8.0</TargetFramework>
+		<title>Transient Fault Handling Application Block - Service Bus integration .NET Core</title>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Description>
+			A port of EnterpriseLibrary.TransientFaultHandling.ServiceBus for .Net Core
+			The Transient Fault Handling Application Block for Windows Azure ("Topaz") makes your Windows Azure application more resilient to transient failures by providing intelligent retry logic mechanisms.
+		</Description>
+		<Copyright>Copyright ©  2025</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+		<PackageReleaseNotes>
+			Version 6.0
+
+			- Removed .NET 4.0, .NET 4.5, .NET 4.5.1, .NET 4.5.2, .NET 4.6 and , .NET 4.6.2 support. The minimum .NET Framework version is now .NET 4.7.2.
+			- Deprecated .NET 6.0, replaced with .NET 8.0
+		</PackageReleaseNotes>
+		<PackageIcon>images\icon.png</PackageIcon>
+		<readme>README.md</readme>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="tools\init.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<None Include="tools\install.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\icon.png" Link="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>images\</PackagePath>
+		</None>
+		<None Include="..\..\..\README.md" Link="Packaging\README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<DocumentationFile>EnterpriseLibrary.Azure.TransientFaultHandling.ServiceBus.NetCore.xml</DocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="EnterpriseLibrary.TransientFaultHandling.NetCore" version="6.0.1312" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="8.1.1" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.1" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.7.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net8.0' ">
+		<PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.2.0" />
+	</ItemGroup>
+
+</Project>

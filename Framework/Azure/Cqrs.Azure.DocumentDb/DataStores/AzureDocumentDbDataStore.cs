@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Cqrs.Azure.DocumentDb.Entities;
 using Cqrs.DataStores;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using Cqrs.Entities;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
@@ -21,21 +21,46 @@ using Microsoft.Azure.Documents.Linq;
 
 namespace Cqrs.Azure.DocumentDb.DataStores
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> that uses Azure DocumentDB (CosmosDB) for storage.
+	/// </summary>
+	/// <typeparam name="TData">The <see cref="Type"/> of <see cref="IEntity"/> the <see cref="IDataStore{TData}"/> will contain.</typeparam>
 	public class AzureDocumentDbDataStore<TData> : IDataStore<TData>
 		where TData : AzureDocumentDbEntity
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="DocumentClient"/>
+		/// </summary>
 		protected DocumentClient AzureDocumentDbClient { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="Database"/>
+		/// </summary>
 		protected Database AzureDocumentDbDatabase { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="DocumentCollection"/>
+		/// </summary>
 		protected DocumentCollection AzureDocumentDbCollection { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IOrderedQueryable{T}"/>
+		/// </summary>
 		protected IOrderedQueryable<TData> AzureDocumentDbQuery { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IAzureDocumentDbHelper"/>
+		/// </summary>
 		protected IAzureDocumentDbHelper AzureDocumentDbHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiates and Initialises a new instance of the <see cref="AzureDocumentDbDataStore{TData}"/> class.
+		/// </summary>
 		public AzureDocumentDbDataStore(ILogger logger, DocumentClient azureDocumentDbClient, Database azureDocumentDbDatabase, DocumentCollection azureDocumentDbCollection, IOrderedQueryable<TData> azureDocumentDbQuery, IAzureDocumentDbHelper azureDocumentDbHelper)
 		{
 			Logger = logger;
@@ -125,6 +150,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 
 		#region Implementation of IDataStore<TData>
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public void Add(TData data)
 		{
 			Logger.LogDebug("Adding data to the Azure database", "AzureDocumentDbDataStore\\Add");
@@ -141,6 +169,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
 		public void Add(IEnumerable<TData> data)
 		{
 			Logger.LogDebug("Adding data collection to the Azure database", "AzureDocumentDbDataStore\\Add");
@@ -158,14 +189,14 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 		}
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsLogicallyDeleted"/> to true
+		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsDeleted"/> to true
 		/// </summary>
 		public void Remove(TData data)
 		{
 			Logger.LogDebug("Removing data from the Azure database", "AzureDocumentDbDataStore\\Remove");
 			try
 			{
-				data.IsLogicallyDeleted = true;
+				data.IsDeleted = true;
 				Update(data);
 			}
 			finally
@@ -174,6 +205,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
 		public void Destroy(TData data)
 		{
 			Logger.LogDebug("Destroying data from the Azure database", "AzureDocumentDbDataStore\\Destroy");
@@ -198,6 +232,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
 		public void RemoveAll()
 		{
 			Logger.LogDebug("Removing all from the Azure database", "AzureDocumentDbDataStore\\RemoveAll");
@@ -211,6 +248,9 @@ namespace Cqrs.Azure.DocumentDb.DataStores
 			}
 		}
 
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
 		public void Update(TData data)
 		{
 			Logger.LogDebug("Updating data in the Azure database", "AzureDocumentDbDataStore\\Update");

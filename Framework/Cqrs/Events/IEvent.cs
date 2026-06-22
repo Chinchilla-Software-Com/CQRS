@@ -1,12 +1,13 @@
 #region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
 
 using System;
+using System.Runtime.Serialization;
 using Cqrs.Commands;
 using Cqrs.Domain;
 using Cqrs.Entities;
@@ -69,12 +70,25 @@ namespace Cqrs.Events
 	/// ********************************************
 	/// Also see http://cqrs.nu/Faq/commands-and-events.
 	/// </remarks>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public interface IEvent<TAuthenticationToken> : IMessageWithAuthenticationToken<TAuthenticationToken>
 	{
+		/// <summary>
+		/// The ID of the <see cref="IEvent{TAuthenticationToken}"/>
+		/// </summary>
+		[DataMember]
 		Guid Id { get; set; }
 
+		/// <summary>
+		/// The version of the <see cref="IEvent{TAuthenticationToken}"/>
+		/// </summary>
+		[DataMember]
 		int Version { get; set; }
 
+		/// <summary>
+		/// The date and time the event was raised or published.
+		/// </summary>
+		[DataMember]
 		DateTimeOffset TimeStamp { get; set; }
 	}
 }

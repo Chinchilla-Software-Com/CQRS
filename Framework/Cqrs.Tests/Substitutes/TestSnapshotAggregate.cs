@@ -6,9 +6,9 @@ namespace Cqrs.Tests.Substitutes
 {
 	public class TestSnapshotAggregate : SnapshotAggregateRoot<ISingleSignOnToken, TestSnapshotAggregateSnapshot>
 	{
-		public TestSnapshotAggregate()
+		public TestSnapshotAggregate(Guid? id = null)
 		{
-			Id = Guid.NewGuid();
+			Id = id ?? Guid.NewGuid();
 		}
 
 		public bool Restored { get; private set; }

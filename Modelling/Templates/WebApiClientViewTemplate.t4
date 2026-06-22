@@ -1,0 +1,279 @@
+<#@ Include File="TemplateHeader.t4"  #>
+<#@ Modeling ElementType="Microsoft.VisualStudio.Uml.Classes.IClass" Processor="ModelingProcessor" ApplyStereotypes="CSharp" #>
+<#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
+<#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
+<#@ import namespace="Microsoft.VisualStudio.Uml.Classes" #>
+<#@ import namespace="System.Linq" #>
+<#@ Include File="CSharpCommentHelpers.t4" #>
+<#@ Include File="CSharpHelpers.t4" #>
+<#@ Include File="CqrsTemplateHelpers.t4" #>
+<#@ Include File="ModelHelper.t4" #>
+<#@ Output Extension=".cshtml" #>
+<#
+var stereoTypeProperties = this.Element.AppliedStereotypes.Single(property => property.Name == "Service");
+string aggregateRootName = stereoTypeProperties.PropertyInstances
+	.Single(property => property.Name == "AggregateRootName")
+	.Value;
+INamedElement domainElement = (INamedElement)FindDomainElement(this.Element);
+INamedElement aggregate = (INamedElement)AllElements(domainElement, "AggregateRoot").OfType<INamedElement>().Single(e => e.Name == aggregateRootName);
+
+string className = aggregate.Name;
+string moduleName= ((INamedElement)aggregate.Owner).Name;
+
+var appliedStereotypes = aggregate.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
+bool isCreatable = appliedStereotypes.PropertyInstances.Any(property => property.Name == "BuildCreateControllerMethod" && property.Value == "true");
+bool isUpdatable = appliedStereotypes.PropertyInstances.Any(property => property.Name == "BuildUpdateControllerMethod" && property.Value == "true");
+bool isDeletable = appliedStereotypes.PropertyInstances.Any(property => property.Name == "BuildDeleteControllerMethod" && property.Value == "true");
+
+IList<IOperation> collectionMethods = GetMethodList(this.Element).Where(m => m.AppliedStereotypes.Any(property => property.Name == "ServiceMethod")).ToList();
+IOperation getMethod = collectionMethods
+	.SingleOrDefault
+	(
+		m => 
+			m.AppliedStereotypes.Any
+			(
+				property =>
+					property.Name == "ServiceMethod"
+						&&
+					property.PropertyInstances
+						.Any(p => p.Name == "IsWebApiListMethod" && p.Value == "true")
+			)
+	);
+#>
+@{
+	ViewBag.Title = "<#= moduleName #> :: <#= className #>";
+}
+<h2>@ViewBag.Title.</h2>
+
+<table width="100%">
+	<tr valign="top">
+<#
+IList<IProperty> editProperties = new List<IProperty>();
+if (getMethod != null)
+{
+	IParameter returnParameter = getMethod.OwnedParameters.SingleOrDefault(p => p.Direction == ParameterDirectionKind.Return);
+	IType returnParameterType = returnParameter.Type;
+
+	var returnParameterElement = (IClass)returnParameterType.Package.PackagedElements.Single(e => e.Name == returnParameterType.Name);
+	IEnumerable<IProperty> fields = GetPropertyList(returnParameterElement);
+#>
+		<td style="position: relative">
+			<table width="100%">
+				<thead>
+				<tr>
+<#
+	IList<IProperty> listProperties = new List<IProperty>();
+	foreach(IProperty field in fields)
+	{
+		var stp = field.AppliedStereotypes.SingleOrDefault(property => property.Name == "EntityProperty");
+		if (stp != null)
+		{
+			editProperties.Add(field);
+			bool isListable = stp.PropertyInstances
+				.Single(property => property.Name == "IsWebApiListProperty")
+				.Value == "true";
+			if (isListable)
+			{
+				listProperties.Add(field);
+#>
+					<th><#= field.Name #></th>
+<#
+			}
+		}
+	}
+#>
+					<th><button onclick="loadGet();">Reload Data</button></th>
+				</tr>
+				</thead>
+				<tbody id="<#= moduleName #>_<#= className #>_Get"></tbody>
+			</table>
+			<div id="<#= moduleName #>_<#= className #>_Get_Block" style="width: 100%; height: 100%; background-color: black; opacity: 0.5; position: absolute ;top: 0px; left: 0px;">&nbsp;</div>
+			<script language="javascript" type="text/javascript">
+				var loadGet = function () {
+					$("#<#= moduleName #>_<#= className #>_Get_Block").show();
+					$("#<#= moduleName #>_<#= className #>_Get").html("");
+					window.api.<#= className #>.<#= getMethod.Name #>(null, function(event, textStatus, jqXhr) {
+						var <#= className #>s = event.ResultData;
+						for (var i = 0; i < <#= className #>s.length; i++) {
+							var <#= className #> = <#= className #>s[i];
+							$("#<#= moduleName #>_<#= className #>_Get").append("<tr rsn='" + <#= className #>.Rsn + "'><#
+	foreach(IProperty field in listProperties)
+{
+#><td>" + <#= className #>.<#= field.Name #> + "</td><#
+	}
+#><td><input type='button' value='Edit' onclick='loadItem(\"" + <#= className #>.Rsn + "\"<#
+	foreach(IProperty field in editProperties)
+{
+#>, \"" + <#= className #>.<#= field.Name #> + "\"<#
+	}
+#>)' /></td></tr>");
+						}
+						$("#<#= moduleName #>_<#= className #>_Get_Block").hide();
+
+<# if (isCreatable) { #>
+						$("#<#= moduleName #>_<#= className #>_CreateProvider_Button_Create").show();
+<# } #>
+<# if (isUpdatable) { #>
+						$("#<#= moduleName #>_<#= className #>_CreateProvider_Button_Update").hide();
+<# } #>
+<# if (isDeletable) { #>
+						$("#<#= moduleName #>_<#= className #>_CreateProvider_Button_Delete").hide();
+<# } #>
+					});
+				};
+				loadGet();
+			</script>
+		</td>
+<#
+}
+#>
+		<td style="position: relative">
+			<form id="<#= moduleName #>_<#= className #>_CreateProvider">
+				<table>
+					<tr style="display: none;">
+						<th>Rsn</th>
+						<td><input type="hidden" name="Rsn" id="<#= moduleName #>_<#= className #>_CreateProvider__Rsn" /></td>
+					</tr>
+<#
+foreach(IProperty field in editProperties)
+{
+#>
+					<tr style="border-top: 1px solid;">
+						<th><#= field.Name #></th>
+						<td style="margin-top: 5px;"><input type="text" name="<#= field.Name #>" id="<#= moduleName #>_<#= className #>_CreateProvider__<#= field.Name #>" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><#= field.Description #></td>
+					</tr>
+<#
+}
+#>
+					<tr>
+						<td colspan="2" style="text-align: right">
+<# if (isCreatable) { #>
+							<input type="button" value="Create" onclick="executeCreate();" id="<#= moduleName #>_<#= className #>_CreateProvider_Button_Create" />
+<# } #>
+<# if (isUpdatable) { #>
+							<input type="button" value="Update" onclick="executeUpdate();" id="<#= moduleName #>_<#= className #>_CreateProvider_Button_Update" />
+<# } #>
+<# if (isDeletable) { #>
+							<input type="button" value="Delete" onclick="executeDelete();" id="<#= moduleName #>_<#= className #>_CreateProvider_Button_Delete" />
+<# } #>
+							<input type="button" value="Discard" onclick="executeDiscard();" id="<#= moduleName #>_<#= className #>_CreateProvider_Button_Cancel" />
+						</td>
+					</tr>
+				</table>
+			</form>
+			<div id="<#= moduleName #>_<#= className #>_CreateProvider_Block" style="width: 100%; height: 100%; background-color: black; opacity: 0.5; position: absolute ;top: 0px; left: 0px;"></div>
+			<script language="javascript" type="text/javascript">
+				var loadItem = function (rsn<#
+	foreach(IProperty field in editProperties)
+{
+#>, <#= field.Name #><#
+	}
+#>) {
+					document.getElementById("<#= moduleName #>_<#= className #>_CreateProvider__Rsn").value = rsn;
+
+<#
+	foreach(IProperty field in editProperties)
+{
+#>
+					document.getElementById("<#= moduleName #>_<#= className #>_CreateProvider__<#= field.Name #>").value = (<#= field.Name #> == null || <#= field.Name #> == "null") ? "" : <#= field.Name #>;
+<#
+	}
+#>
+					$("#<#= moduleName #>_<#= className #>_CreateProvider_Block").hide();
+
+<# if (isCreatable) { #>
+					$("#<#= moduleName #>_<#= className #>_CreateProvider_Button_Create").hide();
+<# } #>
+<# if (isUpdatable) { #>
+					$("#<#= moduleName #>_<#= className #>_CreateProvider_Button_Update").show();
+<# } #>
+<# if (isDeletable) { #>
+					$("#<#= moduleName #>_<#= className #>_CreateProvider_Button_Delete").show();
+<# } #>
+				};
+				var executeCreate = function () {
+					$("#<#= moduleName #>_<#= className #>_CreateProvider_Block").show();
+					var formData = window.getFormData($("#<#= moduleName #>_<#= className #>_CreateProvider"));
+					window.api.<#= className #>.Create(formData, function (event, textStatus, jqXhr) {
+						document.getElementById("<#= moduleName #>_<#= className #>_CreateProvider__Rsn").value = "";
+<#
+	foreach(IProperty field in editProperties)
+{
+#>
+					document.getElementById("<#= moduleName #>_<#= className #>_CreateProvider__<#= field.Name #>").value = "";
+<#
+	}
+#>
+						loadGet();
+						$("#<#= moduleName #>_<#= className #>_CreateProvider_Block").hide();
+					});
+				};
+				var executeUpdate = function () {
+					$("#<#= moduleName #>_<#= className #>_CreateProvider_Block").show();
+					var formData = window.getFormData($("#<#= moduleName #>_<#= className #>_CreateProvider"));
+					window.api.<#= className #>.Update(formData, function (event, textStatus, jqXhr) {
+						document.getElementById("<#= moduleName #>_<#= className #>_CreateProvider__Rsn").value = "";
+<#
+	foreach(IProperty field in editProperties)
+{
+#>
+					document.getElementById("<#= moduleName #>_<#= className #>_CreateProvider__<#= field.Name #>").value = "";
+<#
+	}
+#>
+						loadGet();
+						$("#<#= moduleName #>_<#= className #>_CreateProvider_Block").hide();
+					});
+				};
+				var executeDelete = function () {
+					$("#<#= moduleName #>_<#= className #>_CreateProvider_Block").show();
+					var formData = window.getFormData($("#<#= moduleName #>_<#= className #>_CreateProvider"));
+					window.api.<#= className #>.Delete(formData, function (event, textStatus, jqXhr) {
+						document.getElementById("<#= moduleName #>_<#= className #>_CreateProvider__Rsn").value = "";
+<#
+	foreach(IProperty field in editProperties)
+{
+#>
+					document.getElementById("<#= moduleName #>_<#= className #>_CreateProvider__<#= field.Name #>").value = "";
+<#
+	}
+#>
+						loadGet();
+						$("#<#= moduleName #>_<#= className #>_CreateProvider_Block").hide();
+					});
+				};
+				var executeDiscard = function () {
+					document.getElementById("<#= moduleName #>_<#= className #>_CreateProvider__Rsn").value = "";
+<#
+	foreach(IProperty field in editProperties)
+{
+#>
+					document.getElementById("<#= moduleName #>_<#= className #>_CreateProvider__<#= field.Name #>").value = "";
+<#
+	}
+#>
+
+<# if (isCreatable) { #>
+					$("#<#= moduleName #>_<#= className #>_CreateProvider_Button_Create").show();
+<# } #>
+<# if (isUpdatable) { #>
+					$("#<#= moduleName #>_<#= className #>_CreateProvider_Button_Update").hide();
+<# } #>
+<# if (isDeletable) { #>
+					$("#<#= moduleName #>_<#= className #>_CreateProvider_Button_Delete").hide();
+<# } #>
+				};
+				$("#<#= moduleName #>_<#= className #>_CreateProvider_Block").hide();
+			</script>
+		</td>
+	</tr>
+</table>
+<#+
+	protected override bool AppliesToElement()
+	{
+		return ShouldGenerateCodeForElement(this.Element) && this.Element.AppliedStereotypes.Any(property => property.Name == "Service");
+	}
+#>

@@ -63,8 +63,27 @@ namespace <#= classNamespace #>.Events
 
 		#region Implementation of IMessage
 
+		/// <summary>
+		/// The correlation id used to group together events and notifications.
+		/// </summary>
 		[DataMember]
 		public Guid CorrelationId { get; set; }
+
+		[DataMember]
+		[Obsolete("Use Frameworks, It's far more flexible and OriginatingFramework")]
+		public FrameworkType Framework { get; set; }
+
+		/// <summary>
+		/// The originating framework this message was sent from.
+		/// </summary>
+		[DataMember]
+		public string OriginatingFramework { get; set; }
+
+		/// <summary>
+		/// The frameworks this <see cref="IMessage"/> has been delivered to/sent via already.
+		/// </summary>
+		[DataMember]
+		public IEnumerable<string> Frameworks { get; set; }
 
 		[Obsolete("Use CorrelationId")]
 		[DataMember]
@@ -73,9 +92,6 @@ namespace <#= classNamespace #>.Events
 			get { return CorrelationId; }
 			set { CorrelationId = value; }
 		}
-
-		[DataMember]
-		public FrameworkType Framework { get; set; }
 
 		#endregion
 
@@ -89,6 +105,18 @@ namespace <#= classNamespace #>.Events
 		{
 			if (!collectionProperty.AppliedStereotypes.Any())
 				continue;
+
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 #>
 		[DataMember]
 		<#= GetPropertyVisibility(collectionProperty) #> <#= GetFullDisplayType(collectionProperty) #> <#= collectionProperty.Name #> { get; private set; }
@@ -96,13 +124,27 @@ namespace <#= classNamespace #>.Events
 <#
 		}
 #>
-
+		/// <summary>
+		/// Instantiates and Initialises a new instance of the <see cref="<#= className #>Created"/> <see cref="IEvent{TAuthenticationToken}"/>.
+		/// </summary>
 		public <#= className #>Created(Guid rsn<#
 		for (int i = 0; i < collectionProperties.Count; i++)
 		{
 			IProperty collectionProperty = collectionProperties.ElementAt(i);
 			if (!collectionProperty.AppliedStereotypes.Any())
 				continue;
+
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 			#>, <#= GetFullDisplayType(collectionProperty) #> <#= GetLowercaseFirstCharacter(collectionProperty.Name) #><#
 		}
 #>)
@@ -113,6 +155,18 @@ namespace <#= classNamespace #>.Events
 		{
 			if (!collectionProperty.AppliedStereotypes.Any())
 				continue;
+
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 #>
 			<#= collectionProperty.Name #> = <#= GetLowercaseFirstCharacter(collectionProperty.Name) #>;
 <#

@@ -1,0 +1,1117 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  commentId: T:Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  id: Specification`3
+  parent: Cqrs.Tests.Extensions.TestHelpers
+  children:
+  - Cqrs.Tests.Extensions.TestHelpers.Specification`3.Aggregate
+  - Cqrs.Tests.Extensions.TestHelpers.Specification`3.BuildHandler
+  - Cqrs.Tests.Extensions.TestHelpers.Specification`3.EventDescriptors
+  - Cqrs.Tests.Extensions.TestHelpers.Specification`3.Given
+  - Cqrs.Tests.Extensions.TestHelpers.Specification`3.PublishedEvents
+  - Cqrs.Tests.Extensions.TestHelpers.Specification`3.Run
+  - Cqrs.Tests.Extensions.TestHelpers.Specification`3.Snapshot
+  - Cqrs.Tests.Extensions.TestHelpers.Specification`3.UnitOfWork
+  - Cqrs.Tests.Extensions.TestHelpers.Specification`3.When
+  langs:
+  - csharp
+  - vb
+  name: Specification<TAggregate, THandler, TCommand>
+  nameWithType: Specification<TAggregate, THandler, TCommand>
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>
+  type: Class
+  source:
+    remote:
+      path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Specification
+    path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+    startLine: 16
+  assemblies:
+  - Cqrs.Tests.Extensions
+  namespace: Cqrs.Tests.Extensions.TestHelpers
+  syntax:
+    content: >-
+      [TestFixture]
+
+      public abstract class Specification<TAggregate, THandler, TCommand>
+          where TAggregate : AggregateRoot<ISingleSignOnToken> where THandler : class, ICommandHandler<ISingleSignOnToken, TCommand> where TCommand : ICommand<ISingleSignOnToken>
+    typeParameters:
+    - id: TAggregate
+    - id: THandler
+    - id: TCommand
+    content.vb: >-
+      <TestFixture>
+
+      Public MustInherit Class Specification(Of TAggregate As AggregateRoot(Of ISingleSignOnToken), THandler As {Class, ICommandHandler(Of ISingleSignOnToken, TCommand)}, TCommand As ICommand(Of ISingleSignOnToken))
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  attributes:
+  - type: NUnit.Framework.TestFixtureAttribute
+    ctor: NUnit.Framework.TestFixtureAttribute.#ctor
+    arguments: []
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand)
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand)
+  name.vb: Specification(Of TAggregate, THandler, TCommand)
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Aggregate
+  commentId: P:Cqrs.Tests.Extensions.TestHelpers.Specification`3.Aggregate
+  id: Aggregate
+  parent: Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  langs:
+  - csharp
+  - vb
+  name: Aggregate
+  nameWithType: Specification<TAggregate, THandler, TCommand>.Aggregate
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.Aggregate
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Aggregate
+    path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+    startLine: 23
+  assemblies:
+  - Cqrs.Tests.Extensions
+  namespace: Cqrs.Tests.Extensions.TestHelpers
+  syntax:
+    content: protected TAggregate Aggregate { get; set; }
+    parameters: []
+    return:
+      type: '{TAggregate}'
+    content.vb: Protected Property Aggregate As TAggregate
+  overload: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Aggregate*
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).Aggregate
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).Aggregate
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.UnitOfWork
+  commentId: P:Cqrs.Tests.Extensions.TestHelpers.Specification`3.UnitOfWork
+  id: UnitOfWork
+  parent: Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  langs:
+  - csharp
+  - vb
+  name: UnitOfWork
+  nameWithType: Specification<TAggregate, THandler, TCommand>.UnitOfWork
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.UnitOfWork
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: UnitOfWork
+    path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+    startLine: 24
+  assemblies:
+  - Cqrs.Tests.Extensions
+  namespace: Cqrs.Tests.Extensions.TestHelpers
+  syntax:
+    content: protected IUnitOfWork<ISingleSignOnToken> UnitOfWork { get; set; }
+    parameters: []
+    return:
+      type: Cqrs.Domain.IUnitOfWork{Cqrs.Authentication.ISingleSignOnToken}
+    content.vb: Protected Property UnitOfWork As IUnitOfWork(Of ISingleSignOnToken)
+  overload: Cqrs.Tests.Extensions.TestHelpers.Specification`3.UnitOfWork*
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).UnitOfWork
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).UnitOfWork
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Given
+  commentId: M:Cqrs.Tests.Extensions.TestHelpers.Specification`3.Given
+  id: Given
+  parent: Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  langs:
+  - csharp
+  - vb
+  name: Given()
+  nameWithType: Specification<TAggregate, THandler, TCommand>.Given()
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.Given()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Given
+    path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+    startLine: 25
+  assemblies:
+  - Cqrs.Tests.Extensions
+  namespace: Cqrs.Tests.Extensions.TestHelpers
+  syntax:
+    content: protected abstract IEnumerable<IEvent<ISingleSignOnToken>> Given()
+    return:
+      type: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{Cqrs.Authentication.ISingleSignOnToken}}
+    content.vb: Protected MustOverride Function Given As IEnumerable(Of IEvent(Of ISingleSignOnToken))
+  overload: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Given*
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).Given()
+  modifiers.csharp:
+  - protected
+  - abstract
+  modifiers.vb:
+  - Protected
+  - MustOverride
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).Given()
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.When
+  commentId: M:Cqrs.Tests.Extensions.TestHelpers.Specification`3.When
+  id: When
+  parent: Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  langs:
+  - csharp
+  - vb
+  name: When()
+  nameWithType: Specification<TAggregate, THandler, TCommand>.When()
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.When()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: When
+    path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+    startLine: 26
+  assemblies:
+  - Cqrs.Tests.Extensions
+  namespace: Cqrs.Tests.Extensions.TestHelpers
+  syntax:
+    content: protected abstract TCommand When()
+    return:
+      type: '{TCommand}'
+    content.vb: Protected MustOverride Function When As TCommand
+  overload: Cqrs.Tests.Extensions.TestHelpers.Specification`3.When*
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).When()
+  modifiers.csharp:
+  - protected
+  - abstract
+  modifiers.vb:
+  - Protected
+  - MustOverride
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).When()
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.BuildHandler
+  commentId: M:Cqrs.Tests.Extensions.TestHelpers.Specification`3.BuildHandler
+  id: BuildHandler
+  parent: Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  langs:
+  - csharp
+  - vb
+  name: BuildHandler()
+  nameWithType: Specification<TAggregate, THandler, TCommand>.BuildHandler()
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.BuildHandler()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: BuildHandler
+    path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+    startLine: 27
+  assemblies:
+  - Cqrs.Tests.Extensions
+  namespace: Cqrs.Tests.Extensions.TestHelpers
+  syntax:
+    content: protected abstract THandler BuildHandler()
+    return:
+      type: '{THandler}'
+    content.vb: Protected MustOverride Function BuildHandler As THandler
+  overload: Cqrs.Tests.Extensions.TestHelpers.Specification`3.BuildHandler*
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).BuildHandler()
+  modifiers.csharp:
+  - protected
+  - abstract
+  modifiers.vb:
+  - Protected
+  - MustOverride
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).BuildHandler()
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Snapshot
+  commentId: P:Cqrs.Tests.Extensions.TestHelpers.Specification`3.Snapshot
+  id: Snapshot
+  parent: Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  langs:
+  - csharp
+  - vb
+  name: Snapshot
+  nameWithType: Specification<TAggregate, THandler, TCommand>.Snapshot
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.Snapshot
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Snapshot
+    path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+    startLine: 29
+  assemblies:
+  - Cqrs.Tests.Extensions
+  namespace: Cqrs.Tests.Extensions.TestHelpers
+  syntax:
+    content: protected Snapshot Snapshot { get; set; }
+    parameters: []
+    return:
+      type: Cqrs.Snapshots.Snapshot
+    content.vb: Protected Property Snapshot As Snapshot
+  overload: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Snapshot*
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).Snapshot
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).Snapshot
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.EventDescriptors
+  commentId: P:Cqrs.Tests.Extensions.TestHelpers.Specification`3.EventDescriptors
+  id: EventDescriptors
+  parent: Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  langs:
+  - csharp
+  - vb
+  name: EventDescriptors
+  nameWithType: Specification<TAggregate, THandler, TCommand>.EventDescriptors
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.EventDescriptors
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: EventDescriptors
+    path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+    startLine: 30
+  assemblies:
+  - Cqrs.Tests.Extensions
+  namespace: Cqrs.Tests.Extensions.TestHelpers
+  syntax:
+    content: protected IList<IEvent<ISingleSignOnToken>> EventDescriptors { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IList{Cqrs.Events.IEvent{Cqrs.Authentication.ISingleSignOnToken}}
+    content.vb: Protected Property EventDescriptors As IList(Of IEvent(Of ISingleSignOnToken))
+  overload: Cqrs.Tests.Extensions.TestHelpers.Specification`3.EventDescriptors*
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).EventDescriptors
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).EventDescriptors
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.PublishedEvents
+  commentId: P:Cqrs.Tests.Extensions.TestHelpers.Specification`3.PublishedEvents
+  id: PublishedEvents
+  parent: Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  langs:
+  - csharp
+  - vb
+  name: PublishedEvents
+  nameWithType: Specification<TAggregate, THandler, TCommand>.PublishedEvents
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.PublishedEvents
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: PublishedEvents
+    path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+    startLine: 31
+  assemblies:
+  - Cqrs.Tests.Extensions
+  namespace: Cqrs.Tests.Extensions.TestHelpers
+  syntax:
+    content: protected IList<IEvent<ISingleSignOnToken>> PublishedEvents { get; set; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IList{Cqrs.Events.IEvent{Cqrs.Authentication.ISingleSignOnToken}}
+    content.vb: Protected Property PublishedEvents As IList(Of IEvent(Of ISingleSignOnToken))
+  overload: Cqrs.Tests.Extensions.TestHelpers.Specification`3.PublishedEvents*
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).PublishedEvents
+  modifiers.csharp:
+  - protected
+  - get
+  - set
+  modifiers.vb:
+  - Protected
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).PublishedEvents
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Run
+  commentId: M:Cqrs.Tests.Extensions.TestHelpers.Specification`3.Run
+  id: Run
+  parent: Cqrs.Tests.Extensions.TestHelpers.Specification`3
+  langs:
+  - csharp
+  - vb
+  name: Run()
+  nameWithType: Specification<TAggregate, THandler, TCommand>.Run()
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.Run()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Run
+    path: Framework/Cqrs.Tests.Extensions/TestHelpers/Specification.cs
+    startLine: 33
+  assemblies:
+  - Cqrs.Tests.Extensions
+  namespace: Cqrs.Tests.Extensions.TestHelpers
+  syntax:
+    content: >-
+      [SetUp]
+
+      public void Run()
+    content.vb: >-
+      <SetUp>
+
+      Public Sub Run
+  overload: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Run*
+  attributes:
+  - type: NUnit.Framework.SetUpAttribute
+    ctor: NUnit.Framework.SetUpAttribute.#ctor
+    arguments: []
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).Run()
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).Run()
+references:
+- uid: Cqrs.Tests.Extensions.TestHelpers
+  commentId: N:Cqrs.Tests.Extensions.TestHelpers
+  isExternal: false
+  name: Cqrs.Tests.Extensions.TestHelpers
+  nameWithType: Cqrs.Tests.Extensions.TestHelpers
+  fullName: Cqrs.Tests.Extensions.TestHelpers
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Aggregate*
+  commentId: Overload:Cqrs.Tests.Extensions.TestHelpers.Specification`3.Aggregate
+  isExternal: false
+  name: Aggregate
+  nameWithType: Specification<TAggregate, THandler, TCommand>.Aggregate
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.Aggregate
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).Aggregate
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).Aggregate
+- uid: '{TAggregate}'
+  commentId: '!:TAggregate'
+  definition: TAggregate
+  name: TAggregate
+  nameWithType: TAggregate
+  fullName: TAggregate
+- uid: TAggregate
+  isExternal: false
+  name: TAggregate
+  nameWithType: TAggregate
+  fullName: TAggregate
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.UnitOfWork*
+  commentId: Overload:Cqrs.Tests.Extensions.TestHelpers.Specification`3.UnitOfWork
+  isExternal: false
+  name: UnitOfWork
+  nameWithType: Specification<TAggregate, THandler, TCommand>.UnitOfWork
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.UnitOfWork
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).UnitOfWork
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).UnitOfWork
+- uid: Cqrs.Domain.IUnitOfWork{Cqrs.Authentication.ISingleSignOnToken}
+  commentId: T:Cqrs.Domain.IUnitOfWork{Cqrs.Authentication.ISingleSignOnToken}
+  parent: Cqrs.Domain
+  definition: Cqrs.Domain.IUnitOfWork`1
+  name: IUnitOfWork<ISingleSignOnToken>
+  nameWithType: IUnitOfWork<ISingleSignOnToken>
+  fullName: Cqrs.Domain.IUnitOfWork<Cqrs.Authentication.ISingleSignOnToken>
+  nameWithType.vb: IUnitOfWork(Of ISingleSignOnToken)
+  fullName.vb: Cqrs.Domain.IUnitOfWork(Of Cqrs.Authentication.ISingleSignOnToken)
+  name.vb: IUnitOfWork(Of ISingleSignOnToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IUnitOfWork`1
+    name: IUnitOfWork
+    nameWithType: IUnitOfWork
+    fullName: Cqrs.Domain.IUnitOfWork
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Authentication.ISingleSignOnToken
+    name: ISingleSignOnToken
+    nameWithType: ISingleSignOnToken
+    fullName: Cqrs.Authentication.ISingleSignOnToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IUnitOfWork`1
+    name: IUnitOfWork
+    nameWithType: IUnitOfWork
+    fullName: Cqrs.Domain.IUnitOfWork
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Authentication.ISingleSignOnToken
+    name: ISingleSignOnToken
+    nameWithType: ISingleSignOnToken
+    fullName: Cqrs.Authentication.ISingleSignOnToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain.IUnitOfWork`1
+  commentId: T:Cqrs.Domain.IUnitOfWork`1
+  isExternal: false
+  name: IUnitOfWork<TAuthenticationToken>
+  nameWithType: IUnitOfWork<TAuthenticationToken>
+  fullName: Cqrs.Domain.IUnitOfWork<TAuthenticationToken>
+  nameWithType.vb: IUnitOfWork(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IUnitOfWork(Of TAuthenticationToken)
+  name.vb: IUnitOfWork(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IUnitOfWork`1
+    name: IUnitOfWork
+    nameWithType: IUnitOfWork
+    fullName: Cqrs.Domain.IUnitOfWork
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IUnitOfWork`1
+    name: IUnitOfWork
+    nameWithType: IUnitOfWork
+    fullName: Cqrs.Domain.IUnitOfWork
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Domain
+  commentId: N:Cqrs.Domain
+  isExternal: false
+  name: Cqrs.Domain
+  nameWithType: Cqrs.Domain
+  fullName: Cqrs.Domain
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Given*
+  commentId: Overload:Cqrs.Tests.Extensions.TestHelpers.Specification`3.Given
+  isExternal: false
+  name: Given
+  nameWithType: Specification<TAggregate, THandler, TCommand>.Given
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.Given
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).Given
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).Given
+- uid: System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{Cqrs.Authentication.ISingleSignOnToken}}
+  commentId: T:System.Collections.Generic.IEnumerable{Cqrs.Events.IEvent{Cqrs.Authentication.ISingleSignOnToken}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<IEvent<ISingleSignOnToken>>
+  nameWithType: IEnumerable<IEvent<ISingleSignOnToken>>
+  fullName: System.Collections.Generic.IEnumerable<Cqrs.Events.IEvent<Cqrs.Authentication.ISingleSignOnToken>>
+  nameWithType.vb: IEnumerable(Of IEvent(Of ISingleSignOnToken))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of Cqrs.Events.IEvent(Of Cqrs.Authentication.ISingleSignOnToken))
+  name.vb: IEnumerable(Of IEvent(Of ISingleSignOnToken))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Authentication.ISingleSignOnToken
+    name: ISingleSignOnToken
+    nameWithType: ISingleSignOnToken
+    fullName: Cqrs.Authentication.ISingleSignOnToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Authentication.ISingleSignOnToken
+    name: ISingleSignOnToken
+    nameWithType: ISingleSignOnToken
+    fullName: Cqrs.Authentication.ISingleSignOnToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: false
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.When*
+  commentId: Overload:Cqrs.Tests.Extensions.TestHelpers.Specification`3.When
+  isExternal: false
+  name: When
+  nameWithType: Specification<TAggregate, THandler, TCommand>.When
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.When
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).When
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).When
+- uid: '{TCommand}'
+  commentId: '!:TCommand'
+  definition: TCommand
+  name: TCommand
+  nameWithType: TCommand
+  fullName: TCommand
+- uid: TCommand
+  isExternal: false
+  name: TCommand
+  nameWithType: TCommand
+  fullName: TCommand
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.BuildHandler*
+  commentId: Overload:Cqrs.Tests.Extensions.TestHelpers.Specification`3.BuildHandler
+  isExternal: false
+  name: BuildHandler
+  nameWithType: Specification<TAggregate, THandler, TCommand>.BuildHandler
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.BuildHandler
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).BuildHandler
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).BuildHandler
+- uid: '{THandler}'
+  commentId: '!:THandler'
+  definition: THandler
+  name: THandler
+  nameWithType: THandler
+  fullName: THandler
+- uid: THandler
+  commentId: '!:THandler'
+  isExternal: false
+  name: THandler
+  nameWithType: THandler
+  fullName: THandler
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Snapshot*
+  commentId: Overload:Cqrs.Tests.Extensions.TestHelpers.Specification`3.Snapshot
+  isExternal: false
+  name: Snapshot
+  nameWithType: Specification<TAggregate, THandler, TCommand>.Snapshot
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.Snapshot
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).Snapshot
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).Snapshot
+- uid: Cqrs.Snapshots.Snapshot
+  commentId: T:Cqrs.Snapshots.Snapshot
+  parent: Cqrs.Snapshots
+  isExternal: false
+  name: Snapshot
+  nameWithType: Snapshot
+  fullName: Cqrs.Snapshots.Snapshot
+- uid: Cqrs.Snapshots
+  commentId: N:Cqrs.Snapshots
+  isExternal: false
+  name: Cqrs.Snapshots
+  nameWithType: Cqrs.Snapshots
+  fullName: Cqrs.Snapshots
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.EventDescriptors*
+  commentId: Overload:Cqrs.Tests.Extensions.TestHelpers.Specification`3.EventDescriptors
+  isExternal: false
+  name: EventDescriptors
+  nameWithType: Specification<TAggregate, THandler, TCommand>.EventDescriptors
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.EventDescriptors
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).EventDescriptors
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).EventDescriptors
+- uid: System.Collections.Generic.IList{Cqrs.Events.IEvent{Cqrs.Authentication.ISingleSignOnToken}}
+  commentId: T:System.Collections.Generic.IList{Cqrs.Events.IEvent{Cqrs.Authentication.ISingleSignOnToken}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IList`1
+  name: IList<IEvent<ISingleSignOnToken>>
+  nameWithType: IList<IEvent<ISingleSignOnToken>>
+  fullName: System.Collections.Generic.IList<Cqrs.Events.IEvent<Cqrs.Authentication.ISingleSignOnToken>>
+  nameWithType.vb: IList(Of IEvent(Of ISingleSignOnToken))
+  fullName.vb: System.Collections.Generic.IList(Of Cqrs.Events.IEvent(Of Cqrs.Authentication.ISingleSignOnToken))
+  name.vb: IList(Of IEvent(Of ISingleSignOnToken))
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: Cqrs.Authentication.ISingleSignOnToken
+    name: ISingleSignOnToken
+    nameWithType: ISingleSignOnToken
+    fullName: Cqrs.Authentication.ISingleSignOnToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: Cqrs.Authentication.ISingleSignOnToken
+    name: ISingleSignOnToken
+    nameWithType: ISingleSignOnToken
+    fullName: Cqrs.Authentication.ISingleSignOnToken
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IList`1
+  commentId: T:System.Collections.Generic.IList`1
+  isExternal: true
+  name: IList<T>
+  nameWithType: IList<T>
+  fullName: System.Collections.Generic.IList<T>
+  nameWithType.vb: IList(Of T)
+  fullName.vb: System.Collections.Generic.IList(Of T)
+  name.vb: IList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IList`1
+    name: IList
+    nameWithType: IList
+    fullName: System.Collections.Generic.IList
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.PublishedEvents*
+  commentId: Overload:Cqrs.Tests.Extensions.TestHelpers.Specification`3.PublishedEvents
+  isExternal: false
+  name: PublishedEvents
+  nameWithType: Specification<TAggregate, THandler, TCommand>.PublishedEvents
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.PublishedEvents
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).PublishedEvents
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).PublishedEvents
+- uid: Cqrs.Tests.Extensions.TestHelpers.Specification`3.Run*
+  commentId: Overload:Cqrs.Tests.Extensions.TestHelpers.Specification`3.Run
+  isExternal: false
+  name: Run
+  nameWithType: Specification<TAggregate, THandler, TCommand>.Run
+  fullName: Cqrs.Tests.Extensions.TestHelpers.Specification<TAggregate, THandler, TCommand>.Run
+  nameWithType.vb: Specification(Of TAggregate, THandler, TCommand).Run
+  fullName.vb: Cqrs.Tests.Extensions.TestHelpers.Specification(Of TAggregate, THandler, TCommand).Run

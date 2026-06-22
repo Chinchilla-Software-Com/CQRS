@@ -1,0 +1,1147 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Events.EventData
+  commentId: T:Cqrs.Events.EventData
+  id: EventData
+  parent: Cqrs.Events
+  children:
+  - Cqrs.Events.EventData.#ctor
+  - Cqrs.Events.EventData.AggregateId
+  - Cqrs.Events.EventData.AggregateRsn
+  - Cqrs.Events.EventData.CorrelationId
+  - Cqrs.Events.EventData.Data
+  - Cqrs.Events.EventData.EventId
+  - Cqrs.Events.EventData.EventType
+  - Cqrs.Events.EventData.Timestamp
+  - Cqrs.Events.EventData.Version
+  langs:
+  - csharp
+  - vb
+  name: EventData
+  nameWithType: EventData
+  fullName: Cqrs.Events.EventData
+  type: Class
+  source:
+    remote:
+      path: Framework/Cqrs/Events/EventData.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: EventData
+    path: Framework/Cqrs/Events/EventData.cs
+    startLine: 19
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nCaptures all the data relevant to an <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref> for an <xref href=\"Cqrs.Events.IEventStore%601\" data-throw-if-not-resolved=\"false\"></xref> to persist.\n"
+  example: []
+  syntax:
+    content: >-
+      [Serializable]
+
+      [DataContract]
+
+      [Table(Name = "EventStore")]
+
+      public class EventData
+    content.vb: >-
+      <Serializable>
+
+      <DataContract>
+
+      <Table(Name:="EventStore")>
+
+      Public Class EventData
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - Cqrs.MongoDB.Events.MongoDbEventData
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  attributes:
+  - type: System.SerializableAttribute
+    ctor: System.SerializableAttribute.#ctor
+    arguments: []
+  - type: System.Runtime.Serialization.DataContractAttribute
+    ctor: System.Runtime.Serialization.DataContractAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.TableAttribute
+    ctor: System.Data.Linq.Mapping.TableAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: Name
+      type: System.String
+      value: EventStore
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: Cqrs.Events.EventData.Data
+  commentId: P:Cqrs.Events.EventData.Data
+  id: Data
+  parent: Cqrs.Events.EventData
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: EventData.Data
+  fullName: Cqrs.Events.EventData.Data
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/EventData.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Data
+    path: Framework/Cqrs/Events/EventData.cs
+    startLine: 27
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nThe data/content of the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      [Column(CanBeNull = false, DbType = "text NOT NULL")]
+
+      public object Data { get; set; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: >-
+      <DataMember>
+
+      <Column(CanBeNull:=False, DbType:="text NOT NULL")>
+
+      Public Property Data As Object
+  overload: Cqrs.Events.EventData.Data*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: CanBeNull
+      type: System.Boolean
+      value: false
+    - name: DbType
+      type: System.String
+      value: text NOT NULL
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: Cqrs.Events.EventData.EventId
+  commentId: P:Cqrs.Events.EventData.EventId
+  id: EventId
+  parent: Cqrs.Events.EventData
+  langs:
+  - csharp
+  - vb
+  name: EventId
+  nameWithType: EventData.EventId
+  fullName: Cqrs.Events.EventData.EventId
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/EventData.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: EventId
+    path: Framework/Cqrs/Events/EventData.cs
+    startLine: 34
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nThe identifier of the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      [Column(IsPrimaryKey = true)]
+
+      public Guid EventId { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: >-
+      <DataMember>
+
+      <Column(IsPrimaryKey:=True)>
+
+      Public Property EventId As Guid
+  overload: Cqrs.Events.EventData.EventId*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: IsPrimaryKey
+      type: System.Boolean
+      value: true
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: Cqrs.Events.EventData.EventType
+  commentId: P:Cqrs.Events.EventData.EventType
+  id: EventType
+  parent: Cqrs.Events.EventData
+  langs:
+  - csharp
+  - vb
+  name: EventType
+  nameWithType: EventData.EventType
+  fullName: Cqrs.Events.EventData.EventType
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/EventData.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: EventType
+    path: Framework/Cqrs/Events/EventData.cs
+    startLine: 41
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nThe <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> of the <xref href=\"Cqrs.Events.IEvent%601\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      [Column(CanBeNull = false)]
+
+      public string EventType { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <DataMember>
+
+      <Column(CanBeNull:=False)>
+
+      Public Property EventType As String
+  overload: Cqrs.Events.EventData.EventType*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: CanBeNull
+      type: System.Boolean
+      value: false
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: Cqrs.Events.EventData.AggregateId
+  commentId: P:Cqrs.Events.EventData.AggregateId
+  id: AggregateId
+  parent: Cqrs.Events.EventData
+  langs:
+  - csharp
+  - vb
+  name: AggregateId
+  nameWithType: EventData.AggregateId
+  fullName: Cqrs.Events.EventData.AggregateId
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/EventData.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: AggregateId
+    path: Framework/Cqrs/Events/EventData.cs
+    startLine: 48
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nThe globally identifier of the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> , meaning it also includes <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> information.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      [Column(CanBeNull = false)]
+
+      public string AggregateId { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <DataMember>
+
+      <Column(CanBeNull:=False)>
+
+      Public Property AggregateId As String
+  overload: Cqrs.Events.EventData.AggregateId*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: CanBeNull
+      type: System.Boolean
+      value: false
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: Cqrs.Events.EventData.AggregateRsn
+  commentId: P:Cqrs.Events.EventData.AggregateRsn
+  id: AggregateRsn
+  parent: Cqrs.Events.EventData
+  langs:
+  - csharp
+  - vb
+  name: AggregateRsn
+  nameWithType: EventData.AggregateRsn
+  fullName: Cqrs.Events.EventData.AggregateRsn
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/EventData.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: AggregateRsn
+    path: Framework/Cqrs/Events/EventData.cs
+    startLine: 55
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nThe identifier of the <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      [Column(CanBeNull = false)]
+
+      public Guid AggregateRsn { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: >-
+      <DataMember>
+
+      <Column(CanBeNull:=False)>
+
+      Public Property AggregateRsn As Guid
+  overload: Cqrs.Events.EventData.AggregateRsn*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: CanBeNull
+      type: System.Boolean
+      value: false
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: Cqrs.Events.EventData.Version
+  commentId: P:Cqrs.Events.EventData.Version
+  id: Version
+  parent: Cqrs.Events.EventData
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: EventData.Version
+  fullName: Cqrs.Events.EventData.Version
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/EventData.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Version
+    path: Framework/Cqrs/Events/EventData.cs
+    startLine: 62
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nThe new version number the targeted <xref href=\"Cqrs.Domain.IAggregateRoot%601\" data-throw-if-not-resolved=\"false\"></xref> or <xref href=\"Cqrs.Domain.ISaga%601\" data-throw-if-not-resolved=\"false\"></xref> that raised this.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      [Column(CanBeNull = false)]
+
+      public long Version { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: >-
+      <DataMember>
+
+      <Column(CanBeNull:=False)>
+
+      Public Property Version As Long
+  overload: Cqrs.Events.EventData.Version*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: CanBeNull
+      type: System.Boolean
+      value: false
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: Cqrs.Events.EventData.Timestamp
+  commentId: P:Cqrs.Events.EventData.Timestamp
+  id: Timestamp
+  parent: Cqrs.Events.EventData
+  langs:
+  - csharp
+  - vb
+  name: Timestamp
+  nameWithType: EventData.Timestamp
+  fullName: Cqrs.Events.EventData.Timestamp
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/EventData.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: Timestamp
+    path: Framework/Cqrs/Events/EventData.cs
+    startLine: 70
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nThe date and time the event was raised or published.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      [Column(CanBeNull = false)]
+
+      public DateTime Timestamp { get; set; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: >-
+      <DataMember>
+
+      <Column(CanBeNull:=False)>
+
+      Public Property Timestamp As Date
+  overload: Cqrs.Events.EventData.Timestamp*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: CanBeNull
+      type: System.Boolean
+      value: false
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: Cqrs.Events.EventData.CorrelationId
+  commentId: P:Cqrs.Events.EventData.CorrelationId
+  id: CorrelationId
+  parent: Cqrs.Events.EventData
+  langs:
+  - csharp
+  - vb
+  name: CorrelationId
+  nameWithType: EventData.CorrelationId
+  fullName: Cqrs.Events.EventData.CorrelationId
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Events/EventData.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: CorrelationId
+    path: Framework/Cqrs/Events/EventData.cs
+    startLine: 77
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nAn identifier used to group together several <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref>. Any <xref href=\"Cqrs.Messages.IMessage\" data-throw-if-not-resolved=\"false\"></xref> with the same <xref href=\"Cqrs.Events.EventData.CorrelationId\" data-throw-if-not-resolved=\"false\"></xref> were triggered by the same initiating request.\n"
+  example: []
+  syntax:
+    content: >-
+      [DataMember]
+
+      [Column(CanBeNull = false)]
+
+      public Guid CorrelationId { get; set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: >-
+      <DataMember>
+
+      <Column(CanBeNull:=False)>
+
+      Public Property CorrelationId As Guid
+  overload: Cqrs.Events.EventData.CorrelationId*
+  attributes:
+  - type: System.Runtime.Serialization.DataMemberAttribute
+    ctor: System.Runtime.Serialization.DataMemberAttribute.#ctor
+    arguments: []
+  - type: System.Data.Linq.Mapping.ColumnAttribute
+    ctor: System.Data.Linq.Mapping.ColumnAttribute.#ctor
+    arguments: []
+    namedArguments:
+    - name: CanBeNull
+      type: System.Boolean
+      value: false
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: Cqrs.Events.EventData.#ctor
+  commentId: M:Cqrs.Events.EventData.#ctor
+  id: '#ctor'
+  parent: Cqrs.Events.EventData
+  langs:
+  - csharp
+  - vb
+  name: EventData()
+  nameWithType: EventData.EventData()
+  fullName: Cqrs.Events.EventData.EventData()
+  type: Constructor
+  source:
+    remote:
+      path: Framework/Cqrs/Events/EventData.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: .ctor
+    path: Framework/Cqrs/Events/EventData.cs
+    startLine: 84
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Events
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Events.EventData\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: public EventData()
+    content.vb: Public Sub New
+  overload: Cqrs.Events.EventData.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: Cqrs.Events.IEvent`1
+  commentId: T:Cqrs.Events.IEvent`1
+  isExternal: false
+  name: IEvent<TAuthenticationToken>
+  nameWithType: IEvent<TAuthenticationToken>
+  fullName: Cqrs.Events.IEvent<TAuthenticationToken>
+  nameWithType.vb: IEvent(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEvent(Of TAuthenticationToken)
+  name.vb: IEvent(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEvent`1
+    name: IEvent
+    nameWithType: IEvent
+    fullName: Cqrs.Events.IEvent
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.IEventStore`1
+  commentId: T:Cqrs.Events.IEventStore`1
+  isExternal: false
+  name: IEventStore<TAuthenticationToken>
+  nameWithType: IEventStore<TAuthenticationToken>
+  fullName: Cqrs.Events.IEventStore<TAuthenticationToken>
+  nameWithType.vb: IEventStore(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Events.IEventStore(Of TAuthenticationToken)
+  name.vb: IEventStore(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Events.IEventStore`1
+    name: IEventStore
+    nameWithType: IEventStore
+    fullName: Cqrs.Events.IEventStore
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events
+  commentId: N:Cqrs.Events
+  isExternal: false
+  name: Cqrs.Events
+  nameWithType: Cqrs.Events
+  fullName: Cqrs.Events
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Events.EventData.Data*
+  commentId: Overload:Cqrs.Events.EventData.Data
+  isExternal: false
+  name: Data
+  nameWithType: EventData.Data
+  fullName: Cqrs.Events.EventData.Data
+- uid: Cqrs.Events.EventData.EventId*
+  commentId: Overload:Cqrs.Events.EventData.EventId
+  isExternal: false
+  name: EventId
+  nameWithType: EventData.EventId
+  fullName: Cqrs.Events.EventData.EventId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Cqrs.Events.EventData.EventType*
+  commentId: Overload:Cqrs.Events.EventData.EventType
+  isExternal: false
+  name: EventType
+  nameWithType: EventData.EventType
+  fullName: Cqrs.Events.EventData.EventType
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: Cqrs.Domain.IAggregateRoot`1
+  commentId: T:Cqrs.Domain.IAggregateRoot`1
+  isExternal: false
+  name: IAggregateRoot<TAuthenticationToken>
+  nameWithType: IAggregateRoot<TAuthenticationToken>
+  fullName: Cqrs.Domain.IAggregateRoot<TAuthenticationToken>
+  nameWithType.vb: IAggregateRoot(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.IAggregateRoot(Of TAuthenticationToken)
+  name.vb: IAggregateRoot(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.IAggregateRoot`1
+    name: IAggregateRoot
+    nameWithType: IAggregateRoot
+    fullName: Cqrs.Domain.IAggregateRoot
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventData.AggregateId*
+  commentId: Overload:Cqrs.Events.EventData.AggregateId
+  isExternal: false
+  name: AggregateId
+  nameWithType: EventData.AggregateId
+  fullName: Cqrs.Events.EventData.AggregateId
+- uid: Cqrs.Events.EventData.AggregateRsn*
+  commentId: Overload:Cqrs.Events.EventData.AggregateRsn
+  isExternal: false
+  name: AggregateRsn
+  nameWithType: EventData.AggregateRsn
+  fullName: Cqrs.Events.EventData.AggregateRsn
+- uid: Cqrs.Domain.ISaga`1
+  commentId: T:Cqrs.Domain.ISaga`1
+  isExternal: false
+  name: ISaga<TAuthenticationToken>
+  nameWithType: ISaga<TAuthenticationToken>
+  fullName: Cqrs.Domain.ISaga<TAuthenticationToken>
+  nameWithType.vb: ISaga(Of TAuthenticationToken)
+  fullName.vb: Cqrs.Domain.ISaga(Of TAuthenticationToken)
+  name.vb: ISaga(Of TAuthenticationToken)
+  spec.csharp:
+  - uid: Cqrs.Domain.ISaga`1
+    name: ISaga
+    nameWithType: ISaga
+    fullName: Cqrs.Domain.ISaga
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: Cqrs.Domain.ISaga`1
+    name: ISaga
+    nameWithType: ISaga
+    fullName: Cqrs.Domain.ISaga
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TAuthenticationToken
+    nameWithType: TAuthenticationToken
+    fullName: TAuthenticationToken
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Events.EventData.Version*
+  commentId: Overload:Cqrs.Events.EventData.Version
+  isExternal: false
+  name: Version
+  nameWithType: EventData.Version
+  fullName: Cqrs.Events.EventData.Version
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  name: Int64
+  nameWithType: Int64
+  fullName: System.Int64
+- uid: Cqrs.Events.EventData.Timestamp*
+  commentId: Overload:Cqrs.Events.EventData.Timestamp
+  isExternal: false
+  name: Timestamp
+  nameWithType: EventData.Timestamp
+  fullName: Cqrs.Events.EventData.Timestamp
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+- uid: Cqrs.Messages.IMessage
+  commentId: T:Cqrs.Messages.IMessage
+  parent: Cqrs.Messages
+  isExternal: false
+  name: IMessage
+  nameWithType: IMessage
+  fullName: Cqrs.Messages.IMessage
+- uid: Cqrs.Events.EventData.CorrelationId
+  commentId: P:Cqrs.Events.EventData.CorrelationId
+  parent: Cqrs.Events.EventData
+  isExternal: false
+  name: CorrelationId
+  nameWithType: EventData.CorrelationId
+  fullName: Cqrs.Events.EventData.CorrelationId
+- uid: Cqrs.Events.EventData.CorrelationId*
+  commentId: Overload:Cqrs.Events.EventData.CorrelationId
+  isExternal: false
+  name: CorrelationId
+  nameWithType: EventData.CorrelationId
+  fullName: Cqrs.Events.EventData.CorrelationId
+- uid: Cqrs.Messages
+  commentId: N:Cqrs.Messages
+  isExternal: false
+  name: Cqrs.Messages
+  nameWithType: Cqrs.Messages
+  fullName: Cqrs.Messages
+- uid: Cqrs.Events.EventData
+  commentId: T:Cqrs.Events.EventData
+  parent: Cqrs.Events
+  isExternal: false
+  name: EventData
+  nameWithType: EventData
+  fullName: Cqrs.Events.EventData
+- uid: Cqrs.Events.EventData.#ctor*
+  commentId: Overload:Cqrs.Events.EventData.#ctor
+  isExternal: false
+  name: EventData
+  nameWithType: EventData.EventData
+  fullName: Cqrs.Events.EventData.EventData

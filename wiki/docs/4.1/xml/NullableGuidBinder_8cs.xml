@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.8.16">
+  <compounddef id="NullableGuidBinder_8cs" kind="file" language="C#">
+    <compoundname>NullableGuidBinder.cs</compoundname>
+    <innerclass refid="classCqrs_1_1Web_1_1Mvc_1_1NullableGuidBinder" prot="public">Cqrs::Web::Mvc::NullableGuidBinder</innerclass>
+    <innernamespace refid="namespaceCqrs">Cqrs</innernamespace>
+    <innernamespace refid="namespaceCqrs_1_1Web">Cqrs::Web</innernamespace>
+    <innernamespace refid="namespaceCqrs_1_1Web_1_1Mvc">Cqrs::Web::Mvc</innernamespace>
+    <innernamespace refid="namespaceSystem_1_1ComponentModel">System::ComponentModel</innernamespace>
+    <innernamespace refid="namespaceSystem_1_1Web_1_1Mvc">System::Web::Mvc</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="preprocessor">#region<sp/>Copyright</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>&lt;copyright<sp/>company=&quot;Chinchilla<sp/>Software<sp/>Limited&quot;&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/><sp/><sp/>Copyright<sp/>Chinchilla<sp/>Software<sp/>Limited.<sp/>All<sp/>rights<sp/>reserved.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>&lt;/copyright&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>//<sp/>-----------------------------------------------------------------------</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="preprocessor">#endregion</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>;</highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>.ComponentModel;</highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="keyword">using</highlight><highlight class="normal"><sp/><ref refid="namespaceSystem" kindref="compound">System</ref>.<ref refid="namespaceSystem_1_1Web" kindref="compound">Web</ref>.Mvc;</highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight></codeline>
+<codeline lineno="13" refid="namespaceCqrs_1_1Web_1_1Mvc" refkind="compound"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal"><ref refid="namespaceCqrs_1_1Web_1_1Mvc" kindref="compound">Cqrs.Web.Mvc</ref></highlight></codeline>
+<codeline lineno="14"><highlight class="normal">{</highlight></codeline>
+<codeline lineno="18" refid="classCqrs_1_1Web_1_1Mvc_1_1NullableGuidBinder" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="classCqrs_1_1Web_1_1Mvc_1_1NullableGuidBinder" kindref="compound">NullableGuidBinder</ref><sp/>:<sp/>DefaultModelBinder</highlight></codeline>
+<codeline lineno="19"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="28"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">object</highlight><highlight class="normal"><sp/><ref refid="classCqrs_1_1Web_1_1Mvc_1_1NullableGuidBinder_ab6dc97f55bdf6a968449f365a807da0a_1ab6dc97f55bdf6a968449f365a807da0a" kindref="member">GetPropertyValue</ref>(ControllerContext<sp/>controllerContext,<sp/>ModelBindingContext<sp/>bindingContext,<sp/>PropertyDescriptor<sp/>propertyDescriptor,<sp/>IModelBinder<sp/>propertyBinder)</highlight></codeline>
+<codeline lineno="29"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(propertyDescriptor.PropertyType<sp/>==<sp/>typeof(Guid))</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">object</highlight><highlight class="normal"><sp/>rawValue<sp/>=<sp/>base.GetPropertyValue(controllerContext,<sp/>bindingContext,<sp/>propertyDescriptor,<sp/>propertyBinder);</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(rawValue<sp/>==<sp/></highlight><highlight class="keyword">null</highlight><highlight class="normal">)</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>Guid.Empty;</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>rawValue;</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>base.GetPropertyValue(controllerContext,<sp/>bindingContext,<sp/>propertyDescriptor,<sp/>propertyBinder);</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="40"><highlight class="normal">}</highlight></codeline>
+    </programlisting>
+    <location file="/opt/buildAgent/work/565751ca98ebc594/Framework/Cqrs.Web.Mvc/NullableGuidBinder.cs"/>
+  </compounddef>
+</doxygen>

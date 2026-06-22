@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -12,19 +12,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Cqrs.DataStores;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 using MongoDB.Driver;
 using Cqrs.Entities;
+using System.Threading.Tasks;
 
 namespace Cqrs.MongoDB.DataStores
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> that uses MongoDB for storage.
+	/// </summary>
+	/// <typeparam name="TData">The <see cref="Type"/> of <see cref="IEntity"/> the <see cref="IDataStore{TData}"/> will contain.</typeparam>
 	public class MongoDbDataStore<TData> : IDataStore<TData>
 		where TData : Entity
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="IMongoCollection{TData}"/>
+		/// </summary>
 		protected IMongoCollection<TData> MongoCollection { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>
+		/// </summary>
 		protected ILogger Logger { get; private set; }
 
+		/// <summary>
+		/// Instantiates and Initialises a new instance of the <see cref="MongoDbDataStore{TData}"/> class.
+		/// </summary>
 		public MongoDbDataStore(ILogger logger, IMongoCollection<TData> mongoCollection)
 		{
 			Logger = logger;
@@ -41,7 +55,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
 		/// </returns>
 		/// <filterpriority>1</filterpriority>
-		public IEnumerator<TData> GetEnumerator()
+		public virtual IEnumerator<TData> GetEnumerator()
 		{
 			return MongoCollection.AsQueryable().GetEnumerator();
 		}
@@ -68,7 +82,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// <returns>
 		/// The <see cref="T:System.Linq.Expressions.Expression"/> that is associated with this instance of <see cref="T:System.Linq.IQueryable"/>.
 		/// </returns>
-		public Expression Expression
+		public virtual Expression Expression
 		{
 			get { return MongoCollection.AsQueryable().Expression; }
 		}
@@ -79,7 +93,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// <returns>
 		/// A <see cref="T:System.Type"/> that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
 		/// </returns>
-		public Type ElementType
+		public virtual Type ElementType
 		{
 			get { return MongoCollection.AsQueryable().ElementType; }
 		}
@@ -90,7 +104,7 @@ namespace Cqrs.MongoDB.DataStores
 		/// <returns>
 		/// The <see cref="T:System.Linq.IQueryProvider"/> that is associated with this data source.
 		/// </returns>
-		public IQueryProvider Provider
+		public virtual IQueryProvider Provider
 		{
 			get { return MongoCollection.AsQueryable().Provider; }
 		}
@@ -99,94 +113,175 @@ namespace Cqrs.MongoDB.DataStores
 
 		#region Implementation of IDataStore<TData>
 
-		public virtual void Add(TData data)
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
+		public virtual
+#if NET472
+			void Add
+#else
+			async Task AddAsync
+#endif
+				(TData data)
 		{
-			Logger.LogDebug("Adding data to the Mongo database", "MongoDataStore\\Add");
+			Logger.LogDebug("Adding data to the Mongo database", "MongoDbDataStore\\Add");
 			try
 			{
 				DateTime start = DateTime.Now;
-				MongoCollection.InsertOne(data);
+#if NET472
+				MongoCollection.InsertOne
+#else
+				await MongoCollection.InsertOneAsync
+#endif
+					(data);
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Adding data in the Mongo database took {0}.", end - start), "MongoDataStore\\Add");
+				Logger.LogDebug($"Adding data in the Mongo database took {end - start}.", "MongoDbDataStore\\Add");
 			}
 			finally
 			{
-				Logger.LogDebug("Adding data to the Mongo database... Done", "MongoDataStore\\Add");
-			}
-		}
-
-		public virtual void Add(IEnumerable<TData> data)
-		{
-			Logger.LogDebug("Adding data collection to the Mongo database", "MongoDataStore\\Add");
-			try
-			{
-				MongoCollection.InsertMany(data);
-			}
-			finally
-			{
-				Logger.LogDebug("Adding data collection to the Mongo database... Done", "MongoDataStore\\Add");
+				Logger.LogDebug("Adding data to the Mongo database... Done", "MongoDbDataStore\\Add");
 			}
 		}
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsLogicallyDeleted"/> to true
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		public virtual void Remove(TData data)
+		public virtual
+#if NET472
+			void Add
+#else
+			async Task AddAsync
+#endif
+				(IEnumerable<TData> data)
 		{
-			Logger.LogDebug("Removing data from the Mongo database", "MongoDataStore\\Remove");
+			Logger.LogDebug("Adding data collection to the Mongo database", "MongoDbDataStore\\Add");
 			try
 			{
-				data.IsLogicallyDeleted = true;
-				Update(data);
+#if NET472
+				MongoCollection.InsertMany
+#else
+				await MongoCollection.InsertManyAsync
+#endif
+					(data);
 			}
 			finally
 			{
-				Logger.LogDebug("Removing data from the Mongo database... Done", "MongoDataStore\\Remove");
+				Logger.LogDebug("Adding data collection to the Mongo database... Done", "MongoDbDataStore\\Add");
 			}
 		}
 
-		public virtual void Destroy(TData data)
+		/// <summary>
+		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsDeleted"/> to true
+		/// </summary>
+		public virtual
+#if NET472
+			void Remove
+#else
+			async Task RemoveAsync
+#endif
+				(TData data)
 		{
-			Logger.LogDebug("Removing data from the Mongo database", "MongoDataStore\\Destroy");
+			Logger.LogDebug("Removing data from the Mongo database", "MongoDbDataStore\\Remove");
+			try
+			{
+				data.IsDeleted = true;
+#if NET472
+				Update
+#else
+				await UpdateAsync
+#endif
+					(data);
+			}
+			finally
+			{
+				Logger.LogDebug("Removing data from the Mongo database... Done", "MongoDbDataStore\\Remove");
+			}
+		}
+
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
+		public virtual
+#if NET472
+			void Destroy
+#else
+			async Task DestroyAsync
+#endif
+				(TData data)
+		{
+			Logger.LogDebug("Removing data from the Mongo database", "MongoDbDataStore\\Destroy");
 			try
 			{
 				DateTime start = DateTime.Now;
-				MongoCollection.DeleteOne(x => x.Rsn == data.Rsn);
+#if NET472
+				MongoCollection.DeleteOne
+#else
+				await MongoCollection.DeleteOneAsync
+#endif
+					(x => x.Rsn == data.Rsn);
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Updating data in the Mongo database took {0}.", end - start), "MongoDataStore\\Update");
+				Logger.LogDebug(string.Format("Updating data in the Mongo database took {0}.", end - start), "MongoDbDataStore\\Update");
 			}
 			finally
 			{
-				Logger.LogDebug("Removing data from the Mongo database... Done", "MongoDataStore\\Destroy");
+				Logger.LogDebug("Removing data from the Mongo database... Done", "MongoDbDataStore\\Destroy");
 			}
 		}
 
-		public virtual void RemoveAll()
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
+		public virtual
+#if NET472
+			void RemoveAll
+#else
+			async Task RemoveAllAsync
+#endif
+				()
 		{
-			Logger.LogDebug("Removing all from the Mongo database", "MongoDataStore\\RemoveAll");
+			Logger.LogDebug("Removing all from the Mongo database", "MongoDbDataStore\\RemoveAll");
 			try
 			{
-				MongoCollection.DeleteMany(x => true);
+#if NET472
+				MongoCollection.DeleteMany
+#else
+				await MongoCollection.DeleteManyAsync
+#endif
+					(x => true);
 			}
 			finally
 			{
-				Logger.LogDebug("Removing all from the Mongo database... Done", "MongoDataStore\\RemoveAll");
+				Logger.LogDebug("Removing all from the Mongo database... Done", "MongoDbDataStore\\RemoveAll");
 			}
 		}
 
-		public virtual void Update(TData data)
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
+		public virtual
+#if NET472
+			void Update
+#else
+			async Task UpdateAsync
+#endif
+				(TData data)
 		{
-			Logger.LogDebug("Updating data in the Mongo database", "MongoDataStore\\Update");
+			Logger.LogDebug("Updating data in the Mongo database", "MongoDbDataStore\\Update");
 			try
 			{
 				DateTime start = DateTime.Now;
-				MongoCollection.ReplaceOne(x => x.Rsn == data.Rsn, data);
+#if NET472
+				MongoCollection.ReplaceOne
+#else
+				await MongoCollection.ReplaceOneAsync
+#endif
+					(x => x.Rsn == data.Rsn, data);
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Updating data in the Mongo database took {0}.", end - start), "MongoDataStore\\Update");
+				Logger.LogDebug($"Updating data in the Mongo database took {end - start}.", "MongoDbDataStore\\Update");
 			}
 			finally
 			{
-				Logger.LogDebug("Updating data to the Mongo database... Done", "MongoDataStore\\Update");
+				Logger.LogDebug("Updating data to the Mongo database... Done", "MongoDbDataStore\\Update");
 			}
 		}
 
@@ -203,5 +298,24 @@ namespace Cqrs.MongoDB.DataStores
 		}
 
 		#endregion
+
+		/// <summary>
+		/// Executes the "repairDatabase" command on the current database.
+		/// </summary>
+		public virtual void Repair()
+		{
+			Logger.LogDebug("Repairing the Mongo database", "MongoDbDataStore\\Repair");
+			try
+			{
+				DateTime start = DateTime.Now;
+				MongoCollection.Database.RunCommand(new JsonCommand<object>("{ repairDatabase: 1 }"));
+				DateTime end = DateTime.Now;
+				Logger.LogDebug($"Repairing the Mongo database took {end - start}.", "MongoDbDataStore\\Repair");
+			}
+			finally
+			{
+				Logger.LogDebug("Repairing the Mongo database... Done", "MongoDbDataStore\\Repair");
+			}
+		}
 	}
 }

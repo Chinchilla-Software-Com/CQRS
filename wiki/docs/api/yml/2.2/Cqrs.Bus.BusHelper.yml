@@ -1,0 +1,1580 @@
+### YamlMime:ManagedReference
+items:
+- uid: Cqrs.Bus.BusHelper
+  commentId: T:Cqrs.Bus.BusHelper
+  id: BusHelper
+  parent: Cqrs.Bus
+  children:
+  - Cqrs.Bus.BusHelper.#ctor(Cqrs.Configuration.IConfigurationManager)
+  - Cqrs.Bus.BusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+  - Cqrs.Bus.BusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+  - Cqrs.Bus.BusHelper.CachedChecks
+  - Cqrs.Bus.BusHelper.ConfigurationManager
+  - Cqrs.Bus.BusHelper.EventBlackListProcessing
+  - Cqrs.Bus.BusHelper.IsEventRequired(System.String)
+  - Cqrs.Bus.BusHelper.IsEventRequired(System.Type)
+  - Cqrs.Bus.BusHelper.RefreshCachedChecks
+  - Cqrs.Bus.BusHelper.StartRefreshCachedChecks
+  langs:
+  - csharp
+  - vb
+  name: BusHelper
+  nameWithType: BusHelper
+  fullName: Cqrs.Bus.BusHelper
+  type: Class
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: BusHelper
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 27
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nA helper for command and event buses that also caches <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> look ups.\n"
+  example: []
+  syntax:
+    content: 'public class BusHelper : IBusHelper'
+    content.vb: >-
+      Public Class BusHelper
+          Implements IBusHelper
+  inheritance:
+  - System.Object
+  implements:
+  - Cqrs.Bus.IBusHelper
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: Cqrs.Bus.BusHelper.#ctor(Cqrs.Configuration.IConfigurationManager)
+  commentId: M:Cqrs.Bus.BusHelper.#ctor(Cqrs.Configuration.IConfigurationManager)
+  id: '#ctor(Cqrs.Configuration.IConfigurationManager)'
+  parent: Cqrs.Bus.BusHelper
+  langs:
+  - csharp
+  - vb
+  name: BusHelper(IConfigurationManager)
+  nameWithType: BusHelper.BusHelper(IConfigurationManager)
+  fullName: Cqrs.Bus.BusHelper.BusHelper(Cqrs.Configuration.IConfigurationManager)
+  type: Constructor
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: .ctor
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 32
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nInstantiates a new instance of <xref href=\"Cqrs.Bus.BusHelper\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  example: []
+  syntax:
+    content: public BusHelper(IConfigurationManager configurationManager)
+    parameters:
+    - id: configurationManager
+      type: Cqrs.Configuration.IConfigurationManager
+    content.vb: Public Sub New(configurationManager As IConfigurationManager)
+  overload: Cqrs.Bus.BusHelper.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: Cqrs.Bus.BusHelper.ConfigurationManager
+  commentId: P:Cqrs.Bus.BusHelper.ConfigurationManager
+  id: ConfigurationManager
+  parent: Cqrs.Bus.BusHelper
+  langs:
+  - csharp
+  - vb
+  name: ConfigurationManager
+  nameWithType: BusHelper.ConfigurationManager
+  fullName: Cqrs.Bus.BusHelper.ConfigurationManager
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: ConfigurationManager
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 46
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nGets or sets the <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected IConfigurationManager ConfigurationManager { get; }
+    parameters: []
+    return:
+      type: Cqrs.Configuration.IConfigurationManager
+    content.vb: Protected ReadOnly Property ConfigurationManager As IConfigurationManager
+  overload: Cqrs.Bus.BusHelper.ConfigurationManager*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: Cqrs.Bus.BusHelper.CachedChecks
+  commentId: P:Cqrs.Bus.BusHelper.CachedChecks
+  id: CachedChecks
+  parent: Cqrs.Bus.BusHelper
+  langs:
+  - csharp
+  - vb
+  name: CachedChecks
+  nameWithType: BusHelper.CachedChecks
+  fullName: Cqrs.Bus.BusHelper.CachedChecks
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: CachedChecks
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 52
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nA collection of <xref href=\"System.Tuple%602\" data-throw-if-not-resolved=\"false\"></xref> holding the configurations value (always a <xref href=\"System.Boolean\" data-throw-if-not-resolved=\"false\"></xref>) and the <xref href=\"System.DateTime\" data-throw-if-not-resolved=\"false\"></xref>\nThe value was last checked, keyed by it&apos;s configuration key.\n"
+  example: []
+  syntax:
+    content: protected IDictionary<string, Tuple<bool, DateTime>> CachedChecks { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IDictionary{System.String,System.Tuple{System.Boolean,System.DateTime}}
+    content.vb: Protected ReadOnly Property CachedChecks As IDictionary(Of String, Tuple(Of Boolean, Date))
+  overload: Cqrs.Bus.BusHelper.CachedChecks*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: Cqrs.Bus.BusHelper.EventBlackListProcessing
+  commentId: P:Cqrs.Bus.BusHelper.EventBlackListProcessing
+  id: EventBlackListProcessing
+  parent: Cqrs.Bus.BusHelper
+  langs:
+  - csharp
+  - vb
+  name: EventBlackListProcessing
+  nameWithType: BusHelper.EventBlackListProcessing
+  fullName: Cqrs.Bus.BusHelper.EventBlackListProcessing
+  type: Property
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: EventBlackListProcessing
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 57
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nThe current value of &quot;Cqrs.MessageBus.BlackListProcessing&quot; from <xref href=\"Cqrs.Bus.BusHelper.ConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected bool EventBlackListProcessing { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Protected ReadOnly Property EventBlackListProcessing As Boolean
+  overload: Cqrs.Bus.BusHelper.EventBlackListProcessing*
+  modifiers.csharp:
+  - protected
+  - get
+  modifiers.vb:
+  - Protected
+  - ReadOnly
+- uid: Cqrs.Bus.BusHelper.RefreshCachedChecks
+  commentId: M:Cqrs.Bus.BusHelper.RefreshCachedChecks
+  id: RefreshCachedChecks
+  parent: Cqrs.Bus.BusHelper
+  langs:
+  - csharp
+  - vb
+  name: RefreshCachedChecks()
+  nameWithType: BusHelper.RefreshCachedChecks()
+  fullName: Cqrs.Bus.BusHelper.RefreshCachedChecks()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: RefreshCachedChecks
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 62
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nRefreshes <xref href=\"Cqrs.Bus.BusHelper.EventBlackListProcessing\" data-throw-if-not-resolved=\"false\"></xref> and every item currently in <xref href=\"Cqrs.Bus.BusHelper.CachedChecks\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  example: []
+  syntax:
+    content: protected virtual void RefreshCachedChecks()
+    content.vb: Protected Overridable Sub RefreshCachedChecks
+  overload: Cqrs.Bus.BusHelper.RefreshCachedChecks*
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+- uid: Cqrs.Bus.BusHelper.StartRefreshCachedChecks
+  commentId: M:Cqrs.Bus.BusHelper.StartRefreshCachedChecks
+  id: StartRefreshCachedChecks
+  parent: Cqrs.Bus.BusHelper
+  langs:
+  - csharp
+  - vb
+  name: StartRefreshCachedChecks()
+  nameWithType: BusHelper.StartRefreshCachedChecks()
+  fullName: Cqrs.Bus.BusHelper.StartRefreshCachedChecks()
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: StartRefreshCachedChecks
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 91
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nStarts <xref href=\"Cqrs.Bus.BusHelper.RefreshCachedChecks\" data-throw-if-not-resolved=\"false\"></xref> in a <xref href=\"System.Threading.Tasks.Task\" data-throw-if-not-resolved=\"false\"></xref> on a one second loop.\n"
+  example: []
+  syntax:
+    content: protected virtual void StartRefreshCachedChecks()
+    content.vb: Protected Overridable Sub StartRefreshCachedChecks
+  overload: Cqrs.Bus.BusHelper.StartRefreshCachedChecks*
+  modifiers.csharp:
+  - protected
+  - virtual
+  modifiers.vb:
+  - Protected
+  - Overridable
+- uid: Cqrs.Bus.BusHelper.IsEventRequired(System.Type)
+  commentId: M:Cqrs.Bus.BusHelper.IsEventRequired(System.Type)
+  id: IsEventRequired(System.Type)
+  parent: Cqrs.Bus.BusHelper
+  langs:
+  - csharp
+  - vb
+  name: IsEventRequired(Type)
+  nameWithType: BusHelper.IsEventRequired(Type)
+  fullName: Cqrs.Bus.BusHelper.IsEventRequired(System.Type)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: IsEventRequired
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 116
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nChecks if a white-list or black-list approach is taken, then checks the <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> to see if a key exists defining if the event is required or not.\nIf the event is required and it cannot be resolved, an error will be raised.\nOtherwise the event will be marked as processed.\n"
+  example: []
+  syntax:
+    content: public virtual bool IsEventRequired(Type messageType)
+    parameters:
+    - id: messageType
+      type: System.Type
+      description: The <xref href="System.Type" data-throw-if-not-resolved="false"></xref> of the message being processed.
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable Function IsEventRequired(messageType As Type) As Boolean
+  overload: Cqrs.Bus.BusHelper.IsEventRequired*
+  implements:
+  - Cqrs.Bus.IBusHelper.IsEventRequired(System.Type)
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+- uid: Cqrs.Bus.BusHelper.IsEventRequired(System.String)
+  commentId: M:Cqrs.Bus.BusHelper.IsEventRequired(System.String)
+  id: IsEventRequired(System.String)
+  parent: Cqrs.Bus.BusHelper
+  langs:
+  - csharp
+  - vb
+  name: IsEventRequired(String)
+  nameWithType: BusHelper.IsEventRequired(String)
+  fullName: Cqrs.Bus.BusHelper.IsEventRequired(System.String)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: IsEventRequired
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 127
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nChecks if a white-list or black-list approach is taken, then checks the <xref href=\"Cqrs.Configuration.IConfigurationManager\" data-throw-if-not-resolved=\"false\"></xref> to see if a key exists defining if the event is required or not.\nIf the event is required and it cannot be resolved, an error will be raised.\nOtherwise the event will be marked as processed.\n"
+  example: []
+  syntax:
+    content: public virtual bool IsEventRequired(string configurationKey)
+    parameters:
+    - id: configurationKey
+      type: System.String
+      description: The configuration key to check.
+    return:
+      type: System.Boolean
+    content.vb: Public Overridable Function IsEventRequired(configurationKey As String) As Boolean
+  overload: Cqrs.Bus.BusHelper.IsEventRequired*
+  implements:
+  - Cqrs.Bus.IBusHelper.IsEventRequired(System.String)
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+- uid: Cqrs.Bus.BusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+  commentId: M:Cqrs.Bus.BusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+  id: BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+  parent: Cqrs.Bus.BusHelper
+  langs:
+  - csharp
+  - vb
+  name: BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper, Action<TMessage>, Boolean, String)
+  nameWithType: BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper, Action<TMessage>, Boolean, String)
+  fullName: Cqrs.Bus.BusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(cdmdotnet.Logging.ITelemetryHelper, System.Action<TMessage>, System.Boolean, System.String)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: BuildTelemeteredActionHandler
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 159
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nBuild a message handler that implements telemetry capturing as well as off thread handling.\n"
+  example: []
+  syntax:
+    content: 'public virtual Action<TMessage> BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper telemetryHelper, Action<TMessage> handler, bool holdMessageLock, string source)where TMessage : IMessage'
+    parameters:
+    - id: telemetryHelper
+      type: cdmdotnet.Logging.ITelemetryHelper
+    - id: handler
+      type: System.Action{{TMessage}}
+    - id: holdMessageLock
+      type: System.Boolean
+    - id: source
+      type: System.String
+    typeParameters:
+    - id: TMessage
+    - id: TAuthenticationToken
+    return:
+      type: System.Action{{TMessage}}
+    content.vb: Public Overridable Function BuildTelemeteredActionHandler(Of TMessage As IMessage, TAuthenticationToken)(telemetryHelper As ITelemetryHelper, handler As Action(Of TMessage), holdMessageLock As Boolean, source As String) As Action(Of TMessage)
+  overload: Cqrs.Bus.BusHelper.BuildTelemeteredActionHandler*
+  implements:
+  - Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{{TMessage}},System.Boolean,System.String)
+  nameWithType.vb: BusHelper.BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)(ITelemetryHelper, Action(Of TMessage), Boolean, String)
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+  fullName.vb: Cqrs.Bus.BusHelper.BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)(cdmdotnet.Logging.ITelemetryHelper, System.Action(Of TMessage), System.Boolean, System.String)
+  name.vb: BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)(ITelemetryHelper, Action(Of TMessage), Boolean, String)
+- uid: Cqrs.Bus.BusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+  commentId: M:Cqrs.Bus.BusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+  id: BuildActionHandler``1(System.Action{``0},System.Boolean)
+  parent: Cqrs.Bus.BusHelper
+  langs:
+  - csharp
+  - vb
+  name: BuildActionHandler<TMessage>(Action<TMessage>, Boolean)
+  nameWithType: BusHelper.BuildActionHandler<TMessage>(Action<TMessage>, Boolean)
+  fullName: Cqrs.Bus.BusHelper.BuildActionHandler<TMessage>(System.Action<TMessage>, System.Boolean)
+  type: Method
+  source:
+    remote:
+      path: Framework/Cqrs/Bus/BusHelper.cs
+      branch: features/documentation
+      repo: https://github.com/Chinchilla-Software-Com/CQRS.git
+    id: BuildActionHandler
+    path: Framework/Cqrs/Bus/BusHelper.cs
+    startLine: 270
+  assemblies:
+  - Cqrs
+  namespace: Cqrs.Bus
+  summary: "\nBuild a message handler that implements telemetry capturing as well as off thread handling.\n"
+  example: []
+  syntax:
+    content: 'public virtual Action<TMessage> BuildActionHandler<TMessage>(Action<TMessage> handler, bool holdMessageLock)where TMessage : IMessage'
+    parameters:
+    - id: handler
+      type: System.Action{{TMessage}}
+    - id: holdMessageLock
+      type: System.Boolean
+    typeParameters:
+    - id: TMessage
+    return:
+      type: System.Action{{TMessage}}
+    content.vb: Public Overridable Function BuildActionHandler(Of TMessage As IMessage)(handler As Action(Of TMessage), holdMessageLock As Boolean) As Action(Of TMessage)
+  overload: Cqrs.Bus.BusHelper.BuildActionHandler*
+  implements:
+  - Cqrs.Bus.IBusHelper.BuildActionHandler``1(System.Action{{TMessage}},System.Boolean)
+  nameWithType.vb: BusHelper.BuildActionHandler(Of TMessage)(Action(Of TMessage), Boolean)
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+  fullName.vb: Cqrs.Bus.BusHelper.BuildActionHandler(Of TMessage)(System.Action(Of TMessage), System.Boolean)
+  name.vb: BuildActionHandler(Of TMessage)(Action(Of TMessage), Boolean)
+references:
+- uid: Cqrs.Configuration.IConfigurationManager
+  commentId: T:Cqrs.Configuration.IConfigurationManager
+  parent: Cqrs.Configuration
+  isExternal: false
+  name: IConfigurationManager
+  nameWithType: IConfigurationManager
+  fullName: Cqrs.Configuration.IConfigurationManager
+- uid: Cqrs.Bus
+  commentId: N:Cqrs.Bus
+  isExternal: false
+  name: Cqrs.Bus
+  nameWithType: Cqrs.Bus
+  fullName: Cqrs.Bus
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: Cqrs.Bus.IBusHelper
+  commentId: T:Cqrs.Bus.IBusHelper
+  parent: Cqrs.Bus
+  isExternal: false
+  name: IBusHelper
+  nameWithType: IBusHelper
+  fullName: Cqrs.Bus.IBusHelper
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Configuration
+  commentId: N:Cqrs.Configuration
+  isExternal: false
+  name: Cqrs.Configuration
+  nameWithType: Cqrs.Configuration
+  fullName: Cqrs.Configuration
+- uid: System
+  commentId: N:System
+  isExternal: false
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Cqrs.Bus.BusHelper
+  commentId: T:Cqrs.Bus.BusHelper
+  isExternal: false
+  name: BusHelper
+  nameWithType: BusHelper
+  fullName: Cqrs.Bus.BusHelper
+- uid: Cqrs.Bus.BusHelper.#ctor*
+  commentId: Overload:Cqrs.Bus.BusHelper.#ctor
+  isExternal: false
+  name: BusHelper
+  nameWithType: BusHelper.BusHelper
+  fullName: Cqrs.Bus.BusHelper.BusHelper
+- uid: Cqrs.Bus.BusHelper.ConfigurationManager*
+  commentId: Overload:Cqrs.Bus.BusHelper.ConfigurationManager
+  isExternal: false
+  name: ConfigurationManager
+  nameWithType: BusHelper.ConfigurationManager
+  fullName: Cqrs.Bus.BusHelper.ConfigurationManager
+- uid: System.Tuple`2
+  commentId: T:System.Tuple`2
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+- uid: Cqrs.Bus.BusHelper.CachedChecks*
+  commentId: Overload:Cqrs.Bus.BusHelper.CachedChecks
+  isExternal: false
+  name: CachedChecks
+  nameWithType: BusHelper.CachedChecks
+  fullName: Cqrs.Bus.BusHelper.CachedChecks
+- uid: System.Collections.Generic.IDictionary{System.String,System.Tuple{System.Boolean,System.DateTime}}
+  commentId: T:System.Collections.Generic.IDictionary{System.String,System.Tuple{System.Boolean,System.DateTime}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IDictionary`2
+  name: IDictionary<String, Tuple<Boolean, DateTime>>
+  nameWithType: IDictionary<String, Tuple<Boolean, DateTime>>
+  fullName: System.Collections.Generic.IDictionary<System.String, System.Tuple<System.Boolean, System.DateTime>>
+  nameWithType.vb: IDictionary(Of String, Tuple(Of Boolean, DateTime))
+  fullName.vb: System.Collections.Generic.IDictionary(Of System.String, System.Tuple(Of System.Boolean, System.DateTime))
+  name.vb: IDictionary(Of String, Tuple(Of Boolean, DateTime))
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    nameWithType: IDictionary
+    fullName: System.Collections.Generic.IDictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Tuple`2
+    name: Tuple
+    nameWithType: Tuple
+    fullName: System.Tuple
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.DateTime
+    name: DateTime
+    nameWithType: DateTime
+    fullName: System.DateTime
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    nameWithType: IDictionary
+    fullName: System.Collections.Generic.IDictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Tuple`2
+    name: Tuple
+    nameWithType: Tuple
+    fullName: System.Tuple
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.DateTime
+    name: DateTime
+    nameWithType: DateTime
+    fullName: System.DateTime
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IDictionary`2
+  commentId: T:System.Collections.Generic.IDictionary`2
+  isExternal: true
+  name: IDictionary<TKey, TValue>
+  nameWithType: IDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IDictionary<TKey, TValue>
+  nameWithType.vb: IDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IDictionary(Of TKey, TValue)
+  name.vb: IDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    nameWithType: IDictionary
+    fullName: System.Collections.Generic.IDictionary
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    nameWithType: IDictionary
+    fullName: System.Collections.Generic.IDictionary
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TKey
+    nameWithType: TKey
+    fullName: TKey
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: TValue
+    nameWithType: TValue
+    fullName: TValue
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: false
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: Cqrs.Bus.BusHelper.ConfigurationManager
+  commentId: P:Cqrs.Bus.BusHelper.ConfigurationManager
+- uid: Cqrs.Bus.BusHelper.EventBlackListProcessing*
+  commentId: Overload:Cqrs.Bus.BusHelper.EventBlackListProcessing
+  isExternal: false
+  name: EventBlackListProcessing
+  nameWithType: BusHelper.EventBlackListProcessing
+  fullName: Cqrs.Bus.BusHelper.EventBlackListProcessing
+- uid: Cqrs.Bus.BusHelper.EventBlackListProcessing
+  commentId: P:Cqrs.Bus.BusHelper.EventBlackListProcessing
+- uid: Cqrs.Bus.BusHelper.CachedChecks
+  commentId: P:Cqrs.Bus.BusHelper.CachedChecks
+- uid: Cqrs.Bus.BusHelper.RefreshCachedChecks*
+  commentId: Overload:Cqrs.Bus.BusHelper.RefreshCachedChecks
+  isExternal: false
+  name: RefreshCachedChecks
+  nameWithType: BusHelper.RefreshCachedChecks
+  fullName: Cqrs.Bus.BusHelper.RefreshCachedChecks
+- uid: Cqrs.Bus.BusHelper.RefreshCachedChecks
+  commentId: M:Cqrs.Bus.BusHelper.RefreshCachedChecks
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: Cqrs.Bus.BusHelper.StartRefreshCachedChecks*
+  commentId: Overload:Cqrs.Bus.BusHelper.StartRefreshCachedChecks
+  isExternal: false
+  name: StartRefreshCachedChecks
+  nameWithType: BusHelper.StartRefreshCachedChecks
+  fullName: Cqrs.Bus.BusHelper.StartRefreshCachedChecks
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: false
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: Cqrs.Bus.BusHelper.IsEventRequired*
+  commentId: Overload:Cqrs.Bus.BusHelper.IsEventRequired
+  isExternal: false
+  name: IsEventRequired
+  nameWithType: BusHelper.IsEventRequired
+  fullName: Cqrs.Bus.BusHelper.IsEventRequired
+- uid: Cqrs.Bus.IBusHelper.IsEventRequired(System.Type)
+  commentId: M:Cqrs.Bus.IBusHelper.IsEventRequired(System.Type)
+  parent: Cqrs.Bus.IBusHelper
+  isExternal: true
+  name: IsEventRequired(Type)
+  nameWithType: IBusHelper.IsEventRequired(Type)
+  fullName: Cqrs.Bus.IBusHelper.IsEventRequired(System.Type)
+  spec.csharp:
+  - uid: Cqrs.Bus.IBusHelper.IsEventRequired(System.Type)
+    name: IsEventRequired
+    nameWithType: IBusHelper.IsEventRequired
+    fullName: Cqrs.Bus.IBusHelper.IsEventRequired
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Bus.IBusHelper.IsEventRequired(System.Type)
+    name: IsEventRequired
+    nameWithType: IBusHelper.IsEventRequired
+    fullName: Cqrs.Bus.IBusHelper.IsEventRequired
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Bus.IBusHelper.IsEventRequired(System.String)
+  commentId: M:Cqrs.Bus.IBusHelper.IsEventRequired(System.String)
+  parent: Cqrs.Bus.IBusHelper
+  isExternal: true
+  name: IsEventRequired(String)
+  nameWithType: IBusHelper.IsEventRequired(String)
+  fullName: Cqrs.Bus.IBusHelper.IsEventRequired(System.String)
+  spec.csharp:
+  - uid: Cqrs.Bus.IBusHelper.IsEventRequired(System.String)
+    name: IsEventRequired
+    nameWithType: IBusHelper.IsEventRequired
+    fullName: Cqrs.Bus.IBusHelper.IsEventRequired
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Bus.IBusHelper.IsEventRequired(System.String)
+    name: IsEventRequired
+    nameWithType: IBusHelper.IsEventRequired
+    fullName: Cqrs.Bus.IBusHelper.IsEventRequired
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: Cqrs.Bus.BusHelper.BuildTelemeteredActionHandler*
+  commentId: Overload:Cqrs.Bus.BusHelper.BuildTelemeteredActionHandler
+  isExternal: false
+  name: BuildTelemeteredActionHandler
+  nameWithType: BusHelper.BuildTelemeteredActionHandler
+  fullName: Cqrs.Bus.BusHelper.BuildTelemeteredActionHandler
+- uid: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{{TMessage}},System.Boolean,System.String)
+  commentId: M:Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+  parent: Cqrs.Bus.IBusHelper
+  definition: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+  name: BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper, Action<TMessage>, Boolean, String)
+  nameWithType: IBusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper, Action<TMessage>, Boolean, String)
+  fullName: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(cdmdotnet.Logging.ITelemetryHelper, System.Action<TMessage>, System.Boolean, System.String)
+  nameWithType.vb: IBusHelper.BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)(ITelemetryHelper, Action(Of TMessage), Boolean, String)
+  fullName.vb: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)(cdmdotnet.Logging.ITelemetryHelper, System.Action(Of TMessage), System.Boolean, System.String)
+  name.vb: BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)(ITelemetryHelper, Action(Of TMessage), Boolean, String)
+  spec.csharp:
+  - uid: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+    name: BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>
+    nameWithType: IBusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>
+    fullName: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: cdmdotnet.Logging.ITelemetryHelper
+    name: ITelemetryHelper
+    nameWithType: ITelemetryHelper
+    fullName: cdmdotnet.Logging.ITelemetryHelper
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+    name: BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)
+    nameWithType: IBusHelper.BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)
+    fullName: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: cdmdotnet.Logging.ITelemetryHelper
+    name: ITelemetryHelper
+    nameWithType: ITelemetryHelper
+    fullName: cdmdotnet.Logging.ITelemetryHelper
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: cdmdotnet.Logging.ITelemetryHelper
+  commentId: T:cdmdotnet.Logging.ITelemetryHelper
+  parent: cdmdotnet.Logging
+  isExternal: true
+  name: ITelemetryHelper
+  nameWithType: ITelemetryHelper
+  fullName: cdmdotnet.Logging.ITelemetryHelper
+- uid: System.Action{{TMessage}}
+  commentId: T:System.Action{``0}
+  parent: System
+  definition: System.Action`1
+  name: Action<TMessage>
+  nameWithType: Action<TMessage>
+  fullName: System.Action<TMessage>
+  nameWithType.vb: Action(Of TMessage)
+  fullName.vb: System.Action(Of TMessage)
+  name.vb: Action(Of TMessage)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+  commentId: M:Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+  isExternal: true
+  name: BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper, Action<TMessage>, Boolean, String)
+  nameWithType: IBusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(ITelemetryHelper, Action<TMessage>, Boolean, String)
+  fullName: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>(cdmdotnet.Logging.ITelemetryHelper, System.Action<TMessage>, System.Boolean, System.String)
+  nameWithType.vb: IBusHelper.BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)(ITelemetryHelper, Action(Of TMessage), Boolean, String)
+  fullName.vb: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)(cdmdotnet.Logging.ITelemetryHelper, System.Action(Of TMessage), System.Boolean, System.String)
+  name.vb: BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)(ITelemetryHelper, Action(Of TMessage), Boolean, String)
+  spec.csharp:
+  - uid: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+    name: BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>
+    nameWithType: IBusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>
+    fullName: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler<TMessage, TAuthenticationToken>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: cdmdotnet.Logging.ITelemetryHelper
+    name: ITelemetryHelper
+    nameWithType: ITelemetryHelper
+    fullName: cdmdotnet.Logging.ITelemetryHelper
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler``2(cdmdotnet.Logging.ITelemetryHelper,System.Action{``0},System.Boolean,System.String)
+    name: BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)
+    nameWithType: IBusHelper.BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)
+    fullName: Cqrs.Bus.IBusHelper.BuildTelemeteredActionHandler(Of TMessage, TAuthenticationToken)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: cdmdotnet.Logging.ITelemetryHelper
+    name: ITelemetryHelper
+    nameWithType: ITelemetryHelper
+    fullName: cdmdotnet.Logging.ITelemetryHelper
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: cdmdotnet.Logging
+  commentId: N:cdmdotnet.Logging
+  isExternal: false
+  name: cdmdotnet.Logging
+  nameWithType: cdmdotnet.Logging
+  fullName: cdmdotnet.Logging
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Bus.BusHelper.BuildActionHandler*
+  commentId: Overload:Cqrs.Bus.BusHelper.BuildActionHandler
+  isExternal: false
+  name: BuildActionHandler
+  nameWithType: BusHelper.BuildActionHandler
+  fullName: Cqrs.Bus.BusHelper.BuildActionHandler
+- uid: Cqrs.Bus.IBusHelper.BuildActionHandler``1(System.Action{{TMessage}},System.Boolean)
+  commentId: M:Cqrs.Bus.IBusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+  parent: Cqrs.Bus.IBusHelper
+  definition: Cqrs.Bus.IBusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+  name: BuildActionHandler<TMessage>(Action<TMessage>, Boolean)
+  nameWithType: IBusHelper.BuildActionHandler<TMessage>(Action<TMessage>, Boolean)
+  fullName: Cqrs.Bus.IBusHelper.BuildActionHandler<TMessage>(System.Action<TMessage>, System.Boolean)
+  nameWithType.vb: IBusHelper.BuildActionHandler(Of TMessage)(Action(Of TMessage), Boolean)
+  fullName.vb: Cqrs.Bus.IBusHelper.BuildActionHandler(Of TMessage)(System.Action(Of TMessage), System.Boolean)
+  name.vb: BuildActionHandler(Of TMessage)(Action(Of TMessage), Boolean)
+  spec.csharp:
+  - uid: Cqrs.Bus.IBusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+    name: BuildActionHandler<TMessage>
+    nameWithType: IBusHelper.BuildActionHandler<TMessage>
+    fullName: Cqrs.Bus.IBusHelper.BuildActionHandler<TMessage>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Bus.IBusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+    name: BuildActionHandler(Of TMessage)
+    nameWithType: IBusHelper.BuildActionHandler(Of TMessage)
+    fullName: Cqrs.Bus.IBusHelper.BuildActionHandler(Of TMessage)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: Cqrs.Bus.IBusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+  commentId: M:Cqrs.Bus.IBusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+  isExternal: true
+  name: BuildActionHandler<TMessage>(Action<TMessage>, Boolean)
+  nameWithType: IBusHelper.BuildActionHandler<TMessage>(Action<TMessage>, Boolean)
+  fullName: Cqrs.Bus.IBusHelper.BuildActionHandler<TMessage>(System.Action<TMessage>, System.Boolean)
+  nameWithType.vb: IBusHelper.BuildActionHandler(Of TMessage)(Action(Of TMessage), Boolean)
+  fullName.vb: Cqrs.Bus.IBusHelper.BuildActionHandler(Of TMessage)(System.Action(Of TMessage), System.Boolean)
+  name.vb: BuildActionHandler(Of TMessage)(Action(Of TMessage), Boolean)
+  spec.csharp:
+  - uid: Cqrs.Bus.IBusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+    name: BuildActionHandler<TMessage>
+    nameWithType: IBusHelper.BuildActionHandler<TMessage>
+    fullName: Cqrs.Bus.IBusHelper.BuildActionHandler<TMessage>
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: Cqrs.Bus.IBusHelper.BuildActionHandler``1(System.Action{``0},System.Boolean)
+    name: BuildActionHandler(Of TMessage)
+    nameWithType: IBusHelper.BuildActionHandler(Of TMessage)
+    fullName: Cqrs.Bus.IBusHelper.BuildActionHandler(Of TMessage)
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Action`1
+    name: Action
+    nameWithType: Action
+    fullName: System.Action
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TMessage
+    nameWithType: TMessage
+    fullName: TMessage
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )

@@ -1,5 +1,19 @@
-﻿namespace Cqrs.Services
+﻿#region Copyright
+// -----------------------------------------------------------------------
+// <copyright company="Chinchilla Software Limited">
+//     Copyright Chinchilla Software Limited. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+#endregion
+
+using Cqrs.Domain;
+using System.Threading.Tasks;
+
+namespace Cqrs.Services
 {
+	/// <summary>
+	/// Provides a basic container to control how the <see cref="IUnitOfWork{TAuthenticationToken}"/> is accessed.
+	/// </summary>
 	public interface IUnitOfWorkService
 	{
 		/// <summary>
@@ -16,6 +30,11 @@
 		/// <returns>
 		/// true if the provided <paramref name="commiter"/> is the Committer, false otherwise.
 		/// </returns>
-		bool Commit(object commiter);
+#if NET472
+		bool Commit
+#else
+		Task<bool> CommitAsync
+#endif
+			(object commiter);
 	}
 }

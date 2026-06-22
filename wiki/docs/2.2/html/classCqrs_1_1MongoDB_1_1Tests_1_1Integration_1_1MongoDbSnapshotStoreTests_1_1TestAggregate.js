@@ -1,0 +1,11 @@
+var classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate =
+[
+    [ "TestAggregate", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate_a7cba23b8bfc80942c64ac97116d078ed.html#a7cba23b8bfc80942c64ac97116d078ed", null ],
+    [ "CreateSnapshot", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate_a1a38ed933432bc5ab1bf4b0b5ed51caa.html#a1a38ed933432bc5ab1bf4b0b5ed51caa", null ],
+    [ "GenerateRandomNumber", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate_abf4cc55c292b34c8a507d80f14d544d3.html#abf4cc55c292b34c8a507d80f14d544d3", null ],
+    [ "RestoreFromSnapshot", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate_aa1d4be82ca1c195882f36578a551dfb2.html#aa1d4be82ca1c195882f36578a551dfb2", null ],
+    [ "CurrentRandomNumber", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate_a260e506ff101c1d919ce83aeff524ddc.html#a260e506ff101c1d919ce83aeff524ddc", null ],
+    [ "DependencyResolver", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate_a117ecb0c2df2f06791397dbc93a11997.html#a117ecb0c2df2f06791397dbc93a11997", null ],
+    [ "Logger", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate_a8486f2a3faec991bcac71d70c7b012e6.html#a8486f2a3faec991bcac71d70c7b012e6", null ],
+    [ "Rsn", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1MongoDbSnapshotStoreTests_1_1TestAggregate_a842d2f7ecfd40b19831664f5e7975e6d.html#a842d2f7ecfd40b19831664f5e7975e6d", null ]
+];

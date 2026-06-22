@@ -1,0 +1,7 @@
+var classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDbSnapshotStoreConnectionStringFactory =
+[
+    [ "GetSnapshotStoreConnectionString", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDbSnapshotStoreConnectionStringFactory_ab75d7becd2ca0feb70315778cfa63b9c.html#ab75d7becd2ca0feb70315778cfa63b9c", null ],
+    [ "GetSnapshotStoreDatabaseName", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDbSnapshotStoreConnectionStringFactory_aec64598d970898309a086123b7867ab3.html#aec64598d970898309a086123b7867ab3", null ],
+    [ "DatabaseName", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDbSnapshotStoreConnectionStringFactory_a7c9e2a69f78de292d276cca3ee740394.html#a7c9e2a69f78de292d276cca3ee740394", null ],
+    [ "Query", "classCqrs_1_1MongoDB_1_1Tests_1_1Integration_1_1TestMongoDbSnapshotStoreConnectionStringFactory.html#abbd9dc9529cdb7acd212ec23a417de99", null ]
+];

@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
+		<RootNamespace>Cqrs.Scheduler.Commands</RootNamespace>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<title>Scheduler Commands for CQRS.NET</title>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Description>Commands used by the CQRS.NET Scheduler</Description>
+		<Copyright>Copyright ©  2025</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+		<PackageReleaseNotes>
+			Version 6.0
+
+			- Removed .NET 4.0, .NET 4.5, .NET 4.5.1, .NET 4.5.2, .NET 4.6 and , .NET 4.6.2 support. The minimum .NET Framework version is now .NET 4.7.2.
+			- Deprecated .NET 6.0, replaced with .NET 8.0
+		</PackageReleaseNotes>
+		<PackageIcon>images\icon.png</PackageIcon>
+		<readme>README.md</readme>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\icon.png" Link="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>images\</PackagePath>
+		</None>
+		<None Include="..\..\README.md" Link="Packaging\README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Framework\Cqrs\Cqrs.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="tools\**" />
+		<EmbeddedResource Remove="tools\**" />
+		<EntityDeploy Remove="tools\**" />
+		<None Remove="Properties\**" />
+		<None Remove="tools\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Azure.Identity" Version="1.13.1" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Azure/Cqrs.Azure.BlobStorage/EntityTableEntity.cs</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">Azure/Cqrs.Azure.BlobStorage</a> - EntityTableEntity.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-24 00:33:17</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : #region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Runtime.Serialization;
+<span class="lineNum">      11 </span>            : using Cqrs.Entities;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace Cqrs.Azure.BlobStorage
+<span class="lineNum">      14 </span>            : {
+<span class="lineNum">      15 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      16 </span>            :         /// A projection/entity especially designed to work with Azure Table storage.
+<span class="lineNum">      17 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      18 </span>            :         [Serializable]
+<span class="lineNum">      19 </span>            :         [DataContract]
+<span class="lineNum">      20 </span>            :         public class EntityTableEntity&lt;TEntity&gt;
+<span class="lineNum">      21 </span>            :                 : TableEntity&lt;TEntity&gt;
+<span class="lineNum">      22 </span>            :                 , IEntityTableEntity&lt;TEntity&gt;
+<span class="lineNum">      23 </span>            :                 where TEntity : IEntity
+<span class="lineNum">      24 </span><span class="lineCov">          1 :         {</span>
+<span class="lineNum">      25 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;EntityTableEntity{TEntity}&quot;/&gt; specificly setting &lt;see cref=&quot;Microsoft.WindowsAzure.Storage.Table.TableEntity.PartitionKey&quot;/&gt; and &lt;see cref=&quot;Microsoft.WindowsAzure.Storage.Table.TableEntity.RowKey&quot;/&gt;.
+<span class="lineNum">      27 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      28 </span><span class="lineCov">          1 :                 public EntityTableEntity(TEntity entity)</span>
+<span class="lineNum">      29 </span>            :                 {
+<span class="lineNum">      30 </span>            :                         PartitionKey = StorageStore&lt;object, object&gt;.GetSafeStorageKey(entity.GetType().FullName);
+<span class="lineNum">      31 </span>            :                         RowKey = StorageStore&lt;object, object&gt;.GetSafeStorageKey(entity.Rsn.ToString(&quot;N&quot;));
+<span class="lineNum">      32 </span>            :                         _entity = entity;
+<span class="lineNum">      33 </span>            :                         _entityContent = Serialise(Entity);
+<span class="lineNum">      34 </span>            :                 }
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      37 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;EntityTableEntity{TEntity}&quot;/&gt;.
+<span class="lineNum">      38 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      39 </span><span class="lineCov">          1 :                 public EntityTableEntity()</span>
+<span class="lineNum">      40 </span>            :                 {
+<span class="lineNum">      41 </span>            :                 }
+<span class="lineNum">      42 </span>            : 
+<span class="lineNum">      43 </span>            :                 private TEntity _entity;
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      46 </span>            :                 /// Gets or sets the &lt;typeparamref name=&quot;TEntity&quot;/&gt;.
+<span class="lineNum">      47 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      48 </span>            :                 [DataMember]
+<span class="lineNum">      49 </span>            :                 public TEntity Entity
+<span class="lineNum">      50 </span>            :                 {
+<span class="lineNum">      51 </span>            :                         get { return _entity; }
+<span class="lineNum">      52 </span>            :                         set { _entity = value; }
+<span class="lineNum">      53 </span>            :                 }
+<span class="lineNum">      54 </span>            : 
+<span class="lineNum">      55 </span>            :                 private string _entityContent;
+<span class="lineNum">      56 </span>            : 
+<span class="lineNum">      57 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      58 </span>            :                 /// Gets or sets a serialised version.
+<span class="lineNum">      59 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      60 </span>            :                 [DataMember]
+<span class="lineNum">      61 </span>            :                 public string EntityContent
+<span class="lineNum">      62 </span>            :                 {
+<span class="lineNum">      63 </span>            :                         get
+<span class="lineNum">      64 </span>            :                         {
+<span class="lineNum">      65 </span>            :                                 return _entityContent;
+<span class="lineNum">      66 </span>            :                         }
+<span class="lineNum">      67 </span>            :                         set
+<span class="lineNum">      68 </span>            :                         {
+<span class="lineNum">      69 </span>            :                                 _entityContent = value;
+<span class="lineNum">      70 </span>            :                                 _entity = Deserialise(value);
+<span class="lineNum">      71 </span>            :                         }
+<span class="lineNum">      72 </span>            :                 }
+<span class="lineNum">      73 </span>            :         }
+<span class="lineNum">      74 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+		<RootNamespace>Cqrs.Scheduler.TimeZones</RootNamespace>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<ApplicationIcon>Cqrs.Scheduler.TimeZones.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<IsPackable>true</IsPackable>
+		<StartupObject>Program</StartupObject>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="tools\**" />
+		<EmbeddedResource Remove="tools\**" />
+		<EntityDeploy Remove="tools\**" />
+		<None Remove="Properties\**" />
+		<None Remove="tools\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+		<Compile Remove="TimeZoneWebJob.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions.Isolated\Cqrs.Azure.Functions.Isolated.csproj" />
+		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions.ServiceBus.Isolated\Cqrs.Azure.Functions.ServiceBus.Isolated.csproj" />
+		<ProjectReference Include="..\..\Framework\DependencyInjection\Azure\Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus\Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus.csproj" />
+		<ProjectReference Include="..\..\Framework\DependencyInjection\Azure\Cqrs.DependencyInjection.Azure.ServiceBus.EventBus\Cqrs.DependencyInjection.Azure.ServiceBus.EventBus.csproj" />
+		<ProjectReference Include="..\Cqrs.Scheduler.Commands\Cqrs.Scheduler.Commands.csproj" />
+		<ProjectReference Include="..\Cqrs.Scheduler.Events\Cqrs.Scheduler.Events.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="host.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="cqrs.settings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</None>
+		<None Update="App.config">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="local.settings.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		  <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="CommandHandlers\PublishTimeZonesCommandHandler.partial.cs">
+			<DependentUpon>PublishTimeZonesCommandHandler.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)cqrs.settings.json&quot; COPY /Y &quot;$(ProjectDir)sample.settings.json&quot; &quot;$(ProjectDir)cqrs.settings.json&quot;&#xD;&#xA;IF NOT EXIST &quot;$(ProjectDir)local.settings.json&quot; COPY /Y &quot;$(ProjectDir)sample.settings.json&quot; &quot;$(ProjectDir)local.settings.json&quot;" />
+	</Target>
+</Project>

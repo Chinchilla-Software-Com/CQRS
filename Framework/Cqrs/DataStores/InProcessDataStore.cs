@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -11,16 +11,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Cqrs.Entities;
 using Cqrs.Repositories;
 
 namespace Cqrs.DataStores
 {
+	/// <summary>
+	/// A <see cref="IDataStore{TData}"/> using an <see cref="InMemoryDatabase"/>.
+	/// </summary>
 	public class InProcessDataStore<TData> : IDataStore<TData>
 		where TData : Entity
 	{
 		private InMemoryDatabase InMemoryDatabase { get; set; }
 
+		/// <summary>
+		/// Instantiates a new instance of the <see cref="InProcessDataStore{TData}"/> class
+		/// </summary>
 		public InProcessDataStore()
 		{
 			InMemoryDatabase = new InMemoryDatabase();
@@ -34,7 +41,7 @@ namespace Cqrs.DataStores
 		/// <returns>
 		/// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
 		/// </returns>
-		public IEnumerator<TData> GetEnumerator()
+		public virtual IEnumerator<TData> GetEnumerator()
 		{
 			return InMemoryDatabase.GetAll<TData>().GetEnumerator();
 		}
@@ -60,7 +67,7 @@ namespace Cqrs.DataStores
 		/// <returns>
 		/// The <see cref="T:System.Linq.Expressions.Expression"/> that is associated with this instance of <see cref="T:System.Linq.IQueryable"/>.
 		/// </returns>
-		public Expression Expression
+		public virtual Expression Expression
 		{
 			get { return InMemoryDatabase.GetAll<TData>().AsQueryable().Expression; }
 		}
@@ -71,7 +78,7 @@ namespace Cqrs.DataStores
 		/// <returns>
 		/// A <see cref="T:System.Type"/> that represents the type of the element(s) that are returned when the expression tree associated with this object is executed.
 		/// </returns>
-		public Type ElementType
+		public virtual Type ElementType
 		{
 			get { return InMemoryDatabase.GetAll<TData>().AsQueryable().ElementType; }
 		}
@@ -82,7 +89,7 @@ namespace Cqrs.DataStores
 		/// <returns>
 		/// The <see cref="T:System.Linq.IQueryProvider"/> that is associated with this data source.
 		/// </returns>
-		public IQueryProvider Provider
+		public virtual IQueryProvider Provider
 		{
 			get { return InMemoryDatabase.GetAll<TData>().AsQueryable().Provider; }
 		}
@@ -94,7 +101,7 @@ namespace Cqrs.DataStores
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
-		public void Dispose()
+		public virtual void Dispose()
 		{
 		}
 
@@ -102,38 +109,113 @@ namespace Cqrs.DataStores
 
 		#region Implementation of IDataStore<TData>
 
-		public void Add(TData data)
+		/// <summary>
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
+		/// </summary>
+		public virtual
+#if NET472
+			void Add
+#else
+			async Task AddAsync
+#endif
+			(TData data)
 		{
 			InMemoryDatabase.Get<TData>().Add(data.Rsn, data);
-		}
-
-		public void Add(IEnumerable<TData> data)
-		{
-			foreach (TData dataItem in data)
-				Add(dataItem);
+#if NET472
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		/// <summary>
-		/// Will mark the <paramref name="data"/> as logically (or soft) by setting <see cref="Entity.IsLogicallyDeleted"/> to true
+		/// Add the provided <paramref name="data"/> to the data store and persist the change.
 		/// </summary>
-		public void Remove(TData data)
+		public virtual
+#if NET472
+			void Add
+#else
+			async Task AddAsync
+#endif
+			(IEnumerable<TData> data)
 		{
-			InMemoryDatabase.Get<TData>()[data.Rsn].IsLogicallyDeleted = true;
+			foreach (TData dataItem in data)
+#if NET472
+				Add(dataItem);
+#else
+				await AddAsync(dataItem);
+#endif
 		}
 
-		public void Destroy(TData data)
+		/// <summary>
+		/// Will mark the <paramref name="data"/> as logically (or soft) deleted by setting <see cref="Entity.IsDeleted"/> to true in the data store and persist the change.
+		/// </summary>
+		public virtual
+#if NET472
+			void Remove
+#else
+			async Task RemoveAsync
+#endif
+			(TData data)
+		{
+			InMemoryDatabase.Get<TData>()[data.Rsn].IsDeleted = true;
+#if NET472
+#else
+			await Task.CompletedTask;
+#endif
+		}
+
+		/// <summary>
+		/// Remove the provided <paramref name="data"/> (normally by <see cref="IEntity.Rsn"/>) from the data store and persist the change.
+		/// </summary>
+		public virtual
+#if NET472
+			void Destroy
+#else
+			async Task DestroyAsync
+#endif
+			(TData data)
 		{
 			InMemoryDatabase.Get<TData>().Remove(data.Rsn);
+#if NET472
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
-		public void RemoveAll()
+		/// <summary>
+		/// Remove all contents (normally by use of a truncate operation) from the data store and persist the change.
+		/// </summary>
+		public virtual
+#if NET472
+			void RemoveAll
+#else
+			async Task RemoveAllAsync
+#endif
+			()
 		{
 			InMemoryDatabase.Get<TData>().Clear();
+#if NET472
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
-		public void Update(TData data)
+		/// <summary>
+		/// Update the provided <paramref name="data"/> in the data store and persist the change.
+		/// </summary>
+		public virtual
+#if NET472
+			void Update
+#else
+			async Task UpdateAsync
+#endif
+			(TData data)
 		{
 			InMemoryDatabase.Get<TData>()[data.Rsn] = data;
+#if NET472
+#else
+			await Task.CompletedTask;
+#endif
 		}
 
 		#endregion

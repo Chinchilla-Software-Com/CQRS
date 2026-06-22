@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -11,12 +11,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using cdmdotnet.Logging;
+using System.Threading.Tasks;
+using Chinchilla.Logging;
+using Cqrs.Configuration;
+using Cqrs.Domain;
 using Cqrs.Events;
+using Cqrs.Messages;
 using Cqrs.MongoDB.DataStores.Indexes;
 using Cqrs.MongoDB.Events.Indexes;
 using Cqrs.MongoDB.Factories;
-using Cqrs.MongoDB.Serialisers;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -26,11 +29,24 @@ namespace Cqrs.MongoDB.Events
 	/// <summary>
 	/// A MongoDB based <see cref="EventStore{TAuthenticationToken}"/>.
 	/// </summary>
-	public class MongoDbEventStore<TAuthenticationToken> : EventStore<TAuthenticationToken> 
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
+	public class MongoDbEventStore<TAuthenticationToken>
+		: EventStore<TAuthenticationToken>
 	{
+		/// <summary>
+		/// Gets or sets the <see cref="IMongoCollection{TData}"/>
+		/// </summary>
 		protected IMongoCollection<MongoDbEventData> MongoCollection { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IMongoDbEventStoreConnectionStringFactory"/>
+		/// </summary>
 		protected IMongoDbEventStoreConnectionStringFactory MongoDbEventStoreConnectionStringFactory { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="IConfigurationManager"/>
+		/// </summary>
+		protected IConfigurationManager ConfigurationManager { get; private set; }
 
 		static MongoDbEventStore()
 		{
@@ -51,10 +67,15 @@ namespace Cqrs.MongoDB.Events
 			}
 		}
 
-		public MongoDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IMongoDbEventStoreConnectionStringFactory mongoDbEventStoreConnectionStringFactory)
+		/// <summary>
+		/// Instantiate a new instance of <see cref="MongoDbEventStore{TAuthenticationToken}"/>
+		/// triggering any require index checks.
+		/// </summary>
+		public MongoDbEventStore(IEventBuilder<TAuthenticationToken> eventBuilder, IEventDeserialiser<TAuthenticationToken> eventDeserialiser, ILogger logger, IMongoDbEventStoreConnectionStringFactory mongoDbEventStoreConnectionStringFactory, IConfigurationManager configurationManager)
 			: base(eventBuilder, eventDeserialiser, logger)
 		{
 			MongoDbEventStoreConnectionStringFactory = mongoDbEventStoreConnectionStringFactory;
+			ConfigurationManager = configurationManager;
 
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			MongoCollection = GetCollection();
@@ -62,6 +83,9 @@ namespace Cqrs.MongoDB.Events
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
+		/// <summary>
+		/// Get a <see cref="IMongoCollection{TDocument}"/>
+		/// </summary>
 		protected virtual IMongoCollection<MongoDbEventData> GetCollection()
 		{
 			var mongoClient = new MongoClient(MongoDbEventStoreConnectionStringFactory.GetEventStoreConnectionString());
@@ -70,6 +94,9 @@ namespace Cqrs.MongoDB.Events
 			return mongoDatabase.GetCollection<MongoDbEventData>(MongoDbEventStoreConnectionStringFactory.GetEventStoreDatabaseName());
 		}
 
+		/// <summary>
+		/// Verify all required <see cref="MongoDbIndex{TEntity}"/> are defined and ready to go.
+		/// </summary>
 		protected virtual void VerifyIndexes()
 		{
 			VerifyIndex(new ByCorrelationIdMongoDbIndex());
@@ -78,6 +105,9 @@ namespace Cqrs.MongoDB.Events
 			VerifyIndex(new ByTimestampAndEventTypeMongoDbIndex());
 		}
 
+		/// <summary>
+		/// Verify the provided <paramref name="mongoIndex"/> is defined and ready to go.
+		/// </summary>
 		protected virtual void VerifyIndex(MongoDbIndex<MongoDbEventData> mongoIndex)
 		{
 			IndexKeysDefinitionBuilder<MongoDbEventData> indexKeysBuilder = Builders<MongoDbEventData>.IndexKeys;
@@ -103,20 +133,47 @@ namespace Cqrs.MongoDB.Events
 				}
 			}
 
-			MongoCollection.Indexes.CreateOne
-			(
-				indexKey,
-				new CreateIndexOptions
-				{
-					Unique = mongoIndex.IsUnique,
-					Name = mongoIndex.Name
-				}
-			);
+			bool throwExceptions;
+			if (!bool.TryParse(ConfigurationManager.GetSetting("Cqrs.MongoDb.EventStore.ThrowExceptionsOnIndexPreparation"), out throwExceptions))
+				throwExceptions = true;
+			try
+			{
+				MongoCollection.Indexes.CreateOne
+				(
+					new CreateIndexModel<MongoDbEventData>
+					(
+						indexKey, new CreateIndexOptions
+						{
+							Unique = mongoIndex.IsUnique,
+							Name = mongoIndex.Name
+						}
+					)
+				);
+
+			}
+			catch
+			{
+				if (throwExceptions)
+					throw;
+			}
 		}
 
 		#region Overrides of EventStore<TAuthenticationToken>
 
-		public override IEnumerable<IEvent<TAuthenticationToken>> Get(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="useLastEventOnly">Loads only the last event<see cref="IEvent{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersion">Load events starting from this version</param>
+		public override
+#if NET472
+			IEnumerable<IEvent<TAuthenticationToken>> Get
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, bool useLastEventOnly = false, int fromVersion = -1)
 		{
 			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
 
@@ -128,22 +185,156 @@ namespace Cqrs.MongoDB.Events
 			if (useLastEventOnly)
 				query = query.AsQueryable().Take(1);
 
-			return query
+			var results = query
 				.Select(EventDeserialiser.Deserialise)
 				.ToList();
+
+			return
+#if NET472
+				results;
+#else
+				await Task.FromResult(results);
+#endif
 		}
 
-		public override IEnumerable<EventData> Get(Guid correlationId)
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="version"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="System.Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="version">Load events up-to and including from this version</param>
+		public override
+#if NET472
+			IEnumerable<IEvent<TAuthenticationToken>> GetToVersion
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToVersionAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, int version)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			IEnumerable<MongoDbEventData> query = MongoCollection
+				.AsQueryable()
+				.Where(eventData => eventData.AggregateId == streamName && eventData.Version <= version)
+				.OrderByDescending(eventData => eventData.Version);
+
+			var results = query
+				.Select(EventDeserialiser.Deserialise)
+				.ToList();
+
+			return
+#if NET472
+				results;
+#else
+				await Task.FromResult(results);
+#endif
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> up to and including the provided <paramref name="versionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="System.Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="versionedDate">Load events up-to and including from this <see cref="System.DateTime"/></param>
+		public override
+#if NET472
+			IEnumerable<IEvent<TAuthenticationToken>> GetToDate
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetToDateAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, DateTime versionedDate)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			IEnumerable<MongoDbEventData> query = MongoCollection
+				.AsQueryable()
+				.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp <= versionedDate)
+				.OrderByDescending(eventData => eventData.Version);
+
+			var results = query
+				.Select(EventDeserialiser.Deserialise)
+				.ToList();
+
+			return
+#if NET472
+				results;
+#else
+				await Task.FromResult(results);
+#endif
+		}
+
+		/// <summary>
+		/// Gets a collection of <see cref="IEvent{TAuthenticationToken}"/> for the <see cref="IAggregateRoot{TAuthenticationToken}"/> of type <paramref name="aggregateRootType"/> with the ID matching the provided <paramref name="aggregateId"/> from and including the provided <paramref name="fromVersionedDate"/> up to and including the provided <paramref name="toVersionedDate"/>.
+		/// </summary>
+		/// <param name="aggregateRootType"> <see cref="System.Type"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/> the <see cref="IEvent{TAuthenticationToken}"/> was raised in.</param>
+		/// <param name="aggregateId">The <see cref="IAggregateRoot{TAuthenticationToken}.Id"/> of the <see cref="IAggregateRoot{TAuthenticationToken}"/>.</param>
+		/// <param name="fromVersionedDate">Load events from and including from this <see cref="System.DateTime"/></param>
+		/// <param name="toVersionedDate">Load events up-to and including from this <see cref="System.DateTime"/></param>
+		public override
+#if NET472
+			IEnumerable<IEvent<TAuthenticationToken>> GetBetweenDates
+#else
+			async Task<IEnumerable<IEvent<TAuthenticationToken>>> GetBetweenDatesAsync
+#endif
+				(Type aggregateRootType, Guid aggregateId, DateTime fromVersionedDate, DateTime toVersionedDate)
+		{
+			string streamName = string.Format(CqrsEventStoreStreamNamePattern, aggregateRootType.FullName, aggregateId);
+
+			IEnumerable<MongoDbEventData> query = MongoCollection
+				.AsQueryable()
+				.Where(eventData => eventData.AggregateId == streamName && eventData.Timestamp >= fromVersionedDate && eventData.Timestamp <= toVersionedDate)
+				.OrderByDescending(eventData => eventData.Version);
+
+			var results = query
+				.Select(EventDeserialiser.Deserialise)
+				.ToList();
+
+			return
+#if NET472
+				results;
+#else
+				await Task.FromResult(results);
+#endif
+		}
+
+		/// <summary>
+		/// Get all <see cref="IEvent{TAuthenticationToken}"/> instances for the given <paramref name="correlationId"/>.
+		/// </summary>
+		/// <param name="correlationId">The <see cref="IMessage.CorrelationId"/> of the <see cref="IEvent{TAuthenticationToken}"/> instances to retrieve.</param>
+		public override
+#if NET472
+			IEnumerable<EventData> Get
+#else
+			async Task<IEnumerable<EventData>> GetAsync
+#endif
+				(Guid correlationId)
 		{
 			IEnumerable<MongoDbEventData> query = MongoCollection
 				.AsQueryable()
 				.Where(eventData => eventData.CorrelationId == correlationId)
 				.OrderBy(eventData => eventData.Timestamp);
 
-			return query.ToList();
+			var results = query.ToList();
+
+			return
+#if NET472
+				results;
+#else
+				await Task.FromResult(results);
+#endif
 		}
 
-		protected override void PersistEvent(EventData eventData)
+		/// <summary>
+		/// Persist the provided <paramref name="eventData"/> into storage.
+		/// </summary>
+		/// <param name="eventData">The <see cref="EventData"/> to persist.</param>
+		protected override
+#if NET472
+			void PersistEvent
+#else
+			async Task PersistEventAsync
+#endif
+				(EventData eventData)
 		{
 			var safeEventData = eventData as MongoDbEventData;
 			if (safeEventData == null)
@@ -152,9 +343,14 @@ namespace Cqrs.MongoDB.Events
 			try
 			{
 				DateTime start = DateTime.Now;
-				MongoCollection.InsertOne(safeEventData);
+#if NET472
+				MongoCollection.InsertOne
+#else
+				await MongoCollection.InsertOneAsync
+#endif
+					(safeEventData);
 				DateTime end = DateTime.Now;
-				Logger.LogDebug(string.Format("Adding data in the MongoDB database took {0}.", end - start), "MongoDbEventStore\\PersistEvent");
+				Logger.LogDebug($"Adding data in the MongoDB database took {end - start}.", "MongoDbEventStore\\PersistEvent");
 			}
 			finally
 			{
@@ -162,6 +358,6 @@ namespace Cqrs.MongoDB.Events
 			}
 		}
 
-		#endregion
+#endregion
 	}
 }

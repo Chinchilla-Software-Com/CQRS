@@ -1,10 +1,20 @@
-﻿using System;
+﻿#region Copyright
+// // -----------------------------------------------------------------------
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
+// // </copyright>
+// // -----------------------------------------------------------------------
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using cdmdotnet.Logging;
-using cdmdotnet.Logging.Configuration;
+using Chinchilla.Logging;
+using Chinchilla.Logging.Configuration;
+using Chinchilla.StateManagement.Threaded;
 using Cqrs.Azure.ServiceBus.Tests.Unit;
+using Cqrs.Configuration;
 using Cqrs.Events;
 using Cqrs.MongoDB.Events;
 using Cqrs.MongoDB.Serialisers;
@@ -24,20 +34,25 @@ namespace Cqrs.MongoDB.Tests.Integration
 	[TestClass]
 	public class MongoDbEventStoreTests
 	{
+		/// <summary>
+		/// Tests the <see cref="IEventStore{TAuthenticationToken}.Save"/> method
+		/// Passing a valid test <see cref="IEvent{TAuthenticationToken}"/>
+		/// Expecting the test <see cref="IEvent{TAuthenticationToken}"/> is able to be read.
+		/// </summary>
 		[TestMethod]
 		public void Save_ValidEvent_EventCanBeRetreived()
 		{
 			// Arrange
-			var correlationIdHelper = new CorrelationIdHelper();
+			var correlationIdHelper = new CorrelationIdHelper(new ContextItemCollectionFactory());
 			correlationIdHelper.SetCorrelationId(Guid.NewGuid());
-			var logger = new ConsoleLogger(new LoggerSettingsConfigurationSection(), correlationIdHelper);
+			var logger = new ConsoleLogger(new LoggerSettings(), correlationIdHelper);
 			try
 			{
 				// Arrange
 				var connectionStringFactory = new TestMongoEventStoreConnectionStringFactory();
 				TestMongoEventStoreConnectionStringFactory.DatabaseName = string.Format("Test-{0}", new Random().Next(0, 9999));
 
-				var eventStore = new MongoDbEventStore<Guid>(new MongoDbEventBuilder<Guid>(), new MongoDbEventDeserialiser<Guid>(), logger, connectionStringFactory);
+				var eventStore = new MongoDbEventStore<Guid>(new MongoDbEventBuilder<Guid>(), new MongoDbEventDeserialiser<Guid>(), logger, connectionStringFactory, new ConfigurationManager());
 
 				var event1 = new TestEvent
 				{

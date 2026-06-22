@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0</TargetFrameworks>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="coverlet.collector" Version="6.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\Azure\Cqrs.Azure.ConfigurationManager\Cqrs.Azure.ConfigurationManager.csproj" />
+		<ProjectReference Include="..\..\Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus\Cqrs.DependencyInjection.Azure.ServiceBus.CommandBus.csproj" />
+		<ProjectReference Include="..\..\Cqrs.DependencyInjection.Azure.ServiceBus.EventBus\Cqrs.DependencyInjection.Azure.ServiceBus.EventBus.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="cqrs.settings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)cqrs.json&quot; ECHO ^{ &quot;Cqrs&quot;: ^{ &quot;Secrets&quot;: ^{ &quot;TestKey&quot;: &quot;TestKey&quot; ^} ^} ^} &gt; &quot;$(ProjectDir)cqrs.json&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Code\Cqrs.Azure.ServiceBus.Tests.Integration-settings.json&quot; copy /Y &quot;$(SolutionDir)Code\Cqrs.Azure.ServiceBus.Tests.Integration-settings.json&quot; &quot;$(ProjectDir)cqrs.json&quot;&#xD;&#xA;" />
+	</Target>
+
+</Project>

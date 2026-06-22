@@ -1,0 +1,11 @@
+var namespaceCqrs_1_1Azure_1_1BlobStorage_1_1Events =
+[
+    [ "BlobStorageEventStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore.html", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStore" ],
+    [ "BlobStorageEventStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStoreConnectionStringFactory.html", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageEventStoreConnectionStringFactory" ],
+    [ "BlobStorageSnapshotStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStore.html", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStore" ],
+    [ "BlobStorageSnapshotStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStoreConnectionStringFactory.html", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStoreConnectionStringFactory" ],
+    [ "TableStorageEventStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore.html", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStore" ],
+    [ "TableStorageEventStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory.html", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageEventStoreConnectionStringFactory" ],
+    [ "TableStorageSnapshotStore", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore.html", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore" ],
+    [ "TableStorageSnapshotStoreConnectionStringFactory", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory.html", "classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStoreConnectionStringFactory" ]
+];

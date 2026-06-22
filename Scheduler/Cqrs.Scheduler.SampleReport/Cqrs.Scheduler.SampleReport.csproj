@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>NET8.0</TargetFrameworks>
+		<RootNamespace>Cqrs.Scheduler.SampleReport</RootNamespace>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<DebugType>full</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<ApplicationIcon>Cqrs.Scheduler.SampleReport.ico</ApplicationIcon>
+		<IsPackable>true</IsPackable>
+		<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="tools\**" />
+		<EmbeddedResource Remove="tools\**" />
+		<None Remove="tools\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+		<Compile Remove="SampleReportWebJob.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Chinchilla.Logging.Azure.Storage" Version="4.5.33" />
+
+		<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions.ServiceBus\Cqrs.Azure.Functions.ServiceBus.csproj" />
+		<ProjectReference Include="..\..\Framework\Azure\Cqrs.Azure.Functions\Cqrs.Azure.Functions.csproj" />
+		<ProjectReference Include="..\..\Framework\Cqrs\Cqrs.csproj" />
+		<ProjectReference Include="..\..\Framework\DependencyInjection\Azure\Cqrs.DependencyInjection.Azure.ServiceBus.EventBus\Cqrs.DependencyInjection.Azure.ServiceBus.EventBus.csproj" />
+		<ProjectReference Include="..\Cqrs.Scheduler.Commands\Cqrs.Scheduler.Commands.csproj" />
+		<ProjectReference Include="..\Cqrs.Scheduler.Events\Cqrs.Scheduler.Events.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="cqrs.settings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</None>
+		<None Update="host.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="local.settings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</None>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="IF NOT EXIST &quot;$(ProjectDir)cqrs.settings.json&quot; COPY /Y &quot;$(ProjectDir)sample.settings.json&quot; &quot;$(ProjectDir)cqrs.settings.json&quot;&#xD;&#xA;IF NOT EXIST &quot;$(ProjectDir)local.settings.json&quot; COPY /Y &quot;$(ProjectDir)sample.settings.json&quot; &quot;$(ProjectDir)local.settings.json&quot;" />
+	</Target>
+
+</Project>

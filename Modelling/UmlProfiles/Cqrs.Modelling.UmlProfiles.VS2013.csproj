@@ -84,10 +84,12 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="EnvDTE">
@@ -146,6 +148,27 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Code\Builders\Commands\Hanlders\CommandHandlerModelBuilder.cs">
+      <Link>Code\Builders\Commands\Handlers\CommandHandlerModelBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Code\Builders\Services\ServiceModelBuilder.cs">
+      <Link>Code\Builders\Services\ServiceModelBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Code\CqrsSolutionOptionsDialogPage.cs">
+      <Link>Code\CqrsSolutionOptionsDialogPage.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\..\Code\CqrsSolutionOptionsDialogPageControl.cs">
+      <Link>Code\CqrsSolutionOptionsDialogPageControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\..\Code\CqrsSolutionOptionsDialogPageControl.Designer.cs">
+      <Link>Code\CqrsSolutionOptionsDialogPageControl.Designer.cs</Link>
+      <DependentUpon>CqrsSolutionOptionsDialogPageControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\Code\ExceptionHandling.cs">
+      <Link>Code\ExceptionHandling.cs</Link>
+    </Compile>
     <Compile Include="..\..\Code\Builders\Commands\CommandModelBuilder.cs">
       <Link>Code\Builders\Commands\CommandModelBuilder.cs</Link>
     </Compile>
@@ -188,6 +211,12 @@
     <Compile Include="..\..\Code\Builders\Events\Handlers\EventHandlerModelBuilder.cs">
       <Link>Code\Builders\Events\Handlers\EventHandlerModelBuilder.cs</Link>
     </Compile>
+    <Compile Include="..\..\Code\Builders\Events\Handlers\EventToCommandEventHandlerModelBuilder.cs">
+      <Link>Code\Builders\Events\Handlers\EventToCommandEventHandlerModelBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Code\Builders\Events\Handlers\EventToEntityEventHandlerModelBuilder.cs">
+      <Link>Code\Builders\Events\Handlers\EventToEntityEventHandlerModelBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\..\Code\Builders\Events\Handlers\UpdateEventHandlerModelBuilder.cs">
       <Link>Code\Builders\Events\Handlers\UpdateEventHandlerModelBuilder.cs</Link>
     </Compile>
@@ -199,6 +228,9 @@
     </Compile>
     <Compile Include="..\..\Code\AesThenHMac.cs">
       <Link>Code\AesThenHMac.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Code\Builders\Repositories\Queries\Strategies\AggregateQueryStrategyBuilderModelBuilder.cs">
+      <Link>Code\Builders\Repositories\Queries\Strategies\AggregateQueryStrategyBuilderModelBuilder.cs</Link>
     </Compile>
     <Compile Include="..\..\Code\CqrsSolutionOptionsControl.xaml.cs">
       <Link>Code\CqrsSolutionOptionsControl.xaml.cs</Link>
@@ -242,6 +274,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ApacheLicence2.txt">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\Images.png" />
     <Content Include="Resources\Package.ico" />
     <Content Include="site-icon.png">
@@ -251,6 +286,22 @@
     <VSCTCompile Include="UmlPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
+    <EmbeddedResource Include="..\..\Code\CqrsSolutionOptionsDialogPageControl.resx">
+      <Link>Code\CqrsSolutionOptionsDialogPageControl.resx</Link>
+      <DependentUpon>CqrsSolutionOptionsDialogPageControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\Basic\EnumTemplate.t4">
+      <Link>Templates\Basic\EnumTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\Basic\InterfaceTemplate.t4">
+      <Link>Templates\Basic\InterfaceTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\Basic\StructTemplate.t4">
+      <Link>Templates\Basic\StructTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\Basic\TemplateHeader.t4">
+      <Link>Templates\Basic\TemplateHeader.t4</Link>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\Templates\AggregateHostTemplate.t4">
       <Link>Templates\AggregateHostTemplate.t4</Link>
     </EmbeddedResource>
@@ -286,6 +337,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\Templates\AzureDocumentDbDomainDataStoreFactoryTemplate.t4">
       <Link>Templates\AzureDocumentDbDomainDataStoreFactoryTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\BlobStorageDomainDataStoreFactoryTemplate.t4">
+      <Link>Templates\BlobStorageDomainDataStoreFactoryTemplate.t4</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Templates\CommandHandlerPartialTemplate.t4">
       <Link>Templates\CommandHandlerPartialTemplate.t4</Link>
@@ -323,6 +377,9 @@
     <EmbeddedResource Include="..\Templates\CSharpStereotypeHelpers.t4">
       <Link>Templates\CSharpStereotypeHelpers.t4</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\DeeperIntoTheDecisionTree.t4">
+      <Link>Templates\DeeperIntoTheDecisionTree.t4</Link>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\Templates\DeleteCommandHandlerTemplate.t4">
       <Link>Templates\DeleteCommandHandlerTemplate.t4</Link>
     </EmbeddedResource>
@@ -343,6 +400,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\Templates\DomainNinjectModuleTemplate.t4">
       <Link>Templates\DomainNinjectModuleTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\EntityEventHandlerTemplate.t4">
+      <Link>Templates\EntityEventHandlerTemplate.t4</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Templates\EntityInterfaceTemplate.t4">
       <Link>Templates\EntityInterfaceTemplate.t4</Link>
@@ -431,6 +491,9 @@
     <EmbeddedResource Include="..\Templates\ServiceTemplate.t4">
       <Link>Templates\ServiceTemplate.t4</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\Silence.t4">
+      <Link>Templates\Silence.t4</Link>
+    </EmbeddedResource>
     <EmbeddedResource Include="..\Templates\SimplifiedSqlDomainDataStoreFactoryTemplate.t4">
       <Link>Templates\SimplifiedSqlDomainDataStoreFactoryTemplate.t4</Link>
     </EmbeddedResource>
@@ -458,26 +521,32 @@
     <EmbeddedResource Include="..\Templates\ValidationHelper.t4">
       <Link>Templates\ValidationHelper.t4</Link>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\Templates\Basic\EnumTemplate.t4">
-      <Link>Templates\Basic\EnumTemplate.t4</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Templates\Basic\InterfaceTemplate.t4">
-      <Link>Templates\Basic\InterfaceTemplate.t4</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Templates\Basic\StructTemplate.t4">
-      <Link>Templates\Basic\StructTemplate.t4</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Templates\Basic\TemplateHeader.t4">
-      <Link>Templates\Basic\TemplateHeader.t4</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Templates\EntityEventHandlerTemplate.t4">
-      <Link>Templates\EntityEventHandlerTemplate.t4</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="..\Templates\Silence.t4">
-      <Link>Templates\Silence.t4</Link>
-    </EmbeddedResource>
     <EmbeddedResource Include="..\Templates\WebApiControllerTemplate.t4">
       <Link>Templates\WebApiControllerTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\EventToHubProxyTemplate.t4">
+      <Link>Templates\EventToHubProxyTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\AggregateWebApiControllerTemplate.t4">
+      <Link>Templates\AggregateWebApiControllerTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\WebApiClientControllerTemplate.t4">
+      <Link>Templates\WebApiClientControllerTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\WebApiClientLayoutTemplate.t4">
+      <Link>Templates\WebApiClientLayoutTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\WebApiClientViewTemplate.t4">
+      <Link>Templates\WebApiClientViewTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\EventToCommandHandlerTemplate.t4">
+      <Link>Templates\EventToCommandHandlerTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\SagaTemplate.t4">
+      <Link>Templates\SagaTemplate.t4</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Templates\SwaggerDomainTemplate.t4">
+      <Link>Templates\SwaggerDomainTemplate.t4</Link>
     </EmbeddedResource>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
@@ -608,6 +677,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>
   </PropertyGroup>

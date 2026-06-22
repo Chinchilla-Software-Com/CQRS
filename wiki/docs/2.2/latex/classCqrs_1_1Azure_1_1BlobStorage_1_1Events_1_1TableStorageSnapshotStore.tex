@@ -1,0 +1,150 @@
+\hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore}{}\section{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store Class Reference}
+\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore}\index{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store@{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store}}
+
+
+An \hyperlink{namespaceCqrs_1_1Azure}{Azure} \hyperlink{namespaceCqrs_1_1Azure_1_1Storage}{Storage} based \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_aa8ab186f864443c7d9647a4522864a84_aa8ab186f864443c7d9647a4522864a84}{Snapshot\+Store}.  
+
+
+Inheritance diagram for Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore}{Raw\+Table\+Storage\+Snapshot\+Store}
+\begin{DoxyCompactList}\small\item\em An \hyperlink{namespaceCqrs_1_1Azure}{Azure} \hyperlink{namespaceCqrs_1_1Azure_1_1Storage}{Storage} based Cqrs.\+Azure.\+Blob\+Storage.\+Table\+Storage\+Store$<$\+T\+Data,\+T\+Collection\+Item\+Data$>$. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_aabf9c09c22958ca7acf6e717337a14d6_aabf9c09c22958ca7acf6e717337a14d6}{Table\+Storage\+Snapshot\+Store} (\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} configuration\+Manager, \hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser}{I\+Snapshot\+Deserialiser} event\+Deserialiser, I\+Logger logger, I\+Correlation\+Id\+Helper correlation\+Id\+Helper, \hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotBuilder}{I\+Snapshot\+Builder} snapshot\+Builder, \hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1ITableStorageSnapshotStoreConnectionStringFactory}{I\+Table\+Storage\+Snapshot\+Store\+Connection\+String\+Factory} table\+Storage\+Snapshot\+Store\+Connection\+String\+Factory, Func$<$ I\+Logger, \hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1ITableStorageSnapshotStoreConnectionStringFactory}{I\+Table\+Storage\+Snapshot\+Store\+Connection\+String\+Factory}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore}{Raw\+Table\+Storage\+Snapshot\+Store} $>$ create\+Raw\+Table\+Storage\+Snapshot\+Store\+Function=null)
+\begin{DoxyCompactList}\small\item\em Initializes a new instance of the Table\+Storage\+Event\+Store$<$\+T\+Authentication\+Token$>$ class using the specified container. \end{DoxyCompactList}\item 
+override void \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a25ec7d179773aec79febdf0e8873b285_a25ec7d179773aec79febdf0e8873b285}{Save} (\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} snapshot)
+\begin{DoxyCompactList}\small\item\em Saves the provided {\itshape snapshot}  into storage. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+override \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a169361a7fbf413fed660609f66d95e13_a169361a7fbf413fed660609f66d95e13}{Get} (Type aggregate\+Root\+Type, string stream\+Name)
+\begin{DoxyCompactList}\small\item\em Get the latest Snapshot from storage. \end{DoxyCompactList}\item 
+override string \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a95503a8721d083d070495cb4f884c0cf_a95503a8721d083d070495cb4f884c0cf}{Generate\+Stream\+Name} (Type aggregate\+Root\+Type, Guid aggregate\+Id)
+\begin{DoxyCompactList}\small\item\em Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the {\itshape aggregate\+Id} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const string \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a003aef39dbb3bb1a1ad717c7739503ea_a003aef39dbb3bb1a1ad717c7739503ea}{Table\+Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern} = \char`\"{}\{0\}.\{1\}\char`\"{}
+\begin{DoxyCompactList}\small\item\em The pattern used to generate the stream name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore}{Raw\+Table\+Storage\+Snapshot\+Store} \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a9b35cccc8db03b41466526f60767ed5f_a9b35cccc8db03b41466526f60767ed5f}{Table\+Storage\+Store}\hspace{0.3cm}{\ttfamily  \mbox{[}get, set\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the underlying \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore}{Table\+Storage\+Store} used for persisting and reading Snapshot data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+An \hyperlink{namespaceCqrs_1_1Azure}{Azure} \hyperlink{namespaceCqrs_1_1Azure_1_1Storage}{Storage} based \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_aa8ab186f864443c7d9647a4522864a84_aa8ab186f864443c7d9647a4522864a84}{Snapshot\+Store}. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_aabf9c09c22958ca7acf6e717337a14d6_aabf9c09c22958ca7acf6e717337a14d6}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_aabf9c09c22958ca7acf6e717337a14d6_aabf9c09c22958ca7acf6e717337a14d6}} 
+\index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}!Table\+Storage\+Snapshot\+Store@{Table\+Storage\+Snapshot\+Store}}
+\index{Table\+Storage\+Snapshot\+Store@{Table\+Storage\+Snapshot\+Store}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Table\+Storage\+Snapshot\+Store()}{TableStorageSnapshotStore()}}
+{\footnotesize\ttfamily Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store.\+Table\+Storage\+Snapshot\+Store (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}]{configuration\+Manager,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser}{I\+Snapshot\+Deserialiser}}]{event\+Deserialiser,  }\item[{I\+Logger}]{logger,  }\item[{I\+Correlation\+Id\+Helper}]{correlation\+Id\+Helper,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotBuilder}{I\+Snapshot\+Builder}}]{snapshot\+Builder,  }\item[{\hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1ITableStorageSnapshotStoreConnectionStringFactory}{I\+Table\+Storage\+Snapshot\+Store\+Connection\+String\+Factory}}]{table\+Storage\+Snapshot\+Store\+Connection\+String\+Factory,  }\item[{Func$<$ I\+Logger, \hyperlink{interfaceCqrs_1_1Azure_1_1BlobStorage_1_1ITableStorageSnapshotStoreConnectionStringFactory}{I\+Table\+Storage\+Snapshot\+Store\+Connection\+String\+Factory}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore}{Raw\+Table\+Storage\+Snapshot\+Store} $>$}]{create\+Raw\+Table\+Storage\+Snapshot\+Store\+Function = {\ttfamily null} }\end{DoxyParamCaption})}
+
+
+
+Initializes a new instance of the Table\+Storage\+Event\+Store$<$\+T\+Authentication\+Token$>$ class using the specified container. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a95503a8721d083d070495cb4f884c0cf_a95503a8721d083d070495cb4f884c0cf}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a95503a8721d083d070495cb4f884c0cf_a95503a8721d083d070495cb4f884c0cf}} 
+\index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}!Generate\+Stream\+Name@{Generate\+Stream\+Name}}
+\index{Generate\+Stream\+Name@{Generate\+Stream\+Name}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Generate\+Stream\+Name()}{GenerateStreamName()}}
+{\footnotesize\ttfamily override string Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store.\+Generate\+Stream\+Name (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the {\itshape aggregate\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em aggregate\+Id} & The ID of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a8ff909b77429c8a924376962bba36849_a8ff909b77429c8a924376962bba36849}{Cqrs.\+Snapshots.\+Snapshot\+Store}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a169361a7fbf413fed660609f66d95e13_a169361a7fbf413fed660609f66d95e13}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a169361a7fbf413fed660609f66d95e13_a169361a7fbf413fed660609f66d95e13}} 
+\index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}!Get@{Get}}
+\index{Get@{Get}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Get()}{Get()}}
+{\footnotesize\ttfamily override \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store.\+Get (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{string}]{stream\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Get the latest Snapshot from storage. 
+
+\begin{DoxyReturn}{Returns}
+The most recent Snapshot of
+\end{DoxyReturn}
+
+
+Implements \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_ab2ecab1a665c0f2097929d028fe4ac69_ab2ecab1a665c0f2097929d028fe4ac69}{Cqrs.\+Snapshots.\+Snapshot\+Store}.
+
+
+
+Reimplemented in \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_ac552ed9e69ca9ce8bbd9f14b4ecb546f_ac552ed9e69ca9ce8bbd9f14b4ecb546f}{Cqrs.\+Azure.\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store}.
+
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a25ec7d179773aec79febdf0e8873b285_a25ec7d179773aec79febdf0e8873b285}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a25ec7d179773aec79febdf0e8873b285_a25ec7d179773aec79febdf0e8873b285}} 
+\index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}!Save@{Save}}
+\index{Save@{Save}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Save()}{Save()}}
+{\footnotesize\ttfamily override void Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store.\+Save (\begin{DoxyParamCaption}\item[{\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot}}]{snapshot }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Saves the provided {\itshape snapshot}  into storage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em snapshot} & the Snapshot to save and store.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_ae96ea2bb89a0bd7f45544acc37107525_ae96ea2bb89a0bd7f45544acc37107525}{Cqrs.\+Snapshots.\+Snapshot\+Store}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a003aef39dbb3bb1a1ad717c7739503ea_a003aef39dbb3bb1a1ad717c7739503ea}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a003aef39dbb3bb1a1ad717c7739503ea_a003aef39dbb3bb1a1ad717c7739503ea}} 
+\index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}!Table\+Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern@{Table\+Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern}}
+\index{Table\+Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern@{Table\+Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Table\+Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern}{TableCqrsSnapshotStoreStreamNamePattern}}
+{\footnotesize\ttfamily const string Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store.\+Table\+Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern = \char`\"{}\{0\}.\{1\}\char`\"{}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The pattern used to generate the stream name. 
+
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a9b35cccc8db03b41466526f60767ed5f_a9b35cccc8db03b41466526f60767ed5f}\label{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a9b35cccc8db03b41466526f60767ed5f_a9b35cccc8db03b41466526f60767ed5f}} 
+\index{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}!Table\+Storage\+Store@{Table\+Storage\+Store}}
+\index{Table\+Storage\+Store@{Table\+Storage\+Store}!Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store@{Cqrs\+::\+Azure\+::\+Blob\+Storage\+::\+Events\+::\+Table\+Storage\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Table\+Storage\+Store}{TableStorageStore}}
+{\footnotesize\ttfamily \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_1_1RawTableStorageSnapshotStore}{Raw\+Table\+Storage\+Snapshot\+Store} Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store.\+Table\+Storage\+Store\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [set]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the underlying \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1TableStorageStore}{Table\+Storage\+Store} used for persisting and reading Snapshot data. 
+

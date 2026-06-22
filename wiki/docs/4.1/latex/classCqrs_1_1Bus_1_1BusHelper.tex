@@ -1,0 +1,334 @@
+\hypertarget{classCqrs_1_1Bus_1_1BusHelper}{}\doxysection{Cqrs.\+Bus.\+Bus\+Helper Class Reference}
+\label{classCqrs_1_1Bus_1_1BusHelper}\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+
+
+A helper for command and event buses that also caches I\+Configuration\+Manager look ups.  
+
+
+Inheritance diagram for Cqrs.\+Bus.\+Bus\+Helper\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classCqrs_1_1Bus_1_1BusHelper}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_aa5efb509877057c06b8843e34a8c4dd2_aa5efb509877057c06b8843e34a8c4dd2}{Bus\+Helper}} (\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} configuration\+Manager, I\+Context\+Item\+Collection\+Factory factory)
+\begin{DoxyCompactList}\small\item\em Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper}{Bus\+Helper}} \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a28c675e976adbf348637ec6ff6410c1a_a28c675e976adbf348637ec6ff6410c1a}{Is\+Event\+Required}} (Type message\+Type)
+\begin{DoxyCompactList}\small\item\em Checks if a white-\/list or black-\/list approach is taken, then checks the I\+Configuration\+Manager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. \end{DoxyCompactList}\item 
+virtual bool \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a60a9603d5c6b7f29ee42491475714895_a60a9603d5c6b7f29ee42491475714895}{Is\+Event\+Required}} (string configuration\+Key)
+\begin{DoxyCompactList}\small\item\em Checks if a white-\/list or black-\/list approach is taken, then checks the I\+Configuration\+Manager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. \end{DoxyCompactList}\item 
+virtual ? bool \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a79255c94ad1fb40ca700c2e153d0cde9_a79255c94ad1fb40ca700c2e153d0cde9}{Is\+Private\+Bus\+Required}} (Type message\+Type)
+\begin{DoxyCompactList}\small\item\em Checks if the private bus is required to send the message. Note, this does not imply the public bus is not required as well. \end{DoxyCompactList}\item 
+virtual ? bool \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a1222c81c188fbcb6ef591f5462973d6c_a1222c81c188fbcb6ef591f5462973d6c}{Is\+Public\+Bus\+Required}} (Type message\+Type)
+\begin{DoxyCompactList}\small\item\em Checks if the public bus is required to send the message. Note, this does not imply the public bus is not required as well. \end{DoxyCompactList}\item 
+virtual Action$<$ T\+Message $>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a7edd5b2ac0d46ce225e592f857f6d525_a7edd5b2ac0d46ce225e592f857f6d525}{Build\+Telemetered\+Action\+Handler$<$ T\+Message, T\+Authentication\+Token $>$}} (I\+Telemetry\+Helper telemetry\+Helper, Action$<$ T\+Message $>$ handler, bool hold\+Message\+Lock, string source)
+\begin{DoxyCompactList}\small\item\em Build a message handler that implements telemetry capturing as well as off thread handling. \end{DoxyCompactList}\item 
+virtual Action$<$ T\+Message $>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a6dc1f5166b7bcd13aa7a0d5e25ded295_a6dc1f5166b7bcd13aa7a0d5e25ded295}{Build\+Action\+Handler$<$ T\+Message $>$}} (Action$<$ T\+Message $>$ handler, bool hold\+Message\+Lock)
+\begin{DoxyCompactList}\small\item\em Build a message handler that implements telemetry capturing as well as off thread handling. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a68714a43256976db7d780b126ca3f8bd_a68714a43256976db7d780b126ca3f8bd}{Get\+Was\+Private\+Bus\+Used}} ()
+\begin{DoxyCompactList}\small\item\em Indicates if the message was received via the private bus or not. If false, this implies the public was use used. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae243200364c620a2719b7be62d74eb7e_ae243200364c620a2719b7be62d74eb7e}{Set\+Was\+Private\+Bus\+Used}} (bool was\+Private)
+\begin{DoxyCompactList}\small\item\em Set whether the message was received via the private bus or not. If false, this indicates the public was use used. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713_ad589391a51cd61673d2403ee8012e713}{Refresh\+Cached\+Checks}} ()
+\begin{DoxyCompactList}\small\item\em Refreshes \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_ae8d3525369ee9572de06f935cc09510b}{Event\+Black\+List\+Processing}} and every item currently in \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0_ae29e80bd315b6284509c9fd0b977d2a0}{Cached\+Checks}}. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c_a23bfab1be70af651cc48033fcdf4ce2c}{Start\+Refresh\+Cached\+Checks}} ()
+\begin{DoxyCompactList}\small\item\em Starts \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713_ad589391a51cd61673d2403ee8012e713}{Refresh\+Cached\+Checks}} in a Task on a one second loop. \end{DoxyCompactList}\item 
+virtual ? bool \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a170e9be9d61e0d5289a3c2265a98d51e_a170e9be9d61e0d5289a3c2265a98d51e}{Is\+A\+Bus\+Required}} (Type message\+Type, bool check\+Public)
+\begin{DoxyCompactList}\small\item\em Checks if the particular bus is required to send the message. Note, this does not imply the public bus is not required as well. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+string \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_a3777deb7ef63b54f57d45a31df157738_a3777deb7ef63b54f57d45a31df157738}{Cache\+Key}} = \char`\"{}Was\+Private\+Bus\+Used\char`\"{}
+\begin{DoxyCompactList}\small\item\em The key used to store the authentication token in the \mbox{\hyperlink{namespaceCqrs_1_1Cache}{Cache}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_aff0eaa0679d808e268ab4b5fb669bac8}{Configuration\+Manager}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Configuration\+Manager. \end{DoxyCompactList}\item 
+I\+Dictionary$<$ string, Tuple$<$ bool, Date\+Time $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0_ae29e80bd315b6284509c9fd0b977d2a0}{Cached\+Checks}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A collection of Tuple$<$\+T1, T2$>$ holding the configurations value (always a bool) and the Date\+Time The value was last checked, keyed by it\textquotesingle{}s configuration key. \end{DoxyCompactList}\item 
+I\+Dictionary$<$ string, Tuple$<$ bool?, Date\+Time $>$ $>$ \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_aa5808a8927948e071c9aef24c89feb70_aa5808a8927948e071c9aef24c89feb70}{Nullable\+Cached\+Checks}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em A collection of Tuple$<$\+T1, T2$>$ holding the configurations value (always a bool) and the Date\+Time The value was last checked, keyed by it\textquotesingle{}s configuration key. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_ae8d3525369ee9572de06f935cc09510b}{Event\+Black\+List\+Processing}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The current value of \char`\"{}\+Cqrs.\+Message\+Bus.\+Black\+List\+Processing\char`\"{} from \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_aff0eaa0679d808e268ab4b5fb669bac8}{Configuration\+Manager}}. \end{DoxyCompactList}\item 
+I\+Context\+Item\+Collection \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_aa4cbe005c60386ba143fe84afe53d694_aa4cbe005c60386ba143fe84afe53d694}{Cache}}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Get or set the \mbox{\hyperlink{namespaceCqrs_1_1Cache}{Cache}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A helper for command and event buses that also caches I\+Configuration\+Manager look ups. 
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_aa5efb509877057c06b8843e34a8c4dd2_aa5efb509877057c06b8843e34a8c4dd2}\label{classCqrs_1_1Bus_1_1BusHelper_aa5efb509877057c06b8843e34a8c4dd2_aa5efb509877057c06b8843e34a8c4dd2}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!BusHelper@{BusHelper}}
+\index{BusHelper@{BusHelper}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{BusHelper()}{BusHelper()}}
+{\footnotesize\ttfamily Cqrs.\+Bus.\+Bus\+Helper.\+Bus\+Helper (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}}]{configuration\+Manager,  }\item[{I\+Context\+Item\+Collection\+Factory}]{factory }\end{DoxyParamCaption})}
+
+
+
+Instantiates a new instance of \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper}{Bus\+Helper}} 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a6dc1f5166b7bcd13aa7a0d5e25ded295_a6dc1f5166b7bcd13aa7a0d5e25ded295}\label{classCqrs_1_1Bus_1_1BusHelper_a6dc1f5166b7bcd13aa7a0d5e25ded295_a6dc1f5166b7bcd13aa7a0d5e25ded295}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!BuildActionHandler$<$ TMessage $>$@{BuildActionHandler$<$ TMessage $>$}}
+\index{BuildActionHandler$<$ TMessage $>$@{BuildActionHandler$<$ TMessage $>$}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{BuildActionHandler$<$ TMessage $>$()}{BuildActionHandler< TMessage >()}}
+{\footnotesize\ttfamily virtual Action$<$T\+Message$>$ Cqrs.\+Bus.\+Bus\+Helper.\+Build\+Action\+Handler$<$ T\+Message $>$ (\begin{DoxyParamCaption}\item[{Action$<$ T\+Message $>$}]{handler,  }\item[{bool}]{hold\+Message\+Lock }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Build a message handler that implements telemetry capturing as well as off thread handling. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_ac69a1e4722e2839c2c180b9a06a8646c_ac69a1e4722e2839c2c180b9a06a8646c}{Cqrs.\+Bus.\+I\+Bus\+Helper}}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Message} : {\em I\+Message}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a7edd5b2ac0d46ce225e592f857f6d525_a7edd5b2ac0d46ce225e592f857f6d525}\label{classCqrs_1_1Bus_1_1BusHelper_a7edd5b2ac0d46ce225e592f857f6d525_a7edd5b2ac0d46ce225e592f857f6d525}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!BuildTelemeteredActionHandler$<$ TMessage, TAuthenticationToken $>$@{BuildTelemeteredActionHandler$<$ TMessage, TAuthenticationToken $>$}}
+\index{BuildTelemeteredActionHandler$<$ TMessage, TAuthenticationToken $>$@{BuildTelemeteredActionHandler$<$ TMessage, TAuthenticationToken $>$}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{BuildTelemeteredActionHandler$<$ TMessage, TAuthenticationToken $>$()}{BuildTelemeteredActionHandler< TMessage, TAuthenticationToken >()}}
+{\footnotesize\ttfamily virtual Action$<$T\+Message$>$ Cqrs.\+Bus.\+Bus\+Helper.\+Build\+Telemetered\+Action\+Handler$<$ T\+Message, T\+Authentication\+Token $>$ (\begin{DoxyParamCaption}\item[{I\+Telemetry\+Helper}]{telemetry\+Helper,  }\item[{Action$<$ T\+Message $>$}]{handler,  }\item[{bool}]{hold\+Message\+Lock,  }\item[{string}]{source }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Build a message handler that implements telemetry capturing as well as off thread handling. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_a29751c186da5e2b042067af6a1be6d5d_a29751c186da5e2b042067af6a1be6d5d}{Cqrs.\+Bus.\+I\+Bus\+Helper}}.
+
+\begin{Desc}
+\item[Type Constraints]\begin{description}
+\item[{\em T\+Message} : {\em I\+Message}]\end{description}
+\end{Desc}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a68714a43256976db7d780b126ca3f8bd_a68714a43256976db7d780b126ca3f8bd}\label{classCqrs_1_1Bus_1_1BusHelper_a68714a43256976db7d780b126ca3f8bd_a68714a43256976db7d780b126ca3f8bd}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!GetWasPrivateBusUsed@{GetWasPrivateBusUsed}}
+\index{GetWasPrivateBusUsed@{GetWasPrivateBusUsed}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{GetWasPrivateBusUsed()}{GetWasPrivateBusUsed()}}
+{\footnotesize\ttfamily bool Cqrs.\+Bus.\+Bus\+Helper.\+Get\+Was\+Private\+Bus\+Used (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Indicates if the message was received via the private bus or not. If false, this implies the public was use used. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_a6e3d49a9367f3709d216f02be0277eea_a6e3d49a9367f3709d216f02be0277eea}{Cqrs.\+Bus.\+I\+Bus\+Helper}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a170e9be9d61e0d5289a3c2265a98d51e_a170e9be9d61e0d5289a3c2265a98d51e}\label{classCqrs_1_1Bus_1_1BusHelper_a170e9be9d61e0d5289a3c2265a98d51e_a170e9be9d61e0d5289a3c2265a98d51e}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!IsABusRequired@{IsABusRequired}}
+\index{IsABusRequired@{IsABusRequired}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{IsABusRequired()}{IsABusRequired()}}
+{\footnotesize\ttfamily virtual ? bool Cqrs.\+Bus.\+Bus\+Helper.\+Is\+A\+Bus\+Required (\begin{DoxyParamCaption}\item[{Type}]{message\+Type,  }\item[{bool}]{check\+Public }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Checks if the particular bus is required to send the message. Note, this does not imply the public bus is not required as well. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message\+Type} & The Type of the message being processed.\\
+\hline
+{\em check\+Public} & Check for the public or private bus.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Null for unconfigured, True for a particular bus transmission, false otherwise.
+\end{DoxyReturn}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a60a9603d5c6b7f29ee42491475714895_a60a9603d5c6b7f29ee42491475714895}\label{classCqrs_1_1Bus_1_1BusHelper_a60a9603d5c6b7f29ee42491475714895_a60a9603d5c6b7f29ee42491475714895}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!IsEventRequired@{IsEventRequired}}
+\index{IsEventRequired@{IsEventRequired}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{IsEventRequired()}{IsEventRequired()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual bool Cqrs.\+Bus.\+Bus\+Helper.\+Is\+Event\+Required (\begin{DoxyParamCaption}\item[{string}]{configuration\+Key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Checks if a white-\/list or black-\/list approach is taken, then checks the I\+Configuration\+Manager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em configuration\+Key} & The configuration key to check.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_af73d0d2aa8e98566acb4b2fb13a3e986_af73d0d2aa8e98566acb4b2fb13a3e986}{Cqrs.\+Bus.\+I\+Bus\+Helper}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a28c675e976adbf348637ec6ff6410c1a_a28c675e976adbf348637ec6ff6410c1a}\label{classCqrs_1_1Bus_1_1BusHelper_a28c675e976adbf348637ec6ff6410c1a_a28c675e976adbf348637ec6ff6410c1a}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!IsEventRequired@{IsEventRequired}}
+\index{IsEventRequired@{IsEventRequired}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{IsEventRequired()}{IsEventRequired()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual bool Cqrs.\+Bus.\+Bus\+Helper.\+Is\+Event\+Required (\begin{DoxyParamCaption}\item[{Type}]{message\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Checks if a white-\/list or black-\/list approach is taken, then checks the I\+Configuration\+Manager to see if a key exists defining if the event is required or not. If the event is required and it cannot be resolved, an error will be raised. Otherwise the event will be marked as processed. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message\+Type} & The Type of the message being processed.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_acddf7635d6de08e3b09d552361fe4fda_acddf7635d6de08e3b09d552361fe4fda}{Cqrs.\+Bus.\+I\+Bus\+Helper}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a79255c94ad1fb40ca700c2e153d0cde9_a79255c94ad1fb40ca700c2e153d0cde9}\label{classCqrs_1_1Bus_1_1BusHelper_a79255c94ad1fb40ca700c2e153d0cde9_a79255c94ad1fb40ca700c2e153d0cde9}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!IsPrivateBusRequired@{IsPrivateBusRequired}}
+\index{IsPrivateBusRequired@{IsPrivateBusRequired}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{IsPrivateBusRequired()}{IsPrivateBusRequired()}}
+{\footnotesize\ttfamily virtual ? bool Cqrs.\+Bus.\+Bus\+Helper.\+Is\+Private\+Bus\+Required (\begin{DoxyParamCaption}\item[{Type}]{message\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Checks if the private bus is required to send the message. Note, this does not imply the public bus is not required as well. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message\+Type} & The Type of the message being processed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Null for unconfigured, True for private bus transmission, false otherwise.
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_a77ba41738c6796f2800a914d39fc84d6_a77ba41738c6796f2800a914d39fc84d6}{Cqrs.\+Bus.\+I\+Bus\+Helper}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a1222c81c188fbcb6ef591f5462973d6c_a1222c81c188fbcb6ef591f5462973d6c}\label{classCqrs_1_1Bus_1_1BusHelper_a1222c81c188fbcb6ef591f5462973d6c_a1222c81c188fbcb6ef591f5462973d6c}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!IsPublicBusRequired@{IsPublicBusRequired}}
+\index{IsPublicBusRequired@{IsPublicBusRequired}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{IsPublicBusRequired()}{IsPublicBusRequired()}}
+{\footnotesize\ttfamily virtual ? bool Cqrs.\+Bus.\+Bus\+Helper.\+Is\+Public\+Bus\+Required (\begin{DoxyParamCaption}\item[{Type}]{message\+Type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Checks if the public bus is required to send the message. Note, this does not imply the public bus is not required as well. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em message\+Type} & The Type of the message being processed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Null for unconfigured, True for private bus transmission, false otherwise.
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_a0fa31155c7a303474ca65b170eee05b9_a0fa31155c7a303474ca65b170eee05b9}{Cqrs.\+Bus.\+I\+Bus\+Helper}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713_ad589391a51cd61673d2403ee8012e713}\label{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713_ad589391a51cd61673d2403ee8012e713}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!RefreshCachedChecks@{RefreshCachedChecks}}
+\index{RefreshCachedChecks@{RefreshCachedChecks}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{RefreshCachedChecks()}{RefreshCachedChecks()}}
+{\footnotesize\ttfamily virtual void Cqrs.\+Bus.\+Bus\+Helper.\+Refresh\+Cached\+Checks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Refreshes \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_ae8d3525369ee9572de06f935cc09510b}{Event\+Black\+List\+Processing}} and every item currently in \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0_ae29e80bd315b6284509c9fd0b977d2a0}{Cached\+Checks}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_ae243200364c620a2719b7be62d74eb7e_ae243200364c620a2719b7be62d74eb7e}\label{classCqrs_1_1Bus_1_1BusHelper_ae243200364c620a2719b7be62d74eb7e_ae243200364c620a2719b7be62d74eb7e}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!SetWasPrivateBusUsed@{SetWasPrivateBusUsed}}
+\index{SetWasPrivateBusUsed@{SetWasPrivateBusUsed}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{SetWasPrivateBusUsed()}{SetWasPrivateBusUsed()}}
+{\footnotesize\ttfamily bool Cqrs.\+Bus.\+Bus\+Helper.\+Set\+Was\+Private\+Bus\+Used (\begin{DoxyParamCaption}\item[{bool}]{was\+Private }\end{DoxyParamCaption})}
+
+
+
+Set whether the message was received via the private bus or not. If false, this indicates the public was use used. 
+
+
+
+Implements \mbox{\hyperlink{interfaceCqrs_1_1Bus_1_1IBusHelper_a40a395ea6d92a6162c8e584a39284bbc_a40a395ea6d92a6162c8e584a39284bbc}{Cqrs.\+Bus.\+I\+Bus\+Helper}}.
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c_a23bfab1be70af651cc48033fcdf4ce2c}\label{classCqrs_1_1Bus_1_1BusHelper_a23bfab1be70af651cc48033fcdf4ce2c_a23bfab1be70af651cc48033fcdf4ce2c}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!StartRefreshCachedChecks@{StartRefreshCachedChecks}}
+\index{StartRefreshCachedChecks@{StartRefreshCachedChecks}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{StartRefreshCachedChecks()}{StartRefreshCachedChecks()}}
+{\footnotesize\ttfamily virtual void Cqrs.\+Bus.\+Bus\+Helper.\+Start\+Refresh\+Cached\+Checks (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Starts \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_ad589391a51cd61673d2403ee8012e713_ad589391a51cd61673d2403ee8012e713}{Refresh\+Cached\+Checks}} in a Task on a one second loop. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_a3777deb7ef63b54f57d45a31df157738_a3777deb7ef63b54f57d45a31df157738}\label{classCqrs_1_1Bus_1_1BusHelper_a3777deb7ef63b54f57d45a31df157738_a3777deb7ef63b54f57d45a31df157738}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!CacheKey@{CacheKey}}
+\index{CacheKey@{CacheKey}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{CacheKey}{CacheKey}}
+{\footnotesize\ttfamily string Cqrs.\+Bus.\+Bus\+Helper.\+Cache\+Key = \char`\"{}Was\+Private\+Bus\+Used\char`\"{}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The key used to store the authentication token in the \mbox{\hyperlink{namespaceCqrs_1_1Cache}{Cache}}. 
+
+
+
+\doxysubsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_aa4cbe005c60386ba143fe84afe53d694_aa4cbe005c60386ba143fe84afe53d694}\label{classCqrs_1_1Bus_1_1BusHelper_aa4cbe005c60386ba143fe84afe53d694_aa4cbe005c60386ba143fe84afe53d694}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!Cache@{Cache}}
+\index{Cache@{Cache}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{Cache}{Cache}}
+{\footnotesize\ttfamily I\+Context\+Item\+Collection Cqrs.\+Bus.\+Bus\+Helper.\+Cache\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Get or set the \mbox{\hyperlink{namespaceCqrs_1_1Cache}{Cache}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0_ae29e80bd315b6284509c9fd0b977d2a0}\label{classCqrs_1_1Bus_1_1BusHelper_ae29e80bd315b6284509c9fd0b977d2a0_ae29e80bd315b6284509c9fd0b977d2a0}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!CachedChecks@{CachedChecks}}
+\index{CachedChecks@{CachedChecks}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{CachedChecks}{CachedChecks}}
+{\footnotesize\ttfamily I\+Dictionary$<$string, Tuple$<$bool, Date\+Time$>$ $>$ Cqrs.\+Bus.\+Bus\+Helper.\+Cached\+Checks\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+A collection of Tuple$<$\+T1, T2$>$ holding the configurations value (always a bool) and the Date\+Time The value was last checked, keyed by it\textquotesingle{}s configuration key. 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_aff0eaa0679d808e268ab4b5fb669bac8}\label{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_aff0eaa0679d808e268ab4b5fb669bac8}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!ConfigurationManager@{ConfigurationManager}}
+\index{ConfigurationManager@{ConfigurationManager}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{ConfigurationManager}{ConfigurationManager}}
+{\footnotesize\ttfamily \mbox{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}} Cqrs.\+Bus.\+Bus\+Helper.\+Configuration\+Manager\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Configuration\+Manager. 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_ae8d3525369ee9572de06f935cc09510b}\label{classCqrs_1_1Bus_1_1BusHelper_ae8d3525369ee9572de06f935cc09510b_ae8d3525369ee9572de06f935cc09510b}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!EventBlackListProcessing@{EventBlackListProcessing}}
+\index{EventBlackListProcessing@{EventBlackListProcessing}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{EventBlackListProcessing}{EventBlackListProcessing}}
+{\footnotesize\ttfamily bool Cqrs.\+Bus.\+Bus\+Helper.\+Event\+Black\+List\+Processing\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The current value of \char`\"{}\+Cqrs.\+Message\+Bus.\+Black\+List\+Processing\char`\"{} from \mbox{\hyperlink{classCqrs_1_1Bus_1_1BusHelper_aff0eaa0679d808e268ab4b5fb669bac8_aff0eaa0679d808e268ab4b5fb669bac8}{Configuration\+Manager}}. 
+
+\mbox{\Hypertarget{classCqrs_1_1Bus_1_1BusHelper_aa5808a8927948e071c9aef24c89feb70_aa5808a8927948e071c9aef24c89feb70}\label{classCqrs_1_1Bus_1_1BusHelper_aa5808a8927948e071c9aef24c89feb70_aa5808a8927948e071c9aef24c89feb70}} 
+\index{Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}!NullableCachedChecks@{NullableCachedChecks}}
+\index{NullableCachedChecks@{NullableCachedChecks}!Cqrs.Bus.BusHelper@{Cqrs.Bus.BusHelper}}
+\doxysubsubsection{\texorpdfstring{NullableCachedChecks}{NullableCachedChecks}}
+{\footnotesize\ttfamily I\+Dictionary$<$string, Tuple$<$bool?, Date\+Time$>$ $>$ Cqrs.\+Bus.\+Bus\+Helper.\+Nullable\+Cached\+Checks\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+A collection of Tuple$<$\+T1, T2$>$ holding the configurations value (always a bool) and the Date\+Time The value was last checked, keyed by it\textquotesingle{}s configuration key. 
+

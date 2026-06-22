@@ -1,0 +1,66 @@
+BEGIN TRANSACTION
+	ALTER TABLE [dbo].[EventStore] ADD [AggregateRsn] uniqueidentifier NOT NULL DEFAULT '00000000-0000-0000-0000-000000000000'
+	GO
+
+	UPDATE [dbo].[EventStore] 
+	SET [AggregateRsn] = RIGHT([AggregateId], 36)
+	GO
+
+	ALTER TABLE [dbo].[EventStore] DROP CONSTRAINT [PK_EventStore]
+	GO
+
+	ALTER TABLE [dbo].[EventStore] ADD CONSTRAINT [PK_EventStore] PRIMARY KEY NONCLUSTERED 
+	(
+		[EventId] ASC
+	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+	GO
+
+	CREATE PARTITION FUNCTION PF_EventStore_AggregateRsn (uniqueidentifier)
+	AS RANGE RIGHT
+	FOR VALUES
+	(
+	   N'00000000-0000-0000-0000-0D0000000000', 
+	   N'00000000-0000-0000-0000-1A0000000000', 
+	   N'00000000-0000-0000-0000-270000000000', 
+	   N'00000000-0000-0000-0000-340000000000', 
+	   N'00000000-0000-0000-0000-410000000000', 
+	   N'00000000-0000-0000-0000-4E0000000000', 
+	   N'00000000-0000-0000-0000-5B0000000000', 
+	   N'00000000-0000-0000-0000-680000000000', 
+	   N'00000000-0000-0000-0000-750000000000', 
+	   N'00000000-0000-0000-0000-820000000000', 
+	   N'00000000-0000-0000-0000-8F0000000000', 
+	   N'00000000-0000-0000-0000-9C0000000000', 
+	   N'00000000-0000-0000-0000-A90000000000', 
+	   N'00000000-0000-0000-0000-B60000000000', 
+	   N'00000000-0000-0000-0000-C30000000000', 
+	   N'00000000-0000-0000-0000-D00000000000', 
+	   N'00000000-0000-0000-0000-DD0000000000', 
+	   N'00000000-0000-0000-0000-EA0000000000', 
+	   N'00000000-0000-0000-0000-F70000000000' 
+	) ;
+	GO
+
+	CREATE PARTITION SCHEME PS_EventStore_AggregateRsn
+	AS PARTITION PF_EventStore_AggregateRsn ALL TO ([PRIMARY]) 
+	GO
+
+	CREATE CLUSTERED INDEX [IX_AggregateRsn] ON [dbo].[EventStore]
+	(
+		[AggregateRsn] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+	ON PS_EventStore_AggregateRsn(AggregateRsn)
+	GO
+COMMIT
+
+SELECT ps.name,pf.name,boundary_id,value
+, ps.*
+FROM sys.partition_schemes ps
+INNER JOIN sys.partition_functions pf ON pf.function_id=ps.function_id
+INNER JOIN sys.partition_range_values prf ON pf.function_id=prf.function_id
+
+SELECT o.name objectname,i.name indexname, partition_id, partition_number, [rows]
+FROM sys.partitions p
+INNER JOIN sys.objects o ON o.object_id=p.object_id
+INNER JOIN sys.indexes i ON i.object_id=p.object_id and p.index_id=i.index_id
+WHERE o.name = 'EventStore'

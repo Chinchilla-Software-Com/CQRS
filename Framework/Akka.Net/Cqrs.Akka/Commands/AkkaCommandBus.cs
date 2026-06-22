@@ -1,7 +1,7 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
@@ -10,9 +10,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using Akka.Actor;
-using cdmdotnet.Logging;
-using Cqrs.Akka.Configuration;
+using Chinchilla.Logging;
 using Cqrs.Authentication;
 using Cqrs.Bus;
 using Cqrs.Commands;
@@ -24,90 +22,128 @@ using Cqrs.Messages;
 namespace Cqrs.Akka.Commands
 {
 	/// <summary>
-	/// A <see cref="ICommandSender{TAuthenticationToken}"/> that proxies <see cref="ICommand{TAuthenticationToken}"/> back onto the <see cref="IActorRef"/> and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the public command bus.
+	/// A <see cref="ICommandPublisher{TAuthenticationToken}"/> that resolves handlers , executes the handler and then publishes the <see cref="ICommand{TAuthenticationToken}"/> on the public command bus.
 	/// </summary>
+	/// <typeparam name="TAuthenticationToken">The <see cref="Type"/> of the authentication token.</typeparam>
 	public class AkkaCommandBus<TAuthenticationToken>
-		: IAkkaCommandSender<TAuthenticationToken>
+		: IAkkaCommandPublisher<TAuthenticationToken>
 		, ICommandHandlerRegistrar
 	{
+		/// <summary>
+		/// Gets the <see cref="RouteManager"/>
+		/// </summary>
 		protected static RouteManager Routes { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IAuthenticationTokenHelper{TAuthenticationToken}">Authentication Token Helper</see>
+		/// </summary>
 		protected IAuthenticationTokenHelper<TAuthenticationToken> AuthenticationTokenHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="ICorrelationIdHelper"/>
+		/// </summary>
 		protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="IDependencyResolver"/>
+		/// </summary>
 		protected IDependencyResolver DependencyResolver { get; private set; }
 
-		protected IHandlerResolver ConcurrentEventBusProxy { get; private set; }
+		/// <summary>
+		/// Gets or sets the <see cref="IBusHelper"/>
+		/// </summary>
+		protected IBusHelper BusHelper { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="ILogger"/>
+		/// </summary>
+		protected ILogger Logger { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="ICommandPublisher{TAuthenticationToken}"/>
+		/// </summary>
+		protected ICommandPublisher<TAuthenticationToken> CommandPublisher { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the <see cref="ICommandReceiver{TAuthenticationToken}"/>
+		/// </summary>
+		protected ICommandReceiver<TAuthenticationToken> CommandReceiver { get; private set; }
+
+		/// <summary>
+		/// Gets or sets the current list of events waiting to be evaluated for <see cref="PublishAndWait{TCommand,TEvent}(TCommand,Cqrs.Events.IEventReceiver{TAuthenticationToken})"/>
+		/// </summary>
+		protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; private set; }
 
 		static AkkaCommandBus()
 		{
 			Routes = new RouteManager();
 		}
 
-		public AkkaCommandBus(IHandlerResolver concurrentEventBusProxy, IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger)
+		/// <summary>
+		/// Instantiates a new instance of <see cref="AkkaCommandBus{TAuthenticationToken}"/>
+		/// </summary>
+		public AkkaCommandBus(IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, ICommandPublisher<TAuthenticationToken> commandPublisher, ICommandReceiver<TAuthenticationToken> commandReceiver)
 		{
-			ConcurrentEventBusProxy = concurrentEventBusProxy;
 			Logger = logger;
 			BusHelper = busHelper;
 			AuthenticationTokenHelper = authenticationTokenHelper;
 			CorrelationIdHelper = correlationIdHelper;
 			DependencyResolver = dependencyResolver;
 			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
-		}
-
-		public AkkaCommandBus(IConfigurationManager configurationManager, IBusHelper busHelper, IAuthenticationTokenHelper<TAuthenticationToken> authenticationTokenHelper, ICorrelationIdHelper correlationIdHelper, IDependencyResolver dependencyResolver, ILogger logger, IActorRef actorReference, ICommandSender<TAuthenticationToken> commandSender, ICommandReceiver<TAuthenticationToken> commandReceiver)
-		{
-			ConfigurationManager = configurationManager;
-			Logger = logger;
-			ActorReference = actorReference;
-			CommandSender = commandSender;
+			CommandPublisher = commandPublisher;
 			CommandReceiver = commandReceiver;
-			AuthenticationTokenHelper = authenticationTokenHelper;
-			CorrelationIdHelper = correlationIdHelper;
-			DependencyResolver = dependencyResolver;
-			BusHelper = busHelper;
-			EventWaits = new ConcurrentDictionary<Guid, IList<IEvent<TAuthenticationToken>>>();
 		}
 
-		protected IConfigurationManager ConfigurationManager { get; private set; }
-
-		protected IBusHelper BusHelper { get; private set; }
-
-		protected ILogger Logger { get; private set; }
-
-		protected IActorRef ActorReference { get; private set; }
-
-		protected ICommandSender<TAuthenticationToken> CommandSender { get; private set; }
-
-		protected ICommandReceiver<TAuthenticationToken> CommandReceiver { get; private set; }
-
-		protected IDictionary<Guid, IList<IEvent<TAuthenticationToken>>> EventWaits { get; private set; }
-
+		/// <summary>
+		/// Sets the
+		/// <see cref="IMessageWithAuthenticationToken{TAuthenticationToken}.AuthenticationToken"/>,
+		/// <see cref="IMessage.CorrelationId"/>,
+		/// <see cref="IMessage.OriginatingFramework"/> to "Akka" and
+		/// adds a value of "Akka" to the <see cref="IMessage.Frameworks"/>
+		/// if not already done so
+		/// </summary>
 		protected virtual void PrepareCommand<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			if (command.AuthenticationToken == null)
+			if (command.AuthenticationToken == null || command.AuthenticationToken.Equals(default(TAuthenticationToken)))
 				command.AuthenticationToken = AuthenticationTokenHelper.GetAuthenticationToken();
 			command.CorrelationId = CorrelationIdHelper.GetCorrelationId();
 
 			if (string.IsNullOrWhiteSpace(command.OriginatingFramework))
 				command.OriginatingFramework = "Akka";
-			IList<string> frameworks = new List<string>(command.Frameworks);
+
+			var frameworks = new List<string>();
+			if (command.Frameworks != null)
+				frameworks.AddRange(command.Frameworks);
 			frameworks.Add("Akka");
 			command.Frameworks = frameworks;
 		}
 
+		/// <summary>
+		/// Locates a suitable <see cref="ICommandValidator{TAuthenticationToken,TCommand}"/> to validate the provided <paramref name="command"/> and validates the provided <paramref name="command"/> if one is located
+		/// Calls <see cref="PrepareCommand{TCommand}"/>
+		/// Checks if the provided <paramref name="command"/> is required to be processed
+		/// Locates a single <see cref="RouteHandlerDelegate">command handler</see> for the provided <paramref name="command"/>
+		/// </summary>
+		/// <returns>
+		/// False if a suitable <see cref="ICommandValidator{TAuthenticationToken,TCommand}"/> is located and the provided <paramref name="command"/> fails validation,
+		/// False if no <see cref="RouteHandlerDelegate">command handler</see> is found but the command isn't required to be handled,
+		/// True otherwise.
+		/// </returns>
 		protected virtual bool PrepareAndValidateCommand<TCommand>(TCommand command, out RouteHandlerDelegate commandHandler)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			Type commandType = command.GetType();
 
-			if (command.Frameworks.Contains("Akka"))
+			if (command.Frameworks != null && command.Frameworks.Contains("Akka"))
 			{
-				Logger.LogInfo("The provided command has already been processed in Akka.", string.Format("{0}\\Handle({1})", GetType().FullName, commandType.FullName));
-				commandHandler = null;
-				return false;
+				// if this is the only framework in the list, then it's fine to handle as it's just pre-stamped, if there is more than one framework, then exit.
+				if (command.Frameworks.Count() != 1)
+				{
+					Logger.LogInfo("The provided command has already been processed in Akka.", string.Format("{0}\\PrepareAndValidateEvent({1})", GetType().FullName, commandType.FullName));
+					commandHandler = null;
+					return false;
+				}
 			}
 
 			ICommandValidator<TAuthenticationToken, TCommand> commandValidator = null;
@@ -134,109 +170,119 @@ namespace Cqrs.Akka.Commands
 			commandHandler = Routes.GetSingleHandler(command, isRequired);
 			// This check doesn't require an isRequired check as there will be an exception raised above and handled below.
 			if (commandHandler == null)
-			{
 				Logger.LogDebug(string.Format("The command handler for '{0}' is not required.", commandType.FullName));
-				return false;
-			}
 
 			return true;
 		}
 
-		#region Implementation of ICommandSender<TAuthenticationToken>
+		#region Implementation of ICommandPublisher<TAuthenticationToken>
 
-		public void Send<TCommand>(TCommand command)
+		/// <summary>
+		/// Publishes the provided <paramref name="command"/> on the command bus.
+		/// </summary>
+		public virtual void Publish<TCommand>(TCommand command)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			RouteHandlerDelegate commandHandler;
 			if (!PrepareAndValidateCommand(command, out commandHandler))
 				return;
 
-			Type senderType = commandHandler.TargetedType == null
-				? typeof(IConcurrentAkkaCommandSender<>).MakeGenericType(typeof(TAuthenticationToken))
-				: typeof(IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
-			var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, command.Id);
-			proxy.Tell(command);
+			// This could be null if Akka won't handle the command and something else will.
+			if (commandHandler != null)
+				commandHandler.Delegate(command);
 
-			CommandSender.Send(command);
+			// Let everything else know about the command (usually double handling a command is bad... but sometimes it might be useful... like pushing from AWS to Azure so both systems handle it... although an event really is the proper pattern to use here.
+			CommandPublisher.Publish(command);
 		}
 
 		/// <summary>
-		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/>
+		/// Publishes the provided <paramref name="commands"/> on the command bus.
 		/// </summary>
-		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
-		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public virtual TEvent SendAndWait<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual void Publish<TCommand>(IEnumerable<TCommand> commands)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return SendAndWait<TCommand, TEvent>(command, -1, eventReceiver);
+			IList<TCommand> sourceCommands = commands.ToList();
+			foreach (TCommand command in sourceCommands)
+			{
+				RouteHandlerDelegate commandHandler;
+				if (!PrepareAndValidateCommand(command, out commandHandler))
+					return;
+
+				// This could be null if Akka won't handle the command and something else will.
+				if (commandHandler != null)
+					commandHandler.Delegate(command);
+			}
+			// Let everything else know about the command (usually double handling a command is bad... but sometimes it might be useful... like pushing from AWS to Azure so both systems handle it... although an event really is the proper pattern to use here.
+			CommandPublisher.Publish((IEnumerable<TCommand>)sourceCommands);
 		}
 
 		/// <summary>
-		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
+		/// Publishes the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/>
 		/// </summary>
-		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
+		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
+		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+			where TCommand : ICommand<TAuthenticationToken>
+		{
+			return PublishAndWait<TCommand, TEvent>(command, -1, eventReceiver);
+		}
+
+		/// <summary>
+		/// Publishes the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
+		/// </summary>
+		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return SendAndWait(command, events => (TEvent)events.SingleOrDefault(@event => @events is TEvent), millisecondsTimeout, eventReceiver);
+			return PublishAndWait(command, events => (TEvent)events.SingleOrDefault(@event => @event is TEvent), millisecondsTimeout, eventReceiver);
 		}
 
 		/// <summary>
-		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
+		/// Publishes the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
 		/// </summary>
-		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
 			if (num < -1L || num > int.MaxValue)
 				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
-			return SendAndWait<TCommand, TEvent>(command, (int)timeout.TotalMilliseconds, eventReceiver);
+			return PublishAndWait<TCommand, TEvent>(command, (int)timeout.TotalMilliseconds, eventReceiver);
 		}
 
 		/// <summary>
-		/// Sends the provided <paramref name="command"></paramref> and waits until the specified condition is satisfied an event of <typeparamref name="TEvent"/>
+		/// Publishes the provided <paramref name="command"></paramref> and waits until the specified condition is satisfied an event of <typeparamref name="TEvent"/>
 		/// </summary>
-		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
-			return SendAndWait(command, condition, -1, eventReceiver);
+			return PublishAndWait(command, condition, -1, eventReceiver);
 		}
 
 		/// <summary>
-		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
+		/// Publishes the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
 		/// </summary>
-		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/> (-1) to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, int millisecondsTimeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			if (eventReceiver != null)
 				throw new NotSupportedException("Specifying a different event receiver is not yet supported.");
-			RouteHandlerDelegate commandHandler;
-			if (!PrepareAndValidateCommand(command, out commandHandler))
-				return (TEvent)(object)null;
 
 			TEvent result = (TEvent)(object)null;
 			EventWaits.Add(command.CorrelationId, new List<IEvent<TAuthenticationToken>>());
 
-			Type senderType = commandHandler.TargetedType == null
-				? typeof(IConcurrentAkkaCommandSender<>).MakeGenericType(typeof(TAuthenticationToken))
-				: typeof(IConcurrentAkkaCommandSender<,>).MakeGenericType(typeof(TAuthenticationToken), commandHandler.TargetedType);
-			var proxy = (IActorRef)ConcurrentEventBusProxy.Resolve(senderType, command.Id);
-
-			proxy.Tell(command);
-
-			CommandSender.Send(command);
+			Publish(command);
 
 			SpinWait.SpinUntil(() =>
 			{
@@ -251,19 +297,19 @@ namespace Cqrs.Akka.Commands
 		}
 
 		/// <summary>
-		/// Sends the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
+		/// Publishes the provided <paramref name="command"></paramref> and waits for an event of <typeparamref name="TEvent"/> or exits if the specified timeout is expired.
 		/// </summary>
-		/// <param name="command">The <typeparamref name="TCommand"/> to send.</param>
+		/// <param name="command">The <typeparamref name="TCommand"/> to publish.</param>
 		/// <param name="condition">A delegate to be executed over and over until it returns the <typeparamref name="TEvent"/> that is desired, return null to keep trying.</param>
 		/// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a TimeSpan that represents -1 milliseconds to wait indefinitely.</param>
 		/// <param name="eventReceiver">If provided, is the <see cref="IEventReceiver{TAuthenticationToken}" /> that the event is expected to be returned on.</param>
-		public TEvent SendAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
+		public virtual TEvent PublishAndWait<TCommand, TEvent>(TCommand command, Func<IEnumerable<IEvent<TAuthenticationToken>>, TEvent> condition, TimeSpan timeout, IEventReceiver<TAuthenticationToken> eventReceiver = null)
 			where TCommand : ICommand<TAuthenticationToken>
 		{
 			long num = (long)timeout.TotalMilliseconds;
 			if (num < -1L || num > int.MaxValue)
 				throw new ArgumentOutOfRangeException("timeout", timeout, "SpinWait_SpinUntil_TimeoutWrong");
-			return SendAndWait(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
+			return PublishAndWait(command, condition, (int)timeout.TotalMilliseconds, eventReceiver);
 		}
 
 		#endregion

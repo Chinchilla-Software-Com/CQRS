@@ -1,20 +1,21 @@
 ﻿#region Copyright
 // // -----------------------------------------------------------------------
-// // <copyright company="cdmdotnet Limited">
-// // 	Copyright cdmdotnet Limited. All rights reserved.
+// // <copyright company="Chinchilla Software Limited">
+// // 	Copyright Chinchilla Software Limited. All rights reserved.
 // // </copyright>
 // // -----------------------------------------------------------------------
 #endregion
 
-using System;
+using Cqrs.Configuration;
 using Cqrs.Messages;
 
 namespace Cqrs.Bus
 {
-	public class RouteHandlerDelegate
+	/// <summary>
+	/// Information about a <see cref="Route"/> delegate.
+	/// </summary>
+	/// <remarks>Remarkably similar to <see cref="HandlerDelegate"/></remarks>
+	public class RouteHandlerDelegate : HandlerDelegate<IMessage>
 	{
-		public Action<IMessage> Delegate { get; set; }
-
-		public Type TargetedType { get; set; }
 	}
 }

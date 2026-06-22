@@ -90,6 +90,8 @@ namespace <#= classNamespace #>.Services.Host
 			string relationshipName = relationship.Name;
 			if (string.IsNullOrWhiteSpace(relationshipName))
 				relationshipName = ((INamedElement)relationship.SourceElement).Name;
+			if (relationshipName.EndsWith("CommandHandler"))
+				relationshipName = relationshipName.Substring(0, relationshipName.Length - 14);
 #>
 			<#= className #>Service<#= relationshipName #>ParametersResolver.RegisterDataContracts();
 <#

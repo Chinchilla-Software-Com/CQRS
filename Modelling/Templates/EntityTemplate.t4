@@ -22,6 +22,8 @@ string entityPersistenceTechnology = GetEntityPersistenceTechnology(this.Element
 var tableNameProperty = stereoTypeProperties.PropertyInstances
 	.SingleOrDefault(property => property.Name == "TableName");
 string tableName = tableNameProperty != null && !string.IsNullOrWhiteSpace(tableNameProperty.Value) ? tableNameProperty.Value : className + "Entity";
+if (tableName.EndsWith("EntityEntity"))
+	tableName = tableName.Substring(0, tableName.Length - 6);
 
 if (string.IsNullOrWhiteSpace(baseClass))
 {
@@ -44,7 +46,6 @@ using Cqrs.Azure.DocumentDb.Entities;
 <# } #> 
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Runtime.Serialization;
 
 namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 {
@@ -55,7 +56,8 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 	[Serializable]
 	[DataContract]
 	[Table(Name = "<#= tableName #>")]
-	public <#= GetAbstract(this.Element) #> partial class <#= className #>Entity : <#= baseClass #>, I<#= className #>Entity
+	<#= GetServiceContractAttribute(this.Element) #>
+	public <#= GetAbstract(this.Element) #> partial class <#= className #><#= isAggregateTo ? "Entity" : string.Empty #> : <#= baseClass #>, I<#= className #><#= isAggregateTo ? "Entity" : string.Empty #>
 	{
 		[DataMember]
 		[Column(IsPrimaryKey = true)]
@@ -67,8 +69,7 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 
 		[DataMember]
 		[Column]
-		public override bool IsLogicallyDeleted { get; set; }
-
+		public override bool IsDeleted { get; set; }
 <#
 		IList<IProperty> collectionProperties = GetPropertyList(this.Element);
 		// Properties
@@ -76,6 +77,17 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 		{
 			if (!collectionProperty.AppliedStereotypes.Any())
 				continue;
+			if (collectionProperty.OwningAssociation != null)
+			{
+				var commandHandler = collectionProperty.OwningAssociation.AppliedStereotypes.SingleOrDefault(property => property.Name == "CommandHandler");
+				// If this is a command handler association, don't add a property for it as it's a command handler definition
+				if (commandHandler != null)
+					continue;
+				var eventLink = collectionProperty.OwningAssociation.TargetElement.AppliedStereotypes.SingleOrDefault(property => property.Name == "Event");
+				// If this is an event association, don't add a property for it as it's an event definition
+				if (eventLink != null)
+					continue;
+			}
 			string columnName = "Column";
 			var propertyStereoTypeProperties = collectionProperty.AppliedStereotypes.SingleOrDefault(property => property.Name == "EntityProperty");
 			if (propertyStereoTypeProperties != null)
@@ -85,6 +97,7 @@ namespace <#= classNamespace #><#= isAggregateTo ? ".Entities" : string.Empty #>
 				columnName = columnNameProperty != null && !string.IsNullOrWhiteSpace(columnNameProperty.Value) ? string.Format("Column(Name = \"{0}\")", columnNameProperty.Value) : "Column";
 			}
 #>
+
 <# WriteSummaryComment(collectionProperty.Description); #>
 		[DataMember]
 		[<#= columnName #>]

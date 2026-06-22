@@ -1,4 +1,4 @@
-﻿<#@ Assembly Name="Microsoft.VisualStudio.ArchitectureTools.Extensibility.dll" #>
+<#@ Assembly Name="Microsoft.VisualStudio.ArchitectureTools.Extensibility.dll" #>
 <#@ Import Namespace="Microsoft.VisualStudio.Uml.AuxiliaryConstructs" #>
 <#@ Import Namespace="Microsoft.VisualStudio.Uml.Classes" #>
 <#@ Import Namespace="Microsoft.VisualStudio.ArchitectureTools.Extensibility.Uml" #>
@@ -239,8 +239,13 @@
 	/// <returns>The list of properties of the classifier</returns>
 	private static IEnumerable<string> ClassifierProperty(Func<INamedElement, string> getProperty, UnboundClassifierProperty unboundClassifierProperty, Assemble assemble, IClassifier classifier)
 	{
-		IEnumerable<ITemplateBinding> templateBindings = classifier.TemplateBindings;
-		ITemplateBinding templateBinding = templateBindings.FirstOrDefault();
+		ITemplateBinding templateBinding = null;
+		try
+		{
+			IEnumerable<ITemplateBinding> templateBindings = classifier.TemplateBindings;
+			templateBinding = templateBindings.FirstOrDefault();
+		}
+		catch{}
 		if(templateBinding == null) 
 		{
 			return unboundClassifierProperty(classifier, assemble);

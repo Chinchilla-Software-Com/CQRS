@@ -25,7 +25,7 @@ using System.CodeDom.Compiler;
 using System.Linq;
 using Cqrs.Configuration;
 using Cqrs.DataStores;
-using cdmdotnet.Logging;
+using Chinchilla.Logging;
 <# if (GetEntityPersistenceTechnology(this.Element) == "MongoDB"){ #>
 using Cqrs.Mongo.DataStores;
 using Cqrs.Mongo.Factories;
@@ -54,7 +54,8 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			RegisterFactories();
 			RegisterServices();
 			RegisterRepositories();
-			RegisterCqrsCommandHandlers();
+			if (bool.Parse(System.Configuration.ConfigurationManager.AppSettings["Cqrs.Handlers.AutoRegisterAllHandlers"] ?? "true"))
+				RegisterCqrsCommandHandlers();
 		}
 
 		#endregion
@@ -113,13 +114,33 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 				.To<Factories.DomainInProcessDataStoreFactory>()
 <#
 					break;
+				case "Blob" :
+#>
+				.To<Factories.DomainBlobStorageDataStoreFactory>()
+<#
+					break;
+				default :
+#>
+				.To<Factories.Domain<#= technology #>DataStoreFactory>()
+<#
+					break;
 			}
 #>
 				.InSingletonScope();
-<# if (GetDomainAuthenticationTokenType(this.Element) == "Cqrs.Authentication.ISingleSignOnToken") { #>
+<#
+	if (technology == "Blob")
+	{
+#>
+			Bind<Cqrs.Azure.BlobStorage.DataStores.IBlobStorageDataStoreConnectionStringFactory>()
+				.To<Cqrs.Azure.BlobStorage.DataStores.BlobStorageDataStoreConnectionStringFactory>()
+				.InSingletonScope();
+<#
+	}
+string authenticationToken = GetDomainAuthenticationTokenType(this.Element);
+ if (authenticationToken == "Cqrs.Authentication.ISingleSignOnToken" || authenticationToken == "Cqrs.Authentication.SingleSignOnToken") { #>
 
-			Bind<Cqrs.Authentication.ISingleSignOnTokenFactory>()
-				.To<Cqrs.Authentication.SingleSignOnTokenFactory>()
+			Bind<Cqrs.Authentication.ISingleSignOnTokenFactory<<#= authenticationToken #>>>()
+				.To<Cqrs.Authentication.SingleSignOnTokenFactory<<#= authenticationToken #>>>()
 				.InSingletonScope();
 <# } #>
 
@@ -134,7 +155,7 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 		public virtual void RegisterServices()
 		{
 			Bind<IUnitOfWorkService>()
-				.To<UnitOfWorkService<<#= stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AuthenticationTokenType").Value #>>>()
+				.To<UnitOfWorkService<<#= authenticationToken #>>>()
 				.InThreadScope();
 
 <#
@@ -146,6 +167,8 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildService" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
 
 			bool createCommand = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildCreateCommand" && property.Value == "true");
@@ -210,14 +233,62 @@ namespace <#= classNamespace #>.<#= className #>.Configuration
 			var aggregateRootStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "AggregateRoot");
 			bool shouldBuild = aggregateRootStereoTypeProperties.PropertyInstances
 				.Any(property => property.Name == "BuildRepository" && property.Value == "true");
+			if (shouldBuild)
+				shouldBuild = element.AppliedStereotypes.Any(property => property.Name == "Entity");
 
 			if (shouldBuild)
 			{
 #>
 			Bind<<#= moduleName #>.Repositories.I<#= elementName #>Repository>()
 				.To<<#= moduleName #>.Repositories.<#= elementName #>Repository>()
+<#
+				switch(technology)
+				{
+					case "SimplifiedSql" :
+#>
+				.InThreadScope();
+<#
+						break;
+					default :
+#>
 				.InSingletonScope();
 <#
+						break;
+				}
+			}
+		}
+
+		foreach (var element in AllElements(this.Element, "Entity").OfType<INamedElement>().OrderBy(e => e.Name))
+		{
+			// if this is also an aggregate, don't build it
+			if (element.AppliedStereotypes.Any(property => property.Name == "AggregateRoot"))
+				continue;
+
+			string elementName = element.Name;
+			string moduleName = ((INamedElement)FindModuleElement(element)).Name;
+			var entityStereoTypeProperties = element.AppliedStereotypes.Single(property => property.Name == "Entity");
+			bool shouldBuild = entityStereoTypeProperties.PropertyInstances
+				.Any(property => property.Name == "BuildRepository" && property.Value == "true");
+
+			if (shouldBuild)
+			{
+#>
+			Bind<<#= moduleName #>.Entities.Repositories.I<#= elementName #>Repository>()
+				.To<<#= moduleName #>.Entities.Repositories.<#= elementName #>Repository>()
+<#
+				switch(technology)
+				{
+					case "SimplifiedSql" :
+#>
+				.InThreadScope();
+<#
+						break;
+					default :
+#>
+				.InSingletonScope();
+<#
+						break;
+				}
 			}
 		}
 #>
@@ -248,7 +319,7 @@ switch(eventHandlerTechnology)
 switch(eventHandlerTechnology)
 {
 	case "Akka":
-		#>Cqrs.Akka.Configuration.AkkaBusRegistrar<<#= stereoTypeProperties.PropertyInstances.Single(property => property.Name == "AuthenticationTokenType").Value #>>(dependencyResolver, handlerResolver)<#
+		#>Cqrs.Akka.Configuration.AkkaBusRegistrar<<#= authenticationToken #>>(dependencyResolver, handlerResolver)<#
 		break;
 	default:
 		#>BusRegistrar(dependencyResolver)<#

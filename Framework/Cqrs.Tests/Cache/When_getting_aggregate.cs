@@ -15,7 +15,7 @@ namespace Cqrs.Tests.Cache
 		[SetUp]
 		public void Setup()
 		{
-			_rep = new CacheRepository<ISingleSignOnToken>(new TestRepository(), new TestEventStore());
+			_rep = new CacheRepository<ISingleSignOnToken>(new TestAggregateRepository(), new TestEventStore());
 			_aggregate = _rep.Get<TestAggregate>(Guid.NewGuid());
 		}
 
@@ -42,7 +42,7 @@ namespace Cqrs.Tests.Cache
 		[Test]
 		public void Should_get_same_aggregate_from_different_cache_repository()
 		{
-			var rep = new CacheRepository<ISingleSignOnToken>(new TestRepository(), new TestInMemoryEventStore());
+			var rep = new CacheRepository<ISingleSignOnToken>(new TestAggregateRepository(), new TestInMemoryEventStore());
 			var aggregate = rep.Get<TestAggregate>(_aggregate.Id);
 			Assert.That(aggregate, Is.EqualTo(_aggregate));
 		}

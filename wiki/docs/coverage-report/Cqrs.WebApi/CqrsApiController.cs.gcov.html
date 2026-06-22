@@ -1,0 +1,430 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - doc-coverage.info - Cqrs.WebApi/CqrsApiController.cs</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">Documentation Coverage Report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">Cqrs.WebApi</a> - CqrsApiController.cs</td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Version:</td>
+            <td class="headerValue">2.2</td>
+            <td></td>
+            <td class="headerItem">Artefacts:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2019-11-24 00:33:17</td>
+            <td></td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<span class="lineNum">       1 </span>            : ﻿#region Copyright
+<span class="lineNum">       2 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       3 </span>            : // // &lt;copyright company=&quot;Chinchilla Software Limited&quot;&gt;
+<span class="lineNum">       4 </span>            : // //   Copyright Chinchilla Software Limited. All rights reserved.
+<span class="lineNum">       5 </span>            : // // &lt;/copyright&gt;
+<span class="lineNum">       6 </span>            : // // -----------------------------------------------------------------------
+<span class="lineNum">       7 </span>            : #endregion
+<span class="lineNum">       8 </span>            : 
+<span class="lineNum">       9 </span>            : using System;
+<span class="lineNum">      10 </span>            : using System.Collections.Generic;
+<span class="lineNum">      11 </span>            : using System.Linq;
+<span class="lineNum">      12 </span>            : using System.Net;
+<span class="lineNum">      13 </span>            : using System.Net.Http;
+<span class="lineNum">      14 </span>            : using System.Net.Http.Headers;
+<span class="lineNum">      15 </span>            : using System.Web.Http;
+<span class="lineNum">      16 </span>            : using Chinchilla.Logging;
+<span class="lineNum">      17 </span>            : using Cqrs.Authentication;
+<span class="lineNum">      18 </span>            : using Cqrs.Services;
+<span class="lineNum">      19 </span>            : using System.Net.Http.Formatting;
+<span class="lineNum">      20 </span>            : using System.Web;
+<span class="lineNum">      21 </span>            : using Cqrs.Configuration;
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : namespace Cqrs.WebApi
+<span class="lineNum">      24 </span>            : {
+<span class="lineNum">      25 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">      26 </span>            :         /// A &lt;see cref=&quot;ApiController&quot;/&gt; that expects the &lt;see cref=&quot;ISingleSignOnToken.Token&quot;/&gt; to be sent as a &lt;see cref=&quot;HttpHeaders&quot;/&gt; with a key whose name is defined by the &lt;see cref=&quot;System.Configuration.ConfigurationManager.AppSettings&quot;/&gt; &quot;Cqrs.Web.AuthenticationTokenName&quot;, in accordance with OAuth specifications
+<span class="lineNum">      27 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">      28 </span>            :         /// &lt;remarks&gt;
+<span class="lineNum">      29 </span>            :         /// See https://www.asp.net/web-api/overview/getting-started-with-aspnet-web-api/creating-api-help-pages for details on adding WebApi Help Pages.
+<span class="lineNum">      30 </span>            :         /// &lt;/remarks&gt;
+<span class="lineNum">      31 </span>            :         public abstract class CqrsApiController
+<span class="lineNum">      32 </span>            :                 : ApiController
+<span class="lineNum">      33 </span><span class="lineCov">          2 :         {</span>
+<span class="lineNum">      34 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      35 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;CqrsApiController&quot;/&gt;.
+<span class="lineNum">      36 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      37 </span>            :                 protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager)
+<span class="lineNum">      38 </span>            :                 {
+<span class="lineNum">      39 </span>            :                         CorrelationIdHelper = correlationIdHelper;
+<span class="lineNum">      40 </span>            :                         ConfigurationManager = configurationManager;
+<span class="lineNum">      41 </span>            :                         Logger = logger;
+<span class="lineNum">      42 </span>            :                 }
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      45 </span>            :                 /// Gets or set the &lt;see cref=&quot;ICorrelationIdHelper&quot;/&gt;.
+<span class="lineNum">      46 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      47 </span>            :                 protected ICorrelationIdHelper CorrelationIdHelper { get; private set; }
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      50 </span>            :                 /// Gets or set the &lt;see cref=&quot;ILogger&quot;/&gt;.
+<span class="lineNum">      51 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      52 </span>            :                 protected ILogger Logger { get; private set; }
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      55 </span>            :                 /// Gets or set the &lt;see cref=&quot;IConfigurationManager&quot;/&gt;.
+<span class="lineNum">      56 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      57 </span>            :                 protected IConfigurationManager ConfigurationManager { get; private set; }
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      60 </span>            :                 /// Extracts the authentication token looking for a &lt;see cref=&quot;KeyValuePair{TKey,TValue}&quot;/&gt; where the key as defined by the &lt;see cref=&quot;System.Configuration.ConfigurationManager.AppSettings&quot;/&gt; &quot;Cqrs.Web.AuthenticationTokenName&quot;,
+<span class="lineNum">      61 </span>            :                 /// from the &lt;see cref=&quot;HttpRequest.Headers&quot;/&gt;, if one isn't found we then try the &lt;see cref=&quot;HttpRequest.Cookies&quot;/&gt;
+<span class="lineNum">      62 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">      63 </span>            :                 protected virtual string GetToken()
+<span class="lineNum">      64 </span>            :                 {
+<span class="lineNum">      65 </span>            :                         string authenticationTokenName = ConfigurationManager.GetSetting(&quot;Cqrs.Web.AuthenticationTokenName&quot;) ?? &quot;X-Token&quot;;
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span>            :                         string xToken = null;
+<span class="lineNum">      68 </span>            :                         IEnumerable&lt;string&gt; tokenValue;
+<span class="lineNum">      69 </span>            :                         if (Request.Headers.TryGetValues(authenticationTokenName, out tokenValue))
+<span class="lineNum">      70 </span>            :                                 xToken = tokenValue.First();
+<span class="lineNum">      71 </span>            :                         else
+<span class="lineNum">      72 </span>            :                         {
+<span class="lineNum">      73 </span>            :                                 CookieHeaderValue cookie = Request.Headers.GetCookies(authenticationTokenName).FirstOrDefault();
+<span class="lineNum">      74 </span>            :                                 if (cookie != null)
+<span class="lineNum">      75 </span>            :                                         xToken = cookie[authenticationTokenName].Value;
+<span class="lineNum">      76 </span>            :                                 else
+<span class="lineNum">      77 </span>            :                                 {
+<span class="lineNum">      78 </span>            :                                         string[] queryStrings = (string.IsNullOrWhiteSpace(Request.RequestUri.Query) ? &quot;?&quot; : Request.RequestUri.Query)
+<span class="lineNum">      79 </span>            :                                                 .Substring(1)
+<span class="lineNum">      80 </span>            :                                                 .Split('&amp;');
+<span class="lineNum">      81 </span>            :                                         foreach(string queryString in queryStrings)
+<span class="lineNum">      82 </span>            :                                         {
+<span class="lineNum">      83 </span>            :                                                 string[] queryStringParts = queryString.Split('=');
+<span class="lineNum">      84 </span>            :                                                 if (queryStringParts.Length != 2)
+<span class="lineNum">      85 </span>            :                                                         continue;
+<span class="lineNum">      86 </span>            :                                                 if (queryStringParts[0].ToLowerInvariant() == authenticationTokenName.ToLowerInvariant())
+<span class="lineNum">      87 </span>            :                                                 {
+<span class="lineNum">      88 </span>            :                                                         xToken = queryStringParts[1];
+<span class="lineNum">      89 </span>            :                                                         break;
+<span class="lineNum">      90 </span>            :                                                 }
+<span class="lineNum">      91 </span>            :                                         }
+<span class="lineNum">      92 </span>            :                                 }
+<span class="lineNum">      93 </span>            :                         }
+<span class="lineNum">      94 </span>            : 
+<span class="lineNum">      95 </span>            :                         return xToken;
+<span class="lineNum">      96 </span>            :                 }
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">      99 </span>            :                 /// Create a &lt;see cref=&quot;IServiceRequest{TAuthenticationToken}&quot;/&gt; setting header information.
+<span class="lineNum">     100 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     101 </span>            :                 protected virtual IServiceRequest&lt;TSingleSignOnToken&gt; CreateRequest&lt;TSingleSignOnToken&gt;()
+<span class="lineNum">     102 </span>            :                 {
+<span class="lineNum">     103 </span>            :                         return new ServiceRequest&lt;TSingleSignOnToken&gt;
+<span class="lineNum">     104 </span>            :                         {
+<span class="lineNum">     105 </span>            :                                 AuthenticationToken = CreateAuthenticationToken&lt;TSingleSignOnToken&gt;(),
+<span class="lineNum">     106 </span>            :                                 CorrelationId = CorrelationIdHelper.GetCorrelationId()
+<span class="lineNum">     107 </span>            :                         };
+<span class="lineNum">     108 </span>            :                 }
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     111 </span>            :                 /// Create a &lt;see cref=&quot;IServiceRequestWithData{TAuthenticationToken,TData}&quot;/&gt; setting header information.
+<span class="lineNum">     112 </span>            :                 /// If &lt;paramref name=&quot;createParameterDelegate&quot;/&gt; is not null, it is used to populate &lt;see cref=&quot;IServiceRequestWithData{TAuthenticationToken,TData}.Data&quot;/&gt; otherwise &lt;see cref=&quot;CreateParameter{TParameters}&quot;/&gt; is used.
+<span class="lineNum">     113 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     114 </span>            :                 protected virtual IServiceRequestWithData&lt;TSingleSignOnToken, TParameters&gt; CreateRequestWithData&lt;TSingleSignOnToken, TParameters&gt;(Func&lt;TParameters&gt; createParameterDelegate = null)
+<span class="lineNum">     115 </span>            :                         where TParameters : new()
+<span class="lineNum">     116 </span>            :                 {
+<span class="lineNum">     117 </span>            :                         return new ServiceRequestWithData&lt;TSingleSignOnToken, TParameters&gt;
+<span class="lineNum">     118 </span>            :                         {
+<span class="lineNum">     119 </span>            :                                 AuthenticationToken = CreateAuthenticationToken&lt;TSingleSignOnToken&gt;(),
+<span class="lineNum">     120 </span>            :                                 CorrelationId = CorrelationIdHelper.GetCorrelationId(),
+<span class="lineNum">     121 </span>            :                                 Data = createParameterDelegate == null ? CreateParameter&lt;TParameters&gt;() : createParameterDelegate()
+<span class="lineNum">     122 </span>            :                         };
+<span class="lineNum">     123 </span>            :                 }
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     126 </span>            :                 /// Create an &lt;typeparamref name=&quot;TSingleSignOnToken&quot;/&gt;.
+<span class="lineNum">     127 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     128 </span>            :                 /// &lt;typeparam name=&quot;TSingleSignOnToken&quot;&gt;The &lt;see cref=&quot;Type&quot;/&gt; of &lt;see cref=&quot;ISingleSignOnToken&quot;/&gt;.&lt;/typeparam&gt;
+<span class="lineNum">     129 </span>            :                 protected virtual TSingleSignOnToken CreateAuthenticationToken&lt;TSingleSignOnToken&gt;()
+<span class="lineNum">     130 </span>            :                 {
+<span class="lineNum">     131 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(int))
+<span class="lineNum">     132 </span>            :                                 return (TSingleSignOnToken)(object)int.Parse(GetToken());
+<span class="lineNum">     133 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(Guid))
+<span class="lineNum">     134 </span>            :                                 return (TSingleSignOnToken)(object)new Guid(GetToken());
+<span class="lineNum">     135 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(string))
+<span class="lineNum">     136 </span>            :                                 return (TSingleSignOnToken)(object)GetToken();
+<span class="lineNum">     137 </span>            : 
+<span class="lineNum">     138 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(SingleSignOnToken))
+<span class="lineNum">     139 </span>            :                                 return (TSingleSignOnToken)(object)new SingleSignOnToken
+<span class="lineNum">     140 </span>            :                                 {
+<span class="lineNum">     141 </span>            :                                         DateIssued = GetDateTokenIssued(),
+<span class="lineNum">     142 </span>            :                                         Token = GetToken(),
+<span class="lineNum">     143 </span>            :                                         TimeOfExpiry = GetTokenTimeOfExpiry()
+<span class="lineNum">     144 </span>            :                                 };
+<span class="lineNum">     145 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(SingleSignOnTokenWithUserRsn))
+<span class="lineNum">     146 </span>            :                                 return (TSingleSignOnToken)(object)new SingleSignOnTokenWithUserRsn
+<span class="lineNum">     147 </span>            :                                 {
+<span class="lineNum">     148 </span>            :                                         DateIssued = GetDateTokenIssued(),
+<span class="lineNum">     149 </span>            :                                         Token = GetToken(),
+<span class="lineNum">     150 </span>            :                                         TimeOfExpiry = GetTokenTimeOfExpiry()
+<span class="lineNum">     151 </span>            :                                 };
+<span class="lineNum">     152 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(SingleSignOnTokenWithCompanyRsn))
+<span class="lineNum">     153 </span>            :                                 return (TSingleSignOnToken)(object)new SingleSignOnTokenWithCompanyRsn
+<span class="lineNum">     154 </span>            :                                 {
+<span class="lineNum">     155 </span>            :                                         DateIssued = GetDateTokenIssued(),
+<span class="lineNum">     156 </span>            :                                         Token = GetToken(),
+<span class="lineNum">     157 </span>            :                                         TimeOfExpiry = GetTokenTimeOfExpiry()
+<span class="lineNum">     158 </span>            :                                 };
+<span class="lineNum">     159 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(SingleSignOnTokenWithUserRsnAndCompanyRsn))
+<span class="lineNum">     160 </span>            :                                 return (TSingleSignOnToken)(object)new SingleSignOnTokenWithUserRsnAndCompanyRsn
+<span class="lineNum">     161 </span>            :                                 {
+<span class="lineNum">     162 </span>            :                                         DateIssued = GetDateTokenIssued(),
+<span class="lineNum">     163 </span>            :                                         Token = GetToken(),
+<span class="lineNum">     164 </span>            :                                         TimeOfExpiry = GetTokenTimeOfExpiry()
+<span class="lineNum">     165 </span>            :                                 };
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(ISingleSignOnToken))
+<span class="lineNum">     168 </span>            :                                 return (TSingleSignOnToken)(object)new SingleSignOnToken
+<span class="lineNum">     169 </span>            :                                 {
+<span class="lineNum">     170 </span>            :                                         DateIssued = GetDateTokenIssued(),
+<span class="lineNum">     171 </span>            :                                         Token = GetToken(),
+<span class="lineNum">     172 </span>            :                                         TimeOfExpiry = GetTokenTimeOfExpiry()
+<span class="lineNum">     173 </span>            :                                 };
+<span class="lineNum">     174 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(ISingleSignOnTokenWithUserRsn))
+<span class="lineNum">     175 </span>            :                                 return (TSingleSignOnToken)(object)new SingleSignOnTokenWithUserRsn
+<span class="lineNum">     176 </span>            :                                 {
+<span class="lineNum">     177 </span>            :                                         DateIssued = GetDateTokenIssued(),
+<span class="lineNum">     178 </span>            :                                         Token = GetToken(),
+<span class="lineNum">     179 </span>            :                                         TimeOfExpiry = GetTokenTimeOfExpiry()
+<span class="lineNum">     180 </span>            :                                 };
+<span class="lineNum">     181 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(ISingleSignOnTokenWithCompanyRsn))
+<span class="lineNum">     182 </span>            :                                 return (TSingleSignOnToken)(object)new SingleSignOnTokenWithCompanyRsn
+<span class="lineNum">     183 </span>            :                                 {
+<span class="lineNum">     184 </span>            :                                         DateIssued = GetDateTokenIssued(),
+<span class="lineNum">     185 </span>            :                                         Token = GetToken(),
+<span class="lineNum">     186 </span>            :                                         TimeOfExpiry = GetTokenTimeOfExpiry()
+<span class="lineNum">     187 </span>            :                                 };
+<span class="lineNum">     188 </span>            :                         if (typeof(TSingleSignOnToken) == typeof(ISingleSignOnTokenWithUserRsnAndCompanyRsn))
+<span class="lineNum">     189 </span>            :                                 return (TSingleSignOnToken)(object)new SingleSignOnTokenWithUserRsnAndCompanyRsn
+<span class="lineNum">     190 </span>            :                                 {
+<span class="lineNum">     191 </span>            :                                         DateIssued = GetDateTokenIssued(),
+<span class="lineNum">     192 </span>            :                                         Token = GetToken(),
+<span class="lineNum">     193 </span>            :                                         TimeOfExpiry = GetTokenTimeOfExpiry()
+<span class="lineNum">     194 </span>            :                                 };
+<span class="lineNum">     195 </span>            :                         return default(TSingleSignOnToken);
+<span class="lineNum">     196 </span>            :                 }
+<span class="lineNum">     197 </span>            : 
+<span class="lineNum">     198 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     199 </span>            :                 /// Creates a blank &lt;typeparamref name=&quot;TParameters&quot;/&gt;
+<span class="lineNum">     200 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     201 </span>            :                 protected virtual TParameters CreateParameter&lt;TParameters&gt;()
+<span class="lineNum">     202 </span>            :                         where TParameters : new()
+<span class="lineNum">     203 </span>            :                 {
+<span class="lineNum">     204 </span>            :                         return new TParameters();
+<span class="lineNum">     205 </span>            :                 }
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     208 </span>            :                 /// Get the &lt;see cref=&quot;DateTime&quot;/&gt; the current authentication token was issued.
+<span class="lineNum">     209 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     210 </span>            :                 /// &lt;returns&gt;default(DateTime)&lt;/returns&gt;
+<span class="lineNum">     211 </span>            :                 protected virtual DateTime GetDateTokenIssued()
+<span class="lineNum">     212 </span>            :                 {
+<span class="lineNum">     213 </span>            :                         return default(DateTime);
+<span class="lineNum">     214 </span>            :                 }
+<span class="lineNum">     215 </span>            : 
+<span class="lineNum">     216 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     217 </span>            :                 /// Get the &lt;see cref=&quot;DateTime&quot;/&gt; the current authentication token will expire.
+<span class="lineNum">     218 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     219 </span>            :                 /// &lt;returns&gt;default(DateTime)&lt;/returns&gt;
+<span class="lineNum">     220 </span>            :                 protected virtual DateTime GetTokenTimeOfExpiry()
+<span class="lineNum">     221 </span>            :                 {
+<span class="lineNum">     222 </span>            :                         return default(DateTime);
+<span class="lineNum">     223 </span>            :                 }
+<span class="lineNum">     224 </span>            : 
+<span class="lineNum">     225 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     226 </span>            :                 /// Completes the provided &lt;paramref name=&quot;response&quot;/&gt; by setting the appropriate &lt;see cref=&quot;HttpResponseMessage.StatusCode&quot;/&gt; and populating &lt;see cref=&quot;HttpResponseMessage.Content&quot;/&gt; with &lt;paramref name=&quot;serviceResponse&quot;/&gt;.
+<span class="lineNum">     227 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     228 </span>            :                 protected virtual HttpResponseMessage CompleteResponse&lt;TServiceResponse&gt;(HttpResponseMessage response, TServiceResponse serviceResponse)
+<span class="lineNum">     229 </span>            :                         where TServiceResponse : IServiceResponse
+<span class="lineNum">     230 </span>            :                 {
+<span class="lineNum">     231 </span>            :                         serviceResponse.CorrelationId = CorrelationIdHelper.GetCorrelationId();
+<span class="lineNum">     232 </span>            : 
+<span class="lineNum">     233 </span>            :                         HttpConfiguration configuration = Request.GetConfiguration();
+<span class="lineNum">     234 </span>            :                         var contentNegotiator = configuration.Services.GetContentNegotiator();
+<span class="lineNum">     235 </span>            :                         ContentNegotiationResult negotiationResult = contentNegotiator.Negotiate(typeof(IServiceResponse), Request, configuration.Formatters);
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span>            :                         response.Content = new ObjectContent&lt;IServiceResponse&gt;(serviceResponse, negotiationResult.Formatter, negotiationResult.MediaType);
+<span class="lineNum">     238 </span>            : 
+<span class="lineNum">     239 </span>            :                         switch (serviceResponse.State)
+<span class="lineNum">     240 </span>            :                         {
+<span class="lineNum">     241 </span>            :                                 case ServiceResponseStateType.Succeeded:
+<span class="lineNum">     242 </span>            :                                         response.StatusCode = HttpStatusCode.Accepted;
+<span class="lineNum">     243 </span>            :                                         break;
+<span class="lineNum">     244 </span>            :                                 case ServiceResponseStateType.FailedAuthentication:
+<span class="lineNum">     245 </span>            :                                         response.StatusCode = HttpStatusCode.Forbidden;
+<span class="lineNum">     246 </span>            :                                         break;
+<span class="lineNum">     247 </span>            :                                 case ServiceResponseStateType.FailedAuthorisation:
+<span class="lineNum">     248 </span>            :                                         response.StatusCode = HttpStatusCode.Unauthorized;
+<span class="lineNum">     249 </span>            :                                         break;
+<span class="lineNum">     250 </span>            :                                 case ServiceResponseStateType.FailedValidation:
+<span class="lineNum">     251 </span>            :                                         response.StatusCode = HttpStatusCode.PreconditionFailed;
+<span class="lineNum">     252 </span>            :                                         break;
+<span class="lineNum">     253 </span>            :                                 case ServiceResponseStateType.FailedWithAFatalException:
+<span class="lineNum">     254 </span>            :                                         response.StatusCode = HttpStatusCode.InternalServerError;
+<span class="lineNum">     255 </span>            :                                         break;
+<span class="lineNum">     256 </span>            :                                 case ServiceResponseStateType.FailedWithAnUnexpectedException:
+<span class="lineNum">     257 </span>            :                                         response.StatusCode = HttpStatusCode.InternalServerError;
+<span class="lineNum">     258 </span>            :                                         break;
+<span class="lineNum">     259 </span>            :                                 case ServiceResponseStateType.Unknown:
+<span class="lineNum">     260 </span>            :                                         response.StatusCode = HttpStatusCode.BadRequest;
+<span class="lineNum">     261 </span>            :                                         break;
+<span class="lineNum">     262 </span>            :                                 default:
+<span class="lineNum">     263 </span>            :                                         response.StatusCode = HttpStatusCode.Ambiguous;
+<span class="lineNum">     264 </span>            :                                         break;
+<span class="lineNum">     265 </span>            :                         }
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span>            :                         return response;
+<span class="lineNum">     268 </span>            :                 }
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     271 </span>            :                 /// Creates a new &lt;see cref=&quot;HttpResponseMessage&quot;/&gt; and completes the response by setting the appropriate &lt;see cref=&quot;HttpResponseMessage.StatusCode&quot;/&gt; and populating &lt;see cref=&quot;HttpResponseMessage.Content&quot;/&gt; with &lt;paramref name=&quot;serviceResponse&quot;/&gt;.
+<span class="lineNum">     272 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     273 </span>            :                 protected virtual HttpResponseMessage CompleteResponse&lt;TServiceResponse&gt;(TServiceResponse serviceResponse)
+<span class="lineNum">     274 </span>            :                         where TServiceResponse : IServiceResponse
+<span class="lineNum">     275 </span>            :                 {
+<span class="lineNum">     276 </span>            :                         var response = new HttpResponseMessage();
+<span class="lineNum">     277 </span>            : 
+<span class="lineNum">     278 </span>            :                         return CompleteResponse(response, serviceResponse);
+<span class="lineNum">     279 </span>            :                 }
+<span class="lineNum">     280 </span>            : 
+<span class="lineNum">     281 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     282 </span>            :                 /// Creates a new &lt;see cref=&quot;HttpResponseMessage&quot;/&gt; and completes the response by setting the appropriate &lt;see cref=&quot;HttpResponseMessage.StatusCode&quot;/&gt; and populating &lt;see cref=&quot;HttpResponseMessage.Content&quot;/&gt; with &lt;paramref name=&quot;serviceResponse&quot;/&gt;.
+<span class="lineNum">     283 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     284 </span>            :                 protected virtual HttpResponseMessage&lt;TServiceResponse&gt; CompleteResponseWithData&lt;TServiceResponse&gt;(TServiceResponse serviceResponse)
+<span class="lineNum">     285 </span>            :                         where TServiceResponse : IServiceResponse
+<span class="lineNum">     286 </span>            :                 {
+<span class="lineNum">     287 </span>            :                         var response = new HttpResponseMessage&lt;TServiceResponse&gt;();
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span>            :                         CompleteResponse(response, serviceResponse);
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span>            :                         return response;
+<span class="lineNum">     292 </span>            :                 }
+<span class="lineNum">     293 </span>            :         }
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span>            :         /// &lt;summary&gt;
+<span class="lineNum">     296 </span>            :         /// A &lt;see cref=&quot;ApiController&quot;/&gt; that expects the &lt;see cref=&quot;ISingleSignOnToken.Token&quot;/&gt; to be sent as a &lt;see cref=&quot;HttpHeaders&quot;/&gt; with a key of &quot;X-Token&quot;, in accordance with OAuth specifications
+<span class="lineNum">     297 </span>            :         /// &lt;/summary&gt;
+<span class="lineNum">     298 </span>            :         /// &lt;remarks&gt;
+<span class="lineNum">     299 </span>            :         /// See https://www.asp.net/web-api/overview/getting-started-with-aspnet-web-api/creating-api-help-pages for details on adding WebApi Help Pages.
+<span class="lineNum">     300 </span>            :         /// &lt;/remarks&gt;
+<span class="lineNum">     301 </span>            :         public abstract class CqrsApiController&lt;TAuthenticationToken&gt;
+<span class="lineNum">     302 </span>            :                 : CqrsApiController
+<span class="lineNum">     303 </span>            :         {
+<span class="lineNum">     304 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     305 </span>            :                 /// Instantiates a new instance of &lt;see cref=&quot;CqrsApiController&quot;/&gt;.
+<span class="lineNum">     306 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     307 </span>            :                 protected CqrsApiController(ILogger logger, ICorrelationIdHelper correlationIdHelper, IConfigurationManager configurationManager, IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; authenticationTokenHelper)
+<span class="lineNum">     308 </span>            :                         : base(logger, correlationIdHelper, configurationManager)
+<span class="lineNum">     309 </span>            :                 {
+<span class="lineNum">     310 </span>            :                         AuthenticationTokenHelper = authenticationTokenHelper;
+<span class="lineNum">     311 </span>            :                 }
+<span class="lineNum">     312 </span>            : 
+<span class="lineNum">     313 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     314 </span>            :                 /// Gets or set the &lt;see cref=&quot;IAuthenticationTokenHelper{TAuthenticationToken}&quot;/&gt;.
+<span class="lineNum">     315 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     316 </span>            :                 protected IAuthenticationTokenHelper&lt;TAuthenticationToken&gt; AuthenticationTokenHelper { get; private set; }
+<span class="lineNum">     317 </span>            : 
+<span class="lineNum">     318 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     319 </span>            :                 /// Reads the current authentication token for the request from &lt;see cref=&quot;AuthenticationTokenHelper&quot;/&gt;.
+<span class="lineNum">     320 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     321 </span>            :                 protected override string GetToken()
+<span class="lineNum">     322 </span>            :                 {
+<span class="lineNum">     323 </span>            :                         TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
+<span class="lineNum">     324 </span>            :                         if (token != null)
+<span class="lineNum">     325 </span>            :                                 return token.ToString();
+<span class="lineNum">     326 </span>            :                         return null;
+<span class="lineNum">     327 </span>            :                 }
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     330 </span>            :                 /// Create a &lt;see cref=&quot;IServiceRequest{TAuthenticationToken}&quot;/&gt; setting header information.
+<span class="lineNum">     331 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     332 </span>            :                 protected virtual IServiceRequest&lt;TAuthenticationToken&gt; CreateRequest()
+<span class="lineNum">     333 </span>            :                 {
+<span class="lineNum">     334 </span>            :                         TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
+<span class="lineNum">     335 </span>            :                         return new ServiceRequest&lt;TAuthenticationToken&gt;
+<span class="lineNum">     336 </span>            :                         {
+<span class="lineNum">     337 </span>            :                                 AuthenticationToken = token,
+<span class="lineNum">     338 </span>            :                                 CorrelationId = CorrelationIdHelper.GetCorrelationId()
+<span class="lineNum">     339 </span>            :                         };
+<span class="lineNum">     340 </span>            :                 }
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            :                 /// &lt;summary&gt;
+<span class="lineNum">     343 </span>            :                 /// Create a &lt;see cref=&quot;IServiceRequestWithData{TAuthenticationToken,TData}&quot;/&gt; setting header information.
+<span class="lineNum">     344 </span>            :                 /// If &lt;paramref name=&quot;createParameterDelegate&quot;/&gt; is not null, it is used to populate &lt;see cref=&quot;IServiceRequestWithData{TAuthenticationToken,TData}.Data&quot;/&gt; otherwise &lt;see cref=&quot;CqrsApiController.CreateParameter{TParameters}&quot;/&gt; is used.
+<span class="lineNum">     345 </span>            :                 /// &lt;/summary&gt;
+<span class="lineNum">     346 </span>            :                 protected virtual IServiceRequestWithData&lt;TAuthenticationToken, TParameters&gt; CreateRequestWithData&lt;TParameters&gt;(Func&lt;TParameters&gt; createParameterDelegate = null)
+<span class="lineNum">     347 </span>            :                         where TParameters : new()
+<span class="lineNum">     348 </span>            :                 {
+<span class="lineNum">     349 </span>            :                         TAuthenticationToken token = AuthenticationTokenHelper.GetAuthenticationToken();
+<span class="lineNum">     350 </span>            :                         return new ServiceRequestWithData&lt;TAuthenticationToken, TParameters&gt;
+<span class="lineNum">     351 </span>            :                         {
+<span class="lineNum">     352 </span>            :                                 AuthenticationToken = token,
+<span class="lineNum">     353 </span>            :                                 CorrelationId = CorrelationIdHelper.GetCorrelationId(),
+<span class="lineNum">     354 </span>            :                                 Data = createParameterDelegate == null ? CreateParameter&lt;TParameters&gt;() : createParameterDelegate()
+<span class="lineNum">     355 </span>            :                         };
+<span class="lineNum">     356 </span>            :                 }
+<span class="lineNum">     357 </span>            :         }
+<span class="lineNum">     358 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.13</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

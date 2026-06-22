@@ -1,0 +1,260 @@
+\hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore}{}\section{Cqrs.\+Snapshots.\+Snapshot\+Store Class Reference}
+\label{classCqrs_1_1Snapshots_1_1SnapshotStore}\index{Cqrs.\+Snapshots.\+Snapshot\+Store@{Cqrs.\+Snapshots.\+Snapshot\+Store}}
+
+
+Stores the most recent \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{snapshots} for replay and I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ rehydration on a Snapshot\+Aggregate\+Root$<$\+T\+Authentication\+Token,\+T\+Snapshot$>$.  
+
+
+Inheritance diagram for Cqrs.\+Snapshots.\+Snapshot\+Store\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.421320cm]{classCqrs_1_1Snapshots_1_1SnapshotStore}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_af35423c44786c31d224d52c3796d0d3d_af35423c44786c31d224d52c3796d0d3d}{Get$<$ T\+Aggregate\+Root $>$} (Guid id)
+\begin{DoxyCompactList}\small\item\em Get the latest \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} from storage. \end{DoxyCompactList}\item 
+\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a08ec0d8ff97742e3503a3778bb92076e_a08ec0d8ff97742e3503a3778bb92076e}{Get} (Type aggregate\+Root\+Type, Guid id)
+\begin{DoxyCompactList}\small\item\em Get the latest \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} from storage. \end{DoxyCompactList}\item 
+abstract void \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_ae96ea2bb89a0bd7f45544acc37107525_ae96ea2bb89a0bd7f45544acc37107525}{Save} (\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} snapshot)
+\begin{DoxyCompactList}\small\item\em Saves the provided {\itshape snapshot}  into storage. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_aa8ab186f864443c7d9647a4522864a84_aa8ab186f864443c7d9647a4522864a84}{Snapshot\+Store} (\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} configuration\+Manager, \hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser}{I\+Snapshot\+Deserialiser} event\+Deserialiser, \hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotBuilder}{I\+Snapshot\+Builder} snapshot\+Builder, I\+Logger logger, I\+Correlation\+Id\+Helper correlation\+Id\+Helper)
+\begin{DoxyCompactList}\small\item\em Instantiate a new instance of the \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore}{Snapshot\+Store} class. \end{DoxyCompactList}\item 
+abstract \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_ab2ecab1a665c0f2097929d028fe4ac69_ab2ecab1a665c0f2097929d028fe4ac69}{Get} (Type aggregate\+Root\+Type, string stream\+Name)
+\begin{DoxyCompactList}\small\item\em Get the latest \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} from storage. \end{DoxyCompactList}\item 
+virtual string \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a8ff909b77429c8a924376962bba36849_a8ff909b77429c8a924376962bba36849}{Generate\+Stream\+Name} (Type aggregate\+Root\+Type, Guid aggregate\+Id)
+\begin{DoxyCompactList}\small\item\em Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the {\itshape aggregate\+Id} . \end{DoxyCompactList}\item 
+virtual \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a61f0715eab97e305cd2bf04a5b74565e_a61f0715eab97e305cd2bf04a5b74565e}{Build\+Event\+Data} (\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} snapshot)
+\begin{DoxyCompactList}\small\item\em Builds the Event\+Data from the {\itshape snapshot} . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const string \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a8113b186bf4a563b916d19c8d6d9cd0f_a8113b186bf4a563b916d19c8d6d9cd0f}{Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern} = \char`\"{}\{0\}/\{1\}\char`\"{}
+\begin{DoxyCompactList}\small\item\em The pattern used to generate the stream name. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Properties}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a4b408b56a060a5f4ab914d9c2751a7b5_a4b408b56a060a5f4ab914d9c2751a7b5}{Configuration\+Manager}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em Gets or sets the I\+Configuration\+Manager \end{DoxyCompactList}\item 
+\hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser}{I\+Snapshot\+Deserialiser} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a2cf3bd342de15231307f1d478297454f_a2cf3bd342de15231307f1d478297454f}{Event\+Deserialiser}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The I\+Snapshot\+Deserialiser used to deserialise snapshots. \end{DoxyCompactList}\item 
+\hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotBuilder}{I\+Snapshot\+Builder} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a467ad1be01ccaaff23868a9ce4985746_a467ad1be01ccaaff23868a9ce4985746}{Snapshot\+Builder}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The I\+Snapshot\+Builder used to build snapshots. \end{DoxyCompactList}\item 
+I\+Logger \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a41244ca79899540fe3ecccfd63ddc6f5_a41244ca79899540fe3ecccfd63ddc6f5}{Logger}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The I\+Logger to use. \end{DoxyCompactList}\item 
+I\+Correlation\+Id\+Helper \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_ac2191c50c03cb3ddfa574d6ad3e2a075_ac2191c50c03cb3ddfa574d6ad3e2a075}{Correlation\+Id\+Helper}\hspace{0.3cm}{\ttfamily  \mbox{[}get\mbox{]}}
+\begin{DoxyCompactList}\small\item\em The I\+Correlation\+Id\+Helper to use. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Stores the most recent \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{snapshots} for replay and I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ rehydration on a Snapshot\+Aggregate\+Root$<$\+T\+Authentication\+Token,\+T\+Snapshot$>$. 
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_aa8ab186f864443c7d9647a4522864a84_aa8ab186f864443c7d9647a4522864a84}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_aa8ab186f864443c7d9647a4522864a84_aa8ab186f864443c7d9647a4522864a84}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Snapshot\+Store@{Snapshot\+Store}}
+\index{Snapshot\+Store@{Snapshot\+Store}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Snapshot\+Store()}{SnapshotStore()}}
+{\footnotesize\ttfamily Cqrs.\+Snapshots.\+Snapshot\+Store.\+Snapshot\+Store (\begin{DoxyParamCaption}\item[{\hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager}}]{configuration\+Manager,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser}{I\+Snapshot\+Deserialiser}}]{event\+Deserialiser,  }\item[{\hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotBuilder}{I\+Snapshot\+Builder}}]{snapshot\+Builder,  }\item[{I\+Logger}]{logger,  }\item[{I\+Correlation\+Id\+Helper}]{correlation\+Id\+Helper }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Instantiate a new instance of the \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore}{Snapshot\+Store} class. 
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_a61f0715eab97e305cd2bf04a5b74565e_a61f0715eab97e305cd2bf04a5b74565e}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_a61f0715eab97e305cd2bf04a5b74565e_a61f0715eab97e305cd2bf04a5b74565e}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Build\+Event\+Data@{Build\+Event\+Data}}
+\index{Build\+Event\+Data@{Build\+Event\+Data}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Build\+Event\+Data()}{BuildEventData()}}
+{\footnotesize\ttfamily virtual \hyperlink{classCqrs_1_1Events_1_1EventData}{Event\+Data} Cqrs.\+Snapshots.\+Snapshot\+Store.\+Build\+Event\+Data (\begin{DoxyParamCaption}\item[{\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot}}]{snapshot }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Builds the Event\+Data from the {\itshape snapshot} . 
+
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_a8ff909b77429c8a924376962bba36849_a8ff909b77429c8a924376962bba36849}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_a8ff909b77429c8a924376962bba36849_a8ff909b77429c8a924376962bba36849}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Generate\+Stream\+Name@{Generate\+Stream\+Name}}
+\index{Generate\+Stream\+Name@{Generate\+Stream\+Name}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Generate\+Stream\+Name()}{GenerateStreamName()}}
+{\footnotesize\ttfamily virtual string Cqrs.\+Snapshots.\+Snapshot\+Store.\+Generate\+Stream\+Name (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{aggregate\+Id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generate a unique stream name based on the provided {\itshape aggregate\+Root\+Type}  and the {\itshape aggregate\+Id} . 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & The Type of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+{\em aggregate\+Id} & The ID of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$.\\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented in \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a95503a8721d083d070495cb4f884c0cf_a95503a8721d083d070495cb4f884c0cf}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store}.
+
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_a08ec0d8ff97742e3503a3778bb92076e_a08ec0d8ff97742e3503a3778bb92076e}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_a08ec0d8ff97742e3503a3778bb92076e_a08ec0d8ff97742e3503a3778bb92076e}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Get@{Get}}
+\index{Get@{Get}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} Cqrs.\+Snapshots.\+Snapshot\+Store.\+Get (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{Guid}]{id }\end{DoxyParamCaption})}
+
+
+
+Get the latest \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} from storage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em aggregate\+Root\+Type} & The Type of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to find a snapshot for.\\
+\hline
+{\em id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to get the most recent \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} of.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The most recent \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} of
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStore_a25efb06a4a6fcc9246d4572777c95dd5_a25efb06a4a6fcc9246d4572777c95dd5}{Cqrs.\+Snapshots.\+I\+Snapshot\+Store}.
+
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_ab2ecab1a665c0f2097929d028fe4ac69_ab2ecab1a665c0f2097929d028fe4ac69}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_ab2ecab1a665c0f2097929d028fe4ac69_ab2ecab1a665c0f2097929d028fe4ac69}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Get@{Get}}
+\index{Get@{Get}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Get()}{Get()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily abstract \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} Cqrs.\+Snapshots.\+Snapshot\+Store.\+Get (\begin{DoxyParamCaption}\item[{Type}]{aggregate\+Root\+Type,  }\item[{string}]{stream\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Get the latest \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} from storage. 
+
+\begin{DoxyReturn}{Returns}
+The most recent \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} of
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStore_acb01680aad8c2671206bc851da17a036_acb01680aad8c2671206bc851da17a036}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Snapshot\+Store}, \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbSnapshotStore_ac924659cdf14b06e31c57e4b1107b739_ac924659cdf14b06e31c57e4b1107b739}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Snapshot\+Store}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a169361a7fbf413fed660609f66d95e13_a169361a7fbf413fed660609f66d95e13}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStore_a0d5d8af1e7e243d05ccc064b532bee2b_a0d5d8af1e7e243d05ccc064b532bee2b}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Snapshot\+Store}, and \hyperlink{classCqrs_1_1Azure_1_1Storage_1_1Events_1_1TableStorageSnapshotStore_ac552ed9e69ca9ce8bbd9f14b4ecb546f_ac552ed9e69ca9ce8bbd9f14b4ecb546f}{Cqrs.\+Azure.\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store}.
+
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_af35423c44786c31d224d52c3796d0d3d_af35423c44786c31d224d52c3796d0d3d}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_af35423c44786c31d224d52c3796d0d3d_af35423c44786c31d224d52c3796d0d3d}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Get$<$ T\+Aggregate\+Root $>$@{Get$<$ T\+Aggregate\+Root $>$}}
+\index{Get$<$ T\+Aggregate\+Root $>$@{Get$<$ T\+Aggregate\+Root $>$}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Get$<$ T\+Aggregate\+Root $>$()}{Get< TAggregateRoot >()}}
+{\footnotesize\ttfamily virtual \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} \hyperlink{classCqrs_1_1Snapshots_1_1SnapshotStore_a08ec0d8ff97742e3503a3778bb92076e_a08ec0d8ff97742e3503a3778bb92076e}{Cqrs.\+Snapshots.\+Snapshot\+Store.\+Get}$<$ T\+Aggregate\+Root $>$ (\begin{DoxyParamCaption}\item[{Guid}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Get the latest \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} from storage. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T\+Aggregate\+Root} & The Type of I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to find a snapshot for.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The identifier of the I\+Aggregate\+Root$<$\+T\+Authentication\+Token$>$ to get the most recent \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} of.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The most recent \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} of
+\end{DoxyReturn}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStore_ab7bd163fc9cd5c3bd5911679030be403_ab7bd163fc9cd5c3bd5911679030be403}{Cqrs.\+Snapshots.\+I\+Snapshot\+Store}.
+
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_ae96ea2bb89a0bd7f45544acc37107525_ae96ea2bb89a0bd7f45544acc37107525}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_ae96ea2bb89a0bd7f45544acc37107525_ae96ea2bb89a0bd7f45544acc37107525}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Save@{Save}}
+\index{Save@{Save}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Save()}{Save()}}
+{\footnotesize\ttfamily abstract void Cqrs.\+Snapshots.\+Snapshot\+Store.\+Save (\begin{DoxyParamCaption}\item[{\hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot}}]{snapshot }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Saves the provided {\itshape snapshot}  into storage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em snapshot} & the \hyperlink{classCqrs_1_1Snapshots_1_1Snapshot}{Snapshot} to save and store.\\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{interfaceCqrs_1_1Snapshots_1_1ISnapshotStore_a6e99c620115ce8a0648a83bf2ce05527_a6e99c620115ce8a0648a83bf2ce05527}{Cqrs.\+Snapshots.\+I\+Snapshot\+Store}.
+
+
+
+Implemented in \hyperlink{classCqrs_1_1MongoDB_1_1Events_1_1MongoDbSnapshotStore_abd129099f8ed40c140ad2b39e730035a_abd129099f8ed40c140ad2b39e730035a}{Cqrs.\+Mongo\+D\+B.\+Events.\+Mongo\+Db\+Snapshot\+Store}, \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1TableStorageSnapshotStore_a25ec7d179773aec79febdf0e8873b285_a25ec7d179773aec79febdf0e8873b285}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Table\+Storage\+Snapshot\+Store}, \hyperlink{classCqrs_1_1Azure_1_1DocumentDb_1_1Events_1_1AzureDocumentDbSnapshotStore_a52dd38e57e884db7529c8f57c3da7479_a52dd38e57e884db7529c8f57c3da7479}{Cqrs.\+Azure.\+Document\+Db.\+Events.\+Azure\+Document\+Db\+Snapshot\+Store}, and \hyperlink{classCqrs_1_1Azure_1_1BlobStorage_1_1Events_1_1BlobStorageSnapshotStore_afb32196428d4c92c9542a94a1764fa59_afb32196428d4c92c9542a94a1764fa59}{Cqrs.\+Azure.\+Blob\+Storage.\+Events.\+Blob\+Storage\+Snapshot\+Store}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_a8113b186bf4a563b916d19c8d6d9cd0f_a8113b186bf4a563b916d19c8d6d9cd0f}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_a8113b186bf4a563b916d19c8d6d9cd0f_a8113b186bf4a563b916d19c8d6d9cd0f}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern@{Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern}}
+\index{Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern@{Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern}{CqrsSnapshotStoreStreamNamePattern}}
+{\footnotesize\ttfamily const string Cqrs.\+Snapshots.\+Snapshot\+Store.\+Cqrs\+Snapshot\+Store\+Stream\+Name\+Pattern = \char`\"{}\{0\}/\{1\}\char`\"{}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+The pattern used to generate the stream name. 
+
+
+
+\subsection{Property Documentation}
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_a4b408b56a060a5f4ab914d9c2751a7b5_a4b408b56a060a5f4ab914d9c2751a7b5}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_a4b408b56a060a5f4ab914d9c2751a7b5_a4b408b56a060a5f4ab914d9c2751a7b5}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Configuration\+Manager@{Configuration\+Manager}}
+\index{Configuration\+Manager@{Configuration\+Manager}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Configuration\+Manager}{ConfigurationManager}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Configuration_1_1IConfigurationManager}{I\+Configuration\+Manager} Cqrs.\+Snapshots.\+Snapshot\+Store.\+Configuration\+Manager\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+Gets or sets the I\+Configuration\+Manager 
+
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_ac2191c50c03cb3ddfa574d6ad3e2a075_ac2191c50c03cb3ddfa574d6ad3e2a075}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_ac2191c50c03cb3ddfa574d6ad3e2a075_ac2191c50c03cb3ddfa574d6ad3e2a075}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Correlation\+Id\+Helper@{Correlation\+Id\+Helper}}
+\index{Correlation\+Id\+Helper@{Correlation\+Id\+Helper}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Correlation\+Id\+Helper}{CorrelationIdHelper}}
+{\footnotesize\ttfamily I\+Correlation\+Id\+Helper Cqrs.\+Snapshots.\+Snapshot\+Store.\+Correlation\+Id\+Helper\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The I\+Correlation\+Id\+Helper to use. 
+
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_a2cf3bd342de15231307f1d478297454f_a2cf3bd342de15231307f1d478297454f}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_a2cf3bd342de15231307f1d478297454f_a2cf3bd342de15231307f1d478297454f}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Event\+Deserialiser@{Event\+Deserialiser}}
+\index{Event\+Deserialiser@{Event\+Deserialiser}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Event\+Deserialiser}{EventDeserialiser}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotDeserialiser}{I\+Snapshot\+Deserialiser} Cqrs.\+Snapshots.\+Snapshot\+Store.\+Event\+Deserialiser\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The I\+Snapshot\+Deserialiser used to deserialise snapshots. 
+
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_a41244ca79899540fe3ecccfd63ddc6f5_a41244ca79899540fe3ecccfd63ddc6f5}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_a41244ca79899540fe3ecccfd63ddc6f5_a41244ca79899540fe3ecccfd63ddc6f5}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Logger@{Logger}}
+\index{Logger@{Logger}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Logger}{Logger}}
+{\footnotesize\ttfamily I\+Logger Cqrs.\+Snapshots.\+Snapshot\+Store.\+Logger\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The I\+Logger to use. 
+
+\mbox{\Hypertarget{classCqrs_1_1Snapshots_1_1SnapshotStore_a467ad1be01ccaaff23868a9ce4985746_a467ad1be01ccaaff23868a9ce4985746}\label{classCqrs_1_1Snapshots_1_1SnapshotStore_a467ad1be01ccaaff23868a9ce4985746_a467ad1be01ccaaff23868a9ce4985746}} 
+\index{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}!Snapshot\+Builder@{Snapshot\+Builder}}
+\index{Snapshot\+Builder@{Snapshot\+Builder}!Cqrs\+::\+Snapshots\+::\+Snapshot\+Store@{Cqrs\+::\+Snapshots\+::\+Snapshot\+Store}}
+\subsubsection{\texorpdfstring{Snapshot\+Builder}{SnapshotBuilder}}
+{\footnotesize\ttfamily \hyperlink{interfaceCqrs_1_1Events_1_1ISnapshotBuilder}{I\+Snapshot\+Builder} Cqrs.\+Snapshots.\+Snapshot\+Store.\+Snapshot\+Builder\hspace{0.3cm}{\ttfamily [get]}, {\ttfamily [protected]}}
+
+
+
+The I\+Snapshot\+Builder used to build snapshots. 
+

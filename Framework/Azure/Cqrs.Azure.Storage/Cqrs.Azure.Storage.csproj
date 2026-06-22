@@ -1,0 +1,96 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net472;net48;netstandard2.0</TargetFrameworks>
+		<title>Microsoft Azure Blob and Table Storage for CQRS.NET</title>
+		<Authors>Chinchilla Software</Authors>
+		<Company>Chinchilla Software</Company>
+		<Description>Use Azure Blob and Table Storage as the read store and data store in CQRS.NET. This version is targeted at .net 4.7.2 using Azure.Data.Tables and Azure.Storage.Blobs version 12</Description>
+		<Copyright>Copyright © 2025</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/Chinchilla-Software-Com/CQRS</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Chinchilla-Software-Com/CQRS</RepositoryUrl>
+		<PackageReleaseNotes>
+			Version 6.0
+
+			- Removed .NET 4.0, .NET 4.5, .NET 4.5.1, .NET 4.5.2, .NET 4.6 and , .NET 4.6.2 support. The minimum .NET Framework version is now .NET 4.7.2.
+			- Deprecated .NET 6.0, replaced with .NET 8.0
+
+			Version 5.2
+
+			- Added a wait to EventStore Save/SaveAsync so we are sure the event is retrievable.
+
+			Version 5.0
+
+			- Upgraded to Azure.Data.Tables and Azure.Storage.Blobs version 12
+		</PackageReleaseNotes>
+		<PackageIcon>images\icon.png</PackageIcon>
+		<readme>README.md</readme>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageTags>CQRS;CQRS.NET;Azure Blob Storage;BlobStorage;Table Storage;TableStorage</PackageTags>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<OutputType>library</OutputType>
+		<TargetFrameworks>net472;net48;netstandard2.0</TargetFrameworks>
+		<DocumentationFile>Cqrs.Azure.Storage.xml</DocumentationFile>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<LangVersion>12.0</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="Properties\AssemblyInfo.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="tools\init.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+		<None Include="tools\install.ps1">
+			<Pack>True</Pack>
+			<PackagePath>tools\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\..\icon.png" Link="icon.png">
+			<Pack>True</Pack>
+			<PackagePath>images\</PackagePath>
+		</None>
+		<None Include="..\..\..\README.md" Link="Packaging\README.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Azure.Data.Tables" Version="12.9.1" />
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.23.0" />
+		<PackageReference Include="Chinchilla.StateManagement" Version="4.2.11" />
+		<PackageReference Include="Chinchilla.Logging" Version="5.3.46" />
+		<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="6.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Remove="Properties\" />
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="Cqrs.Azure.Storage.xml" />
+		<None Remove="tools\Create-Log-Table.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Cqrs\Cqrs.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Microsoft.CSharp" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)Tools&quot; MKDIR &quot;$(ProjectDir)Tools&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; COPY /Y &quot;$(SolutionDir)Framework\Cqrs\Tools\install.ps1&quot; &quot;$(ProjectDir)Tools\install.ps1&quot;" />
+	</Target>
+</Project>

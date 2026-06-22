@@ -56,17 +56,17 @@ namespace <#= classNamespace #>
 		var methodstereoTypeProperties = collectionMethod.AppliedStereotypes.SingleOrDefault(property => property.Name == "QueryStrategyMethod");
 		if (methodstereoTypeProperties != null)
 		{
-			bool IsNotLogicallyDeleted = methodstereoTypeProperties.PropertyInstances.Any(property => property.Name == "IsNotLogicallyDeleted" && property.Value == "true");
-			if (IsNotLogicallyDeleted)
+			bool IsNotDeleted = methodstereoTypeProperties.PropertyInstances.Any(property => property.Name == "IsNotDeleted" && property.Value == "true");
+			if (IsNotDeleted)
 			{
 #>
-			QueryPredicate = And(IsNotLogicallyDeleted());
+			QueryPredicate = And(IsNotDeleted());
 <#
 			}
 			string permissionScope = methodstereoTypeProperties.PropertyInstances.Single(property => property.Name == "PermissionScope").Value;
 			if (permissionScope != "Any")
 			{
-				if (!IsNotLogicallyDeleted)
+				if (!IsNotDeleted)
 				{
 #>
 			QueryPredicate = And(WithPermissionScope<#= permissionScope #>(AuthenticationTokenHelper.GetAuthenticationToken()));
